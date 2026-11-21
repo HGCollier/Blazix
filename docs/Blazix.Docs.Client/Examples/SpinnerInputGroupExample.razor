@@ -1,0 +1,17 @@
+<div class="flex w-full max-w-md flex-col gap-4">
+    <InputGroup>
+        <InputGroupInput placeholder="Send a message..." Disabled="true" />
+        <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd"><Spinner /></InputGroupAddon>
+    </InputGroup>
+    <InputGroup>
+        <InputGroupTextarea placeholder="Send a message..." disabled />
+        <InputGroupAddon Align="InputGroupAddonAlign.BlockEnd">
+            <Spinner />
+            Validating...
+            <InputGroupButton Class="ml-auto" Variant="ButtonVariant.Default" Disabled="true">
+                <Icon Name="arrow-up" />
+                <span class="sr-only">Send</span>
+            </InputGroupButton>
+        </InputGroupAddon>
+    </InputGroup>
+</div>

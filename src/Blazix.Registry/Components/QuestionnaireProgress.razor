@@ -1,0 +1,16 @@
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.QuestionnaireProgress data-slot="questionnaire-progress" @attributes="AdditionalAttributes" Render="@Render"
+                                       class="@Cn("min-h-[1lh] w-fit min-w-[14ch] text-xs font-medium text-muted-foreground tabular-nums", Class)"
+                                       ChildContent="@ChildContent" />
+
+@code {
+    /// <summary>Render your own element; spread <c>props.Attributes</c> onto it. <c>props.Current</c> and <c>props.Total</c> say where the questionnaire is.</summary>
+    [Parameter] public RenderFragment<QuestionnaireRenderProps>? Render { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

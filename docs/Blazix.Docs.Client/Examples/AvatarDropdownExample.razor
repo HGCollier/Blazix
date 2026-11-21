@@ -1,0 +1,21 @@
+<DropdownMenu>
+    <DropdownMenuTrigger>
+        <Render>
+            <Button @attributes="context.Attributes" Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="rounded-full">
+                <Avatar>
+                    <AvatarImage Src="https://avatar.vercel.sh/blazix" alt="blazix" />
+                    <AvatarFallback>BX</AvatarFallback>
+                </Avatar>
+            </Button>
+        </Render>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent Class="w-32">
+        <DropdownMenuGroup>
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>Billing</DropdownMenuItem>
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup><DropdownMenuItem Destructive="true">Log out</DropdownMenuItem></DropdownMenuGroup>
+    </DropdownMenuContent>
+</DropdownMenu>

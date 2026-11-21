@@ -1,0 +1,12 @@
+<Field Class="w-full max-w-xs">
+    <FieldTitle>Price Range</FieldTitle>
+    <FieldDescription>
+        Set your budget range ($<span class="font-medium tabular-nums">@_value[0]</span> -
+        <span class="font-medium tabular-nums">@_value[1]</span>).
+    </FieldDescription>
+    <Slider @bind-Values="_value" Max="1000" Min="0" Step="10" Class="mt-2 w-full" aria-label="Price Range" />
+</Field>
+
+@code {
+    private IReadOnlyList<double> _value = [200, 800];
+}

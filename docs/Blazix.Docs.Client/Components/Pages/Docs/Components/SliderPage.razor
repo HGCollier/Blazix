@@ -1,0 +1,31 @@
+@page "/docs/components/slider"
+
+<DocsPage Title="Slider" Description="An input where the user selects a value from within a given range.">
+    <ComponentPreview Name="slider-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="slider" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Range" />
+    <p>Use an array with two values for a range slider.</p>
+    <ComponentPreview Name="slider-range" />
+    <DocsHeading Title="Multiple Thumbs" />
+    <p>Use an array with multiple values for multiple thumbs.</p>
+    <ComponentPreview Name="slider-multiple" />
+    <DocsHeading Title="Vertical" />
+    <p>Use <code>orientation="vertical"</code> for a vertical slider.</p>
+    <ComponentPreview Name="slider-vertical" />
+    <DocsHeading Title="Controlled" />
+    <ComponentPreview Name="slider-controlled" />
+    <DocsHeading Title="Disabled" />
+    <p>Use the <code>Disabled</code> parameter to disable the slider.</p>
+    <ComponentPreview Name="slider-disabled" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="slider" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Slider Value="33" Max="100" Step="1" />
+        """;
+}

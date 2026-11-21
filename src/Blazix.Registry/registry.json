@@ -1,0 +1,1004 @@
+{
+  "items": {
+    "utils": {
+      "description": "Cn() class helper used by every component (clsx + tailwind-merge), and FieldDescriptions, which ties a field's description and error to its control.",
+      "files": [
+        "ClassNames.cs",
+        "FieldDescriptions.cs"
+      ]
+    },
+    "accordion": {
+      "description": "A vertically stacked set of interactive headings that each reveal a section of content.",
+      "files": [
+        "Accordion.razor",
+        "AccordionContent.razor",
+        "AccordionItem.razor",
+        "AccordionTrigger.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "alert": {
+      "description": "Displays a callout for user attention.",
+      "files": [
+        "AlertVariant.cs",
+        "Alert.razor",
+        "AlertAction.razor",
+        "AlertDescription.razor",
+        "AlertTitle.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ]
+    },
+    "alert-dialog": {
+      "description": "A modal dialog that interrupts the user with important content and expects a response.",
+      "files": [
+        "AlertDialogSize.cs",
+        "AlertDialog.razor",
+        "AlertDialogAction.razor",
+        "AlertDialogCancel.razor",
+        "AlertDialogContent.razor",
+        "AlertDialogDescription.razor",
+        "AlertDialogFooter.razor",
+        "AlertDialogHeader.razor",
+        "AlertDialogMedia.razor",
+        "AlertDialogOverlay.razor",
+        "AlertDialogTitle.razor",
+        "AlertDialogTrigger.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "button"
+      ],
+      "usesPrimitives": true
+    },
+    "aspect-ratio": {
+      "description": "Displays content within a desired ratio.",
+      "files": [
+        "AspectRatio.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ]
+    },
+    "attachment": {
+      "description": "A file attached to a message or an upload, with its state and actions.",
+      "files": [
+        "AttachmentMediaVariant.cs",
+        "AttachmentSize.cs",
+        "AttachmentState.cs",
+        "Attachment.razor",
+        "AttachmentAction.razor",
+        "AttachmentActions.razor",
+        "AttachmentContent.razor",
+        "AttachmentDescription.razor",
+        "AttachmentGroup.razor",
+        "AttachmentMedia.razor",
+        "AttachmentTitle.razor",
+        "AttachmentTrigger.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "button"
+      ],
+      "usesPrimitives": true
+    },
+    "avatar": {
+      "description": "An image element with a fallback for representing the user.",
+      "files": [
+        "AvatarSize.cs",
+        "Avatar.razor",
+        "AvatarBadge.razor",
+        "AvatarFallback.razor",
+        "AvatarGroup.razor",
+        "AvatarGroupCount.razor",
+        "AvatarImage.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "badge": {
+      "description": "Displays a badge or a component that looks like a badge.",
+      "files": [
+        "BadgeVariant.cs",
+        "BadgeVariants.cs",
+        "Badge.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "breadcrumb": {
+      "description": "Displays the path to the current resource using a hierarchy of links.",
+      "files": [
+        "Breadcrumb.razor",
+        "BreadcrumbEllipsis.razor",
+        "BreadcrumbItem.razor",
+        "BreadcrumbLink.razor",
+        "BreadcrumbList.razor",
+        "BreadcrumbPage.razor",
+        "BreadcrumbSeparator.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "bubble": {
+      "description": "A chat bubble for a message.",
+      "files": [
+        "BubbleAlign.cs",
+        "BubbleReactionsSide.cs",
+        "BubbleVariant.cs",
+        "Bubble.razor",
+        "BubbleContent.razor",
+        "BubbleGroup.razor",
+        "BubbleReactions.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "button": {
+      "description": "Displays a button or a component that looks like a button.",
+      "files": [
+        "ButtonVariants.cs",
+        "Button.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "button-group": {
+      "description": "A container that groups related buttons together with consistent styling.",
+      "files": [
+        "ButtonGroupVariants.cs",
+        "ButtonGroup.razor",
+        "ButtonGroupSeparator.razor",
+        "ButtonGroupText.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "separator"
+      ],
+      "usesPrimitives": true
+    },
+    "calendar": {
+      "description": "A date grid for choosing a day.",
+      "files": [
+        "Calendar.razor",
+        "CalendarDayButton.razor",
+        "CalendarTypes.cs"
+      ],
+      "dependencies": [
+        "utils",
+        "button"
+      ],
+      "usesPrimitives": true
+    },
+    "card": {
+      "description": "Displays a card with header, content, and footer.",
+      "files": [
+        "CardSize.cs",
+        "Card.razor",
+        "CardAction.razor",
+        "CardContent.razor",
+        "CardDescription.razor",
+        "CardFooter.razor",
+        "CardHeader.razor",
+        "CardTitle.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ]
+    },
+    "carousel": {
+      "description": "A carousel with motion and swipe built using Embla.",
+      "files": [
+        "Carousel.razor",
+        "CarouselContent.razor",
+        "CarouselItem.razor",
+        "CarouselPrevious.razor",
+        "CarouselNext.razor",
+        "CarouselOptions.cs",
+        "CarouselApi.cs",
+        "CarouselContext.cs",
+        "CarouselPlugin.cs",
+        "CarouselAutoplay.cs"
+      ],
+      "dependencies": [
+        "utils",
+        "button"
+      ],
+      "usesPrimitives": true
+    },
+    "checkbox": {
+      "description": "A control that allows the user to toggle between checked and not checked.",
+      "files": [
+        "Checkbox.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "code-block": {
+      "description": "Displays code, with a header, actions and line numbers.",
+      "files": [
+        "CodeBlockLineVariant.cs",
+        "CodeBlockSize.cs",
+        "CodeBlockVariant.cs",
+        "CodeBlock.razor",
+        "CodeBlockActions.razor",
+        "CodeBlockContent.razor",
+        "CodeBlockCopyButton.razor",
+        "CodeBlockFooter.razor",
+        "CodeBlockHeader.razor",
+        "CodeBlockLine.razor",
+        "CodeBlockTitle.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "button"
+      ],
+      "usesPrimitives": true
+    },
+    "collapsible": {
+      "description": "An interactive component which expands/collapses a panel.",
+      "files": [
+        "Collapsible.razor",
+        "CollapsibleContent.razor",
+        "CollapsibleTrigger.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "combobox": {
+      "description": "Autocomplete input with a list of suggestions.",
+      "files": [
+        "Combobox.razor",
+        "ComboboxChip.razor",
+        "ComboboxChips.razor",
+        "ComboboxChipsInput.razor",
+        "ComboboxClear.razor",
+        "ComboboxCollection.razor",
+        "ComboboxContent.razor",
+        "ComboboxEmpty.razor",
+        "ComboboxGroup.razor",
+        "ComboboxInput.razor",
+        "ComboboxItem.razor",
+        "ComboboxLabel.razor",
+        "ComboboxList.razor",
+        "ComboboxSeparator.razor",
+        "ComboboxTrigger.razor",
+        "ComboboxValue.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "button",
+        "input",
+        "input-group"
+      ],
+      "usesPrimitives": true
+    },
+    "command": {
+      "description": "A searchable list of actions or options.",
+      "files": [
+        "Command.razor",
+        "CommandDialog.razor",
+        "CommandEmpty.razor",
+        "CommandGroup.razor",
+        "CommandInput.razor",
+        "CommandItem.razor",
+        "CommandList.razor",
+        "CommandSeparator.razor",
+        "CommandShortcut.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "dialog",
+        "input-group"
+      ],
+      "usesPrimitives": true
+    },
+    "context-menu": {
+      "description": "Displays a menu to the user, triggered by a right click.",
+      "files": [
+        "ContextMenu.razor",
+        "ContextMenuCheckboxItem.razor",
+        "ContextMenuContent.razor",
+        "ContextMenuGroup.razor",
+        "ContextMenuItem.razor",
+        "ContextMenuLabel.razor",
+        "ContextMenuPortal.razor",
+        "ContextMenuRadioGroup.razor",
+        "ContextMenuRadioItem.razor",
+        "ContextMenuSeparator.razor",
+        "ContextMenuShortcut.razor",
+        "ContextMenuSub.razor",
+        "ContextMenuSubContent.razor",
+        "ContextMenuSubTrigger.razor",
+        "ContextMenuTrigger.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "dialog": {
+      "description": "A window overlaid on either the primary window or another dialog window.",
+      "files": [
+        "Dialog.razor",
+        "DialogClose.razor",
+        "DialogContent.razor",
+        "DialogDescription.razor",
+        "DialogFooter.razor",
+        "DialogHeader.razor",
+        "DialogOverlay.razor",
+        "DialogTitle.razor",
+        "DialogTrigger.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "button"
+      ],
+      "usesPrimitives": true
+    },
+    "direction": {
+      "description": "Sets the reading direction for the components inside.",
+      "files": [
+        "DirectionProvider.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "drawer": {
+      "description": "A panel that slides in from the edge of the screen and can be swiped away.",
+      "files": [
+        "DrawerSettings.cs",
+        "Drawer.razor",
+        "DrawerClose.razor",
+        "DrawerContent.razor",
+        "DrawerDescription.razor",
+        "DrawerFooter.razor",
+        "DrawerHeader.razor",
+        "DrawerOverlay.razor",
+        "DrawerPortal.razor",
+        "DrawerSwipeHandle.razor",
+        "DrawerTitle.razor",
+        "DrawerTrigger.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "dropdown-menu": {
+      "description": "Displays a menu to the user, such as a set of actions or functions, triggered by a button.",
+      "files": [
+        "DropdownMenu.razor",
+        "DropdownMenuCheckboxItem.razor",
+        "DropdownMenuContent.razor",
+        "DropdownMenuGroup.razor",
+        "DropdownMenuItem.razor",
+        "DropdownMenuLabel.razor",
+        "DropdownMenuRadioGroup.razor",
+        "DropdownMenuRadioItem.razor",
+        "DropdownMenuSeparator.razor",
+        "DropdownMenuShortcut.razor",
+        "DropdownMenuSub.razor",
+        "DropdownMenuSubContent.razor",
+        "DropdownMenuSubTrigger.razor",
+        "DropdownMenuTrigger.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "button"
+      ],
+      "usesPrimitives": true
+    },
+    "empty": {
+      "description": "Use the Empty component to display an empty state.",
+      "files": [
+        "EmptyMediaVariant.cs",
+        "Empty.razor",
+        "EmptyContent.razor",
+        "EmptyDescription.razor",
+        "EmptyHeader.razor",
+        "EmptyMedia.razor",
+        "EmptyTitle.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ]
+    },
+    "field": {
+      "description": "Combine labels, controls, and help text to compose accessible form fields.",
+      "files": [
+        "FieldLegendVariant.cs",
+        "FieldOrientation.cs",
+        "Field.razor",
+        "FieldContent.razor",
+        "FieldDescription.razor",
+        "FieldError.razor",
+        "FieldGroup.razor",
+        "FieldLabel.razor",
+        "FieldLegend.razor",
+        "FieldSeparator.razor",
+        "FieldSet.razor",
+        "FieldTitle.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "label",
+        "separator"
+      ]
+    },
+    "hover-card": {
+      "description": "For sighted users to preview content available behind a link.",
+      "files": [
+        "HoverCard.razor",
+        "HoverCardContent.razor",
+        "HoverCardTrigger.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "input": {
+      "description": "Displays a form input field or a component that looks like an input field.",
+      "files": [
+        "Input.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "input-group": {
+      "description": "Add addons, buttons, and helper content to inputs.",
+      "files": [
+        "InputGroupAddonAlign.cs",
+        "InputGroupButtonSize.cs",
+        "InputGroup.razor",
+        "InputGroupAddon.razor",
+        "InputGroupButton.razor",
+        "InputGroupInput.razor",
+        "InputGroupText.razor",
+        "InputGroupTextarea.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "button",
+        "input",
+        "textarea"
+      ]
+    },
+    "input-otp": {
+      "description": "Accessible one-time password component with copy-paste functionality.",
+      "files": [
+        "InputOtp.razor",
+        "InputOtpGroup.razor",
+        "InputOtpSlot.razor",
+        "InputOtpSeparator.razor",
+        "InputOtpPatterns.cs"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "item": {
+      "description": "A versatile component that you can use to display any content.",
+      "files": [
+        "ItemMediaVariant.cs",
+        "ItemSize.cs",
+        "ItemVariant.cs",
+        "Item.razor",
+        "ItemActions.razor",
+        "ItemContent.razor",
+        "ItemDescription.razor",
+        "ItemFooter.razor",
+        "ItemGroup.razor",
+        "ItemHeader.razor",
+        "ItemMedia.razor",
+        "ItemSeparator.razor",
+        "ItemTitle.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "separator"
+      ],
+      "usesPrimitives": true
+    },
+    "kbd": {
+      "description": "Used to display textual user input from keyboard.",
+      "files": [
+        "Kbd.razor",
+        "KbdGroup.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ]
+    },
+    "label": {
+      "description": "Renders an accessible label associated with controls.",
+      "files": [
+        "Label.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ]
+    },
+    "marker": {
+      "description": "A note in a conversation, like a date or an event.",
+      "files": [
+        "MarkerVariant.cs",
+        "Marker.razor",
+        "MarkerContent.razor",
+        "MarkerIcon.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "menubar": {
+      "description": "A visually persistent menu common in desktop applications.",
+      "files": [
+        "Menubar.razor",
+        "MenubarCheckboxItem.razor",
+        "MenubarContent.razor",
+        "MenubarGroup.razor",
+        "MenubarItem.razor",
+        "MenubarLabel.razor",
+        "MenubarMenu.razor",
+        "MenubarPortal.razor",
+        "MenubarRadioGroup.razor",
+        "MenubarRadioItem.razor",
+        "MenubarSeparator.razor",
+        "MenubarShortcut.razor",
+        "MenubarSub.razor",
+        "MenubarSubContent.razor",
+        "MenubarSubTrigger.razor",
+        "MenubarTrigger.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "dropdown-menu"
+      ],
+      "usesPrimitives": true
+    },
+    "message": {
+      "description": "A message in a conversation, with an avatar, header and footer.",
+      "files": [
+        "MessageAlign.cs",
+        "Message.razor",
+        "MessageAvatar.razor",
+        "MessageContent.razor",
+        "MessageFooter.razor",
+        "MessageGroup.razor",
+        "MessageHeader.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ]
+    },
+    "message-scroller": {
+      "description": "A chat scroll container that anchors turns, opens saved transcripts, follows streamed responses, loads history without jumping, and jumps to any message.",
+      "files": [
+        "MessageScrollerProvider.cs",
+        "MessageScroller.razor",
+        "MessageScrollerViewport.razor",
+        "MessageScrollerContent.razor",
+        "MessageScrollerItem.razor",
+        "MessageScrollerButton.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "button"
+      ],
+      "usesPrimitives": true
+    },
+    "native-select": {
+      "description": "A styled native HTML select element.",
+      "files": [
+        "NativeSelectSize.cs",
+        "NativeSelect.razor",
+        "NativeSelectOptGroup.razor",
+        "NativeSelectOption.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ]
+    },
+    "navigation-menu": {
+      "description": "A collection of links for navigating websites.",
+      "files": [
+        "NavigationMenuTriggerStyle.cs",
+        "NavigationMenu.razor",
+        "NavigationMenuContent.razor",
+        "NavigationMenuIndicator.razor",
+        "NavigationMenuItem.razor",
+        "NavigationMenuLink.razor",
+        "NavigationMenuList.razor",
+        "NavigationMenuPositioner.razor",
+        "NavigationMenuTrigger.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "pagination": {
+      "description": "Pagination with page navigation, next and previous links.",
+      "files": [
+        "Pagination.razor",
+        "PaginationContent.razor",
+        "PaginationEllipsis.razor",
+        "PaginationItem.razor",
+        "PaginationLink.razor",
+        "PaginationNext.razor",
+        "PaginationPrevious.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "button"
+      ],
+      "usesPrimitives": true
+    },
+    "popover": {
+      "description": "Displays rich content in a portal, triggered by a button.",
+      "files": [
+        "Popover.razor",
+        "PopoverContent.razor",
+        "PopoverDescription.razor",
+        "PopoverHeader.razor",
+        "PopoverTitle.razor",
+        "PopoverTrigger.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "progress": {
+      "description": "Displays an indicator showing the completion progress of a task.",
+      "files": [
+        "Progress.razor",
+        "ProgressIndicator.razor",
+        "ProgressLabel.razor",
+        "ProgressTrack.razor",
+        "ProgressValue.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "questionnaire": {
+      "description": "A multi-step questionnaire with single-choice, multiple-choice, freeform, and skippable questions.",
+      "files": [
+        "QuestionnaireButtons.cs",
+        "Questionnaire.razor",
+        "QuestionnaireActions.razor",
+        "QuestionnaireChoice.razor",
+        "QuestionnaireChoiceDescription.razor",
+        "QuestionnaireChoices.razor",
+        "QuestionnaireDescription.razor",
+        "QuestionnaireError.razor",
+        "QuestionnaireInput.razor",
+        "QuestionnaireItem.razor",
+        "QuestionnaireNext.razor",
+        "QuestionnairePrevious.razor",
+        "QuestionnaireProgress.razor",
+        "QuestionnaireSkip.razor",
+        "QuestionnaireSubmit.razor",
+        "QuestionnaireTitle.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "button"
+      ],
+      "usesPrimitives": true
+    },
+    "radio-group": {
+      "description": "A set of checkable buttons where no more than one can be checked at a time.",
+      "files": [
+        "RadioGroup.razor",
+        "RadioGroupItem.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "resizable": {
+      "description": "Accessible resizable panel groups and layouts with keyboard support.",
+      "files": [
+        "ResizablePanelGroup.razor",
+        "ResizablePanel.razor",
+        "ResizableHandle.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "scroll-area": {
+      "description": "Augments native scroll functionality for custom, cross-browser styling.",
+      "files": [
+        "ScrollArea.razor",
+        "ScrollBar.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "select": {
+      "description": "Displays a list of options for the user to pick from, triggered by a button.",
+      "files": [
+        "SelectTriggerSize.cs",
+        "Select.razor",
+        "SelectContent.razor",
+        "SelectGroup.razor",
+        "SelectItem.razor",
+        "SelectLabel.razor",
+        "SelectScrollDownButton.razor",
+        "SelectScrollUpButton.razor",
+        "SelectSeparator.razor",
+        "SelectTrigger.razor",
+        "SelectValue.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "separator": {
+      "description": "Visually or semantically separates content.",
+      "files": [
+        "Separator.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "sheet": {
+      "description": "Extends the Dialog component to display content that complements the main content of the screen.",
+      "files": [
+        "SheetSide.cs",
+        "Sheet.razor",
+        "SheetClose.razor",
+        "SheetContent.razor",
+        "SheetDescription.razor",
+        "SheetFooter.razor",
+        "SheetHeader.razor",
+        "SheetOverlay.razor",
+        "SheetPortal.razor",
+        "SheetTitle.razor",
+        "SheetTrigger.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "button"
+      ],
+      "usesPrimitives": true
+    },
+    "sidebar": {
+      "description": "A composable, themeable and customizable sidebar component.",
+      "files": [
+        "SidebarCollapsible.cs",
+        "SidebarContext.cs",
+        "SidebarMenuButtonSize.cs",
+        "SidebarMenuButtonVariant.cs",
+        "SidebarMenuButtonVariants.cs",
+        "SidebarMenuSubButtonSize.cs",
+        "SidebarSide.cs",
+        "SidebarVariant.cs",
+        "Sidebar.razor",
+        "SidebarContent.razor",
+        "SidebarFooter.razor",
+        "SidebarGroup.razor",
+        "SidebarGroupAction.razor",
+        "SidebarGroupContent.razor",
+        "SidebarGroupLabel.razor",
+        "SidebarHeader.razor",
+        "SidebarInput.razor",
+        "SidebarInset.razor",
+        "SidebarMenu.razor",
+        "SidebarMenuAction.razor",
+        "SidebarMenuBadge.razor",
+        "SidebarMenuButton.razor",
+        "SidebarMenuItem.razor",
+        "SidebarMenuSkeleton.razor",
+        "SidebarMenuSub.razor",
+        "SidebarMenuSubButton.razor",
+        "SidebarMenuSubItem.razor",
+        "SidebarProvider.razor",
+        "SidebarRail.razor",
+        "SidebarSeparator.razor",
+        "SidebarTrigger.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "button",
+        "input",
+        "separator",
+        "sheet",
+        "skeleton",
+        "tooltip"
+      ],
+      "usesPrimitives": true
+    },
+    "skeleton": {
+      "description": "Use to show a placeholder while content is loading.",
+      "files": [
+        "Skeleton.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ]
+    },
+    "slider": {
+      "description": "An input where the user selects a value from within a given range.",
+      "files": [
+        "Slider.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "spinner": {
+      "description": "An indicator that can be used to show a loading state.",
+      "files": [
+        "Spinner.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ]
+    },
+    "switch": {
+      "description": "A control that allows the user to toggle between checked and not checked.",
+      "files": [
+        "SwitchSize.cs",
+        "Switch.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "table": {
+      "description": "A responsive table component.",
+      "files": [
+        "Table.razor",
+        "TableBody.razor",
+        "TableCaption.razor",
+        "TableCell.razor",
+        "TableFooter.razor",
+        "TableHead.razor",
+        "TableHeader.razor",
+        "TableRow.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ]
+    },
+    "tabs": {
+      "description": "A set of layered sections of content, displayed one at a time.",
+      "files": [
+        "TabsListVariant.cs",
+        "Tabs.razor",
+        "TabsContent.razor",
+        "TabsList.razor",
+        "TabsTrigger.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "textarea": {
+      "description": "Displays a form textarea or a component that looks like a textarea.",
+      "files": [
+        "Textarea.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ]
+    },
+    "toast": {
+      "description": "A succinct message that is displayed temporarily.",
+      "files": [
+        "Toast.razor",
+        "ToastAction.razor",
+        "ToastClose.razor",
+        "ToastContent.razor",
+        "ToastDescription.razor",
+        "ToastIcon.razor",
+        "ToastPortal.razor",
+        "ToastProvider.razor",
+        "ToastTitle.razor",
+        "ToastViewport.razor",
+        "Toaster.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "button"
+      ],
+      "usesPrimitives": true
+    },
+    "toggle": {
+      "description": "A two-state button that can be either on or off.",
+      "files": [
+        "ToggleVariants.cs",
+        "Toggle.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "toggle-group": {
+      "description": "A set of two-state buttons that can be toggled on or off.",
+      "files": [
+        "ToggleGroup.razor",
+        "ToggleGroupItem.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "toggle"
+      ],
+      "usesPrimitives": true
+    },
+    "tooltip": {
+      "description": "A popup that displays information related to an element when it receives keyboard focus or the mouse hovers over it.",
+      "files": [
+        "Tooltip.razor",
+        "TooltipContent.razor",
+        "TooltipProvider.razor",
+        "TooltipTrigger.razor"
+      ],
+      "dependencies": [
+        "utils"
+      ],
+      "usesPrimitives": true
+    },
+    "trace": {
+      "description": "The steps an agent took, as lines that can expand.",
+      "files": [
+        "TraceLineStatus.cs",
+        "Trace.razor",
+        "TraceCollapsible.razor",
+        "TraceCollapsibleContent.razor",
+        "TraceCollapsibleTrigger.razor",
+        "TraceDescription.razor",
+        "TraceIcon.razor",
+        "TraceLine.razor",
+        "TraceTitle.razor"
+      ],
+      "dependencies": [
+        "utils",
+        "collapsible"
+      ],
+      "usesPrimitives": true
+    }
+  }
+}

@@ -1,0 +1,37 @@
+<Card Class="mx-auto w-full max-w-xs" Size="CardSize.Sm">
+    <CardHeader>
+        <CardTitle>Radius</CardTitle>
+        <CardDescription>Set the corner radius of the element.</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <Collapsible @bind-Open="_isOpen" Class="flex items-start gap-2">
+            <FieldGroup Class="grid w-full grid-cols-2 gap-2">
+                <Field>
+                    <FieldLabel for="radius-x" Class="sr-only">Radius X</FieldLabel>
+                    <Input id="radius-x" placeholder="0" Value="0" />
+                </Field>
+                <Field>
+                    <FieldLabel for="radius-y" Class="sr-only">Radius Y</FieldLabel>
+                    <Input id="radius-y" placeholder="0" Value="0" />
+                </Field>
+                <CollapsibleContent Class="col-span-full grid grid-cols-subgrid gap-2">
+                    <Field>
+                        <FieldLabel for="radius-x2" Class="sr-only">Radius X</FieldLabel>
+                        <Input id="radius-x2" placeholder="0" Value="0" />
+                    </Field>
+                    <Field>
+                        <FieldLabel for="radius-y2" Class="sr-only">Radius Y</FieldLabel>
+                        <Input id="radius-y2" placeholder="0" Value="0" />
+                    </Field>
+                </CollapsibleContent>
+            </FieldGroup>
+            <CollapsibleTrigger Class="@ButtonVariants.Get(ButtonVariant.Outline, ButtonSize.Icon)" aria-label="More settings">
+                <Icon Name="@(_isOpen ? "minimize" : "maximize")" />
+            </CollapsibleTrigger>
+        </Collapsible>
+    </CardContent>
+</Card>
+
+@code {
+    private bool _isOpen;
+}

@@ -1,0 +1,77 @@
+<Table>
+    <TableHeader>
+        <TableRow>
+            <TableHead>Product</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead Class="text-right">Actions</TableHead>
+        </TableRow>
+    </TableHeader>
+    <TableBody>
+        <TableRow>
+            <TableCell Class="font-medium">Wireless Mouse</TableCell>
+            <TableCell>$29.99</TableCell>
+            <TableCell Class="text-right">
+                <DropdownMenu>
+                    <DropdownMenuTrigger>
+                        <Render>
+                            <Button @attributes="context.Attributes" Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="size-8">
+                                <Icon Name="more-horizontal" />
+                                <span class="sr-only">Open menu</span>
+                            </Button>
+                        </Render>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent Align="Align.End">
+                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem Destructive="true">Delete</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </TableCell>
+        </TableRow>
+        <TableRow>
+            <TableCell Class="font-medium">Mechanical Keyboard</TableCell>
+            <TableCell>$129.99</TableCell>
+            <TableCell Class="text-right">
+                <DropdownMenu>
+                    <DropdownMenuTrigger>
+                        <Render>
+                            <Button @attributes="context.Attributes" Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="size-8">
+                                <Icon Name="more-horizontal" />
+                                <span class="sr-only">Open menu</span>
+                            </Button>
+                        </Render>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent Align="Align.End">
+                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem Destructive="true">Delete</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </TableCell>
+        </TableRow>
+        <TableRow>
+            <TableCell Class="font-medium">USB-C Hub</TableCell>
+            <TableCell>$49.99</TableCell>
+            <TableCell Class="text-right">
+                <DropdownMenu>
+                    <DropdownMenuTrigger>
+                        <Render>
+                            <Button @attributes="context.Attributes" Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="size-8">
+                                <Icon Name="more-horizontal" />
+                                <span class="sr-only">Open menu</span>
+                            </Button>
+                        </Render>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent Align="Align.End">
+                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem Destructive="true">Delete</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </TableCell>
+        </TableRow>
+    </TableBody>
+</Table>

@@ -1,0 +1,110 @@
+.context-menu-trigger {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 16rem;
+    aspect-ratio: 5 / 3;
+    outline: 0;
+    border: 1px solid oklch(14.5% 0 0deg);
+    border-radius: 0;
+    background-color: white;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: oklch(14.5% 0 0deg);
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.context-menu-trigger:where(.dark *) {
+    border: 1px solid white;
+    background-color: oklch(14.5% 0 0deg);
+    color: white;
+}
+
+.context-menu-positioner {
+    outline: 0;
+}
+
+.context-menu-popup {
+    box-sizing: border-box;
+    outline: 0;
+    padding-block: 0.25rem;
+    border: 1px solid oklch(14.5% 0 0deg);
+    border-radius: 0;
+    background-color: white;
+    color: oklch(14.5% 0 0deg);
+    box-shadow: 0.25rem 0.25rem 0 rgb(0 0 0 / 12%);
+    transform-origin: var(--transform-origin);
+    transition:
+    transform 100ms ease-out,
+    opacity 100ms ease-out;
+}
+
+.context-menu-popup:where(.dark *) {
+    border: 1px solid white;
+    background-color: oklch(14.5% 0 0deg);
+    color: white;
+    box-shadow: none;
+}
+
+.context-menu-popup[data-starting-style],
+.context-menu-popup[data-ending-style] {
+    opacity: 0;
+    transform: scale(0.98);
+}
+
+.context-menu-item {
+    outline: 0;
+    cursor: default;
+    -webkit-user-select: none;
+    user-select: none;
+    padding-block: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 2rem;
+    display: flex;
+    font-size: 0.875rem;
+    line-height: 1rem;
+}
+
+.context-menu-item[data-highlighted] {
+    z-index: 0;
+    position: relative;
+    color: white;
+}
+
+.context-menu-item[data-highlighted]:where(.dark *) {
+    color: oklch(14.5% 0 0deg);
+}
+
+.context-menu-item[data-highlighted]::before {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    inset-block: 0;
+    inset-inline: 0.25rem;
+    background-color: oklch(14.5% 0 0deg);
+}
+
+.context-menu-item[data-highlighted]:where(.dark *)::before {
+    background-color: white;
+}
+
+.context-menu-item[data-disabled] {
+    color: oklch(55.6% 0 0deg);
+}
+
+.context-menu-item[data-disabled]:where(.dark *) {
+    color: oklch(70.8% 0 0deg);
+}
+
+.context-menu-separator {
+    margin: 0.25rem;
+    height: 1px;
+    background-color: oklch(14.5% 0 0deg);
+}
+
+.context-menu-separator:where(.dark *) {
+    background-color: white;
+}

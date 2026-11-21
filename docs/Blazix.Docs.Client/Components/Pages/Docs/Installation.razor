@@ -1,0 +1,77 @@
+@page "/docs/installation"
+
+<DocsPage Title="Installation" Description="How to install dependencies and structure your app.">
+    <p>Choose the setup that matches your starting point.</p>
+    <div class="mt-6 grid gap-4 sm:grid-cols-2 sm:gap-6">
+        <a href="#new-project" class="flex w-full flex-col items-start gap-1 rounded-2xl bg-(--surface) p-6 text-sm text-(--surface-foreground) no-underline! transition-colors hover:bg-(--surface)/80">
+            <div class="font-medium">New Project</div>
+            <div class="leading-relaxed font-normal text-muted-foreground">Create a Blazor app and set it up with the CLI.</div>
+        </a>
+        <a href="#existing-project" class="flex w-full flex-col items-start gap-1 rounded-2xl bg-(--surface) p-6 text-sm text-(--surface-foreground) no-underline! transition-colors hover:bg-(--surface)/80">
+            <div class="font-medium">Existing Project</div>
+            <div class="leading-relaxed font-normal text-muted-foreground">Add Blazix to an app you already created.</div>
+        </a>
+    </div>
+
+    <DocsHeading Title="New Project" />
+    <p>You need the .NET 10 SDK. Nothing else: no Node.js, npm or <code>package.json</code>.</p>
+    <Steps>
+        <Step>Create a Blazor app</Step>
+        <p>Components need interactivity. Create a Blazor Web App with interactive server rendering:</p>
+        <CliCommandRaw Command="dotnet new blazor -n MyApp --interactivity Server --all-interactive" />
+        <Step>Run the init command</Step>
+        <p>From the app&apos;s folder, run <code>init</code> to set up Tailwind, the theme and the usings:</p>
+        <CliCommand Args="init" />
+        <Step>Add components</Step>
+        <p>You can now start adding components to your project.</p>
+        <CliCommand Args="add button" />
+        <p>The command above adds the <code>Button</code> component to <code>Components/UI</code>. You can then use it in a page:</p>
+        <CodeFigure Code="@PageCode" Title="Components/Pages/Home.razor" LineNumbers="true" />
+        <Step>Run your app</Step>
+        <CliCommandRaw Command="dotnet watch" />
+        <p>Tailwind builds with your project, and recompiles as you edit while <code>dotnet watch</code> runs.</p>
+    </Steps>
+
+    <DocsHeading Title="Existing Project" />
+    <p>Run <code>init</code> in the folder of your Blazor app (or pass <code>--project</code>). It changes your project like this, and every change is a plain file you can read and edit:</p>
+    <ul>
+        <li>Adds <code>Tailwind.targets</code> and imports it in your <code>.csproj</code>. Tailwind now builds with your project, using the standalone Tailwind CLI, which is downloaded on the first build.</li>
+        <li>Adds <code>TailwindWatcher.cs</code> and one line in <code>Program.cs</code>. In development, Tailwind recompiles as you edit, so hot reload shows new classes.</li>
+        <li>Moves your existing <code>wwwroot/app.css</code> to <code>Styles/site.css</code> and imports it, so none of your styles are lost.</li>
+        <li>Adds <code>Styles/theme.css</code>: the design tokens. See <a href="/docs/theming">Theming</a>.</li>
+        <li>Adds <code>Styles/Vendor/tw-animate.css</code> and <code>Styles/Vendor/variants.css</code>, the animation utilities and variants the components use.</li>
+        <li>Adds <code>@@using</code> lines for your components to <code>_Imports.razor</code>, and a global using for <code>Blazix.Primitives</code> to your <code>.csproj</code>.</li>
+        <li>Adds the <code>Blazix.Primitives</code> package, at the same version as the CLI.</li>
+        <li>Writes <a href="/docs/blazix-json"><code>blazix.json</code></a>, which records your namespace, components folder and what you&apos;ve installed.</li>
+    </ul>
+    <CliCommand Args="init" />
+    <p>Then add components with <code>add</code>, as above.</p>
+    <p>
+        If your app has a <code>.Client</code> project (the WebAssembly and Auto render modes), run <code>init</code> in either project.
+        The components, usings, package and <code>blazix.json</code> go in the <code>.Client</code> project, so pages in every render mode can use them.
+        Tailwind and <code>TailwindWatcher.cs</code> go in the server project, which serves the CSS and scans the <code>.Client</code> project&apos;s files.
+        <code>add</code> and <code>list</code> also work from either folder.
+    </p>
+    <p>
+        A standalone WebAssembly app has no server to run the watcher, so <code>init</code> leaves it out and links <code>app.css</code> in <code>wwwroot/index.html</code>.
+        The CSS is recompiled on each build.
+    </p>
+    <Callout>
+        <code>init</code> asks for Inter and falls back to the system font. To get Inter, load it in <code>App.razor</code>&apos;s <code>&lt;head&gt;</code>. The comment at the top of <code>Styles/theme.css</code> shows how.
+    </Callout>
+
+    <DocsHeading Title="Icons" />
+    <p>
+        The components draw their own icons as inline SVG, so they need no icon package. The examples in these docs use a small
+        <code>&lt;Icon Name="..." /&gt;</code> component of the docs site for <a href="https://lucide.dev" target="_blank" rel="noreferrer">Lucide</a> icons.
+        Use inline SVG or any icon package you like in its place.
+    </p>
+</DocsPage>
+
+@code {
+    private const string PageCode = """
+        @page "/"
+
+        <Button>Click me</Button>
+        """;
+}

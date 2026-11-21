@@ -1,0 +1,47 @@
+@page "/docs/components/resizable"
+
+<DocsPage Title="Resizable" Description="Accessible resizable panel groups and layouts with keyboard support.">
+    <ComponentPreview Name="resizable-demo" PreviewClass="h-80" />
+    <DocsHeading Title="About" />
+    <p>The <code>Resizable</code> component is built on a JavaScript port of <a href="https://github.com/bvaughn/react-resizable-panels">react-resizable-panels</a> v4 by <a href="https://github.com/bvaughn">bvaughn</a>. It has the same layout rules, keyboard support and cursors, without the npm package.</p>
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="resizable" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>ResizablePanelGroup</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Vertical" />
+    <p>Use <code>Orientation="Orientation.Vertical"</code> for vertical resizing.</p>
+    <ComponentPreview Name="resizable-vertical" />
+    <DocsHeading Title="Handle" />
+    <p>Use the <code>WithHandle</code> parameter on <code>ResizableHandle</code> to show a visible handle.</p>
+    <ComponentPreview Name="resizable-handle" />
+    <DocsHeading Title="Without Dragging" />
+    <p>
+        A handle resizes by dragging, and by the arrow keys, <kbd>Home</kbd> and <kbd>End</kbd> once it has focus. Pointer
+        users who can't drag need another way too (<a href="https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements">WCAG 2.5.7</a>):
+        <code>SetLayoutAsync</code> on <code>ResizablePanelGroup</code> sets the sizes from buttons, a menu or anything else.
+    </p>
+    <ComponentPreview Name="resizable-buttons" />
+    <DocsHeading Title="API Reference" />
+    <p>Sizes follow <a href="https://github.com/bvaughn/react-resizable-panels/tree/main/packages/react-resizable-panels">react-resizable-panels</a>: a plain number is a percentage, and <code>%</code>, <code>px</code>, <code>rem</code>, <code>em</code>, <code>vh</code> and <code>vw</code> units work too.</p>
+    <ApiReference Name="resizable" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <ResizablePanelGroup Orientation="Orientation.Horizontal">
+            <ResizablePanel>One</ResizablePanel>
+            <ResizableHandle />
+            <ResizablePanel>Two</ResizablePanel>
+        </ResizablePanelGroup>
+        """;
+
+    private const string CompositionCode = """
+        ResizablePanelGroup
+        ├── ResizablePanel
+        ├── ResizableHandle
+        └── ResizablePanel
+        """;
+}

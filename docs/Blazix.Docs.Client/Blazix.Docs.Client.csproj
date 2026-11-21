@@ -1,0 +1,96 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+    <!--
+      The docs' pages, examples and site, interactive in the browser on WebAssembly. The host,
+      ../Blazix.Docs (the project to run), prerenders them, serves the files and runs Tailwind. It's set up the way `blazix init` sets
+      up an app, except that it uses src/Blazix.Registry/ in place of copies.
+    -->
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <!-- The same namespaces as before the split: Blazix.Docs.Components, Blazix.Docs.Examples... -->
+        <RootNamespace>Blazix.Docs</RootNamespace>
+        <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+        <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+        <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+        <!--
+          Compiled ahead of time to WebAssembly when published, the host or this project (trimmed, as WebAssembly
+          apps always are), which needs `dotnet workload install wasm-tools`. Set only in the WebAssembly SDK's nested
+          publish, the one build that AOT compiles, so a plain build (CI's `dotnet build -c Release`) needs no workload.
+        -->
+        <RunAOTCompilation Condition="'$(WasmBuildingForNestedPublish)' == 'true'">true</RunAOTCompilation>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- As `blazix init` sets it up: primitive types in C#, without clashing with the registry's tags. -->
+        <Using Include="Blazix.Primitives"/>
+    </ItemGroup>
+
+    <!--
+      The sources the pages show: each example, each registry file the installation steps list, and the pages
+      themselves for the search dialog's full-text results. Added by a target that skips design-time builds, so
+      they exist only during a real build: an IDE would take every embedded .razor file for another component
+      (the registry's, and second copies of this project's).
+    -->
+    <Target Name="EmbedDocsSources" BeforeTargets="PrepareForBuild"
+            Condition="'$(DesignTimeBuild)' != 'true' and '$(BuildingByReSharper)' != 'true'">
+        <ItemGroup>
+            <!-- Staged in private item types: unqualified %(Filename) inside a target would batch over every EmbeddedResource. -->
+            <_DocsExample Include="Examples\*.razor" Exclude="Examples\_Imports.razor"/>
+            <_DocsPrimitiveExample Include="Primitives\Examples\*.razor"/>
+            <!-- The primitives' plain CSS versions: each .razor with its .css (index.css only imports them into the site's). -->
+            <_DocsPrimitiveCssExample Include="Primitives\Examples\Css\*.razor;Primitives\Examples\Css\*.css" Exclude="Primitives\Examples\Css\index.css"/>
+            <_DocsRegistryFile Include="..\..\src\Blazix.Registry\Components\*.razor;..\..\src\Blazix.Registry\Components\*.cs" Exclude="..\..\src\Blazix.Registry\Components\_Imports.razor"/>
+            <_DocsPage Include="Components\Pages\Docs\**\*.razor"/>
+            <_DocsPrimitivePage Include="Primitives\Pages\*.razor" Exclude="Primitives\Pages\_Imports.razor"/>
+            <EmbeddedResource Include="@(_DocsExample)" LogicalName="examples/%(_DocsExample.Filename)%(_DocsExample.Extension)" WithCulture="false"/>
+            <EmbeddedResource Include="@(_DocsPrimitiveExample)" LogicalName="primitive-examples/%(_DocsPrimitiveExample.Filename)%(_DocsPrimitiveExample.Extension)" WithCulture="false"/>
+            <EmbeddedResource Include="@(_DocsPrimitiveCssExample)" LogicalName="primitive-examples/css/%(_DocsPrimitiveCssExample.Filename)%(_DocsPrimitiveCssExample.Extension)" WithCulture="false"/>
+            <EmbeddedResource Include="@(_DocsRegistryFile)" LogicalName="registry/%(_DocsRegistryFile.Filename)%(_DocsRegistryFile.Extension)" WithCulture="false"/>
+            <EmbeddedResource Include="..\..\src\Blazix.Registry\registry.json" LogicalName="registry.json"/>
+            <EmbeddedResource Include="..\..\src\Blazix.Registry\Setup\Vendor\typeset.css" LogicalName="setup/typeset.css"/>
+            <EmbeddedResource Include="@(_DocsPage)" LogicalName="pages/%(_DocsPage.Filename)%(_DocsPage.Extension)" WithCulture="false"/>
+            <!-- Their own folder: Primitives/Pages/AccordionPage.razor is another page than Components/AccordionPage.razor. -->
+            <EmbeddedResource Include="@(_DocsPrimitivePage)" LogicalName="pages/primitives/%(_DocsPrimitivePage.Filename)%(_DocsPrimitivePage.Extension)" WithCulture="false"/>
+        </ItemGroup>
+    </Target>
+
+    <!--
+      The API Reference sections' summaries: the registry's and the primitives' XML documentation, from next to their
+      resolved assemblies. A browser has no file system to read them from there.
+    -->
+    <Target Name="EmbedDocsXmlDocumentation" BeforeTargets="PrepareResources"
+            Condition="'$(DesignTimeBuild)' != 'true' and '$(BuildingByReSharper)' != 'true'">
+        <ItemGroup>
+            <_DocsDocumentedAssembly Include="@(ReferencePath)" Condition="'%(Filename)' == 'Blazix.Registry' or '%(Filename)' == 'Blazix.Primitives'"/>
+            <_DocsXmlDocumentation Include="@(_DocsDocumentedAssembly->'%(RootDir)%(Directory)%(Filename).xml')"
+                                   Condition="Exists('%(RootDir)%(Directory)%(Filename).xml')"/>
+            <EmbeddedResource Include="@(_DocsXmlDocumentation)" LogicalName="xmldoc/%(_DocsXmlDocumentation.Filename).xml" WithCulture="false"/>
+        </ItemGroup>
+        <Error Condition="'@(_DocsXmlDocumentation->Count())' != '2'"
+               Text="Expected the XML documentation of Blazix.Registry and Blazix.Primitives, found: @(_DocsXmlDocumentation)."/>
+    </Target>
+
+    <ItemGroup>
+        <!--
+          Kept whole when trimming: the API Reference sections and the code highlighter read every public member of
+          these by reflection, so the browser highlights code exactly as the prerender did. (Apps don't need this: both
+          libraries are trimmable.) Components.Web has the framework components the samples use but the site doesn't,
+          such as Virtualize.
+        -->
+        <TrimmerRootAssembly Include="Blazix.Primitives"/>
+        <TrimmerRootAssembly Include="Blazix.Registry"/>
+        <TrimmerRootAssembly Include="Microsoft.AspNetCore.Components.Web"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly"/>
+        <!-- For the FluentValidation form guide's examples. -->
+        <PackageReference Include="FluentValidation"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\Blazix.Primitives\Blazix.Primitives.csproj"/>
+        <ProjectReference Include="..\..\src\Blazix.Registry\Blazix.Registry.csproj"/>
+    </ItemGroup>
+
+</Project>

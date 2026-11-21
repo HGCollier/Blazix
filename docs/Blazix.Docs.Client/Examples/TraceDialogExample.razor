@@ -1,0 +1,43 @@
+<Trace Class="max-w-sm">
+    <Dialog>
+        <DialogTrigger>
+            <TraceLine>
+                <TraceIcon><Icon Name="globe" /></TraceIcon>
+                <TraceTitle>Searched the web for cache keys</TraceTitle>
+                <TraceIcon><Icon Name="chevron-right" /></TraceIcon>
+            </TraceLine>
+        </DialogTrigger>
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Searched the web for cache keys</DialogTitle>
+                <DialogDescription>Three results were used in the response.</DialogDescription>
+            </DialogHeader>
+            <Trace>
+                @foreach (var result in Results)
+                {
+                    <a href="@result.Url" target="_blank" rel="noreferrer">
+                        <TraceLine>
+                            <TraceIcon><Icon Name="globe" /></TraceIcon>
+                            <TraceTitle>
+                                @result.Title
+                                <span class="sr-only">(opens in a new tab)</span>
+                            </TraceTitle>
+                            <TraceIcon><Icon Name="arrow-up-right" /></TraceIcon>
+                        </TraceLine>
+                    </a>
+                }
+            </Trace>
+        </DialogContent>
+    </Dialog>
+</Trace>
+
+@code {
+    private sealed record ResultEntry(string? Title, string? Url);
+
+    private static readonly ResultEntry[] Results =
+    [
+        new("Caching build outputs", "https://nextjs.org/docs/app/guides/caching"),
+        new("Image optimization reference", "https://nextjs.org/docs/app/api-reference/components/image"),
+        new("Deploy hooks and cache keys", "https://vercel.com/docs/deploy-hooks"),
+    ];
+}

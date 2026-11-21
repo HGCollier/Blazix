@@ -1,0 +1,35 @@
+@inject ToastManager Toasts
+
+<Questionnaire Class="mx-auto max-w-md" Items="@Items" Shortcuts="QuestionnaireShortcuts.Letters" OnSubmit="@HandleSubmit">
+    <QuestionnaireItem Name="context" Multiple Required>
+        <QuestionnaireTitle>What context should the agent inspect?</QuestionnaireTitle>
+        <QuestionnaireDescription>Select every source that may affect the implementation.</QuestionnaireDescription>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Value="source">Relevant source files</QuestionnaireChoice>
+            <QuestionnaireChoice Value="tests">Existing tests</QuestionnaireChoice>
+            <QuestionnaireChoice Value="docs">Architecture documentation</QuestionnaireChoice>
+            <QuestionnaireChoice Value="history">Recent commit history</QuestionnaireChoice>
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+    <QuestionnaireActions>
+        <QuestionnaireSubmit>Share context</QuestionnaireSubmit>
+    </QuestionnaireActions>
+</Questionnaire>
+
+@code {
+    private static readonly QuestionnaireItemDefinition[] Items =
+    [
+        new("context", Required: true, Choices: [new("source"), new("tests"), new("docs"), new("history")]),
+    ];
+
+    private void HandleSubmit(QuestionnaireAnswers answers)
+    {
+        var context = answers.GetAll("context");
+        Toasts.Add(new ToastOptions
+        {
+            Title = "Context selected",
+            Description = $"Context: {(context.Count > 0 ? string.Join(", ", context) : "None")}",
+        });
+    }
+}

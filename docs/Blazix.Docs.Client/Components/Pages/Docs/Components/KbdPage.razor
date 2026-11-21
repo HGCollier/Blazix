@@ -1,0 +1,39 @@
+@page "/docs/components/kbd"
+
+<DocsPage Title="Kbd" Description="Used to display textual user input from keyboard.">
+    <ComponentPreview Name="kbd-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="kbd" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build <code>Kbd</code> and <code>KbdGroup</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Group" />
+    <p>Use the <code>KbdGroup</code> component to group keyboard keys together.</p>
+    <ComponentPreview Name="kbd-group" />
+    <DocsHeading Title="Button" />
+    <p>Use the <code>Kbd</code> component inside a <code>Button</code> component to display a keyboard key inside a button.</p>
+    <ComponentPreview Name="kbd-button" />
+    <DocsHeading Title="Tooltip" />
+    <p>You can use the <code>Kbd</code> component inside a <code>Tooltip</code> component to display a tooltip with a keyboard key.</p>
+    <ComponentPreview Name="kbd-tooltip" />
+    <DocsHeading Title="Input Group" />
+    <p>You can use the <code>Kbd</code> component inside a <code>InputGroupAddon</code> component to display a keyboard key inside an input group.</p>
+    <ComponentPreview Name="kbd-input-group" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="kbd" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Kbd>Ctrl</Kbd>
+        """;
+
+    private const string CompositionCode = """
+        Kbd
+        KbdGroup
+        ├── Kbd
+        └── Kbd
+        """;
+}

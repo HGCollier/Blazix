@@ -1,0 +1,117 @@
+@page "/docs/primitives/drawer"
+
+<DocsPage Title="Drawer" Description="A panel that slides in from the edge of the screen.">
+    <ComponentPreview Name="primitives/drawer-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li><strong>Drawer extends Dialog:</strong> It adds gestures, snap points and indent effects. If you don't need these, use <a href="/docs/primitives/dialog">Dialog</a> instead. A panel that slides in from the edge of the screen and doesn't need gestures is a positioned Dialog.</li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(DrawerRoot)" />
+    <PartReference Type="typeof(DrawerProvider)" />
+    <PartReference Type="typeof(DrawerTrigger)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding dialog is open.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the trigger is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(DrawerPortal)" />
+    <PartReference Type="typeof(DrawerBackdrop)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the drawer is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the drawer is closed.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the drawer begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the drawer is animating out.</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--drawer-swipe-progress" Type="number">The swipe progress of the drawer gesture.</StyleHook>
+        </CssVariables>
+    </PartReference>
+    <PartReference Type="typeof(DrawerPopup)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the drawer is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the drawer is closed.</StyleHook>
+            <StyleHook Name="data-expanded">Present when the drawer is at the expanded (full-height) snap point.</StyleHook>
+            <StyleHook Name="data-nested-drawer-open">Present when a nested drawer is open.</StyleHook>
+            <StyleHook Name="data-nested-drawer-swiping">Present when a nested drawer is being swiped.</StyleHook>
+            <StyleHook Name="data-swipe-direction" Type="'up' | 'down' | 'left' | 'right'">Indicates the swipe direction.</StyleHook>
+            <StyleHook Name="data-swipe-dismiss">Present when the drawer is dismissed by swiping.</StyleHook>
+            <StyleHook Name="data-swiping">Present when the drawer is being swiped.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the drawer begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the drawer is animating out.</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--drawer-frontmost-height" Type="CSS">The height of the frontmost open drawer in the current nested drawer stack.</StyleHook>
+            <StyleHook Name="--drawer-height" Type="CSS">The height of the drawer popup.</StyleHook>
+            <StyleHook Name="--drawer-snap-point-offset" Type="CSS">The snap point offset used for translating the drawer.</StyleHook>
+            <StyleHook Name="--drawer-swipe-movement-x" Type="CSS">The swipe movement on the X axis.</StyleHook>
+            <StyleHook Name="--drawer-swipe-movement-y" Type="CSS">The swipe movement on the Y axis.</StyleHook>
+            <StyleHook Name="--drawer-swipe-strength" Type="number">A scalar (0.1-1) used to scale the swipe release transition duration in CSS.</StyleHook>
+            <StyleHook Name="--nested-drawers" Type="number">The number of nested drawers that are currently open.</StyleHook>
+        </CssVariables>
+    </PartReference>
+    <PartReference Type="typeof(DrawerContent)" />
+    <PartReference Type="typeof(DrawerTitle)" />
+    <PartReference Type="typeof(DrawerDescription)" />
+    <PartReference Type="typeof(DrawerClose)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the button is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(DrawerViewport)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the drawer is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the drawer is closed.</StyleHook>
+            <StyleHook Name="data-nested">Present when the drawer is nested within another drawer.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the drawer begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the drawer is animating out.</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--drawer-keyboard-inset" Type="CSS">The software keyboard inset, measured from the bottom edge of the layout viewport. Present only when the drawer is wrapped in <code>DrawerVirtualKeyboardProvider</code>.</StyleHook>
+        </CssVariables>
+    </PartReference>
+    <PartReference Type="typeof(DrawerHandle)" />
+    <PartReference Type="typeof(DrawerIndent)" />
+    <PartReference Type="typeof(DrawerIndentBackground)" />
+    <PartReference Type="typeof(DrawerSwipeArea)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the drawer is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the drawer is closed.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the swipe area is disabled.</StyleHook>
+            <StyleHook Name="data-swipe-direction" Type="'up' | 'down' | 'left' | 'right'">Indicates the swipe direction.</StyleHook>
+            <StyleHook Name="data-swiping">Present when the drawer is being swiped.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(DrawerVirtualKeyboardProvider)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <DrawerProvider>
+            <DrawerIndentBackground />
+            <DrawerIndent>
+                <DrawerRoot>
+                    <DrawerTrigger />
+                    <DrawerSwipeArea />
+                    <DrawerPortal>
+                        <DrawerBackdrop />
+                        <DrawerViewport>
+                            <DrawerPopup>
+                                <DrawerContent>
+                                    <DrawerTitle />
+                                    <DrawerDescription />
+                                    <DrawerClose />
+                                </DrawerContent>
+                            </DrawerPopup>
+                        </DrawerViewport>
+                    </DrawerPortal>
+                </DrawerRoot>
+            </DrawerIndent>
+        </DrawerProvider>
+        """;
+}

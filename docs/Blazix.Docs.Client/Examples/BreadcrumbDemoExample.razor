@@ -1,0 +1,41 @@
+<Breadcrumb>
+    <BreadcrumbList>
+        <BreadcrumbItem>
+            <BreadcrumbLink>
+                <Render>
+                    <a @attributes="context.Attributes" href="#">Home</a>
+                </Render>
+            </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+            <DropdownMenu>
+                <DropdownMenuTrigger>
+                    <Render>
+                        <Button @attributes="context.Attributes" Size="ButtonSize.IconSm" Variant="ButtonVariant.Ghost">
+                            <BreadcrumbEllipsis />
+                            <span class="sr-only">Toggle menu</span>
+                        </Button>
+                    </Render>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent Align="Align.Start">
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem>Documentation</DropdownMenuItem>
+                        <DropdownMenuItem>Themes</DropdownMenuItem>
+                        <DropdownMenuItem>GitHub</DropdownMenuItem>
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+            <BreadcrumbLink>
+                <Render>
+                    <a @attributes="context.Attributes" href="#">Components</a>
+                </Render>
+            </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem><BreadcrumbPage>Breadcrumb</BreadcrumbPage></BreadcrumbItem>
+    </BreadcrumbList>
+</Breadcrumb>

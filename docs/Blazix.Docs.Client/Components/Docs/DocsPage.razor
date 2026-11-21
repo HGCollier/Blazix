@@ -1,0 +1,104 @@
+@inject NavigationManager Navigation
+
+<PageTitle>@($"{Title} - Blazix")</PageTitle>
+<HeadContent><meta name="description" content="@Description" /></HeadContent>
+
+<CascadingValue Value="_state" IsFixed="true">
+    <div data-slot="docs" class="flex scroll-mt-24 items-stretch pb-8 text-[1.05rem] sm:text-[15px] xl:w-full">
+        <div class="flex min-w-0 flex-1 flex-col">
+            <div class="h-(--top-spacing) shrink-0"></div>
+            <div class="mx-auto flex w-full max-w-160 min-w-0 flex-1 flex-col gap-6 px-4 py-6 text-foreground md:px-0 lg:py-8 dark:text-foreground">
+                <div class="flex flex-col gap-2">
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center justify-between md:items-start">
+                            <h1 class="scroll-m-24 text-3xl outline-none font-semibold tracking-tight sm:text-3xl">@Title</h1>
+                            <div class="docs-nav flex items-center gap-2">
+                                <div class="hidden sm:block">
+                                    <DocsCopyPage />
+                                </div>
+                                <div class="ml-auto flex gap-2">
+                                    @if (Previous is not null)
+                                    {
+                                        <a href="@Previous.Href"
+                                           class="@ButtonVariants.Get(ButtonVariant.Secondary, ButtonSize.Icon, "size-8 shadow-none md:size-7 pointer-coarse:relative pointer-coarse:after:absolute pointer-coarse:after:-inset-2")">
+                                            <Icon Name="arrow-left" />
+                                            <span class="sr-only">Previous: @Previous.Title</span>
+                                        </a>
+                                    }
+                                    @if (Next is not null)
+                                    {
+                                        <a href="@Next.Href"
+                                           class="@ButtonVariants.Get(ButtonVariant.Secondary, ButtonSize.Icon, "size-8 shadow-none md:size-7 pointer-coarse:relative pointer-coarse:after:absolute pointer-coarse:after:-inset-2")">
+                                            <span class="sr-only">Next: @Next.Title</span>
+                                            <Icon Name="arrow-right" />
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Description))
+                        {
+                            <p data-docs-description class="text-[1.05rem] text-muted-foreground sm:text-base sm:text-balance md:max-w-[80%]">@Description</p>
+                        }
+                        @if (_related.Count > 0)
+                        {
+                            <div class="flex flex-wrap items-center gap-2 pt-4">
+                                @foreach (var link in _related)
+                                {
+                                    <a href="@link.Href" class="@BadgeVariants.Get(BadgeVariant.Secondary, "rounded-full")">
+                                        @link.Title @(_inPrimitives ? "component" : "primitive") <Icon Name="arrow-right" />
+                                    </a>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div data-docs-content class="typeset w-full flex-1 pb-16 *:data-[slot=alert]:first:mt-0 sm:pb-0">
+                    @ChildContent
+                </div>
+                <div class="hidden h-16 w-full items-center gap-2 px-4 sm:flex sm:px-0">
+                    @if (Previous is not null)
+                    {
+                        <a href="@Previous.Href" class="@ButtonVariants.Get(ButtonVariant.Secondary, ButtonSize.Sm, "shadow-none")">
+                            <Icon Name="arrow-left" /> @Previous.Title
+                        </a>
+                    }
+                    @if (Next is not null)
+                    {
+                        <a href="@Next.Href" class="@ButtonVariants.Get(ButtonVariant.Secondary, ButtonSize.Sm, "ml-auto shadow-none")">
+                            @Next.Title <Icon Name="arrow-right" />
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="sticky top-[calc(var(--header-height)+1px)] z-30 ml-auto hidden h-[90svh] w-(--sidebar-width) flex-col gap-4 overflow-hidden overscroll-none pb-8 xl:flex">
+            <div class="h-(--top-spacing) shrink-0"></div>
+            <div class="no-scrollbar flex scroll-fade flex-col gap-8 overflow-y-auto px-8">
+                <DocsToc />
+            </div>
+        </div>
+    </div>
+</CascadingValue>
+
+@code {
+    private readonly DocsPageState _state = new();
+    private (DocsLink? Previous, DocsLink? Next) _neighbours;
+    private IReadOnlyList<DocsLink> _related = [];
+    private bool _inPrimitives;
+
+    [Parameter, EditorRequired] public string Title { get; set; } = "";
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private DocsLink? Previous => _neighbours.Previous;
+    private DocsLink? Next => _neighbours.Next;
+
+    protected override void OnParametersSet()
+    {
+        var path = DocsNav.CurrentPath(Navigation);
+        _neighbours = DocsNav.Neighbours(path);
+        _related = DocsNav.RelatedTo(path);
+        _inPrimitives = DocsNav.SetFor(path) == DocsNav.PrimitivesSet;
+    }
+}

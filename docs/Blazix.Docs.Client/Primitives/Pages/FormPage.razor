@@ -1,0 +1,24 @@
+@page "/docs/primitives/form"
+
+<DocsPage Title="Form" Description="A native form element with consolidated error handling.">
+    <ComponentPreview Name="primitives/form-hero" />
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(FormRoot)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <FormRoot>
+            <FieldRoot>
+                <FieldLabel />
+                <FieldControl />
+                <FieldError />
+            </FieldRoot>
+        </FormRoot>
+        """;
+}

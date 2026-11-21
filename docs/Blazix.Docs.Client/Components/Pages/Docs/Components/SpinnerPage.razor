@@ -1,0 +1,50 @@
+@page "/docs/components/spinner"
+
+<DocsPage Title="Spinner" Description="An indicator that can be used to show a loading state.">
+    <ComponentPreview Name="spinner-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="spinner" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Customization" />
+    <p>You can replace the default spinner icon with any other icon by editing the <code>Spinner</code> component. This one uses lucide&apos;s <code>loader</code> icon as inline SVG.</p>
+    <ComponentPreview Name="spinner-custom" />
+    <CodeFigure Code="@CustomizationCode" Title="Components/UI/Spinner.razor" LineNumbers="true" />
+    <DocsHeading Title="Size" />
+    <p>Use the <code>size-*</code> utility class to change the size of the spinner.</p>
+    <ComponentPreview Name="spinner-size" />
+    <DocsHeading Title="Button" />
+    <p>Add a spinner to a button to indicate a loading state. Place the <code>&lt;Spinner /&gt;</code> before the label with <code>data-icon="inline-start"</code> for a start position, or after the label with <code>data-icon="inline-end"</code> for an end position.</p>
+    <ComponentPreview Name="spinner-button" />
+    <DocsHeading Title="Badge" />
+    <p>Add a spinner to a badge to indicate a loading state. Place the <code>&lt;Spinner /&gt;</code> before the label with <code>data-icon="inline-start"</code> for a start position, or after the label with <code>data-icon="inline-end"</code> for an end position.</p>
+    <ComponentPreview Name="spinner-badge" />
+    <DocsHeading Title="Input Group" />
+    <ComponentPreview Name="spinner-input-group" />
+    <DocsHeading Title="Empty" />
+    <ComponentPreview Name="spinner-empty" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Spinner />
+        """;
+
+    private const string CustomizationCode = """
+        @using static Blazix.Registry.ClassNames
+
+        <svg data-slot="spinner" role="status" aria-label="Loading" @attributes="AdditionalAttributes" xmlns="http://www.w3.org/2000/svg"
+             width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="@Cn("size-4 animate-spin", Class)">
+            <path d="M12 2v4" /><path d="m16.2 7.8 2.9-2.9" /><path d="M18 12h4" /><path d="m16.2 16.2 2.9 2.9" />
+            <path d="M12 18v4" /><path d="m4.9 19.1 2.9-2.9" /><path d="M2 12h4" /><path d="m4.9 4.9 2.9 2.9" />
+        </svg>
+
+        @code {
+            [Parameter] public string? Class { get; set; }
+
+            [Parameter(CaptureUnmatchedValues = true)]
+            public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+        }
+        """;
+}

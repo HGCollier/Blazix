@@ -1,0 +1,81 @@
+@inject ToastManager Toasts
+
+<Questionnaire Class="mx-auto max-w-md" DefaultItem="scope" Items="@Items" OnSubmit="@HandleSubmit">
+    <QuestionnaireProgress Class="w-full">
+        <Render>
+            <div @attributes="context.Attributes">
+                <div class="mb-2 flex gap-1.5" aria-hidden="true">
+                    @for (var index = 0; index < context.Total; index++)
+                    {
+                        <span class="@(index < context.Current ? "h-1.5 flex-1 rounded-full bg-primary" : "h-1.5 flex-1 rounded-full bg-muted")"></span>
+                    }
+                </div>
+                <span>Checkpoint @context.Current of @context.Total</span>
+            </div>
+        </Render>
+    </QuestionnaireProgress>
+
+    <QuestionnaireItem Name="scope" Required>
+        <QuestionnaireTitle>How large is the change?</QuestionnaireTitle>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Value="small">Small patch</QuestionnaireChoice>
+            <QuestionnaireChoice Value="medium">Feature-sized change</QuestionnaireChoice>
+            <QuestionnaireChoice Value="large">Cross-package change</QuestionnaireChoice>
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+
+    <QuestionnaireItem Name="strategy" Required>
+        <QuestionnaireTitle>How should commits be organized?</QuestionnaireTitle>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Value="single">Single commit</QuestionnaireChoice>
+            <QuestionnaireChoice Value="logical">Logical commits</QuestionnaireChoice>
+            <QuestionnaireChoice Value="squash">Squash before review</QuestionnaireChoice>
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+
+    <QuestionnaireItem Name="tests" Required>
+        <QuestionnaireTitle>Which tests should run?</QuestionnaireTitle>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Value="targeted">Targeted tests</QuestionnaireChoice>
+            <QuestionnaireChoice Value="package">Package suite</QuestionnaireChoice>
+            <QuestionnaireChoice Value="workspace">Full workspace</QuestionnaireChoice>
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+
+    <QuestionnaireItem Name="delivery" Required>
+        <QuestionnaireTitle>How should the work be delivered?</QuestionnaireTitle>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Value="patch">Patch only</QuestionnaireChoice>
+            <QuestionnaireChoice Value="commit">Committed locally</QuestionnaireChoice>
+            <QuestionnaireChoice Value="branch">Push a review branch</QuestionnaireChoice>
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+
+    <QuestionnaireActions>
+        <QuestionnairePrevious />
+        <QuestionnaireNext>Next</QuestionnaireNext>
+        <QuestionnaireSubmit>Finish plan</QuestionnaireSubmit>
+    </QuestionnaireActions>
+</Questionnaire>
+
+@code {
+    private static readonly QuestionnaireItemDefinition[] Items =
+    [
+        new("scope", Required: true),
+        new("strategy", Required: true),
+        new("tests", Required: true),
+        new("delivery", Required: true),
+    ];
+
+    private void HandleSubmit(QuestionnaireAnswers answers) =>
+        Toasts.Add(new ToastOptions
+        {
+            Title = "Pull request plan ready",
+            Description = $"Scope: {answers.Get("scope") ?? "None"} · Commits: {answers.Get("strategy") ?? "None"} · " +
+                          $"Tests: {answers.Get("tests") ?? "None"} · Delivery: {answers.Get("delivery") ?? "None"}",
+        });
+}

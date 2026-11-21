@@ -1,0 +1,35 @@
+<Card Size="CardSize.Sm" Class="mx-auto w-fit">
+    <CardContent>
+        <Calendar Mode="CalendarMode.Single" @bind-Selected="_date" Class="p-0" />
+    </CardContent>
+    <CardFooter Class="border-t bg-card">
+        <FieldGroup>
+            <Field>
+                <FieldLabel for="time-from">Start Time</FieldLabel>
+                <InputGroup>
+                    <InputGroupInput id="time-from" Type="time" step="1" Value="10:30:00"
+                                     Class="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none" />
+                    <InputGroupAddon>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="text-muted-foreground"><path d="M12 6v6l4-2" /><circle cx="12" cy="12" r="10" /></svg>
+                    </InputGroupAddon>
+                </InputGroup>
+            </Field>
+            <Field>
+                <FieldLabel for="time-to">End Time</FieldLabel>
+                <InputGroup>
+                    <InputGroupInput id="time-to" Type="time" step="1" Value="12:30:00"
+                                     Class="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none" />
+                    <InputGroupAddon>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="text-muted-foreground"><path d="M12 6v6l4-2" /><circle cx="12" cy="12" r="10" /></svg>
+                    </InputGroupAddon>
+                </InputGroup>
+            </Field>
+        </FieldGroup>
+    </CardFooter>
+</Card>
+
+@code {
+    private DateOnly? _date = new(DateTime.Today.Year, DateTime.Today.Month, 12);
+}

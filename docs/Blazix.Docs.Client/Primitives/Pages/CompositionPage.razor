@@ -1,0 +1,144 @@
+@page "/docs/primitives/composition"
+
+<DocsPage Title="Composition" Description="A guide to composing the primitives with your own components.">
+    <DocsHeading Title="Composing your own components" />
+    <p>
+        Every part that renders an element takes a <code>Render</code> fragment. The part gives the fragment its attributes (the id, role, ARIA and <code>data-*</code>
+        attributes, and its event handlers) as <code>Attributes</code>, and you spread them onto whatever you render.
+    </p>
+    <p>For example, most triggers render a <code>&lt;button&gt;</code> by default. Render your own button component instead:</p>
+    <CodeFigure Code="@CustomButtonCode" Title="Song.razor" />
+    <p>
+        A component you render must pass the attributes on to its root element, usually with a parameter that has
+        <code>CaptureUnmatchedValues</code>:
+    </p>
+    <CodeFigure Code="@ForwardCode" Title="MyButton.razor" />
+    <p>Follow these rules:</p>
+    <ul>
+        <li>
+            <strong>Spread <code>Attributes</code> onto the focusable element.</strong> The keyboard and focus handling look for
+            it by the id the attributes carry.
+        </li>
+        <li>
+            <strong>Name each <code>Context</code> when you nest them</strong> (<code>Context="trigger"</code>,
+            <code>Context="item"</code>...). Blazor's default name, <code>context</code>, collides with itself.
+        </li>
+        <li>
+            <strong>You don't set <code>NativeButton</code>.</strong> A <code>&lt;span&gt;</code> or <code>&lt;a&gt;</code>
+            trigger needs <code>role="button"</code>, a tab stop, Enter and Space, and <code>aria-disabled</code>, and a real
+            <code>&lt;button&gt;</code> must not get them. The browser
+            reports the element after the first interactive render, and the part renders again to match. Set it only to skip
+            that check, so prerendered HTML is right from the first byte.
+        </li>
+    </ul>
+
+    <DocsHeading Title="Composing several parts" />
+    <p>
+        A <code>Render</code> fragment can hold another part, as deep as you need. A button that's a tooltip trigger, a dialog
+        trigger and a menu trigger at once is a common case:
+    </p>
+    <CodeFigure Code="@NestedCode" Title="Toolbar.razor" />
+
+    <DocsHeading Title="How attributes are merged" />
+    <p>
+        Attributes you put on a part are merged into the <code>Attributes</code> it hands its <code>Render</code> fragment:
+    </p>
+    <ul>
+        <li>Your <code>class</code>, <code>data-*</code> and other attributes are kept, unless the part sets the same one.</li>
+        <li>Your event handlers run before the part's own, and both run.</li>
+        <li>Your <code>style</code> comes after the part's, so your declarations win.</li>
+    </ul>
+    <p>
+        An attribute you write after the spread on your own element replaces the part's. Parameters such as
+        <code>Disabled</code> are read by each part on its own, so one part's parameter doesn't change another's.
+    </p>
+    <p>
+        <code>AttributeBuilder</code> does this merging. Use it, with <a href="/docs/primitives/use-render"><code>UseRender</code></a>,
+        to give parts of your own the same <code>Render</code> support.
+    </p>
+
+    <DocsHeading Title="Changing the default element" />
+    <p>
+        <code>Render</code> also replaces the element a part renders. For example, <code>AccordionHeader</code> renders an
+        <code>&lt;h3&gt;</code>; render an <code>&lt;h2&gt;</code> where the page's heading levels need one:
+    </p>
+    <CodeFigure Code="@HeadingCode" Title="Faq.razor" />
+    <p>
+        Each part renders the most fitting element by default, so render a different one only when you have a reason to.
+    </p>
+
+    <DocsHeading Title="Rendering from state" />
+    <p>
+        The fragment's props also carry the part's state, such as <code>Open</code> on a trigger, or
+        <code>Highlighted</code>, <code>Checked</code> and <code>Disabled</code> on items. Use it to render different
+        content for each state:
+    </p>
+    <CodeFigure Code="@StateCode" Title="Switch.razor" />
+</DocsPage>
+
+@code {
+    private const string CustomButtonCode = """
+        <MenuTrigger>
+            <Render Context="trigger">
+                <MyButton @attributes="trigger.Attributes" Size="md">Open menu</MyButton>
+            </Render>
+        </MenuTrigger>
+        """;
+
+    private const string ForwardCode = """
+        <button class="@($"my-button {Size}")" @attributes="AdditionalAttributes">@ChildContent</button>
+
+        @code {
+            [Parameter] public string Size { get; set; } = "md";
+            [Parameter] public RenderFragment? ChildContent { get; set; }
+            [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+        }
+        """;
+
+    private const string NestedCode = """
+        <DialogRoot>
+            <TooltipRoot>
+                <TooltipTrigger>
+                    <Render Context="tooltip">
+                        <DialogTrigger @attributes="tooltip.Attributes">
+                            <Render Context="dialog">
+                                <MenuTrigger @attributes="dialog.Attributes">
+                                    <Render Context="menu">
+                                        <MyButton @attributes="menu.Attributes" Size="md">Open menu</MyButton>
+                                    </Render>
+                                </MenuTrigger>
+                            </Render>
+                        </DialogTrigger>
+                    </Render>
+                </TooltipTrigger>
+                <TooltipPopup>...</TooltipPopup>
+            </TooltipRoot>
+            <DialogPopup>...</DialogPopup>
+        </DialogRoot>
+        """;
+
+    private const string HeadingCode = """
+        <AccordionRoot>
+            <AccordionItem>
+                <AccordionHeader>
+                    <Render Context="header">
+                        <h2 @attributes="header.Attributes">
+                            <AccordionTrigger>What is Blazix.Primitives?</AccordionTrigger>
+                        </h2>
+                    </Render>
+                </AccordionHeader>
+                <AccordionPanel>Blazix.Primitives is a library of unstyled Blazor components.</AccordionPanel>
+            </AccordionItem>
+        </AccordionRoot>
+        """;
+
+    private const string StateCode = """
+        <SwitchThumb>
+            <Render Context="thumb">
+                <span @attributes="thumb.Attributes">
+                    @(thumb.Checked ? "On" : "Off")
+                </span>
+            </Render>
+        </SwitchThumb>
+        """;
+}

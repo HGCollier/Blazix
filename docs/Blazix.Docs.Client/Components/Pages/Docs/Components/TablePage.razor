@@ -1,0 +1,67 @@
+@page "/docs/components/table"
+
+<DocsPage Title="Table" Description="A responsive table component.">
+    <ComponentPreview Name="table-demo" PreviewClass="h-[30rem]" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="table" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>Table</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Footer" />
+    <p>Use the <code>&lt;TableFooter /&gt;</code> component to add a footer to the table.</p>
+    <ComponentPreview Name="table-footer" />
+    <DocsHeading Title="Actions" />
+    <p>A table showing actions for each row using a <code>&lt;DropdownMenu /&gt;</code> component.</p>
+    <ComponentPreview Name="table-actions" />
+    <DocsHeading Title="Data Table" />
+    <p>You can use the <code>&lt;Table /&gt;</code> component to build more complex data tables. Sort, filter and page the rows in C# and render them with the same components.</p>
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Table>
+            <TableCaption>A list of your recent invoices.</TableCaption>
+            <TableHeader>
+                <TableRow>
+                    <TableHead Class="w-[100px]">Invoice</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Method</TableHead>
+                    <TableHead Class="text-right">Amount</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                <TableRow>
+                    <TableCell Class="font-medium">INV001</TableCell>
+                    <TableCell>Paid</TableCell>
+                    <TableCell>Credit Card</TableCell>
+                    <TableCell Class="text-right">$250.00</TableCell>
+                </TableRow>
+            </TableBody>
+        </Table>
+        """;
+
+    private const string CompositionCode = """
+        Table
+        ├── TableCaption
+        ├── TableHeader
+        │   └── TableRow
+        │       ├── TableHead
+        │       ├── TableHead
+        │       ├── TableHead
+        │       └── TableHead
+        ├── TableBody
+        │   ├── TableRow
+        │   │   ├── TableCell
+        │   │   ├── TableCell
+        │   │   ├── TableCell
+        │   │   └── TableCell
+        │   └── TableRow
+        │       ├── TableCell
+        │       ├── TableCell
+        │       ├── TableCell
+        │       └── TableCell
+        └── TableFooter
+        """;
+}

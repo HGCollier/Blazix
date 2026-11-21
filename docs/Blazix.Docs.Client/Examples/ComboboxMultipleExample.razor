@@ -1,0 +1,24 @@
+<Combobox Multiple="true" AutoHighlight="true" Items="Frameworks" @bind-Values="_values">
+    <ComboboxChips id="combobox-multiple-chips" Class="w-full max-w-xs">
+        <Template Context="value">
+            <ComboboxChip Value="@value">@value</ComboboxChip>
+        </Template>
+        <ChildContent>
+            <ComboboxChipsInput aria-label="Frameworks" />
+        </ChildContent>
+    </ComboboxChips>
+    <ComboboxContent Anchor="combobox-multiple-chips">
+        <ComboboxEmpty>No items found.</ComboboxEmpty>
+        <ComboboxList>
+            <Template Context="item">
+                <ComboboxItem Value="@item">@item</ComboboxItem>
+            </Template>
+        </ComboboxList>
+    </ComboboxContent>
+</Combobox>
+
+@code {
+    private static readonly string[] Frameworks = ["Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro"];
+
+    private IReadOnlyList<string> _values = [Frameworks[0]];
+}

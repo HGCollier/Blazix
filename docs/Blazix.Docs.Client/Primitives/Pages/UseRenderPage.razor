@@ -1,0 +1,53 @@
+@page "/docs/primitives/use-render"
+
+<DocsPage Title="Use Render" Description="Gives components of your own the same Render parameter as the primitives.">
+    <ComponentPreview Name="primitives/use-render-hero" />
+    <p>
+        <code>UseRender</code> builds a part of your own: it renders <code>DefaultTagName</code>, or
+        your own element through <code>Render</code>, with your attributes. Its <code>State</code> becomes data attributes:
+        <code>true</code> renders <code>data-name</code>, other values <code>data-name="value"</code>, and
+        <code>false</code> and null nothing.
+    </p>
+    <DocsHeading Title="Anatomy" />
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="Parts of your own" />
+    <p>
+        For a part with state of its own, derive from <code>PrimitivePart&lt;TRenderProps&gt;</code>, as the primitives do.
+        Add the part's attributes in <code>BuildAttributes</code> with an
+        <a href="/docs/primitives/merge-props"><code>AttributeBuilder</code></a>, and describe its state for
+        <code>Render</code> in <code>CreateRenderProps</code>:
+    </p>
+    <CodeFigure Code="@PartCode" Title="Badge.cs" Language="csharp" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(UseRender)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <UseRender DefaultTagName="p" State="@state">
+            <Render Context="text">
+                <strong @attributes="text.Attributes">...</strong>
+            </Render>
+        </UseRender>
+        """;
+
+    private const string PartCode = """
+        public sealed record BadgeRenderProps(IReadOnlyDictionary<string, object> Attributes, bool Active)
+            : RenderProps(Attributes);
+
+        public class Badge : PrimitivePart<BadgeRenderProps>
+        {
+            [Parameter] public bool Active { get; set; }
+
+            protected override string Tag => "span";
+
+            protected override void BuildAttributes(AttributeBuilder attributes) =>
+                attributes.Flag("data-active", Active);
+
+            protected override BadgeRenderProps CreateRenderProps(IReadOnlyDictionary<string, object> attributes) =>
+                new(attributes, Active);
+        }
+        """;
+}

@@ -1,0 +1,18 @@
+/* Compiled by Tailwind.targets into wwwroot/app.css. Edit this file, not the output. */
+/* Same imports `blazix init` writes, pointed at src/Blazix.Registry/Setup instead of copies. */
+@import "tailwindcss" source("..");
+@import "../../../src/Blazix.Registry/Setup/Vendor/tw-animate.css";
+@import "../../../src/Blazix.Registry/Setup/Vendor/variants.css";
+@import "../../../src/Blazix.Registry/Setup/theme.css";
+/* The docs' text is styled with typeset.css (not something `init` adds). */
+@import "../../../src/Blazix.Registry/Setup/Vendor/typeset.css";
+/* The primitives' examples, as the CSS styling method shows them. */
+@import "../../Blazix.Docs.Client/Primitives/Examples/Css/index.css";
+
+@source "../../../src/Blazix.Registry/Components";
+/* The pages, examples and site, in the WebAssembly client. */
+@source "../../Blazix.Docs.Client";
+@source not "../bin";
+@source not "../obj";
+@source not "../../Blazix.Docs.Client/bin";
+@source not "../../Blazix.Docs.Client/obj";

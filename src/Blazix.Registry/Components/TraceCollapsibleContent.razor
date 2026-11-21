@@ -1,0 +1,18 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<CollapsiblePanel data-slot="trace-collapsible-content" @attributes="AdditionalAttributes"
+                  class="h-(--collapsible-panel-height) min-w-0 overflow-hidden transition-[height] duration-200 data-ending-style:h-0 data-starting-style:h-0">
+    <div data-slot="trace-collapsible-content-inner"
+         class="@Cn("mt-2 mb-1 ml-[calc(--spacing(2)-1px)] min-w-0 border-l pr-1 pl-4 leading-relaxed wrap-break-word text-muted-foreground", Class)">
+        @ChildContent
+    </div>
+</CollapsiblePanel>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

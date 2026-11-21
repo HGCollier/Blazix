@@ -1,0 +1,207 @@
+@page "/docs/components/trace"
+
+<DocsPage Title="Trace" Description="The building block for reasoning, tool calls, sources and more.">
+    <ComponentPreview Name="trace-demo" PreviewClass="h-auto" />
+    <p><code>Trace</code> is a list of lines. Each line has an icon, a title, and an optional description and status. A line can expand to show more detail, link to a page, or open a dialog or sheet.</p>
+    <p>Every line has the same shape, so reasoning, tool calls, sources and plans built from <code>Trace</code> look and behave the same.</p>
+    <p>Use <code>Trace</code> for the steps an agent takes, like calling a tool, running a subagent or editing a file. Use <a href="/docs/components/message">Message</a> for its reply, and <a href="/docs/components/marker">Marker</a> for notes and dividers between turns.</p>
+    <DocsHeading Title="Built with Trace" />
+    <p>Every pattern below is a composition of <code>Trace</code> parts. See AI Elements for examples and code.</p>
+    <DocsTable>
+        <table>
+            <thead><tr><th>Pattern</th><th>Shows</th></tr></thead>
+            <tbody>
+                <tr><td>Chain of Thought</td><td>A summary that expands into the steps behind it.</td></tr>
+                <tr><td>Plan</td><td>The steps the agent plans to take, and how far it has got.</td></tr>
+                <tr><td>Queue</td><td>The agent's todo list, split into what is left and what is done.</td></tr>
+                <tr><td>Reasoning</td><td>The agent's thinking as it streams.</td></tr>
+                <tr><td>Sources</td><td>The links the agent used for a reply.</td></tr>
+                <tr><td>Stack Trace</td><td>A failed tool call and its stack frames.</td></tr>
+                <tr><td>Subagent</td><td>A subagent run, with its tool calls and result.</td></tr>
+                <tr><td>Task</td><td>The steps the agent takes, as it takes them.</td></tr>
+                <tr><td>Terminal</td><td>A command the agent runs, with its output as it streams.</td></tr>
+                <tr><td>Test Results</td><td>A test run by the agent, with its suites and failures.</td></tr>
+                <tr><td>Tool</td><td>A tool call the agent makes, from input to output.</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="trace" />
+    <DocsHeading Title="Usage" />
+    <p>Use a <code>TraceLine</code> for a single step:</p>
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <p>Wrap the line in a <code>TraceCollapsible</code> to show more detail when it expands:</p>
+    <CodeFigure Code="@UsageCode2" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a trace line:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <p>Wrap the line in a <code>TraceCollapsible</code> to show more detail when it expands:</p>
+    <CodeFigure Code="@CompositionCode2" Language="text" />
+    <p><code>TraceLine</code> is always the line. To make a line do something, wrap it in that thing's trigger.</p>
+    <DocsHeading Title="Features" />
+    <ul>
+        <li>One row for reasoning, tool calls, sources, plans and tasks</li>
+        <li>Rows that expand, link out, or open a dialog, sheet, drawer or popover</li>
+        <li><code>running</code>, <code>error</code> and <code>pending</code> states, with a shimmer while running</li>
+        <li>Nested rows, so a summary expands into steps and a step into its output</li>
+        <li>Works with reasoning, tool and source parts from the AI SDK</li>
+        <li>Keyboard and screen reader support from the trigger that wraps each row</li>
+        <li>Customizable styling through the <code>Class</code> parameter on every part</li>
+    </ul>
+    <DocsHeading Title="Trace Line" />
+    <p>Use a <code>TraceLine</code> on its own for a step with no detail to show. It reads as plain text.</p>
+    <ComponentPreview Name="trace-static" PreviewClass="h-auto" />
+    <DocsHeading Title="Status" />
+    <p>Set <code>Status</code> on <code>TraceLine</code> when a step is running, has failed or hasn't started yet.</p>
+    <ComponentPreview Name="trace-status" PreviewClass="h-auto" />
+    <DocsTable>
+        <table>
+            <thead><tr><th>Status</th><th>Use for</th></tr></thead>
+            <tbody>
+                <tr><td><code>TraceLineStatus.None</code></td><td>Work that is done: "Ran pnpm install".</td></tr>
+                <tr><td><code>Error</code></td><td>Work that failed. Say so in the title: "Failed to run pnpm lint".</td></tr>
+                <tr><td><code>Running</code></td><td>Work in progress. Write the title in the present tense: "Running pnpm build".</td></tr>
+                <tr><td><code>Pending</code></td><td>Work that has not started, such as a plan step: "Run pnpm test".</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <DocsHeading Title="Description" />
+    <p>Put secondary text such as a diff stat, a duration or a count in a <code>TraceDescription</code> after the <code>TraceTitle</code>. It does not truncate.</p>
+    <ComponentPreview Name="trace-description" PreviewClass="h-auto" />
+    <DocsHeading Title="Collapsible" />
+    <p>Wrap the line in a <code>TraceCollapsible</code> to show more detail when it expands. Put the <code>TraceLine</code> inside <code>TraceCollapsibleTrigger</code> and the detail in <code>TraceCollapsibleContent</code>.</p>
+    <ComponentPreview Name="trace-collapsible" PreviewClass="h-auto" />
+    <DocsHeading Title="Open State" />
+    <p>Rows start closed. Use <code>Open</code> on <code>TraceCollapsible</code> to start open, or <code>Open</code> with <code>OpenChanged</code> to control a row.</p>
+    <ComponentPreview Name="trace-open" PreviewClass="h-auto" />
+    <p>To open a row while it streams and let the reader's click win, pass <code>_open ?? running</code> and keep the reader&apos;s choice in <code>_open</code>.</p>
+    <CodeFigure Code="@OpenStateCode" LineNumbers="true" />
+    <DocsHeading Title="Link" />
+    <p>Wrap the <code>TraceLine</code> in an anchor. For a new tab, use an arrow-up-right icon and sr-only "(opens in a new tab)".</p>
+    <ComponentPreview Name="trace-link" PreviewClass="h-auto" />
+    <CodeFigure Code="@LinkCode" LineNumbers="true" />
+    <DocsHeading Title="Dialog" />
+    <p>Wrap the <code>TraceLine</code> in the dialog's trigger. The dialog owns its open state, Escape and focus return.</p>
+    <ComponentPreview Name="trace-dialog" PreviewClass="h-auto" />
+    <CodeFigure Code="@DialogCode" LineNumbers="true" />
+    <DocsHeading Title="Sheet" />
+    <p>The same shape as the dialog. Drawer and Popover work the same way.</p>
+    <ComponentPreview Name="trace-sheet" PreviewClass="h-auto" />
+    <DocsHeading Title="Group" />
+    <p>Put rows that sit next to each other in a <code>Trace</code>. It also styles any trigger or link that wraps a <code>TraceLine</code>.</p>
+    <ComponentPreview Name="trace-group" PreviewClass="h-auto" />
+    <DocsHeading Title="Sources" />
+    <p>A collapsible row whose detail is a <code>Trace</code> of link rows.</p>
+    <ComponentPreview Name="trace-sources" PreviewClass="h-auto" />
+    <p>See Sources for more examples.</p>
+    <DocsHeading Title="Chain of Thought" />
+    <p>A chain of thought is a collapsible row with step rows inside. Set the parent's status and title from its children.</p>
+    <ComponentPreview Name="trace-steps" PreviewClass="h-auto" />
+    <p>See Chain of Thought and Task for more examples.</p>
+    <DocsHeading Title="Commit" />
+    <p>A commit is a collapsible row with a line for each changed file. Say what changed in the title, Added, Edited or Deleted, and put the line counts in the description. Each file opens its diff in a <a href="#sheet">Sheet</a>.</p>
+    <ComponentPreview Name="trace-commit" PreviewClass="h-auto" />
+    <DocsHeading Title="Whole Turn" />
+    <p>Three levels: the turn, a summary, and the rows. Text between steps sits between two <code>Trace</code> lists.</p>
+    <ComponentPreview Name="trace-turn" PreviewClass="h-auto" />
+    <DocsHeading Title="Reasoning" />
+    <p>Render a <code>reasoning</code> part from the AI SDK. The row is a <code>TraceLine</code> until the first text arrives. See <a href="#open-state">Open State</a>.</p>
+    <ComponentPreview Name="trace-thinking" PreviewClass="h-auto" />
+    <p>See Reasoning for more examples.</p>
+    <DocsHeading Title="Tool" />
+    <p>Render tool parts from the AI SDK. Map the tool part as in Tool.</p>
+    <ComponentPreview Name="trace-tool-calls" PreviewClass="h-auto" />
+    <p>See Tool for more examples.</p>
+    <DocsHeading Title="Accessibility" />
+    <p><code>Trace</code> adds no roles of its own. Each line gets its semantics from the element that wraps it.</p>
+    <ul>
+        <li>A <code>TraceLine</code> on its own is a <code>span</code>. It is read as text and is not a tab stop.</li>
+        <li>Wrap it in a <code>TraceCollapsibleTrigger</code> and it becomes a button with <code>aria-expanded</code>. Wrap it in a link, or in the trigger for a dialog or sheet, and it takes the keyboard and focus behavior of that element.</li>
+        <li><code>TraceIcon</code> is hidden from assistive tech, so <code>TraceTitle</code> is the accessible name. Write it as a sentence that says what happened, like "Edited trace.tsx", not just "trace.tsx".</li>
+        <li>When a link opens a new tab, add "(opens in a new tab)" to the title with <code>sr-only</code>.</li>
+        <li>Status is shown with color and motion, so put it in the title too. Write "Running pnpm build" while it runs and "Failed to run pnpm build" when it errors.</li>
+        <li>The shimmer on a running title stops when the reader prefers reduced motion. The title still says what is happening.</li>
+        <li><code>TraceCollapsibleContent</code> mutes its text. If you put a block with a muted background inside it, give the block <code>text-foreground</code> so it keeps its contrast. <code>CodeBlock</code> sets its own text color.</li>
+    </ul>
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="trace" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Trace>
+            <TraceLine>
+                <Icon Name="trace"><Icon Name="search" /></Icon>
+                <TraceTitle>Searched for minimumReleaseAge</TraceTitle>
+            </TraceLine>
+        </Trace>
+        """;
+
+    private const string UsageCode2 = """
+        <Trace>
+            <TraceCollapsible>
+                <TraceCollapsibleTrigger>
+                    <TraceLine>
+                        <Icon Name="trace"><Icon Name="terminal" /></Icon>
+                        <TraceTitle>Ran node --version</TraceTitle>
+                    </TraceLine>
+                </TraceCollapsibleTrigger>
+                <TraceCollapsibleContent>v24.18.0</TraceCollapsibleContent>
+            </TraceCollapsible>
+        </Trace>
+        """;
+
+    private const string CompositionCode = """
+        Trace
+        └── TraceLine
+            ├── TraceIcon
+            ├── TraceTitle
+            ├── TraceDescription
+            └── TraceIcon
+        """;
+
+    private const string CompositionCode2 = """
+        Trace
+        └── TraceCollapsible
+            ├── TraceCollapsibleTrigger
+            │   └── TraceLine
+            └── TraceCollapsibleContent
+        """;
+
+    private const string OpenStateCode = """
+        <TraceCollapsible Open="@(_open ?? running)" OpenChanged="@(open => _open = open)">
+            <TraceCollapsibleTrigger>
+                <TraceLine Status="@(running ? TraceLineStatus.Running : TraceLineStatus.None)">…</TraceLine>
+            </TraceCollapsibleTrigger>
+            <TraceCollapsibleContent>@text</TraceCollapsibleContent>
+        </TraceCollapsible>
+
+        @code {
+            private bool? _open;
+        }
+        """;
+
+    private const string LinkCode = """
+        <a href="https://docs.astro.build" target="_blank" rel="noreferrer">
+            <TraceLine>
+                <TraceTitle>
+                    Install Astro
+                    <span class="sr-only">(opens in a new tab)</span>
+                </TraceTitle>
+                <Icon Name="trace"><Icon Name="arrow-up-right" /></Icon>
+            </TraceLine>
+        </a>
+        """;
+
+    private const string DialogCode = """
+        <Dialog>
+            <DialogTrigger>
+                <TraceLine>
+                    <TraceTitle>Searched the web for cache keys</TraceTitle>
+                    <Icon Name="trace"><Icon Name="chevron-right" /></Icon>
+                </TraceLine>
+            </DialogTrigger>
+            <DialogContent>…</DialogContent>
+        </Dialog>
+        """;
+}

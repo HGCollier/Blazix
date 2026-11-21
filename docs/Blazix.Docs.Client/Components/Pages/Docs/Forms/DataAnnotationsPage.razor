@@ -1,0 +1,444 @@
+@page "/docs/forms/data-annotations"
+
+<DocsPage Title="Data Annotations" Description="Build forms in Blazor using EditForm and data annotations.">
+    <p>
+        In this guide, we will take a look at building forms with Blazor&apos;s <code>EditForm</code>. We&apos;ll cover building forms with the
+        <code>&lt;Field /&gt;</code> component, adding schema validation using data annotations, error handling, accessibility, and more.
+    </p>
+
+    <DocsHeading Title="Demo" />
+    <p>
+        We are going to build the following form. It has a simple text input and a textarea. On submit, we&apos;ll validate the form data and
+        display any errors.
+    </p>
+    <Callout>
+        <strong>Note:</strong> For the purpose of this demo, the controls don&apos;t use browser validation attributes, so you can see how
+        validation and errors work. In production code, you can add them as well.
+    </Callout>
+    <ComponentPreview Name="form-annotations-demo" Class="@("sm:[&_.preview]:h-[700px]")" ChromeLessOnMobile="true" />
+
+    <DocsHeading Title="Approach" />
+    <p>This form leverages Blazor&apos;s built-in forms for flexible form handling. We&apos;ll build our form using the <code>&lt;Field /&gt;</code> component, which gives you <strong>complete flexibility over the markup and styling</strong>.</p>
+    <ul>
+        <li>Uses <code>EditForm</code> and <code>EditContext</code> for form state management.</li>
+        <li>Data annotations (<code>System.ComponentModel.DataAnnotations</code>) and <code>DataAnnotationsValidator</code> for schema validation.</li>
+        <li><code>&lt;Field /&gt;</code> components for building accessible forms.</li>
+        <li>Client-side validation in interactive render modes, with the same rules available on the server.</li>
+    </ul>
+
+    <DocsHeading Title="Anatomy" />
+    <p>Here&apos;s a basic example of a form using a value and change handler per control, and the <code>&lt;Field /&gt;</code> component.</p>
+    <CodeFigure Code="@AnatomyCode" />
+
+    <DocsHeading Title="Form" />
+    <Steps>
+        <Step>Create a form model</Step>
+        <p>We&apos;ll start by defining the shape of our form using a class with data annotations.</p>
+        <CodeFigure Code="@ModelCode" Title="BugReportForm.razor" />
+        <Step>Set up the form</Step>
+        <p>Next, we&apos;ll create an <code>EditContext</code> for the model and handle the submit. The form&apos;s fields go inside the <code>EditForm</code>; we&apos;ll build them in the next step. <code>Submit</code> is where you&apos;d use the values: here it shows them in a toast.</p>
+        <CodeFigure Code="@SetupCode" Title="BugReportForm.razor" LineNumbers="true" />
+        <Step>Build the form</Step>
+        <p>
+            We can now build the form using the <code>&lt;Field /&gt;</code> component. Each control takes its value from the model and writes
+            changes back through <code>Change</code>.
+        </p>
+        <ComponentSource Example="form-annotations-demo" Title="BugReportForm.razor" />
+        <Step>Done</Step>
+        <p>That&apos;s it. You now have a fully accessible form with client-side validation.</p>
+        <p>When you submit the form, the <code>Submit</code> method will be called with the validated form data. If the form data is invalid, Blazor will display the errors next to each field.</p>
+    </Steps>
+
+    <DocsHeading Title="Validation" />
+    <DocsHeading Level="3" Title="Client-side Validation" />
+    <p>
+        <code>DataAnnotationsValidator</code> validates the model against its attributes. When the form is interactive, validation runs in the
+        browser&apos;s circuit (or WebAssembly) without a round trip to your API.
+    </p>
+    <CodeFigure Code="@ValidatorCode" />
+    <DocsHeading Level="3" Title="Validation Modes" />
+    <p>Blazor validates the whole model when you call <code>EditContext.Validate()</code> and a single field when you call <code>EditContext.NotifyFieldChanged()</code>. The examples here validate like this:</p>
+    <DocsTable>
+        <table>
+            <thead>
+                <tr><th>Mode</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>On submit</td><td>The first validation runs when the form is submitted, so untouched fields don&apos;t show errors.</td></tr>
+                <tr><td>On change, after submit</td><td>Once submitted, the form revalidates on every change, so errors clear as soon as they&apos;re fixed.</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <p><code>Change</code> applies an update and, once the form has been submitted, revalidates it:</p>
+    <CodeFigure Code="@ModesCode" />
+
+    <DocsHeading Title="Displaying Errors" />
+    <p>
+        Display errors next to the field using <code>&lt;FieldError /&gt;</code>. For styling and accessibility, set
+        <code>data-invalid</code> on the <code>&lt;Field /&gt;</code> component and <code>aria-invalid</code> on the form control.
+    </p>
+    <CodeFigure Code="@ErrorsCode" />
+    <p>The attributes have to be the strings <code>"true"</code> and <code>"false"</code>: the styles target <code>data-[invalid=true]</code> and <code>aria-invalid</code>. <code>Errors</code> returns only a field&apos;s first message, like a schema validator would.</p>
+
+    <DocsHeading Title="Working with Different Field Types" />
+    <DocsHeading Level="3" Title="Input" />
+    <ul>
+        <li>Pass <code>Value</code> and <code>ValueChanged</code> to the <code>&lt;Input /&gt;</code> component.</li>
+        <li>To show errors, add the <code>aria-invalid</code> attribute to the <code>&lt;Input /&gt;</code> component and the <code>data-invalid</code> attribute to the <code>&lt;Field /&gt;</code> component.</li>
+    </ul>
+    <ComponentPreview Name="form-annotations-input" Class="@("sm:[&_.preview]:h-[700px]")" ChromeLessOnMobile="true" />
+    <CodeFigure Code="@InputCode" />
+
+    <DocsHeading Level="3" Title="Textarea" />
+    <ul>
+        <li>Pass <code>Value</code> and <code>ValueChanged</code> to the <code>&lt;Textarea /&gt;</code> component. <code>ValueChanged</code> fires on <code>change</code>; use <code>@@oninput</code> for live updates.</li>
+        <li>To show errors, add the <code>aria-invalid</code> attribute to the <code>&lt;Textarea /&gt;</code> component and the <code>data-invalid</code> attribute to the <code>&lt;Field /&gt;</code> component.</li>
+    </ul>
+    <ComponentPreview Name="form-annotations-textarea" Class="@("sm:[&_.preview]:h-[700px]")" ChromeLessOnMobile="true" />
+    <CodeFigure Code="@TextareaCode" />
+
+    <DocsHeading Level="3" Title="Select" />
+    <ul>
+        <li>Pass <code>Value</code> and <code>ValueChanged</code> to the <code>&lt;Select /&gt;</code> component.</li>
+        <li>To show errors, add the <code>aria-invalid</code> attribute to the <code>&lt;SelectTrigger /&gt;</code> component and the <code>data-invalid</code> attribute to the <code>&lt;Field /&gt;</code> component.</li>
+    </ul>
+    <ComponentPreview Name="form-annotations-select" Class="@("sm:[&_.preview]:h-[500px]")" ChromeLessOnMobile="true" />
+    <CodeFigure Code="@SelectCode" />
+
+    <DocsHeading Level="3" Title="Checkbox" />
+    <ul>
+        <li>For checkbox arrays, add or remove the item from the list in <code>CheckedChanged</code>.</li>
+        <li>To show errors, add the <code>aria-invalid</code> attribute to the <code>&lt;Checkbox /&gt;</code> component and the <code>data-invalid</code> attribute to the <code>&lt;Field /&gt;</code> component.</li>
+        <li>Remember to add <code>data-slot="checkbox-group"</code> to the <code>&lt;FieldGroup /&gt;</code> component for proper styling and spacing.</li>
+    </ul>
+    <ComponentPreview Name="form-annotations-checkbox" Class="@("sm:[&_.preview]:h-[700px]")" ChromeLessOnMobile="true" />
+    <CodeFigure Code="@CheckboxCode" />
+
+    <DocsHeading Level="3" Title="Radio Group" />
+    <ul>
+        <li>Pass <code>Value</code> and <code>ValueChanged</code> to the <code>&lt;RadioGroup /&gt;</code> component.</li>
+        <li>To show errors, add the <code>aria-invalid</code> attribute to the <code>&lt;RadioGroupItem /&gt;</code> component and the <code>data-invalid</code> attribute to the <code>&lt;Field /&gt;</code> component.</li>
+    </ul>
+    <ComponentPreview Name="form-annotations-radiogroup" Class="@("sm:[&_.preview]:h-[700px]")" ChromeLessOnMobile="true" />
+    <CodeFigure Code="@RadioGroupCode" />
+
+    <DocsHeading Level="3" Title="Switch" />
+    <ul>
+        <li>Pass <code>Checked</code> and <code>CheckedChanged</code> to the <code>&lt;Switch /&gt;</code> component.</li>
+        <li>To show errors, add the <code>aria-invalid</code> attribute to the <code>&lt;Switch /&gt;</code> component and the <code>data-invalid</code> attribute to the <code>&lt;Field /&gt;</code> component.</li>
+    </ul>
+    <ComponentPreview Name="form-annotations-switch" Class="@("sm:[&_.preview]:h-[500px]")" ChromeLessOnMobile="true" />
+    <CodeFigure Code="@SwitchCode" />
+
+    <DocsHeading Level="3" Title="Complex Forms" />
+    <p>Here is an example of a more complex form with multiple fields and validation.</p>
+    <ComponentPreview Name="form-annotations-complex" Class="@("sm:[&_.preview]:h-[1300px]")" ChromeLessOnMobile="true" />
+
+    <DocsHeading Title="Resetting the Form" />
+    <p>
+        Replace the model and its <code>EditContext</code> to reset the form to its default values. Key the <code>EditForm</code> on the
+        context, since <code>DataAnnotationsValidator</code> doesn&apos;t support a context that changes.
+    </p>
+    <CodeFigure Code="@ResetCode" />
+
+    <DocsHeading Title="Array Fields" />
+    <p>
+        A list in your model works for dynamic array fields. This is useful when you need to manage a variable number of fields, such as
+        multiple email addresses or phone numbers.
+    </p>
+    <ComponentPreview Name="form-annotations-array" Class="@("sm:[&_.preview]:h-[700px]")" ChromeLessOnMobile="true" />
+    <DocsHeading Level="3" Title="Array Field Structure" />
+    <p>Render the list with a <code>@@for</code> loop and key each field on its item. Copy the index and the item into locals: the child content renders after the loop has finished, when <code>index</code> has moved on. The remove button goes at the end of the input group (see <a href="#removing-items">Removing Items</a>).</p>
+    <CodeFigure Code="@ArrayStructureCode" />
+    <DocsHeading Level="3" Title="Adding Items" />
+    <p>Add an item to the list. Disable the button when you reach the limit.</p>
+    <CodeFigure Code="@ArrayAddCode" />
+    <DocsHeading Level="3" Title="Removing Items" />
+    <p>Remove the item from the list. Only show the remove button when there&apos;s more than one item.</p>
+    <CodeFigure Code="@ArrayRemoveCode" />
+    <DocsHeading Level="3" Title="Array Validation" />
+    <p>
+        <code>DataAnnotationsValidator</code> validates the list itself (<code>[MinLength]</code>, <code>[MaxLength]</code>) but not its items.
+        Validate the items with a <code>ValidationMessageStore</code> of your own.
+    </p>
+    <CodeFigure Code="@ArrayValidationCode" />
+</DocsPage>
+
+@code {
+    private const string AnatomyCode = """
+        <EditForm EditContext="_editContext" OnSubmit="Submit">
+            <DataAnnotationsValidator />
+            <Field data-invalid="@Invalid(() => _model.Title)">
+                <FieldLabel for="title">Bug Title</FieldLabel>
+                <Input id="title" Value="@_model.Title" ValueChanged="@(value => Change(() => _model.Title = value ?? ""))"
+                       aria-invalid="@Invalid(() => _model.Title)" placeholder="Login button not working on mobile" autocomplete="off" />
+                <FieldDescription>Provide a concise title for your bug report.</FieldDescription>
+                <FieldError Errors="@Errors(() => _model.Title)" />
+            </Field>
+        </EditForm>
+        """;
+
+    private const string ModelCode = """
+        @using System.ComponentModel.DataAnnotations
+
+        @code {
+            private sealed class BugReport
+            {
+                [MinLength(5, ErrorMessage = "Bug title must be at least 5 characters.")]
+                [MaxLength(32, ErrorMessage = "Bug title must be at most 32 characters.")]
+                public string Title { get; set; } = "";
+
+                [MinLength(20, ErrorMessage = "Description must be at least 20 characters.")]
+                [MaxLength(100, ErrorMessage = "Description must be at most 100 characters.")]
+                public string Description { get; set; } = "";
+            }
+        }
+        """;
+
+    private const string SetupCode = """
+        @inject ToastManager Toasts
+
+        <EditForm @key="_editContext" id="form-annotations-demo" EditContext="_editContext" OnSubmit="Submit">
+            <DataAnnotationsValidator />
+            ...
+        </EditForm>
+
+        @code {
+            private BugReport _model = new();
+            private EditContext _editContext = null!;
+            private bool _submitted;
+
+            protected override void OnInitialized() => _editContext = new EditContext(_model);
+
+            private void Submit()
+            {
+                _submitted = true;
+                if (_editContext.Validate())
+                {
+                    Toasts.Add(new ToastOptions { Title = "You submitted the following values:", Description = JsonSerializer.Serialize(_model) });
+                }
+            }
+        }
+        """;
+
+    private const string ValidatorCode = """
+        <EditForm EditContext="_editContext" OnSubmit="Submit">
+            <DataAnnotationsValidator />
+            ...
+        </EditForm>
+        """;
+
+    private const string ModesCode = """
+        private void Change(Action update)
+        {
+            update();
+            if (_submitted)
+            {
+                _editContext.Validate();
+            }
+        }
+        """;
+
+    private const string ErrorsCode = """
+        <Field data-invalid="@Invalid(() => _model.Email)">
+            <FieldLabel for="email">Email</FieldLabel>
+            <Input id="email" Type="email" Value="@_model.Email" ValueChanged="@(value => Change(() => _model.Email = value ?? ""))"
+                   aria-invalid="@Invalid(() => _model.Email)" />
+            <FieldError Errors="@Errors(() => _model.Email)" />
+        </Field>
+
+        @code {
+            private IEnumerable<string> Errors(Expression<Func<object>> field) => _editContext.GetValidationMessages(field).Take(1);
+
+            private string Invalid(Expression<Func<object>> field) => Errors(field).Any() ? "true" : "false";
+        }
+        """;
+
+    private const string InputCode = """
+        <Field data-invalid="@Invalid(() => _model.Username)">
+            <FieldLabel for="form-annotations-input-username">Username</FieldLabel>
+            <Input id="form-annotations-input-username" Value="@_model.Username" ValueChanged="@(value => Change(() => _model.Username = value ?? ""))"
+                   aria-invalid="@Invalid(() => _model.Username)" placeholder="blazix" autocomplete="username" />
+            <FieldDescription>This is your public display name. Must be between 3 and 10 characters. Must only contain letters, numbers, and underscores.</FieldDescription>
+            <FieldError Errors="@Errors(() => _model.Username)" />
+        </Field>
+        """;
+
+    private const string TextareaCode = """
+        <Field data-invalid="@Invalid(() => _model.About)">
+            <FieldLabel for="form-annotations-textarea-about">More about you</FieldLabel>
+            <Textarea id="form-annotations-textarea-about" Value="@_model.About" @oninput="@(e => Change(() => _model.About = e.Value?.ToString() ?? ""))"
+                      aria-invalid="@Invalid(() => _model.About)" placeholder="I'm a software engineer..." Class="min-h-[120px]" />
+            <FieldDescription>Tell us more about yourself. This will be used to help us personalize your experience.</FieldDescription>
+            <FieldError Errors="@Errors(() => _model.About)" />
+        </Field>
+        """;
+
+    private const string SelectCode = """
+        <Field Orientation="FieldOrientation.Responsive" data-invalid="@Invalid(() => _model.Language)">
+            <FieldContent>
+                <FieldLabel for="form-annotations-select-language">Spoken Language</FieldLabel>
+                <FieldDescription>For best results, select the language you speak.</FieldDescription>
+                <FieldError Errors="@Errors(() => _model.Language)" />
+            </FieldContent>
+            <Select Items="Items" Name="language" Value="@_model.Language" ValueChanged="@(value => Change(() => _model.Language = value ?? ""))">
+                <SelectTrigger id="form-annotations-select-language" aria-invalid="@Invalid(() => _model.Language)" Class="min-w-[120px]">
+                    <SelectValue Placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        <SelectItem Value="auto">Auto</SelectItem>
+                        <SelectSeparator />
+                        @foreach (var language in SpokenLanguages)
+                        {
+                            <SelectItem @key="language.Value" Value="@language.Value">@language.Label</SelectItem>
+                        }
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
+        </Field>
+        """;
+
+    private const string CheckboxCode = """
+        <FieldSet data-invalid="@Invalid(() => _model.Tasks)">
+            <FieldLegend Variant="FieldLegendVariant.Label">Tasks</FieldLegend>
+            <FieldDescription>Get notified when tasks you&apos;ve created have updates.</FieldDescription>
+            <FieldGroup data-slot="checkbox-group">
+                @foreach (var task in TaskOptions)
+                {
+                    <Field @key="task.Id" Orientation="FieldOrientation.Horizontal" data-invalid="@Invalid(() => _model.Tasks)">
+                        <Checkbox id="@($"form-annotations-checkbox-{task.Id}")" Name="tasks" aria-invalid="@Invalid(() => _model.Tasks)"
+                                  Checked="@_model.Tasks.Contains(task.Id)" CheckedChanged="@(value => Change(() => ToggleTask(task.Id, value)))" />
+                        <FieldLabel for="@($"form-annotations-checkbox-{task.Id}")" Class="font-normal">@task.Label</FieldLabel>
+                    </Field>
+                }
+            </FieldGroup>
+        </FieldSet>
+        <FieldError Errors="@Errors(() => _model.Tasks)" />
+
+        @code {
+            private void ToggleTask(string id, bool selected) =>
+                _model.Tasks = selected ? [.. _model.Tasks, id] : [.. _model.Tasks.Where(task => task != id)];
+        }
+        """;
+
+    private const string RadioGroupCode = """
+        <FieldSet data-invalid="@Invalid(() => _model.Plan)">
+            <FieldLegend>Plan</FieldLegend>
+            <FieldDescription>You can upgrade or downgrade your plan at any time.</FieldDescription>
+            <RadioGroup Name="plan" Value="@_model.Plan" ValueChanged="@(value => Change(() => _model.Plan = value ?? ""))">
+                @foreach (var plan in Plans)
+                {
+                    <FieldLabel @key="plan.Id" for="@($"form-annotations-radiogroup-{plan.Id}")">
+                        <Field Orientation="FieldOrientation.Horizontal" data-invalid="@Invalid(() => _model.Plan)">
+                            <FieldContent>
+                                <FieldTitle>@plan.Title</FieldTitle>
+                                <FieldDescription>@plan.Description</FieldDescription>
+                            </FieldContent>
+                            <RadioGroupItem Value="@plan.Id" id="@($"form-annotations-radiogroup-{plan.Id}")" aria-invalid="@Invalid(() => _model.Plan)" />
+                        </Field>
+                    </FieldLabel>
+                }
+            </RadioGroup>
+            <FieldError Errors="@Errors(() => _model.Plan)" />
+        </FieldSet>
+        """;
+
+    private const string SwitchCode = """
+        <Field Orientation="FieldOrientation.Horizontal" data-invalid="@Invalid(() => _model.TwoFactor)">
+            <FieldContent>
+                <FieldLabel for="form-annotations-switch-twoFactor">Multi-factor authentication</FieldLabel>
+                <FieldDescription>Enable multi-factor authentication to secure your account.</FieldDescription>
+                <FieldError Errors="@Errors(() => _model.TwoFactor)" />
+            </FieldContent>
+            <Switch id="form-annotations-switch-twoFactor" Name="twoFactor" Checked="@_model.TwoFactor"
+                    CheckedChanged="@(value => Change(() => _model.TwoFactor = value))" aria-invalid="@Invalid(() => _model.TwoFactor)" />
+        </Field>
+        """;
+
+    private const string ResetCode = """
+        <EditForm @key="_editContext" EditContext="_editContext" OnSubmit="Submit">
+            ...
+        </EditForm>
+        <Button Type="button" Variant="ButtonVariant.Outline" @onclick="Reset">Reset</Button>
+
+        @code {
+            private void Reset()
+            {
+                _model = new BugReport();
+                _editContext = new EditContext(_model);
+                _submitted = false;
+            }
+        }
+        """;
+
+    private const string ArrayStructureCode = """
+        <FieldSet Class="gap-4">
+            <FieldLegend Variant="FieldLegendVariant.Label">Email Addresses</FieldLegend>
+            <FieldDescription>Add up to 5 email addresses where we can contact you.</FieldDescription>
+            <FieldGroup Class="gap-4">
+                @for (var index = 0; index < _model.Emails.Count; index++)
+                {
+                    var id = $"form-annotations-array-email-{index}";
+                    var email = _model.Emails[index];
+                    <Field @key="email" Orientation="FieldOrientation.Horizontal" data-invalid="@Invalid(() => email.Address)">
+                        <FieldContent>
+                            <InputGroup>
+                                <InputGroupInput id="@id" Type="email" Value="@email.Address"
+                                                 ValueChanged="@(value => Change(() => email.Address = value ?? ""))"
+                                                 aria-invalid="@Invalid(() => email.Address)" placeholder="name@example.com" />
+                            </InputGroup>
+                            <FieldError Errors="@Errors(() => email.Address)" />
+                        </FieldContent>
+                    </Field>
+                }
+            </FieldGroup>
+        </FieldSet>
+        """;
+
+    private const string ArrayAddCode = """
+        <Button Type="button" Variant="ButtonVariant.Outline" Size="ButtonSize.Sm"
+                @onclick="@(() => Change(() => _model.Emails.Add(new EmailAddress())))" Disabled="@(_model.Emails.Count >= 5)">
+            Add Email Address
+        </Button>
+        """;
+
+    private const string ArrayRemoveCode = """
+        @if (_model.Emails.Count > 1)
+        {
+            <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
+                <InputGroupButton Type="button" Variant="ButtonVariant.Ghost" Size="InputGroupButtonSize.IconXs"
+                                  @onclick="@(() => Change(() => _model.Emails.Remove(email)))" aria-label="@($"Remove email {index + 1}")">
+                    <svg>...</svg>
+                </InputGroupButton>
+            </InputGroupAddon>
+        }
+        """;
+
+    private const string ArrayValidationCode = """
+        @code {
+            private static readonly EmailAddressAttribute EmailAttribute = new();
+
+            private void CreateEditContext()
+            {
+                _editContext = new EditContext(_model);
+                var messages = new ValidationMessageStore(_editContext);
+                _editContext.OnValidationRequested += (_, _) =>
+                {
+                    messages.Clear();
+                    foreach (var email in _model.Emails.Where(email => !EmailAttribute.IsValid(email.Address)))
+                    {
+                        messages.Add(() => email.Address, "Enter a valid email address.");
+                    }
+                };
+            }
+
+            private sealed class ContactEmails
+            {
+                [MinLength(1, ErrorMessage = "Add at least one email address.")]
+                [MaxLength(5, ErrorMessage = "You can add up to 5 email addresses.")]
+                public List<EmailAddress> Emails { get; set; } = [new(), new()];
+            }
+        }
+        """;
+}

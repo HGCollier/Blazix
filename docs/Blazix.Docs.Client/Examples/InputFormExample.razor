@@ -1,0 +1,47 @@
+<form class="w-full max-w-sm">
+    <FieldGroup>
+        <Field>
+            <FieldLabel for="form-name">Name</FieldLabel>
+            <Input id="form-name" Type="text" placeholder="Evil Rabbit" required />
+        </Field>
+        <Field>
+            <FieldLabel for="form-email">Email</FieldLabel>
+            <Input id="form-email" Type="email" placeholder="john@example.com" />
+            <FieldDescription>We&apos;ll never share your email with anyone.</FieldDescription>
+        </Field>
+        <div class="grid grid-cols-2 gap-4">
+            <Field>
+                <FieldLabel for="form-phone">Phone</FieldLabel>
+                <Input id="form-phone" Type="tel" placeholder="+1 (555) 123-4567" />
+            </Field>
+            <Field>
+                <FieldLabel for="form-country">Country</FieldLabel>
+                <Select Items="Countries" Value="us">
+                    <SelectTrigger id="form-country">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            @foreach (var country in Countries)
+                            {
+                                <SelectItem Value="@country.Value">@country.Label</SelectItem>
+                            }
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            </Field>
+        </div>
+        <Field>
+            <FieldLabel for="form-address">Address</FieldLabel>
+            <Input id="form-address" Type="text" placeholder="123 Main St" />
+        </Field>
+        <Field Orientation="FieldOrientation.Horizontal">
+            <Button Type="button" Variant="ButtonVariant.Outline">Cancel</Button>
+            <Button Type="submit">Submit</Button>
+        </Field>
+    </FieldGroup>
+</form>
+
+@code {
+    private static readonly SelectOption[] Countries = [new("us", "United States"), new("uk", "United Kingdom"), new("ca", "Canada")];
+}

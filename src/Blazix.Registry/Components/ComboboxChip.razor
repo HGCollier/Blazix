@@ -1,0 +1,35 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.ComboboxChip data-slot="combobox-chip" @attributes="AdditionalAttributes" Value="@Value"
+                              class="@Cn(
+                                  "flex h-[calc(--spacing(5.25))] w-fit items-center justify-center gap-1 rounded-sm bg-muted px-1.5 text-xs font-medium " +
+                                  "whitespace-nowrap text-foreground has-disabled:pointer-events-none has-disabled:cursor-not-allowed " +
+                                  "has-disabled:opacity-50 has-data-[slot=combobox-chip-remove]:pr-0",
+                                  Class)">
+    @ChildContent
+    @if (ShowRemove)
+    {
+        <ComboboxChipRemove data-slot="combobox-chip-remove" Value="@Value" data-size="icon-xs"
+                            class="@ButtonVariants.Get(ButtonVariant.Ghost, ButtonSize.IconXs, "-ml-1 opacity-50 hover:opacity-100")">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="pointer-events-none">
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+            </svg>
+        </ComboboxChipRemove>
+    }
+</Blazix.Primitives.ComboboxChip>
+
+@code {
+    /// <summary>The value this chip stands for. Defaults to the one ComboboxChips' Template renders.</summary>
+    [Parameter] public string? Value { get; set; }
+
+    /// <summary>Show the button that removes the chip. Defaults to true.</summary>
+    [Parameter] public bool ShowRemove { get; set; } = true;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

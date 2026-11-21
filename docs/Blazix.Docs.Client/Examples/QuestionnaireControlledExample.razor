@@ -1,0 +1,69 @@
+@inject ToastManager Toasts
+
+<div class="relative mx-auto flex h-full w-full max-w-md flex-col">
+    <p class="absolute end-0 top-0 text-sm text-muted-foreground" role="status">
+        Current checkpoint: @ItemLabels[_item]
+    </p>
+    <Questionnaire Class="mt-auto" @bind-Item="_item" Items="@Items" OnSubmit="@HandleSubmit">
+        <QuestionnaireProgress />
+        <QuestionnaireItem Name="scope" Required>
+            <QuestionnaireTitle>What may the agent change?</QuestionnaireTitle>
+            <QuestionnaireDescription>The host stores the active checkpoint while Questionnaire navigates.</QuestionnaireDescription>
+            <QuestionnaireChoices>
+                <QuestionnaireChoice Value="component">Only the target component</QuestionnaireChoice>
+                <QuestionnaireChoice Value="tests">Component and related tests</QuestionnaireChoice>
+                <QuestionnaireChoice Value="feature">The complete feature area</QuestionnaireChoice>
+            </QuestionnaireChoices>
+            <QuestionnaireError />
+        </QuestionnaireItem>
+        <QuestionnaireItem Name="checks" Required>
+            <QuestionnaireTitle>Which verification level should it use?</QuestionnaireTitle>
+            <QuestionnaireChoices>
+                <QuestionnaireChoice Value="targeted">Targeted tests</QuestionnaireChoice>
+                <QuestionnaireChoice Value="package">Package tests and typecheck</QuestionnaireChoice>
+                <QuestionnaireChoice Value="full">Full workspace verification</QuestionnaireChoice>
+            </QuestionnaireChoices>
+            <QuestionnaireError />
+        </QuestionnaireItem>
+        <QuestionnaireItem Name="output" Required>
+            <QuestionnaireTitle>What should the agent return when finished?</QuestionnaireTitle>
+            <QuestionnaireChoices>
+                <QuestionnaireChoice Value="summary">Concise summary</QuestionnaireChoice>
+                <QuestionnaireChoice Value="diff">Summary with changed files</QuestionnaireChoice>
+                <QuestionnaireChoice Value="handoff">Detailed implementation handoff</QuestionnaireChoice>
+            </QuestionnaireChoices>
+            <QuestionnaireError />
+        </QuestionnaireItem>
+        <QuestionnaireActions>
+            <QuestionnairePrevious />
+            <QuestionnaireNext>Next</QuestionnaireNext>
+            <QuestionnaireSubmit>Save workflow</QuestionnaireSubmit>
+        </QuestionnaireActions>
+    </Questionnaire>
+</div>
+
+@code {
+    private static readonly QuestionnaireItemDefinition[] Items =
+    [
+        new("scope", Required: true),
+        new("checks", Required: true),
+        new("output", Required: true),
+    ];
+
+    private static readonly Dictionary<string, string> ItemLabels = new()
+    {
+        ["scope"] = "Change scope",
+        ["checks"] = "Verification",
+        ["output"] = "Final output",
+    };
+
+    private string _item = "scope";
+
+    private void HandleSubmit(QuestionnaireAnswers answers) =>
+        Toasts.Add(new ToastOptions
+        {
+            Title = "Agent workflow configured",
+            Description = $"Scope: {answers.Get("scope") ?? "None"} · Verification: {answers.Get("checks") ?? "None"} · " +
+                          $"Output: {answers.Get("output") ?? "None"}",
+        });
+}

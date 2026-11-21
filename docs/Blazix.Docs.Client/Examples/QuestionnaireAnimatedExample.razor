@@ -1,0 +1,64 @@
+@inject ToastManager Toasts
+
+<Questionnaire Class="mx-auto max-w-md" DefaultItem="task" Items="@Items" OnSubmit="@HandleSubmit">
+    <QuestionnaireProgress />
+
+    <QuestionnaireItem Class="@ItemClass" Name="task" Required>
+        <QuestionnaireTitle>What should the agent do?</QuestionnaireTitle>
+        <QuestionnaireDescription>Choose the task for this run.</QuestionnaireDescription>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Value="implement">Implement the requested change</QuestionnaireChoice>
+            <QuestionnaireChoice Value="debug">Debug the current behavior</QuestionnaireChoice>
+            <QuestionnaireChoice Value="review">Review the implementation</QuestionnaireChoice>
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+
+    <QuestionnaireItem Class="@ItemClass" Name="review" Required>
+        <QuestionnaireTitle>How should the work be reviewed?</QuestionnaireTitle>
+        <QuestionnaireDescription>Select the verification depth.</QuestionnaireDescription>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Value="targeted">Targeted checks</QuestionnaireChoice>
+            <QuestionnaireChoice Value="complete">Complete test suite</QuestionnaireChoice>
+            <QuestionnaireChoice Value="manual">Tests and manual QA</QuestionnaireChoice>
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+
+    <QuestionnaireItem Class="@ItemClass" Name="delivery" Required>
+        <QuestionnaireTitle>How should the result be delivered?</QuestionnaireTitle>
+        <QuestionnaireDescription>Choose the final handoff format.</QuestionnaireDescription>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Value="summary">Concise summary</QuestionnaireChoice>
+            <QuestionnaireChoice Value="diff">Summary and changed files</QuestionnaireChoice>
+            <QuestionnaireChoice Value="handoff">Detailed review handoff</QuestionnaireChoice>
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+
+    <QuestionnaireActions>
+        <QuestionnairePrevious />
+        <QuestionnaireNext>Next</QuestionnaireNext>
+        <QuestionnaireSubmit>Save workflow</QuestionnaireSubmit>
+    </QuestionnaireActions>
+</Questionnaire>
+
+@code {
+    private const string ItemClass =
+        "data-active:animate-in data-active:fade-in-0 data-active:slide-in-from-bottom-2 data-active:duration-300 motion-reduce:animate-none";
+
+    private static readonly QuestionnaireItemDefinition[] Items =
+    [
+        new("task", Required: true),
+        new("review", Required: true),
+        new("delivery", Required: true),
+    ];
+
+    private void HandleSubmit(QuestionnaireAnswers answers) =>
+        Toasts.Add(new ToastOptions
+        {
+            Title = "Agent workflow saved",
+            Description = $"Task: {answers.Get("task") ?? "None"} · Review: {answers.Get("review") ?? "None"} · " +
+                          $"Delivery: {answers.Get("delivery") ?? "None"}",
+        });
+}

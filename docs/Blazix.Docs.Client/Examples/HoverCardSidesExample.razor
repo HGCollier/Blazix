@@ -1,0 +1,26 @@
+<div class="flex flex-wrap justify-center gap-2">
+    @foreach (var side in HoverCardSides)
+    {
+        <HoverCard>
+            <HoverCardTrigger Delay="100" CloseDelay="100">
+                <Render>
+                    <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline" Class="capitalize">@side.ToString().ToLowerInvariant()</Button>
+                </Render>
+            </HoverCardTrigger>
+            <HoverCardContent Side="@side">
+                <div class="flex flex-col gap-1">
+                    <h4 class="font-medium">Hover Card</h4>
+                    <p>
+                        This hover card appears on the
+                        @side.ToString().ToLowerInvariant()
+                        side of the trigger.
+                    </p>
+                </div>
+            </HoverCardContent>
+        </HoverCard>
+    }
+</div>
+
+@code {
+    private static readonly Side[] HoverCardSides = [Side.Left, Side.Top, Side.Bottom, Side.Right];
+}

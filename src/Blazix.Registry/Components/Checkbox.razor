@@ -1,0 +1,62 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<CheckboxRoot data-slot="checkbox" @attributes="FieldDescriptions.Merge(Descriptions, AdditionalAttributes)" Render="@Render"
+              Checked="@Checked" CheckedChanged="@CheckedChanged" OnCheckedChange="@OnCheckedChange"
+              Indeterminate="@Indeterminate" Disabled="@Disabled" ReadOnly="@ReadOnly" Required="@Required"
+              Name="@Name" Value="@Value" UncheckedValue="@UncheckedValue" InputId="@InputId" Parent="@Parent"
+              class="@Cn(
+                  "peer relative flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input transition-colors outline-none " +
+                  "group-has-disabled/field:opacity-50 group-has-[:focus-visible]/field-label:ring-0 group-has-[:focus-visible]/field-label:not-data-checked:border-input " +
+                  "after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 " +
+                  "disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 " +
+                  "aria-invalid:aria-checked:border-primary dark:bg-input/15 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 aria-invalid:focus-visible:ring-destructive/60 dark:aria-invalid:focus-visible:ring-destructive/60 " +
+                  "data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground " +
+                  "group-has-[:focus-visible]/field-label:data-checked:border-primary dark:data-checked:bg-primary",
+                  Class)">
+    <CheckboxIndicator data-slot="checkbox-indicator" class="grid place-content-center text-current transition-none [&>svg]:size-3.5">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" />
+        </svg>
+    </CheckboxIndicator>
+</CheckboxRoot>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<CheckboxRenderProps>? Render { get; set; }
+
+    /// <summary>Supports <c>@bind-Checked</c>; set it once for an uncontrolled checkbox.</summary>
+    [Parameter] public bool Checked { get; set; }
+
+    [Parameter] public EventCallback<bool> CheckedChanged { get; set; }
+
+    /// <summary>Runs before the checked state changes; call <c>Cancel()</c> to keep it.</summary>
+    [Parameter] public EventCallback<ValueChangeEventArgs<bool>> OnCheckedChange { get; set; }
+
+    [Parameter] public bool Indeterminate { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool ReadOnly { get; set; }
+    [Parameter] public bool Required { get; set; }
+
+    /// <summary>The name submitted with the form. Defaults to the field's name.</summary>
+    [Parameter] public string? Name { get; set; }
+
+    /// <summary>The value submitted when checked, and the checkbox's value in a checkbox group.</summary>
+    [Parameter] public string? Value { get; set; }
+
+    [Parameter] public string? UncheckedValue { get; set; }
+
+    /// <summary>The id of the hidden native input, for a &lt;label for="..."&gt;.</summary>
+    [Parameter] public string? InputId { get; set; }
+
+    /// <summary>In a checkbox group with <c>AllValues</c>: checks or unchecks them all.</summary>
+    [Parameter] public bool Parent { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    [CascadingParameter] private FieldDescriptions? Descriptions { get; set; }
+}

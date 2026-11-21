@@ -1,0 +1,25 @@
+@page "/docs/primitives/fieldset"
+
+<DocsPage Title="Fieldset" Description="A native fieldset element with an easily stylable legend.">
+    <ComponentPreview Name="primitives/fieldset-hero" />
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(FieldsetRoot)" />
+    <PartReference Type="typeof(FieldsetLegend)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the fieldset is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <FieldsetRoot>
+            <FieldsetLegend />
+        </FieldsetRoot>
+        """;
+}

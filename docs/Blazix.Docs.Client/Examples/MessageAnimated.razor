@@ -1,0 +1,40 @@
+<MessageScrollerItem MessageId="@Message.Id" ScrollAnchor="@(ScrollAnchor ?? Message.IsUser)"
+                     Class="@(Message.IsUser ? $"{Animation.Class} motion-reduce:animate-none" : null)">
+    <Message Align="@(Message.IsUser ? MessageAlign.End : MessageAlign.Start)">
+        <MessageContent>
+            <Bubble Variant="@(Message.IsUser ? UserVariant : AssistantVariant)">
+                <BubbleContent Class="space-y-2">
+                    @foreach (var paragraph in ScriptedChat.Paragraphs(Message.Text))
+                    {
+                        <p class="whitespace-pre-wrap">@paragraph</p>
+                    }
+                </BubbleContent>
+            </Bubble>
+        </MessageContent>
+    </Message>
+</MessageScrollerItem>
+
+@code {
+    /// <summary>The message animation presets, as tw-animate-css entrances.</summary>
+    public static readonly MessageAnimation[] Animations =
+    [
+        new("fade", "Fade", "animate-in fade-in duration-220 ease-out"),
+        new("slide-up", "Slide Up", "animate-in fade-in slide-in-from-bottom-2.5 duration-260 ease-[cubic-bezier(0.16,1,0.3,1)]"),
+        new("slide-side", "Slide Side", "animate-in fade-in slide-in-from-right-4.5 duration-280 ease-[cubic-bezier(0.16,1,0.3,1)]"),
+        new("pop", "Pop", "origin-bottom-right animate-in fade-in zoom-in-94 slide-in-from-bottom-1.5 duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"),
+        new("spring-bounce", "Spring Bounce", "animate-in fade-in zoom-in-96 slide-in-from-bottom-3 duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]"),
+        new("blur-fade", "Blur Fade", "animate-in fade-in blur-in-4 slide-in-from-bottom-1.5 duration-280 ease-out"),
+        new("scale-fade", "Scale Fade", "animate-in fade-in zoom-in-98 duration-240 ease-out"),
+    ];
+
+    [Parameter, EditorRequired] public ChatMessage Message { get; set; } = null!;
+
+    /// <summary>Defaults to true for user messages.</summary>
+    [Parameter] public bool? ScrollAnchor { get; set; }
+
+    [Parameter] public MessageAnimation Animation { get; set; } = Animations[1];
+    [Parameter] public BubbleVariant UserVariant { get; set; } = BubbleVariant.Muted;
+    [Parameter] public BubbleVariant AssistantVariant { get; set; } = BubbleVariant.Ghost;
+
+    public sealed record MessageAnimation(string Id, string Name, string Class);
+}

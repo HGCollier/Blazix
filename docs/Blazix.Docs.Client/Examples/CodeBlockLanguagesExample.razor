@@ -1,0 +1,27 @@
+<div class="flex w-full max-w-md flex-col gap-4">
+    @foreach (var sample in Samples)
+    {
+        <CodeBlock @key="sample.Language">
+            <CodeBlockHeader>
+                <CodeBlockTitle>@sample.Title</CodeBlockTitle>
+            </CodeBlockHeader>
+            <CodeBlockContent>
+                @foreach (var line in sample.Code.Split('\n'))
+                {
+                    <CodeBlockLine>@line</CodeBlockLine>
+                }
+            </CodeBlockContent>
+        </CodeBlock>
+    }
+</div>
+
+@code {
+    private sealed record Sample(string Language, string Title, string Code);
+
+    private static readonly Sample[] Samples =
+    [
+        new("css", "app/globals.css", "@import \"tailwindcss\";\n\n:root {\n  --radius: 0.625rem;\n}"),
+        new("python", "main.py", "def greet(name: str) -> str:\n    return f\"Hello, {name}!\""),
+        new("text", "notes.txt", "A language that is not in the list renders as plain text."),
+    ];
+}

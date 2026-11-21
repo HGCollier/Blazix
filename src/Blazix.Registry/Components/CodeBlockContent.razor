@@ -1,0 +1,45 @@
+@using System.Globalization
+@using static Blazix.Registry.ClassNames
+
+<pre data-slot="code-block-content" data-wrap="@(Wrap ? "" : null)" data-numbered="@(LineNumbers ? "" : null)" dir="ltr" tabindex="0"
+     style="@($"counter-reset:line {(StartLine - 1).ToString(CultureInfo.InvariantCulture)};{Style}")" @attributes="AdditionalAttributes"
+     class="@Cn(
+           "min-h-0 min-w-0 scroll-fade-x scrollbar-thin overflow-auto px-3 py-3 text-start font-mono leading-relaxed outline-none " +
+           "group-has-data-[slot=code-block-footer]/code-block:pb-2 group-has-data-[slot=code-block-header]/code-block:pt-2 " +
+           "group-data-[size=sm]/code-block:px-2.5 group-data-[size=sm]/code-block:py-2.5 " +
+           "group-data-[size=sm]/code-block:group-has-data-[slot=code-block-header]/code-block:pt-1.5 data-wrap:scroll-fade-y " +
+           "data-wrap:wrap-break-word data-wrap:whitespace-pre-wrap",
+           Class)"><code data-slot="code-block-code" class="grid min-h-lh min-w-max content-start in-data-numbered:grid-cols-[auto_1fr] in-data-wrap:min-w-0">@if (LineNumbers && Code is not null)
+{
+    foreach (var line in Code.TrimEnd('\n').Split('\n'))
+    {
+        <CodeBlockLine>@line</CodeBlockLine>
+    }
+}
+else if (Code is not null)
+{
+    @Code
+}
+else
+{
+    @ChildContent
+}</code></pre>
+
+@code {
+    /// <summary>The code as text.</summary>
+    [Parameter] public string? Code { get; set; }
+
+    /// <summary>Wrap long lines instead of scrolling sideways.</summary>
+    [Parameter] public bool Wrap { get; set; }
+
+    /// <summary>Number the lines (with Code, or CodeBlockLines in ChildContent).</summary>
+    [Parameter] public bool LineNumbers { get; set; }
+
+    [Parameter] public int StartLine { get; set; } = 1;
+    [Parameter] public string? Style { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

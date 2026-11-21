@@ -1,0 +1,28 @@
+<Select Items="AllItems">
+    <SelectTrigger Class="w-full max-w-48" aria-label="Fruit">
+        <SelectValue Placeholder="Select a fruit" />
+    </SelectTrigger>
+    <SelectContent>
+        <SelectGroup>
+            <SelectLabel>Fruits</SelectLabel>
+            @foreach (var item in Fruits)
+            {
+                <SelectItem Value="@item.Value">@item.Label</SelectItem>
+            }
+        </SelectGroup>
+        <SelectSeparator />
+        <SelectGroup>
+            <SelectLabel>Vegetables</SelectLabel>
+            @foreach (var item in Vegetables)
+            {
+                <SelectItem Value="@item.Value">@item.Label</SelectItem>
+            }
+        </SelectGroup>
+    </SelectContent>
+</Select>
+
+@code {
+    private static readonly SelectOption[] Fruits = [new("apple", "Apple"), new("banana", "Banana"), new("blueberry", "Blueberry")];
+    private static readonly SelectOption[] Vegetables = [new("carrot", "Carrot"), new("broccoli", "Broccoli"), new("spinach", "Spinach")];
+    private static readonly SelectOption[] AllItems = [.. Fruits, .. Vegetables];
+}

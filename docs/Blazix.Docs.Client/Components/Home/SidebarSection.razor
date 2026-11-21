@@ -1,0 +1,20 @@
+<Card Class="@Cn("w-full overflow-hidden rounded-3xl py-0", Class)">
+    <SidebarProvider Class="min-h-0">
+        <Sidebar Collapsible="SidebarCollapsible.None" Class="w-full bg-transparent">
+            <SidebarContent Class="gap-0 overflow-hidden">
+                <SidebarGroup>
+                    <SidebarGroupLabel>@Label</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu Class="gap-1">@ChildContent</SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+            </SidebarContent>
+        </Sidebar>
+    </SidebarProvider>
+</Card>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = "";
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

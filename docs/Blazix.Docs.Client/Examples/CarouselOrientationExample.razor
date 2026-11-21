@@ -1,0 +1,22 @@
+﻿<Carousel Opts="@Opts" Orientation="Orientation.Vertical" aria-label="Vertical slides" Class="w-full max-w-xs">
+    <CarouselContent Class="-mt-1 h-[270px]">
+        @foreach (var index in Enumerable.Range(0, 5))
+        {
+            <CarouselItem @key="index" Class="basis-1/2 pt-1">
+                <div class="p-1">
+                    <Card>
+                        <CardContent Class="flex items-center justify-center p-6">
+                            <span class="text-3xl font-semibold">@(index + 1)</span>
+                        </CardContent>
+                    </Card>
+                </div>
+            </CarouselItem>
+        }
+    </CarouselContent>
+    <CarouselPrevious />
+    <CarouselNext />
+</Carousel>
+
+@code {
+    private static readonly CarouselOptions Opts = new() { Align = Align.Start };
+}

@@ -1,0 +1,21 @@
+@using Blazix.Primitives
+
+<DialogRoot Open="@Open" OpenChanged="@OpenChanged" OnOpenChange="@OnOpenChange" OnOpenChangeComplete="@OnOpenChangeComplete"
+            Modal="@Modal" DisablePointerDismissal="@DisablePointerDismissal">
+    @ChildContent
+</DialogRoot>
+
+@code {
+    /// <summary>Supports <c>@bind-Open</c>; leave unset to let the sheet manage itself.</summary>
+    [Parameter] public bool Open { get; set; }
+
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public EventCallback<OpenChangeEventArgs> OnOpenChange { get; set; }
+    [Parameter] public EventCallback<bool> OnOpenChangeComplete { get; set; }
+
+    /// <summary>Whether focus is trapped and the page behind is inert. Defaults to true.</summary>
+    [Parameter] public PopupModal Modal { get; set; } = PopupModal.True;
+
+    [Parameter] public bool DisablePointerDismissal { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

@@ -1,0 +1,94 @@
+@page "/docs/primitives/otp-field"
+
+<DocsPage Title="OTP Field" Description="A one-time password input composed of individual character slots.">
+    <ComponentPreview Name="primitives/otp-field-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li>
+            <strong>Form controls must have an accessible name:</strong> give it one with a <code>&lt;label&gt;</code> element
+            or the <a href="/docs/primitives/field">Field</a> parts. See <a href="#labeling-an-otp-field">Labeling an OTP field</a>.
+        </li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="Examples" />
+    <DocsHeading Level="3" Title="Labeling an OTP field" />
+    <p>
+        Use a native <code>&lt;label&gt;</code> whose <code>for</code> matches the first input's <code>id</code>. Each input
+        has an <code>aria-label</code> such as "Character 2 of 6", so assistive technology announces which slot is focused.
+        Add <code>aria-describedby</code> to the root when supporting text should be announced with the field.
+    </p>
+    <CodeFigure Code="@LabelCode" Title="OTP field with a native label and description" />
+    <DocsHeading Level="3" Title="Submitting on completion" />
+    <p>
+        Set <code>AutoSubmit</code> to submit the owning form as soon as every slot is filled, or use
+        <code>OnValueComplete</code> to react to completion without submitting.
+    </p>
+    <DocsHeading Level="3" Title="Alphanumeric verification codes" />
+    <p>Use <code>ValidationType="OtpValidationType.Alphanumeric"</code> for recovery, backup or invite codes that mix letters and numbers.</p>
+    <ComponentPreview Name="primitives/otp-field-alphanumeric" />
+    <DocsHeading Level="3" Title="Grouped layouts" />
+    <p>
+        Wrap groups of inputs in your own layout elements, with a separator between them, to present the code in smaller
+        chunks such as <code>123-456</code>.
+    </p>
+    <ComponentPreview Name="primitives/otp-field-grouped" />
+    <DocsHeading Level="3" Title="Masked entry" />
+    <p>Use <code>Mask</code> when the code should be obscured while it's typed.</p>
+    <ComponentPreview Name="primitives/otp-field-masked" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(OtpFieldRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the OTP field is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the OTP field is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the OTP field is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the OTP field is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the OTP field is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the OTP field's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the OTP field has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-complete">Present when all slots are filled.</StyleHook>
+            <StyleHook Name="data-filled">Present when the OTP field contains at least one character.</StyleHook>
+            <StyleHook Name="data-focused">Present when one of the OTP field inputs is focused.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(OtpFieldInput)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the OTP field is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the OTP field is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the OTP field is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the OTP field is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the OTP field is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the OTP field's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the OTP field has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-complete">Present when all slots are filled.</StyleHook>
+            <StyleHook Name="data-filled">Present when the input contains a character.</StyleHook>
+            <StyleHook Name="data-focused">Present when any OTP field input is focused.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <OtpFieldRoot>
+            <OtpFieldInput />
+        </OtpFieldRoot>
+        """;
+
+    private const string LabelCode = """
+        <div>
+            <label for="verification-code">Verification code</label>
+            <OtpFieldRoot Length="6" aria-describedby="verification-code-description">
+                <OtpFieldInput id="verification-code" />
+                <OtpFieldInput />
+                <OtpFieldInput />
+                <OtpFieldInput />
+                <OtpFieldInput />
+                <OtpFieldInput />
+            </OtpFieldRoot>
+            <p id="verification-code-description">Enter the 6-character code we sent to your device.</p>
+        </div>
+        """;
+}

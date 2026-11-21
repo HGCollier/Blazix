@@ -1,0 +1,74 @@
+@page "/docs/components/select"
+
+<DocsPage Title="Select" Description="Displays a list of options for the user to pick from—triggered by a button.">
+    <ComponentPreview Name="select-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="select" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>Select</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Align Item With Trigger" />
+    <p>Use <code>AlignItemWithTrigger</code> on <code>SelectContent</code> to control whether the selected item aligns with the trigger. When <code>true</code> (default), the popup positions so the selected item appears over the trigger. When <code>false</code>, the popup aligns to the trigger edge.</p>
+    <ComponentPreview Name="select-align-item" />
+    <DocsHeading Title="Groups" />
+    <p>Use <code>SelectGroup</code>, <code>SelectLabel</code>, and <code>SelectSeparator</code> to organize items.</p>
+    <ComponentPreview Name="select-groups" />
+    <DocsHeading Title="Scrollable" />
+    <p>A select with many items that scrolls.</p>
+    <ComponentPreview Name="select-scrollable" />
+    <DocsHeading Title="Disabled" />
+    <ComponentPreview Name="select-disabled" />
+    <DocsHeading Title="Invalid" />
+    <p>Add the <code>data-invalid</code> attribute to the <code>Field</code> component and the <code>aria-invalid</code> attribute to the <code>SelectTrigger</code> component to show an error state.</p>
+    <CodeFigure Code="@InvalidCode" LineNumbers="true" />
+    <ComponentPreview Name="select-invalid" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="select" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Select Items="Items">
+            <SelectTrigger Class="w-[180px]">
+                <SelectValue Placeholder="Theme" />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectGroup>
+                    @foreach (var item in Items)
+                    {
+                        <SelectItem Value="@item.Value">@item.Label</SelectItem>
+                    }
+                </SelectGroup>
+            </SelectContent>
+        </Select>
+
+        @code {
+            private static readonly SelectOption[] Items = [new("light", "Light"), new("dark", "Dark"), new("system", "System")];
+        }
+        """;
+
+    private const string CompositionCode = """
+        Select
+        ├── SelectTrigger
+        │   └── SelectValue
+        └── SelectContent
+            ├── SelectGroup
+            │   ├── SelectLabel
+            │   ├── SelectItem
+            │   └── SelectItem
+            ├── SelectSeparator
+            └── SelectGroup
+                ├── SelectLabel
+                ├── SelectItem
+                └── SelectItem
+        """;
+
+    private const string InvalidCode = """
+        <Field data-invalid>
+            <FieldLabel>Fruit</FieldLabel>
+            <SelectTrigger aria-invalid><SelectValue /></SelectTrigger>
+        </Field>
+        """;
+}

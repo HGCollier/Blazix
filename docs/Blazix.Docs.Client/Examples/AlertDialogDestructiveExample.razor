@@ -1,0 +1,25 @@
+<AlertDialog>
+    <AlertDialogTrigger>
+        <Render>
+            <Button @attributes="context.Attributes" Variant="ButtonVariant.Destructive">Delete Chat</Button>
+        </Render>
+    </AlertDialogTrigger>
+    <AlertDialogContent Size="AlertDialogSize.Sm">
+        <AlertDialogHeader>
+            <AlertDialogMedia Class="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
+                <Icon Name="trash-2" />
+            </AlertDialogMedia>
+            <AlertDialogTitle>Delete chat?</AlertDialogTitle>
+            <AlertDialogDescription>
+                This will permanently delete this chat conversation. View
+                @(" ")
+                <a href="#">Settings</a>
+                delete any memories saved during this chat.
+            </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+            <AlertDialogCancel Variant="ButtonVariant.Outline">Cancel</AlertDialogCancel>
+            <AlertDialogAction Variant="ButtonVariant.Destructive">Delete</AlertDialogAction>
+        </AlertDialogFooter>
+    </AlertDialogContent>
+</AlertDialog>

@@ -1,0 +1,81 @@
+﻿@page "/docs/components/input-otp"
+
+<DocsPage Title="Input OTP" Description="Accessible one-time password component with copy-paste functionality.">
+    <ComponentPreview Name="input-otp-demo" />
+    <DocsHeading Title="About" />
+    <p>Input OTP is a port of <a href="https://github.com/guilhermerodz/input-otp">input-otp</a> by <a href="https://twitter.com/guilherme_rodz">@@guilherme_rodz</a>.</p>
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="input-otp" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build an <code>InputOtp</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Pattern" />
+    <p>Use the <code>Pattern</code> parameter to define a custom pattern for the OTP input.</p>
+    <CodeFigure Code="@PatternCode" LineNumbers="true" />
+    <ComponentPreview Name="input-otp-pattern" />
+    <DocsHeading Title="Separator" />
+    <p>Use the <code>&lt;InputOtpSeparator /&gt;</code> component to add a separator between input groups.</p>
+    <ComponentPreview Name="input-otp-separator" />
+    <DocsHeading Title="Disabled" />
+    <p>Use the <code>Disabled</code> parameter to disable the input.</p>
+    <ComponentPreview Name="input-otp-disabled" />
+    <DocsHeading Title="Controlled" />
+    <p>Use <code>@@bind-Value</code> (or <code>Value</code> and <code>ValueChanged</code>) to control the input value.</p>
+    <ComponentPreview Name="input-otp-controlled" />
+    <DocsHeading Title="Invalid" />
+    <p>Use <code>aria-invalid</code> on the slots to show an error state.</p>
+    <ComponentPreview Name="input-otp-invalid" />
+    <DocsHeading Title="Four Digits" />
+    <p>A common pattern for PIN codes. This uses the <code>Pattern="@@InputOtpPatterns.OnlyDigits"</code> parameter.</p>
+    <ComponentPreview Name="input-otp-four-digits" />
+    <DocsHeading Title="Alphanumeric" />
+    <p>Use <code>InputOtpPatterns.OnlyDigitsAndChars</code> to accept both letters and numbers.</p>
+    <ComponentPreview Name="input-otp-alphanumeric" />
+    <DocsHeading Title="Form" />
+    <ComponentPreview Name="input-otp-form" PreviewClass="h-[30rem]" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="input-otp" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <InputOtp MaxLength="6">
+            <InputOtpGroup>
+                <InputOtpSlot Index="0" />
+                <InputOtpSlot Index="1" />
+                <InputOtpSlot Index="2" />
+            </InputOtpGroup>
+            <InputOtpSeparator />
+            <InputOtpGroup>
+                <InputOtpSlot Index="3" />
+                <InputOtpSlot Index="4" />
+                <InputOtpSlot Index="5" />
+            </InputOtpGroup>
+        </InputOtp>
+        """;
+
+    private const string CompositionCode = """
+        InputOtp
+        ├── InputOtpGroup
+        │   ├── InputOtpSlot
+        │   ├── InputOtpSlot
+        │   └── InputOtpSlot
+        ├── InputOtpSeparator
+        ├── InputOtpGroup
+        │   ├── InputOtpSlot
+        │   ├── InputOtpSlot
+        │   └── InputOtpSlot
+        ├── InputOtpSeparator
+        └── InputOtpGroup
+            ├── InputOtpSlot
+            └── InputOtpSlot
+        """;
+
+    private const string PatternCode = """
+        <InputOtp MaxLength="6" Pattern="@InputOtpPatterns.OnlyDigitsAndChars">
+            ...
+        </InputOtp>
+        """;
+}

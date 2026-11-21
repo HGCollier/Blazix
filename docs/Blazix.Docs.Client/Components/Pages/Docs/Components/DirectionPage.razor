@@ -1,0 +1,29 @@
+@page "/docs/components/direction"
+
+<DocsPage Title="Direction" Description="A provider component that sets the text direction for your application.">
+    <p>The <code>DirectionProvider</code> component is used to set the text direction (<code>ltr</code> or <code>rtl</code>) for your application. This is essential for supporting right-to-left languages like Arabic, Hebrew, and Persian.</p>
+    <p>Here's a preview of the component in RTL mode. Use the language selector to switch the language. To see more examples, look for the RTL section on components pages.</p>
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="direction" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Reading the direction" />
+    <p>The provider cascades a <code>TextDirection</code>. Take it as a cascading parameter to read the current direction.</p>
+    <CodeFigure Code="@UseDirectionCode" LineNumbers="true" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <html dir="rtl">
+            <body><DirectionProvider Direction="TextDirection.Rtl">...</DirectionProvider></body>
+        </html>
+        """;
+
+    private const string UseDirectionCode = """
+        <div>Current direction: @Direction</div>
+
+        @code {
+            [CascadingParameter] public TextDirection Direction { get; set; }
+        }
+        """;
+}

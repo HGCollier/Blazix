@@ -1,0 +1,5 @@
+<Calendar Mode="CalendarMode.Single" @bind-Selected="_date" Class="rounded-lg border" CaptionLayout="CalendarCaptionLayout.Dropdown" />
+
+@code {
+    private DateOnly? _date = DateOnly.FromDateTime(DateTime.Today);
+}

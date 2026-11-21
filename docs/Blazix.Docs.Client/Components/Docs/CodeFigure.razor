@@ -1,0 +1,35 @@
+@*
+    The code is never cut to a max height: snippets and expanded sources show in full.
+*@
+<figure data-code-figure data-not-typeset class="@Cn("relative -mx-1 mt-6 overflow-hidden rounded-2xl border-0 bg-(--code) text-sm text-(--code-foreground) outline-none", Class)">
+    @if (Title is not null)
+    {
+        <figcaption data-code-title
+                    class="@("flex items-center gap-2 border-b border-b-border/30 px-4 py-2.5 font-mono text-sm text-(--code-foreground) [&_svg]:size-4 [&_svg]:text-(--code-foreground) [&_svg]:opacity-70")">
+            <Icon Name="@FileIcon" />
+            @Title
+        </figcaption>
+    }
+    @if (Copy)
+    {
+        <CopyButton Value="@Code" Class="@(Title is null ? null : "top-1.5!")" />
+    }
+    <CodeView Code="@Code" Language="@Language" LineNumbers="@LineNumbers" Highlight="@Highlight" />
+</figure>
+
+@code {
+    [Parameter, EditorRequired] public string Code { get; set; } = "";
+    [Parameter] public string Language { get; set; } = "razor";
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public bool LineNumbers { get; set; }
+    [Parameter] public IReadOnlyCollection<int>? Highlight { get; set; }
+    [Parameter] public bool Copy { get; set; } = true;
+    [Parameter] public string? Class { get; set; }
+
+    private string FileIcon => Language switch
+    {
+        "bash" => "terminal",
+        "razor" or "csharp" or "css" or "json" or "js" => "file-code",
+        _ => "file",
+    };
+}

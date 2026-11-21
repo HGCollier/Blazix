@@ -1,0 +1,88 @@
+@page "/docs/components/item"
+
+<DocsPage Title="Item" Description="A versatile component for displaying content with media, title, description, and actions.">
+    <ComponentPreview Name="item-demo" />
+    <p>The <code>Item</code> component is a straightforward flex container that can house nearly any type of content. Use it to display a title, description, and actions. Group it with the <code>ItemGroup</code> component to create a list of items.</p>
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="item" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build an <code>Item</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Item vs Field" />
+    <p>Use <code>Field</code> if you need to display a form input such as a checkbox, input, radio, or select.</p>
+    <p>If you only need to display content such as a title, description, and actions, use <code>Item</code>.</p>
+    <DocsHeading Title="Variant" />
+    <p>Use the <code>Variant</code> parameter to change the visual style of the item.</p>
+    <ComponentPreview Name="item-variant" PreviewClass="h-96" />
+    <DocsHeading Title="Size" />
+    <p>Use the <code>Size</code> parameter to change the size of the item. Available sizes are <code>default</code>, <code>sm</code>, and <code>xs</code>.</p>
+    <ComponentPreview Name="item-size" PreviewClass="h-96" />
+    <DocsHeading Title="Icon" />
+    <p>Use <code>ItemMedia</code> with <code>variant="icon"</code> to display an icon.</p>
+    <ComponentPreview Name="item-icon" />
+    <DocsHeading Title="Avatar" />
+    <p>You can use <code>ItemMedia</code> with <code>variant="avatar"</code> to display an avatar.</p>
+    <ComponentPreview Name="item-avatar" />
+    <DocsHeading Title="Image" />
+    <p>Use <code>ItemMedia</code> with <code>variant="image"</code> to display an image.</p>
+    <ComponentPreview Name="item-image" />
+    <DocsHeading Title="Group" />
+    <p>Use <code>ItemGroup</code> to group related items together.</p>
+    <ComponentPreview Name="item-group" PreviewClass="h-96" />
+    <DocsHeading Title="Header" />
+    <p>Use <code>ItemHeader</code> to add a header above the item content.</p>
+    <ComponentPreview Name="item-header" PreviewClass="h-96" />
+    <DocsHeading Title="Link" />
+    <p>Use the <code>Render</code> parameter to render the item as a link. The hover and focus states will be applied to the anchor element.</p>
+    <ComponentPreview Name="item-link" />
+    <CodeFigure Code="@LinkCode" LineNumbers="true" />
+    <DocsHeading Title="Dropdown" />
+    <ComponentPreview Name="item-dropdown" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="item" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Item>
+            <ItemMedia Variant="ItemMediaVariant.Icon">
+                <Icon Name="inbox" />
+            </ItemMedia>
+            <ItemContent>
+                <ItemTitle>Title</ItemTitle>
+                <ItemDescription>Description</ItemDescription>
+            </ItemContent>
+            <ItemActions>
+                <Button>Action</Button>
+            </ItemActions>
+        </Item>
+        """;
+
+    private const string CompositionCode = """
+        ItemGroup
+        └── Item
+            ├── ItemHeader
+            ├── ItemMedia
+            ├── ItemContent
+            │   ├── ItemTitle
+            │   └── ItemDescription
+            ├── ItemActions
+            └── ItemFooter
+        """;
+
+    private const string LinkCode = """
+        <Item>
+            <Render>
+                <a @attributes="context.Attributes" href="/dashboard">
+                    <ItemMedia Variant="ItemMediaVariant.Icon"><Icon Name="home" /></ItemMedia>
+                    <ItemContent>
+                        <ItemTitle>Dashboard</ItemTitle>
+                        <ItemDescription>Overview of your account and activity.</ItemDescription>
+                    </ItemContent>
+                </a>
+            </Render>
+        </Item>
+        """;
+}

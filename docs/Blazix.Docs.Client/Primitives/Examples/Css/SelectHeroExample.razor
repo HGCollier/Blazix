@@ -1,0 +1,67 @@
+<div class="select-field">
+    <SelectRoot Items="Apples">
+        <SelectLabel class="select-label">
+            Apple
+        </SelectLabel>
+        <SelectTrigger class="select">
+            <SelectValue class="select-value" Placeholder="Select apple" />
+            <SelectIcon>
+                @CaretUpDownIcon
+            </SelectIcon>
+        </SelectTrigger>
+        <SelectPortal>
+            <SelectPositioner class="select-positioner" SideOffset="4">
+                <SelectPopup class="select-popup">
+                    <SelectScrollUpArrow class="select-scroll-arrow">
+                        @CaretUpIcon
+                    </SelectScrollUpArrow>
+                    <SelectList class="select-list">
+                        @foreach (var apple in Apples)
+                        {
+                            <SelectItem Value="@apple.Value" class="select-item">
+                                <SelectItemIndicator class="select-item-indicator">
+                                    @CheckIcon
+                                </SelectItemIndicator>
+                                <SelectItemText class="select-item-text">@apple.Label</SelectItemText>
+                            </SelectItem>
+                        }
+                    </SelectList>
+                    <SelectScrollDownArrow class="select-scroll-arrow">
+                        @CaretDownIcon
+                    </SelectScrollDownArrow>
+                </SelectPopup>
+            </SelectPositioner>
+        </SelectPortal>
+    </SelectRoot>
+</div>
+
+@code {
+    private static readonly SelectOption[] Apples =
+    [
+        new("gala", "Gala"),
+        new("fuji", "Fuji"),
+        new("honeycrisp", "Honeycrisp"),
+        new("granny-smith", "Granny Smith"),
+        new("pink-lady", "Pink Lady"),
+    ];
+
+    private static readonly RenderFragment CaretUpDownIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M11 10H5l3 3.5zm0-4H5l3-3.5z" />
+        </svg>;
+
+    private static readonly RenderFragment CheckIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+            <path d="m2.5 8.5 4 4 7-9" />
+        </svg>;
+
+    private static readonly RenderFragment CaretUpIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M12 10H4l4-4.5z" />
+        </svg>;
+
+    private static readonly RenderFragment CaretDownIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M12 6H4l4 4.5z" />
+        </svg>;
+}

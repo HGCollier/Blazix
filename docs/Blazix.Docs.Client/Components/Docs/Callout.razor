@@ -1,0 +1,22 @@
+<Alert data-variant="@Variant" Class="@Cn(
+                                       "not-typeset mt-6 w-auto rounded-2xl border-(--surface) bg-(--surface) text-(--surface-foreground) md:-mx-1",
+                                       "**:[a]:font-medium **:[a]:underline **:[a]:decoration-current/30 **:[a]:hover:decoration-current **:[code]:border",
+                                       Prose.Code, Class)">
+    @Icon
+    @if (Title is not null)
+    {
+        <AlertTitle>@Title</AlertTitle>
+    }
+    <AlertDescription Class="text-card-foreground/80">@ChildContent</AlertDescription>
+</Alert>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public RenderFragment? Icon { get; set; }
+
+    /// <summary>default, info or warning.</summary>
+    [Parameter] public string Variant { get; set; } = "default";
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

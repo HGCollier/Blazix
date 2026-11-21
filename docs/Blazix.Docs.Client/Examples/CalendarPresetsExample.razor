@@ -1,0 +1,27 @@
+<Card Class="mx-auto w-fit max-w-[300px]" Size="CardSize.Sm">
+    <CardContent>
+        <Calendar Mode="CalendarMode.Single" @bind-Selected="_date" Month="_currentMonth" MonthChanged="month => _currentMonth = month"
+                  FixedWeeks Class="p-0 [--cell-size:--spacing(9.5)]" />
+    </CardContent>
+    <CardFooter Class="flex flex-wrap gap-2 border-t">
+        @foreach (var (label, value) in Presets)
+        {
+            <Button @key="value" Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" Class="flex-1" @onclick="() => Pick(value)">@label</Button>
+        }
+    </CardFooter>
+</Card>
+
+@code {
+    private static readonly (string Label, int Value)[] Presets =
+        [("Today", 0), ("Tomorrow", 1), ("In 3 days", 3), ("In a week", 7), ("In 2 weeks", 14)];
+
+    private DateOnly? _date = new(DateTime.Today.Year, 2, 12);
+    private DateOnly _currentMonth = new(DateTime.Today.Year, DateTime.Today.Month, 1);
+
+    private void Pick(int days)
+    {
+        var date = DateOnly.FromDateTime(DateTime.Today).AddDays(days);
+        _date = date;
+        _currentMonth = new DateOnly(date.Year, date.Month, 1);
+    }
+}

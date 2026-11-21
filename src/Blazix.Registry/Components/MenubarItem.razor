@@ -1,0 +1,27 @@
+@using static Blazix.Registry.ClassNames
+
+<DropdownMenuItem data-slot="menubar-item" @attributes="AdditionalAttributes" OnClick="@OnClick" Disabled="@Disabled" CloseOnClick="@CloseOnClick"
+                  Destructive="@Destructive" Inset="@Inset" Label="@Label"
+                  Class="@Cn(
+                      "group/menubar-item gap-1.5 rounded-md px-1.5 py-1 text-sm focus:bg-accent focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring/50 data-[variant=destructive]:focus-visible:ring-destructive/60 focus:text-accent-foreground " +
+                      "not-data-[variant=destructive]:focus:**:text-accent-foreground data-inset:pl-7 " +
+                      "data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 " +
+                      "data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 " +
+                      "data-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4 data-[variant=destructive]:*:[svg]:text-destructive!",
+                      Class)">
+    @ChildContent
+</DropdownMenuItem>
+
+@code {
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool CloseOnClick { get; set; } = true;
+    [Parameter] public bool Destructive { get; set; }
+    [Parameter] public bool Inset { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,26 @@
+<MenuRoot>
+    <MenuTrigger class="menu-button">
+        Song @CaretDownIcon
+    </MenuTrigger>
+    <MenuPortal>
+        <MenuPositioner class="menu-positioner" SideOffset="8" Align="Align.Start">
+            <MenuPopup class="menu-popup">
+                <MenuItem class="menu-item">Add to Library</MenuItem>
+                <MenuItem class="menu-item">Add to Playlist</MenuItem>
+                <MenuSeparator class="menu-separator" />
+                <MenuItem class="menu-item">Play Next</MenuItem>
+                <MenuItem class="menu-item">Play Last</MenuItem>
+                <MenuSeparator class="menu-separator" />
+                <MenuItem class="menu-item">Favorite</MenuItem>
+                <MenuItem class="menu-item">Share</MenuItem>
+            </MenuPopup>
+        </MenuPositioner>
+    </MenuPortal>
+</MenuRoot>
+
+@code {
+    private static readonly RenderFragment CaretDownIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M12 6H4l4 4.5z" />
+        </svg>;
+}

@@ -1,0 +1,80 @@
+@if (_submitted)
+{
+    <div class="flex w-80 flex-col items-start gap-3 text-sm text-neutral-950 dark:text-white">
+        <p class="m-0 font-bold">Thanks! Your answers were submitted.</p>
+        <button type="button" class="@ButtonClass" @onclick="() => _submitted = false">Start over</button>
+    </div>
+}
+else
+{
+    <QuestionnaireRoot Shortcuts="QuestionnaireShortcuts.Letters" OnSubmit="() => _submitted = true"
+                       class="flex w-80 flex-col gap-4 text-neutral-950 dark:text-white">
+        <QuestionnaireProgress class="text-xs text-neutral-600 dark:text-neutral-400" />
+
+        <QuestionnaireItem Name="theme" Required="true" class="m-0 flex min-w-0 flex-col gap-2 border-0 p-0">
+            <QuestionnaireTitle class="p-0 text-sm font-bold">Which theme do you prefer?</QuestionnaireTitle>
+            <QuestionnaireDescription class="m-0 text-sm text-neutral-600 dark:text-neutral-400">You can change it later in settings.</QuestionnaireDescription>
+            <QuestionnaireChoices class="flex flex-col gap-1">
+                <QuestionnaireChoice Value="light" class="@ChoiceClass">
+                    <QuestionnaireChoiceInput class="absolute inset-0 size-full cursor-pointer opacity-0" />
+                    <QuestionnaireChoiceLabel>Light</QuestionnaireChoiceLabel>
+                    <QuestionnaireChoiceShortcut class="@ShortcutClass" />
+                </QuestionnaireChoice>
+                <QuestionnaireChoice Value="dark" class="@ChoiceClass">
+                    <QuestionnaireChoiceInput class="absolute inset-0 size-full cursor-pointer opacity-0" />
+                    <QuestionnaireChoiceLabel>Dark</QuestionnaireChoiceLabel>
+                    <QuestionnaireChoiceShortcut class="@ShortcutClass" />
+                </QuestionnaireChoice>
+                <QuestionnaireChoice Value="system" class="@ChoiceClass">
+                    <QuestionnaireChoiceInput class="absolute inset-0 size-full cursor-pointer opacity-0" />
+                    <QuestionnaireChoiceLabel>Match the system</QuestionnaireChoiceLabel>
+                    <QuestionnaireChoiceShortcut class="@ShortcutClass" />
+                </QuestionnaireChoice>
+            </QuestionnaireChoices>
+            <QuestionnaireError class="text-sm text-red-700 dark:text-red-400" />
+        </QuestionnaireItem>
+
+        <QuestionnaireItem Name="notifications" Multiple="true" class="m-0 flex min-w-0 flex-col gap-2 border-0 p-0">
+            <QuestionnaireTitle class="p-0 text-sm font-bold">Which notifications do you want?</QuestionnaireTitle>
+            <QuestionnaireDescription class="m-0 text-sm text-neutral-600 dark:text-neutral-400">Select all that apply, or skip this question.</QuestionnaireDescription>
+            <QuestionnaireChoices class="flex flex-col gap-1">
+                <QuestionnaireChoice Value="mentions" class="@ChoiceClass">
+                    <QuestionnaireChoiceInput class="absolute inset-0 size-full cursor-pointer opacity-0" />
+                    <QuestionnaireChoiceLabel>Mentions</QuestionnaireChoiceLabel>
+                    <QuestionnaireChoiceShortcut class="@ShortcutClass" />
+                </QuestionnaireChoice>
+                <QuestionnaireChoice Value="replies" class="@ChoiceClass">
+                    <QuestionnaireChoiceInput class="absolute inset-0 size-full cursor-pointer opacity-0" />
+                    <QuestionnaireChoiceLabel>Replies</QuestionnaireChoiceLabel>
+                    <QuestionnaireChoiceShortcut class="@ShortcutClass" />
+                </QuestionnaireChoice>
+                <QuestionnaireChoice Value="digest" class="@ChoiceClass">
+                    <QuestionnaireChoiceInput class="absolute inset-0 size-full cursor-pointer opacity-0" />
+                    <QuestionnaireChoiceLabel>Weekly digest</QuestionnaireChoiceLabel>
+                    <QuestionnaireChoiceShortcut class="@ShortcutClass" />
+                </QuestionnaireChoice>
+            </QuestionnaireChoices>
+            <QuestionnaireError class="text-sm text-red-700 dark:text-red-400" />
+        </QuestionnaireItem>
+
+        <div class="flex gap-2">
+            <QuestionnairePrevious class="@ButtonClass">Previous</QuestionnairePrevious>
+            <QuestionnaireSkip class="@ButtonClass">Skip</QuestionnaireSkip>
+            <QuestionnaireNext class="@ButtonClass">Next</QuestionnaireNext>
+            <QuestionnaireSubmit class="@ButtonClass">Submit</QuestionnaireSubmit>
+        </div>
+    </QuestionnaireRoot>
+}
+
+@code {
+    private const string ChoiceClass =
+        "relative flex items-center gap-2 border border-neutral-950 px-3 py-2 text-sm select-none hover:bg-neutral-100 has-[>input:focus-visible]:outline-2 has-[>input:focus-visible]:outline-offset-2 has-[>input:focus-visible]:outline-neutral-950 data-checked:bg-neutral-950 data-checked:text-white dark:border-white dark:hover:bg-neutral-800 dark:has-[>input:focus-visible]:outline-white dark:data-checked:bg-white dark:data-checked:text-neutral-950";
+
+    private const string ShortcutClass =
+        "ms-auto flex size-5 items-center justify-center border border-current font-mono text-[0.625rem] leading-none";
+
+    private const string ButtonClass =
+        "flex h-8 items-center justify-center rounded-none border border-neutral-950 bg-white px-3 text-sm font-normal text-neutral-950 select-none hover:bg-neutral-100 active:bg-neutral-200 focus-visible:outline-2 focus-visible:-outline-offset-1 focus-visible:outline-neutral-950 dark:border-white dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-800 dark:active:bg-neutral-700 dark:focus-visible:outline-white";
+
+    private bool _submitted;
+}

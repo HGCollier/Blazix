@@ -1,0 +1,44 @@
+@using static Blazix.Registry.ClassNames
+@implements IDisposable
+
+<div data-slot="command-group" style="@(Order > 0 ? $"order:{Order}" : null)" @attributes="AdditionalAttributes"
+     id="@Id" cmdk-group="" role="presentation" hidden="@(!IsRendered)" data-value="@Heading"
+     class="@Cn("overflow-hidden p-1 text-foreground **:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:py-1.5 **:[[cmdk-group-heading]]:text-xs **:[[cmdk-group-heading]]:font-medium **:[[cmdk-group-heading]]:text-muted-foreground", Class)">
+    @if (!string.IsNullOrEmpty(Heading))
+    {
+        <div cmdk-group-heading="" aria-hidden="true" id="@HeadingId">@Heading</div>
+    }
+    <div cmdk-group-items="" role="group" aria-labelledby="@(string.IsNullOrEmpty(Heading) ? null : HeadingId)"
+         style="display:flex;flex-direction:column">
+        <CascadingValue Value="this" IsFixed="true">
+            @ChildContent
+        </CascadingValue>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] internal Command Root { get; set; } = null!;
+
+    /// <summary>The group's heading, shown above its items.</summary>
+    [Parameter] public string? Heading { get; set; }
+
+    /// <summary>Always render the group and its items, even when none match the search.</summary>
+    [Parameter] public bool ForceMount { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    internal string Id { get; } = $"cmdk-group-{Guid.NewGuid():N}";
+    private string HeadingId => Id + "-heading";
+    internal bool HasMatch { get; set; }
+    internal int Order { get; set; }
+    internal int DocIndex { get; set; }
+    private bool IsRendered => ForceMount || !Root.Filtering || HasMatch;
+
+    protected override void OnInitialized() => Root.Register(this);
+
+    public void Dispose() => Root.Unregister(this);
+}

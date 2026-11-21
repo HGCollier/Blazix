@@ -1,0 +1,28 @@
+@using Blazix.Primitives
+
+<Blazix.Primitives.TooltipTrigger data-slot="tooltip-trigger" @attributes="AdditionalAttributes" Render="@Render" NativeButton="@NativeButton" Disabled="@Disabled"
+                                Delay="@Delay" CloseDelay="@CloseDelay" class="@Class">
+    @ChildContent
+</Blazix.Primitives.TooltipTrigger>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<PopupTriggerRenderProps>? Render { get; set; }
+
+    /// <summary>Leave unset: whether Render produced a real &lt;button&gt; is detected. Set it to skip the check.</summary>
+    [Parameter] public bool? NativeButton { get; set; }
+
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>How long the pointer rests before opening, in milliseconds. Defaults to the provider's, else 600.</summary>
+    [Parameter] public int? Delay { get; set; }
+
+    /// <summary>How long after the pointer leaves before closing, in milliseconds.</summary>
+    [Parameter] public int? CloseDelay { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

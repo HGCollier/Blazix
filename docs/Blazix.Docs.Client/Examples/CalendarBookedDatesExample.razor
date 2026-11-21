@@ -1,0 +1,14 @@
+<Card Class="mx-auto w-fit p-0">
+    <CardContent Class="p-0">
+        <Calendar Mode="CalendarMode.Single" DefaultMonth="_date" @bind-Selected="_date" Disabled="IsBooked"
+                  Modifiers="@(new Dictionary<string, Func<DateOnly, bool>> { ["booked"] = IsBooked })"
+                  ModifiersClassNames="@(new Dictionary<string, string> { ["booked"] = "[&>button]:line-through opacity-100" })" />
+    </CardContent>
+</Card>
+
+@code {
+    private static readonly DateOnly FirstBooked = new(DateTime.Today.Year, 1, 12);
+    private DateOnly? _date = new(DateTime.Today.Year, 1, 6);
+
+    private static bool IsBooked(DateOnly date) => date >= FirstBooked && date < FirstBooked.AddDays(15);
+}

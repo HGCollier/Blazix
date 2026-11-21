@@ -1,0 +1,82 @@
+@page "/docs/components/context-menu"
+
+<DocsPage Title="Context Menu" Description="Displays a menu of actions triggered by a right click.">
+    <ComponentPreview Name="context-menu-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="context-menu" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>ContextMenu</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Basic" />
+    <p>A simple context menu with a few actions.</p>
+    <ComponentPreview Name="context-menu-basic" />
+    <DocsHeading Title="Submenu" />
+    <p>Use <code>ContextMenuSub</code> to nest secondary actions.</p>
+    <ComponentPreview Name="context-menu-submenu" />
+    <DocsHeading Title="Shortcuts" />
+    <p>Add <code>ContextMenuShortcut</code> to show keyboard hints.</p>
+    <ComponentPreview Name="context-menu-shortcuts" />
+    <DocsHeading Title="Groups" />
+    <p>Group related actions and separate them with dividers.</p>
+    <ComponentPreview Name="context-menu-groups" />
+    <DocsHeading Title="Icons" />
+    <p>Combine icons with labels for quick scanning.</p>
+    <ComponentPreview Name="context-menu-icons" />
+    <DocsHeading Title="Checkboxes" />
+    <p>Use <code>ContextMenuCheckboxItem</code> for toggles.</p>
+    <ComponentPreview Name="context-menu-checkboxes" />
+    <DocsHeading Title="Radio" />
+    <p>Use <code>ContextMenuRadioItem</code> for exclusive choices.</p>
+    <ComponentPreview Name="context-menu-radio" />
+    <DocsHeading Title="Destructive" />
+    <p>Use <code>variant="destructive"</code> to style the menu item as destructive.</p>
+    <ComponentPreview Name="context-menu-destructive" />
+    <DocsHeading Title="Sides" />
+    <p>Control submenu placement with side and align parameters.</p>
+    <ComponentPreview Name="context-menu-sides" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="context-menu" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <ContextMenu>
+            <ContextMenuTrigger>Right click here</ContextMenuTrigger>
+            <ContextMenuContent>
+                <ContextMenuItem>Profile</ContextMenuItem>
+                <ContextMenuItem>Billing</ContextMenuItem>
+                <ContextMenuItem>Team</ContextMenuItem>
+                <ContextMenuItem>Subscription</ContextMenuItem>
+            </ContextMenuContent>
+        </ContextMenu>
+        """;
+
+    private const string CompositionCode = """
+        ContextMenu
+        ├── ContextMenuTrigger
+        └── ContextMenuContent
+            ├── ContextMenuGroup
+            │   ├── ContextMenuLabel
+            │   ├── ContextMenuItem
+            │   └── ContextMenuItem
+            ├── ContextMenuSeparator
+            ├── ContextMenuGroup
+            │   ├── ContextMenuLabel
+            │   ├── ContextMenuCheckboxItem
+            │   └── ContextMenuCheckboxItem
+            ├── ContextMenuSeparator
+            ├── ContextMenuGroup
+            │   ├── ContextMenuLabel
+            │   └── ContextMenuRadioGroup
+            │       ├── ContextMenuRadioItem
+            │       └── ContextMenuRadioItem
+            └── ContextMenuSub
+                ├── ContextMenuSubTrigger
+                └── ContextMenuSubContent
+                    └── ContextMenuGroup
+                        ├── ContextMenuItem
+                        └── ContextMenuItem
+        """;
+}

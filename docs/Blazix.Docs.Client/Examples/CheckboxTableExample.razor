@@ -1,0 +1,62 @@
+<Table>
+    <TableHeader>
+        <TableRow>
+            <TableHead Class="w-8">
+                <Checkbox id="select-all-checkbox" Name="select-all-checkbox" aria-label="Select all rows" Checked="@(_selectedRows.Count == TableData.Length)"
+                          CheckedChanged="SelectAll" />
+            </TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Email</TableHead>
+            <TableHead>Role</TableHead>
+        </TableRow>
+    </TableHeader>
+    <TableBody>
+        @foreach (var row in TableData)
+        {
+            <TableRow @key="row.Id" data-state="@(_selectedRows.Contains(row.Id) ? "selected" : null)">
+                <TableCell>
+                    <Checkbox id="@($"row-{row.Id}-checkbox")" Name="@($"row-{row.Id}-checkbox")" aria-label="@($"Select {row.Name}")" Checked="@_selectedRows.Contains(row.Id)"
+                              CheckedChanged="@(checkedNow => SelectRow(row.Id, checkedNow))" />
+                </TableCell>
+                <TableCell Class="font-medium">@row.Name</TableCell>
+                <TableCell>@row.Email</TableCell>
+                <TableCell>@row.Role</TableCell>
+            </TableRow>
+        }
+    </TableBody>
+</Table>
+
+@code {
+    private sealed record Row(string Id, string Name, string Email, string Role);
+
+    private static readonly Row[] TableData =
+    [
+        new("1", "Sarah Chen", "sarah.chen@example.com", "Admin"),
+        new("2", "Marcus Rodriguez", "marcus.rodriguez@example.com", "User"),
+        new("3", "Priya Patel", "priya.patel@example.com", "User"),
+        new("4", "David Kim", "david.kim@example.com", "Editor"),
+    ];
+
+    private readonly HashSet<string> _selectedRows = ["1"];
+
+    private void SelectAll(bool selected)
+    {
+        _selectedRows.Clear();
+        if (selected)
+        {
+            _selectedRows.UnionWith(TableData.Select(r => r.Id));
+        }
+    }
+
+    private void SelectRow(string id, bool selected)
+    {
+        if (selected)
+        {
+            _selectedRows.Add(id);
+        }
+        else
+        {
+            _selectedRows.Remove(id);
+        }
+    }
+}

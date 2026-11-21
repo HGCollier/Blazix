@@ -1,0 +1,71 @@
+@implements IDisposable
+@inject DocsConfig Config
+
+@if (Sources.Item(Name) is { } item)
+{
+    <Tabs Value="@Config.InstallationType" ValueChanged="Config.SetInstallationType" Class="relative mt-6 w-full *:data-[slot=tabs-list]:gap-6">
+        <TabsList Variant="TabsListVariant.Line" Class="justify-start gap-4 rounded-none bg-transparent px-0">
+            <TabsTrigger Value="cli" Class="@TriggerClasses">Command</TabsTrigger>
+            <TabsTrigger Value="manual" Class="@TriggerClasses">Manual</TabsTrigger>
+        </TabsList>
+        <TabsContent Value="cli" Class="@ContentClasses">
+            @if (Setup is null)
+            {
+                <CliCommand Args="@($"add {Name}")" Class="mt-0" />
+            }
+            else
+            {
+                <Steps Class="mb-0 pt-2">
+                    <Step>Run the following command:</Step>
+                    <CliCommand Args="@($"add {Name}")" />
+                    @Setup
+                </Steps>
+            }
+        </TabsContent>
+        <TabsContent Value="manual" Class="@ContentClasses">
+            <Steps Class="mb-0 pt-2">
+                @if (item.UsesPrimitives)
+                {
+                    <Step>Install the following dependencies:</Step>
+                    <CliCommandRaw Command="dotnet add package Blazix.Primitives" />
+                }
+                @if (RegistryDependencies(item) is { Count: > 0 } dependencies)
+                {
+                    <Step>Add the components it uses:</Step>
+                    <CliCommand Args="@($"add {string.Join(' ', dependencies)}")" />
+                }
+                <Step>Copy and paste the following code into your project.</Step>
+                @foreach (var file in item.Files)
+                {
+                    <ComponentSource File="@file" Class="mt-6" />
+                }
+                <Step>Update the namespace to match your project setup.</Step>
+                @Setup
+            </Steps>
+        </TabsContent>
+    </Tabs>
+}
+
+@code {
+    private const string TriggerClasses =
+        "flex-none rounded-none border-0 bg-transparent px-0 pb-3 text-base text-muted-foreground after:bg-primary hover:text-primary " +
+        "data-active:bg-transparent data-active:text-foreground data-active:shadow-none! dark:data-active:bg-transparent";
+
+    private const string ContentClasses =
+        "relative [&_h3.font-heading]:text-base [&_h3.font-heading]:font-medium *:[figure]:first:mt-0 [&>.steps]:mt-6";
+
+    /// <summary>The registry item, e.g. "button".</summary>
+    [Parameter, EditorRequired] public string Name { get; set; } = "";
+
+    /// <summary>Steps after the files are in, such as adding a provider to the layout (Steps and code).</summary>
+    [Parameter] public RenderFragment? Setup { get; set; }
+
+    protected override void OnInitialized() => Config.Changed += OnChanged;
+
+    private void OnChanged() => InvokeAsync(StateHasChanged);
+
+    /// <summary>The other components it needs; utils (Cn) is always there after init.</summary>
+    private static List<string> RegistryDependencies(RegistryItem item) => item.Dependencies.Where(d => d != "utils").ToList();
+
+    public void Dispose() => Config.Changed -= OnChanged;
+}

@@ -1,0 +1,14 @@
+@using static Blazix.Registry.ClassNames
+
+<thead data-slot="table-header" @attributes="AdditionalAttributes"
+       class="@Cn("[&_tr]:border-b", Class)">
+    @ChildContent
+</thead>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

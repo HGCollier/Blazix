@@ -1,0 +1,14 @@
+@* A Class replaces the default classes rather than adding to them. *@
+<div data-slot="input-otp-separator" class="@(Class ?? "flex items-center [&_svg:not([class*='size-'])]:size-4")" role="separator"
+     @attributes="AdditionalAttributes">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h14" />
+    </svg>
+</div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

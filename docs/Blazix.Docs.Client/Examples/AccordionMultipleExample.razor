@@ -1,0 +1,20 @@
+<Accordion Multiple="true" Class="max-w-lg" Value="@(["notifications"])">
+    @foreach (var item in Items)
+    {
+        <AccordionItem Value="@item.Value">
+            <AccordionTrigger>@item.Trigger</AccordionTrigger>
+            <AccordionContent>@item.Content</AccordionContent>
+        </AccordionItem>
+    }
+</Accordion>
+
+@code {
+    private sealed record ItemEntry(string? Value, string? Trigger, string? Content);
+
+    private static readonly ItemEntry[] Items =
+    [
+        new("notifications", "Notification Settings", "Manage how you receive notifications. You can enable email alerts for updates or push notifications for mobile devices."),
+        new("privacy", "Privacy & Security", "Control your privacy settings and security preferences. Enable two-factor authentication, manage connected devices, review active sessions, and configure data sharing preferences. You can also download your data or delete your account."),
+        new("billing", "Billing & Subscription", "View your current plan, payment history, and upcoming invoices. Update your payment method, change your subscription tier, or cancel your subscription."),
+    ];
+}

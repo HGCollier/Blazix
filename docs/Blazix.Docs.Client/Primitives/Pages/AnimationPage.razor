@@ -1,0 +1,138 @@
+@page "/docs/primitives/animation"
+
+<DocsPage Title="Animation" Description="A guide to animating the primitives.">
+    <p>
+        The primitives can be animated with CSS transitions or CSS animations. Each part renders data attributes for its
+        states, and a few attributes that exist only for animation.
+    </p>
+
+    <DocsHeading Title="CSS transitions" />
+    <p>Use these attributes to transition a part as it appears and disappears:</p>
+    <ul>
+        <li><code>[data-starting-style]</code> is the style to transition from, as the part appears.</li>
+        <li><code>[data-ending-style]</code> is the style to transition to, as the part disappears.</li>
+    </ul>
+    <p>
+        Transitions are recommended over CSS animations, because a transition can be smoothly cancelled midway. For example,
+        if the user closes a popup before it finishes opening, a transition takes it smoothly back to its closed state
+        without an abrupt jump.
+    </p>
+    <CodeFigure Code="@TransitionCode" Title="app.css" Language="css" />
+
+    <DocsHeading Title="CSS animations" />
+    <p>Use these attributes to run CSS animations as a part appears and disappears:</p>
+    <ul>
+        <li><code>[data-open]</code> is present while the part is shown.</li>
+        <li><code>[data-closed]</code> is present while the part is hidden, and while it animates out.</li>
+    </ul>
+    <CodeFigure Code="@AnimationCode" Title="app.css" Language="css" />
+    <p>
+        The styled components animate this way, with the <code>animate-in</code> and <code>animate-out</code> utilities of
+        tw-animate-css: <code>data-open:animate-in data-open:zoom-in-95 data-closed:animate-out data-closed:zoom-out-95</code>.
+    </p>
+
+    <DocsHeading Title="Exit animations" />
+    <p>A popup that closes stays in the DOM until its exit animation has finished:</p>
+    <ul>
+        <li>
+            Blazor renders <code>data-closed</code> and <code>data-ending-style</code> on it right away and makes it
+            <code>inert</code>, and its trigger gets <code>aria-expanded="false"</code>, so assistive technology and stray
+            clicks already see a closed popup.
+        </li>
+        <li>
+            The browser waits for the popup's own animations and transitions to finish, then Blazor removes it. Infinite
+            animations inside it, such as a spinner, are ignored, and a timeout based on the computed durations is the
+            safety net.
+        </li>
+        <li>Opening it again while it animates out cancels the exit and keeps the same element.</li>
+        <li><code>OnOpenChangeComplete</code> on the root runs once the animation has finished, with the new open state.</li>
+    </ul>
+    <p>
+        Set <code>KeepMounted</code> on the popup's <code>Portal</code> part to keep it in the DOM, hidden, while it's closed.
+        Panels that open and close in place, such as an accordion's, take <code>KeepMounted</code> on the panel or the root.
+    </p>
+
+    <DocsHeading Title="Animating height" />
+    <p>
+        <a href="/docs/primitives/accordion">Accordion</a> and <a href="/docs/primitives/collapsible">Collapsible</a> panels
+        set their content's height as a CSS variable, so you can transition the height between zero and the content's size:
+    </p>
+    <CodeFigure Code="@HeightCode" Title="app.css" Language="css" />
+
+    <DocsHeading Title="Reduced motion" />
+    <p>
+        The primitives play whatever animation you give them, whatever the reduced-motion setting. To open and close
+        instantly for people who ask for less motion, turn the animation off in a media query, or with Tailwind's
+        <code>motion-reduce:</code> variant:
+    </p>
+    <CodeFigure Code="@ReducedMotionCode" Title="app.css" Language="css" />
+</DocsPage>
+
+@code {
+    private const string TransitionCode = """
+        .popover-popup {
+          transform-origin: var(--transform-origin);
+          transition: transform 150ms, opacity 150ms;
+        }
+
+        .popover-popup[data-starting-style],
+        .popover-popup[data-ending-style] {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        """;
+
+    private const string AnimationCode = """
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes scaleOut {
+          from {
+            opacity: 1;
+            transform: scale(1);
+          }
+          to {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+        }
+
+        .popover-popup[data-open] {
+          animation: scaleIn 250ms ease-out;
+        }
+
+        .popover-popup[data-closed] {
+          animation: scaleOut 250ms ease-in forwards;
+        }
+        """;
+
+    private const string HeightCode = """
+        .accordion-panel {
+          height: var(--accordion-panel-height);
+          overflow: hidden;
+          transition: height 150ms ease-out;
+        }
+
+        .accordion-panel[data-starting-style],
+        .accordion-panel[data-ending-style] {
+          height: 0;
+        }
+        """;
+
+    private const string ReducedMotionCode = """
+        @media (prefers-reduced-motion: reduce) {
+          .popover-popup {
+            transition: none;
+            animation: none;
+          }
+        }
+        """;
+}

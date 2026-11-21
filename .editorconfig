@@ -1,0 +1,24 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+charset = utf-8
+
+[*.{json,yml,css,js}]
+indent_size = 2
+
+[*.{cs,razor}]
+# Rider/ReSharper: this codebase keeps trailing commas in multiline lists
+# (enums, switch expressions, initializers), so don't flag them.
+resharper_trailing_comma_in_multiline_lists = true
+
+[src/Blazix.Primitives/**.{cs,razor}]
+# Blazix.Primitives' public members (enum values, render-prop properties) are API for
+# consuming apps, whose code isn't in this solution. Don't report them as unused.
+resharper_unused_member_global_highlighting = none
+resharper_not_accessed_positional_property_global_highlighting = none
+# Everything is in one namespace (Blazix.Primitives) so consumers need a single @using;
+# the Menu folder is for organisation only.
+resharper_check_namespace_highlighting = none

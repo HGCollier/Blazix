@@ -1,0 +1,133 @@
+@page "/docs/components/marker"
+
+<DocsPage Title="Marker" Description="Displays an inline status, system note, bordered row, or labeled separator in a conversation.">
+    <ComponentPreview Name="marker-demo" PreviewClass="h-auto theme-blue" />
+    <p>The <code>Marker</code> component displays inline conversation markers such as status updates, system notes, bordered rows, and labeled separators. Compose it with <a href="/docs/components/message"><code>Message</code></a> in a conversation thread.</p>
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="marker" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a marker:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Features" />
+    <ul>
+        <li>Inline marker, bordered row, and labeled separator variants</li>
+        <li>Decorative icon slot that is hidden from assistive tech</li>
+        <li>Polymorphic root via <code>Render</code> for link and button markers</li>
+        <li>Pairs with the <code>shimmer</code> utility for streaming status text</li>
+        <li>Customizable styling through the <code>Class</code> parameter on every part</li>
+    </ul>
+    <DocsHeading Title="Variants" />
+    <p>Use <code>Variant</code> to switch between an inline marker, bordered row, and labeled separator.</p>
+    <ComponentPreview Name="marker-variants" PreviewClass="h-auto theme-blue" />
+    <DocsTable>
+        <table>
+            <thead><tr><th>Variant</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>default</code></td><td>An inline marker for status, notes, and actions.</td></tr>
+                <tr><td><code>border</code></td><td>A default marker with a bottom border under the row.</td></tr>
+                <tr><td><code>separator</code></td><td>A centered label with divider lines on each side.</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <DocsHeading Title="Status" />
+    <p>Set <code>role="status"</code> and include a <a href="/docs/components/spinner"><code>Spinner</code></a> for streaming or in-progress markers so updates are announced.</p>
+    <ComponentPreview Name="marker-status" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="Shimmer" />
+    <p>Add the <code>shimmer</code> utility class to <code>MarkerContent</code> for an animated streaming-text effect. The utility ships in <code>Styles/Vendor/variants.css</code>, which <code>init</code> adds to your app.</p>
+    <ComponentPreview Name="marker-shimmer" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="Separator" />
+    <p>Use the <code>separator</code> variant for labeled dividers, such as dates or section breaks, in a conversation. A Checkpoint is a separator with a button that restores the thread to that point.</p>
+    <ComponentPreview Name="marker-separator" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="Border" />
+    <p>Use the <code>border</code> variant for status rows that should keep the default marker alignment while separating the next row.</p>
+    <ComponentPreview Name="marker-border" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="With Icon" />
+    <p>Use <code>MarkerIcon</code> to render an icon alongside the content. Use <code>flex-col</code> to stack the icon above the content.</p>
+    <ComponentPreview Name="marker-icon" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="Links and Buttons" />
+    <p>Turn a marker into a link or button with the <code>Render</code> parameter on <code>Marker</code>.</p>
+    <ComponentPreview Name="marker-link-button" PreviewClass="h-auto theme-blue" />
+    <CodeFigure Code="@LinksAndButtonsCode" LineNumbers="true" />
+    <DocsHeading Title="Accessibility" />
+    <p><code>Marker</code> is presentational by default. The correct semantics depend on how you use it, so choose the role based on intent rather than relying on a single default.</p>
+    <DocsHeading Level="3" Title="Status and Progress" />
+    <p>For streaming or progress markers such as "Thinking..." or a running tool, set <code>role="status"</code> so assistive tech announces the update as it appears. <code>Marker</code> forwards <code>role</code> to the underlying element.</p>
+    <CodeFigure Code="@StatusAndProgressCode" LineNumbers="true" />
+    <DocsHeading Level="3" Title="Labeled Separators" />
+    <p>A separator that carries text, such as a date or a section label, needs no role. The divider lines are decorative CSS pseudo-elements, and the text is announced as ordinary content.</p>
+    <CodeFigure Code="@LabeledSeparatorsCode" LineNumbers="true" />
+    <Callout><strong>Note:</strong> Do not add <code>role="separator"</code> to a labeled divider. A separator takes its accessible name from <code>aria-label</code>, not from its text, and its contents are treated as presentational, so the visible label would not be announced. Reserve <code>role="separator"</code> for a divider with no meaningful text.</Callout>
+    <DocsHeading Level="3" Title="Bordered Markers" />
+    <p>A bordered marker keeps the same semantics as the default marker. The bottom border is decorative, so choose <code>role="status"</code>, <code>Render</code>, or no role based on the marker's purpose.</p>
+    <CodeFigure Code="@BorderedMarkersCode" LineNumbers="true" />
+    <DocsHeading Level="3" Title="Decorative Icons" />
+    <p><code>MarkerIcon</code> is decorative and hidden from assistive tech with <code>aria-hidden</code>, so the adjacent <code>MarkerContent</code> carries the meaning. For an icon-only marker, provide an <code>aria-label</code> or visible text so it is not announced as empty.</p>
+    <CodeFigure Code="@DecorativeIconsCode" LineNumbers="true" />
+    <DocsHeading Level="3" Title="Interactive Markers" />
+    <p>When a marker links or triggers an action, render it as a real <code>&lt;button&gt;</code> or <code>&lt;a&gt;</code> with the <code>Render</code> parameter so it is focusable and exposes the correct role. The accessible name comes from the marker text.</p>
+    <CodeFigure Code="@InteractiveMarkersCode" LineNumbers="true" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="marker" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Marker>
+            <Icon Name="marker"><Icon Name="check" /></Icon>
+            <MarkerContent>Explored 4 files</MarkerContent>
+        </Marker>
+        """;
+
+    private const string CompositionCode = """
+        Marker
+        ├── MarkerIcon
+        └── MarkerContent
+        """;
+
+    private const string LinksAndButtonsCode = """
+        <Marker>
+            <Render Context="marker">
+                <a @attributes="marker.Attributes" href="#">
+                    <MarkerContent>View the pull request</MarkerContent>
+                </a>
+            </Render>
+        </Marker>
+        """;
+
+    private const string StatusAndProgressCode = """
+        <Marker role="status">
+            <Icon Name="marker"><Spinner /></Icon>
+            <MarkerContent>Compacting conversation</MarkerContent>
+        </Marker>
+        """;
+
+    private const string LabeledSeparatorsCode = """
+        <Marker Variant="MarkerVariant.Separator"><MarkerContent>Today</MarkerContent></Marker>
+        """;
+
+    private const string BorderedMarkersCode = """
+        <Marker Variant="MarkerVariant.Border">
+            <Icon Name="marker"><Icon Name="file-text" /></Icon>
+            <MarkerContent>Opened implementation notes</MarkerContent>
+        </Marker>
+        """;
+
+    private const string DecorativeIconsCode = """
+        <Marker aria-label="Synced">
+            <Icon Name="marker"><Icon Name="check" /></Icon>
+        </Marker>
+        """;
+
+    private const string InteractiveMarkersCode = """
+        <Marker>
+            <Render>
+                <a @attributes="context.Attributes" href="/files">
+                    <Icon Name="marker"><Icon Name="file-text" /></Icon>
+                    <MarkerContent>Explored 4 files</MarkerContent>
+                </a>
+            </Render>
+        </Marker>
+        """;
+}

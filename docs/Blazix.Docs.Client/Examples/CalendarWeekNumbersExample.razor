@@ -1,0 +1,9 @@
+<Card Class="mx-auto w-fit p-0">
+    <CardContent Class="p-0">
+        <Calendar Mode="CalendarMode.Single" DefaultMonth="_date" @bind-Selected="_date" ShowWeekNumber />
+    </CardContent>
+</Card>
+
+@code {
+    private DateOnly? _date = new(DateTime.Today.Year, 1, 12);
+}

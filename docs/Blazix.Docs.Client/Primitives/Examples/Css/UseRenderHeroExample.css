@@ -1,0 +1,20 @@
+.use-render-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: oklch(14.5% 0 0deg);
+}
+
+.use-render-container:where(.dark *) {
+    color: white;
+}
+
+.use-render-text {
+    margin: 0;
+}
+
+.use-render-strong {
+    font-weight: 700;
+}

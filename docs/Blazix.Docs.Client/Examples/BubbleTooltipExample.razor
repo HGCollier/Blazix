@@ -1,0 +1,16 @@
+<div class="flex w-full max-w-sm flex-col gap-4 py-12">
+    <Bubble Variant="BubbleVariant.Secondary"><BubbleContent>Did you remove the stale route?</BubbleContent></Bubble>
+    <Bubble Align="BubbleAlign.End">
+        <BubbleContent>Yes, removed it from the registry.</BubbleContent>
+        <BubbleReactions>
+            <Tooltip>
+                <TooltipTrigger>
+                    <Render>
+                        <Button @attributes="context.Attributes" Variant="ButtonVariant.Ghost" Size="ButtonSize.IconXs" aria-label="Read"><Icon Name="check" /></Button>
+                    </Render>
+                </TooltipTrigger>
+                <TooltipContent>Read on Jan 5, 2026 at 4:32 PM</TooltipContent>
+            </Tooltip>
+        </BubbleReactions>
+    </Bubble>
+</div>

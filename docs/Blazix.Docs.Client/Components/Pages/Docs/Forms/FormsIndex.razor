@@ -1,0 +1,27 @@
+@page "/docs/forms"
+
+<DocsPage Title="Forms" Description="Build forms with Blazor and Blazix.">
+    <DocsHeading Title="Pick Your Approach" />
+    <p>
+        Start by picking how you want to validate. Then follow the instructions to learn how to build forms with Blazix and the validation
+        library of your choice.
+    </p>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 sm:gap-6">
+        @foreach (var (title, href, icon) in Approaches)
+        {
+            <a href="@href" data-not-typeset
+               class="flex w-full flex-col items-center rounded-2xl bg-(--surface) p-6 text-(--surface-foreground) transition-colors hover:bg-(--surface)/80 sm:p-10">
+                <Icon Name="@icon" class="size-10" />
+                <p class="mt-2 font-medium">@title</p>
+            </a>
+        }
+    </div>
+</DocsPage>
+
+@code {
+    private static readonly (string Title, string Href, string Icon)[] Approaches =
+    [
+        ("Data Annotations", "/docs/forms/data-annotations", "clipboard-list"),
+        ("FluentValidation", "/docs/forms/fluent-validation", "list-checks"),
+    ];
+}

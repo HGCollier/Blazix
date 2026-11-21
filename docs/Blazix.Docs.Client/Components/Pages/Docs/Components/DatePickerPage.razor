@@ -1,0 +1,68 @@
+@page "/docs/components/date-picker"
+
+<DocsPage Title="Date Picker" Description="A date picker component with range and presets.">
+    <ComponentPreview Name="date-picker-demo" />
+    <DocsHeading Title="Installation" />
+    <p>The Date Picker is built using a composition of the <code>&lt;Popover /&gt;</code> and the <code>&lt;Calendar /&gt;</code> components.</p>
+    <p>See installation instructions for the <a href="/docs/components/popover#installation">Popover</a> and the <a href="/docs/components/calendar#installation">Calendar</a> components.</p>
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>A date picker is built from <code>Popover</code> and <code>Calendar</code> (there is no <code>DatePicker</code> root component):</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Basic" />
+    <p>A basic date picker component.</p>
+    <ComponentPreview Name="date-picker-basic" />
+    <DocsHeading Title="Range Picker" />
+    <p>A date picker component for selecting a range of dates.</p>
+    <ComponentPreview Name="date-picker-range" />
+    <DocsHeading Title="Date of Birth" />
+    <p>A date picker component for selecting a date of birth. This component includes a dropdown caption layout for date and month selection.</p>
+    <ComponentPreview Name="date-picker-dob" />
+    <DocsHeading Title="Input" />
+    <p>A date picker component with an input field for selecting a date.</p>
+    <ComponentPreview Name="date-picker-input" />
+    <DocsHeading Title="Time Picker" />
+    <p>A date picker component with a time input field for selecting a time.</p>
+    <ComponentPreview Name="date-picker-time" />
+    <DocsHeading Title="Natural Language Picker" />
+    <p>This example parses a few natural language phrases such as "tomorrow", "in 2 weeks", or "next friday".</p>
+    <ComponentPreview Name="date-picker-natural-language" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Popover>
+            <PopoverTrigger>
+                <Render>
+                    <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline" data-empty="@(_date is null ? "true" : "false")"
+                            Class="justify-start text-left font-normal data-[empty=true]:text-muted-foreground">
+                        <Icon Name="calendar" />
+                        @if (_date is { } date)
+                        {
+                            @date.ToString("MMMM d, yyyy")
+                        }
+                        else
+                        {
+                            <span>Pick a date</span>
+                        }
+                    </Button>
+                </Render>
+            </PopoverTrigger>
+            <PopoverContent Class="w-auto p-0">
+                <Calendar Mode="CalendarMode.Single" @bind-Selected="_date" />
+            </PopoverContent>
+        </Popover>
+
+        @code {
+            private DateOnly? _date;
+        }
+        """;
+
+    private const string CompositionCode = """
+        Popover
+        +-- PopoverTrigger
+        +-- PopoverContent
+            +-- Calendar
+        """;
+}

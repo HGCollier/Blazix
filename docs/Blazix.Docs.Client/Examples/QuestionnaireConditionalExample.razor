@@ -1,0 +1,63 @@
+@inject ToastManager Toasts
+
+<Questionnaire Class="mx-auto max-w-md" DefaultItem="runtime" Items="@_items" OnSubmit="@HandleSubmit">
+    <QuestionnaireProgress />
+    <QuestionnaireItem Name="runtime" Required>
+        <QuestionnaireTitle>Where should the agent run?</QuestionnaireTitle>
+        <QuestionnaireDescription>Cloud runs add an environment question to this flow.</QuestionnaireDescription>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Checked="@(_runtime == "local")" Value="local" CheckedChanged="@(() => SetRuntime("local"))">Local workspace</QuestionnaireChoice>
+            <QuestionnaireChoice Checked="@(_runtime == "cloud")" Value="cloud" CheckedChanged="@(() => SetRuntime("cloud"))">Cloud workspace</QuestionnaireChoice>
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+    <QuestionnaireItem Disabled="@(_runtime != "cloud")" Name="environment" Required>
+        <QuestionnaireTitle>Which cloud environment should it use?</QuestionnaireTitle>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Value="preview">Preview</QuestionnaireChoice>
+            <QuestionnaireChoice Value="staging">Staging</QuestionnaireChoice>
+            <QuestionnaireChoice Value="isolated">Isolated sandbox</QuestionnaireChoice>
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+    <QuestionnaireItem Name="approval" Required>
+        <QuestionnaireTitle>When should the agent request approval?</QuestionnaireTitle>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Value="writes">Before writing files</QuestionnaireChoice>
+            <QuestionnaireChoice Value="commands">Before running commands</QuestionnaireChoice>
+            <QuestionnaireChoice Value="sensitive">Only for sensitive actions</QuestionnaireChoice>
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+    <QuestionnaireActions>
+        <QuestionnairePrevious />
+        <QuestionnaireNext>Next</QuestionnaireNext>
+        <QuestionnaireSubmit>Save execution plan</QuestionnaireSubmit>
+    </QuestionnaireActions>
+</Questionnaire>
+
+@code {
+    private string _runtime = "local";
+    private QuestionnaireItemDefinition[] _items = CreateItems("local");
+
+    private static QuestionnaireItemDefinition[] CreateItems(string runtime) =>
+    [
+        new("runtime", Required: true),
+        new("environment", Required: true, Disabled: runtime != "cloud"),
+        new("approval", Required: true),
+    ];
+
+    private void SetRuntime(string runtime)
+    {
+        _runtime = runtime;
+        _items = CreateItems(runtime);
+    }
+
+    private void HandleSubmit(QuestionnaireAnswers answers) =>
+        Toasts.Add(new ToastOptions
+        {
+            Title = "Execution plan saved",
+            Description = $"Runtime: {answers.Get("runtime") ?? "None"} · Environment: {answers.Get("environment") ?? "Not applicable"} · " +
+                          $"Approval: {answers.Get("approval") ?? "None"}",
+        });
+}

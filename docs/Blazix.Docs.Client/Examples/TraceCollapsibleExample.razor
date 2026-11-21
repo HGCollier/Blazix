@@ -1,0 +1,15 @@
+<div class="w-full max-w-sm">
+    <TraceCollapsible>
+        <TraceCollapsibleTrigger>
+            <TraceLine>
+                <TraceIcon><Icon Name="terminal" /></TraceIcon>
+                <TraceTitle>Ran node --version</TraceTitle>
+            </TraceLine>
+        </TraceCollapsibleTrigger>
+        <TraceCollapsibleContent>
+            <CodeBlock Size="CodeBlockSize.Sm">
+                <CodeBlockContent Wrap="true" Class="max-h-64" Code="@("$ node --version\nv24.18.0")" />
+            </CodeBlock>
+        </TraceCollapsibleContent>
+    </TraceCollapsible>
+</div>

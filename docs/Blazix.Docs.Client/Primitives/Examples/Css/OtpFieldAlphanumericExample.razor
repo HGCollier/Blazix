@@ -1,0 +1,23 @@
+<div class="otp-field-alphanumeric-field">
+    <label for="@_id" class="otp-field-alphanumeric-label">
+        Recovery code
+    </label>
+    <OtpFieldRoot Length="OtpLength" ValidationType="OtpValidationType.Alphanumeric" aria-describedby="@DescriptionId" class="otp-field-alphanumeric-root">
+        <OtpFieldInput id="@_id" class="otp-field-alphanumeric-input" />
+        @for (var i = 1; i < OtpLength; i++)
+        {
+            <OtpFieldInput class="otp-field-alphanumeric-input" />
+        }
+    </OtpFieldRoot>
+    <p id="@DescriptionId" class="otp-field-alphanumeric-description">
+        Accept letters and numbers for backup codes such as <code class="otp-field-alphanumeric-code">A7C9XZ</code>.
+    </p>
+</div>
+
+@code {
+    private const int OtpLength = 6;
+
+    private readonly string _id = $"recovery-code-{Guid.NewGuid():N}";
+
+    private string DescriptionId => $"{_id}-description";
+}

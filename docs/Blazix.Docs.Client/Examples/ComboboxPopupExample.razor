@@ -1,0 +1,14 @@
+<Combobox Items="Countries.Values" ItemToLabel="Countries.LabelOf">
+    <ComboboxTrigger Class="@ButtonVariants.Get(ButtonVariant.Outline, ButtonSize.Default, "w-64 justify-between font-normal")">
+        <ComboboxValue Placeholder="Select country" />
+    </ComboboxTrigger>
+    <ComboboxContent>
+        <ComboboxInput ShowTrigger="false" Placeholder="Search" />
+        <ComboboxEmpty>No items found.</ComboboxEmpty>
+        <ComboboxList>
+            <Template Context="value">
+                <ComboboxItem Value="@value">@Countries.LabelOf(value)</ComboboxItem>
+            </Template>
+        </ComboboxList>
+    </ComboboxContent>
+</Combobox>

@@ -1,0 +1,28 @@
+@page "/docs/components/scroll-area"
+
+<DocsPage Title="Scroll Area" Description="Augments native scroll functionality for custom, cross-browser styling.">
+    <ComponentPreview Name="scroll-area-demo" PreviewClass="h-96" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="scroll-area" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>ScrollArea</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Horizontal" />
+    <p>Use <code>ScrollBar</code> with <code>orientation="horizontal"</code> for horizontal scrolling.</p>
+    <ComponentPreview Name="scroll-area-horizontal-demo" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="scroll-area" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <ScrollArea Class="h-[200px] w-[350px] rounded-md border p-4">Your scrollable content here.</ScrollArea>
+        """;
+
+    private const string CompositionCode = """
+        ScrollArea
+        └── ScrollBar
+        """;
+}

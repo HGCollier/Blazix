@@ -1,0 +1,6 @@
+@page "/docs/components/form"
+@inject NavigationManager Navigation
+
+@code {
+    protected override void OnInitialized() => Navigation.NavigateTo("/docs/forms", replace: true);
+}

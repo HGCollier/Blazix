@@ -1,0 +1,29 @@
+@page "/docs/primitives/csp-provider"
+
+<DocsPage Title="CSP Provider" Description="Configures CSP-related behavior for inline tags rendered by the primitives.">
+    <p>
+        <code>CspProvider</code> cascades a Content Security Policy nonce to the components inside it. The primitives
+        themselves never inject <code>&lt;style&gt;</code> or <code>&lt;script&gt;</code> elements: their browser-side styles
+        are set through the CSSOM, which CSP allows, and their scripts are ES modules loaded from the package's static assets.
+        So nothing in the package needs the nonce today. It's there, as <code>CspSettings</code>, for parts you build that do.
+    </p>
+    <p>
+        Some parts render inline <code>style</code> attributes (positions and sizes), which need
+        <code>style-src-attr 'unsafe-inline'</code> under a strict policy, since Blazor sets them as attributes.
+    </p>
+    <DocsHeading Title="Anatomy" />
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(CspProvider)" />
+    <PartReference Type="typeof(CspSettings)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <CspProvider Nonce="@nonce">
+            ...
+        </CspProvider>
+        """;
+}

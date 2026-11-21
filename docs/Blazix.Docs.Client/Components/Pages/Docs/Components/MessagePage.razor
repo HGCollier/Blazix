@@ -1,0 +1,105 @@
+@page "/docs/components/message"
+
+<DocsPage Title="Message" Description="Displays a message in a conversation, with optional avatar, header, footer, and alignment.">
+    <ComponentPreview Name="message-demo" PreviewClass="h-auto theme-blue" />
+    <p>The <code>Message</code> component lays out a single message in a conversation. It handles the avatar, alignment, header, and footer around the message surface.</p>
+    <p>For AI apps, you can render reasoning steps, tool calls and assistant messages using the <code>Message</code> component.</p>
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="message" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <p><strong>Note:</strong> <code>Message</code> owns the row layout—avatar, alignment, header, and footer. Render the visible message surface inside it with <a href="/docs/components/bubble"><code>Bubble</code></a>.</p>
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a message:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <p>Use <code>MessageGroup</code> to stack consecutive messages from the same sender:</p>
+    <CodeFigure Code="@CompositionCode2" Language="text" />
+    <DocsHeading Title="Features" />
+    <ul>
+        <li>Start and end alignment for sender and receiver rows via the <code>Align</code> parameter</li>
+        <li>Avatar slot that anchors to the bottom of the message and stays clear of the footer</li>
+        <li>Header and footer slots for sender names, status, and message actions</li>
+        <li>Footer follows the message side; actions stay aligned on <code>align="end"</code> rows</li>
+        <li>Group wrapper for stacking consecutive messages from the same sender</li>
+        <li>Customizable styling through the <code>Class</code> parameter on every part</li>
+    </ul>
+    <DocsHeading Title="Avatar" />
+    <p>Use <code>MessageAvatar</code> to render an avatar next to the message. Set <code>align="end"</code> on the message to align the avatar to the end of the message.</p>
+    <ComponentPreview Name="message-avatar" PreviewClass="h-auto theme-blue" />
+    <DocsTable>
+        <table>
+            <thead><tr><th>align</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>start</code></td><td>Align the message to the start of the conversation.</td></tr>
+                <tr><td><code>end</code></td><td>Align the message to the end of the conversation.</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <DocsHeading Title="Group" />
+    <p>Use <code>MessageGroup</code> to stack consecutive messages from the same sender. Render an empty <code>MessageAvatar</code> on the earlier messages to keep them aligned with the avatar on the last one.</p>
+    <ComponentPreview Name="message-group" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="Header and Footer" />
+    <p>Use <code>MessageHeader</code> for a sender name and <code>MessageFooter</code> for metadata such as a delivery or read status.</p>
+    <ComponentPreview Name="message-header-footer" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="Actions" />
+    <p>Place message-level actions in <code>MessageFooter</code>, such as copy, retry, or feedback buttons.</p>
+    <ComponentPreview Name="message-actions" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="Attachment" />
+    <ComponentPreview Name="message-attachment" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="Accessibility" />
+    <p><code>Message</code> is a presentational layout wrapper. Accessibility comes from the content you place inside it.</p>
+    <DocsHeading Level="3" Title="Label icon-only actions" />
+    <p>Action buttons in <code>MessageFooter</code> are usually icon-only, so give each one an <code>aria-label</code>.</p>
+    <CodeFigure Code="@LabelIconOnlyActionsCode" LineNumbers="true" />
+    <DocsHeading Level="3" Title="Status updates" />
+    <p>For in-progress messages, use a <a href="/docs/components/marker"><code>Marker</code></a> with <code>role="status"</code> so assistive tech announces the update as it appears.</p>
+    <CodeFigure Code="@StatusUpdatesCode" LineNumbers="true" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="message" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Message>
+            <MessageAvatar>
+                <Avatar>
+                    <AvatarImage Src="https://avatar.vercel.sh/blazix" alt="@("@blazix")" />
+                    <AvatarFallback>BX</AvatarFallback>
+                </Avatar>
+            </MessageAvatar>
+            <MessageContent>
+                <Bubble><BubbleContent>How can I help you today?</BubbleContent></Bubble>
+            </MessageContent>
+        </Message>
+        """;
+
+    private const string CompositionCode = """
+        Message
+        ├── MessageAvatar
+        └── MessageContent
+            ├── MessageHeader
+            ├── Bubble
+            └── MessageFooter
+        """;
+
+    private const string CompositionCode2 = """
+        MessageGroup
+        ├── Message
+        └── Message
+        """;
+
+    private const string LabelIconOnlyActionsCode = """
+        <MessageFooter>
+            <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" aria-label="Copy"><Icon Name="copy" /></Button>
+        </MessageFooter>
+        """;
+
+    private const string StatusUpdatesCode = """
+        <Message>
+            <Marker role="status">
+                <Icon Name="marker"><Spinner /></Icon>
+                <MarkerContent>Checking the logs...</MarkerContent>
+            </Marker>
+        </Message>
+        """;
+}

@@ -1,0 +1,74 @@
+@inject ToastManager Toasts
+
+<Blazix.Primitives.MediaQuery Query="(max-width: 767px)" MatchesChanged="@(matches => _isMobile = matches)" />
+<Drawer @bind-Open="_open" ShowSwipeHandle="_isMobile" SwipeDirection="@(_isMobile ? DrawerSwipeDirection.Down : DrawerSwipeDirection.Right)">
+    <DrawerTrigger>
+        <Render Context="trigger">
+            <Button @attributes="trigger.Attributes" Variant="ButtonVariant.Secondary">Open Drawer</Button>
+        </Render>
+    </DrawerTrigger>
+    <DrawerContent>
+        <DrawerHeader>
+            <DrawerTitle>Pick a delivery time</DrawerTitle>
+            <DrawerDescription>We&apos;ll prepare your order as soon as possible.</DrawerDescription>
+        </DrawerHeader>
+        <div class="flex-1 scroll-fade overflow-y-auto p-4">
+            <RadioGroup @bind-Value="_deliveryTime" Class="gap-2">
+                @foreach (var time in DeliveryTimes)
+                {
+                    <FieldLabel @key="time.Value" for="@time.Id">
+                        <Field Orientation="FieldOrientation.Horizontal">
+                            <FieldContent>
+                                <FieldTitle Class="flex items-center gap-2">
+                                    @time.Label
+                                    @if (time.Badge is not null)
+                                    {
+                                        <Badge Variant="BadgeVariant.Secondary">@time.Badge</Badge>
+                                    }
+                                </FieldTitle>
+                                <FieldDescription>@time.Description</FieldDescription>
+                            </FieldContent>
+                            <RadioGroupItem Value="@time.Value" id="@time.Id" />
+                        </Field>
+                    </FieldLabel>
+                }
+            </RadioGroup>
+        </div>
+        <DrawerFooter>
+            <Button @onclick="Confirm" Class="h-[34px]">Confirm Delivery Time</Button>
+            <DrawerClose>
+                <Render Context="close">
+                    <Button @attributes="close.Attributes" Variant="ButtonVariant.Outline">Cancel</Button>
+                </Render>
+            </DrawerClose>
+        </DrawerFooter>
+    </DrawerContent>
+</Drawer>
+
+@code {
+    private sealed record DeliveryTime(string Value, string Id, string Label, string Description, string? Badge = null);
+
+    private static readonly DeliveryTime[] DeliveryTimes =
+    [
+        new("asap", "delivery-asap", "Standard delivery", "25–35 min · Driver assigned now", "Fastest"),
+        new("5-00", "delivery-5-00", "5:00 PM – 5:15 PM", "Prep starts at 4:45 PM"),
+        new("5-30", "delivery-5-30", "5:30 PM – 5:45 PM", "Good if you're heading home"),
+        new("6-00", "delivery-6-00", "6:00 PM – 6:15 PM", "Most popular · High demand"),
+        new("6-30", "delivery-6-30", "6:30 PM – 6:45 PM", "Last slot before kitchen closes"),
+    ];
+
+    private bool _open;
+    private bool _isMobile;
+    private string? _deliveryTime = "asap";
+
+    private void Confirm()
+    {
+        var selected = DeliveryTimes.FirstOrDefault(time => time.Value == _deliveryTime);
+        if (selected is null)
+        {
+            return;
+        }
+        _open = false;
+        Toasts.Add(new ToastOptions { Title = "Delivery time confirmed", Description = selected.Label });
+    }
+}

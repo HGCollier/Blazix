@@ -1,0 +1,51 @@
+<div class="w-full max-w-lg">
+    <CodeBlock>
+        <CodeBlockHeader>
+            <CodeBlockTitle>
+                <Icon Name="file-code" />
+                app/api/chat/route.ts
+            </CodeBlockTitle>
+            <CodeBlockActions>
+                <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.IconXs" aria-label="Wrap lines" aria-pressed="@(_wrap ? "true" : "false")"
+                        Class="aria-pressed:text-foreground" @onclick="ToggleWrap">
+                    <Icon Name="wrap-text" />
+                </Button>
+                <a href="@DownloadUrl" download="route.ts" aria-label="Download" class="@ButtonVariants.Get(ButtonVariant.Ghost, ButtonSize.IconXs)">
+                    <Icon Name="download" />
+                </a>
+                <CodeBlockCopyButton Value="@Code" />
+            </CodeBlockActions>
+        </CodeBlockHeader>
+        <CodeBlockContent Wrap="_wrap" LineNumbers="true">
+            @foreach (var (line, index) in Code.Split('\n').Select((l, i) => (l, i)))
+            {
+                <CodeBlockLine Variant="@(index is >= 5 and <= 9 ? CodeBlockLineVariant.Highlighted : CodeBlockLineVariant.Default)">@line</CodeBlockLine>
+            }
+        </CodeBlockContent>
+    </CodeBlock>
+</div>
+
+@code {
+    private const string Code =
+        """
+        import { streamText } from "ai"
+
+        export async function POST(request: Request) {
+          const { messages } = await request.json()
+
+          const result = streamText({
+            model: "anthropic/claude-sonnet-4.5",
+            system: "You are a helpful assistant. Answer in one short paragraph.",
+            messages,
+          })
+
+          return result.toUIMessageStreamResponse()
+        }
+        """;
+
+    private static readonly string DownloadUrl = "data:text/plain;charset=utf-8," + Uri.EscapeDataString(Code);
+
+    private bool _wrap;
+
+    private void ToggleWrap() => _wrap = !_wrap;
+}

@@ -1,0 +1,20 @@
+<Accordion Class="max-w-lg rounded-lg border" Value="@(["billing"])">
+    @foreach (var item in Items)
+    {
+        <AccordionItem Value="@item.Value" Class="border-b px-4 last:border-b-0">
+            <AccordionTrigger>@item.Trigger</AccordionTrigger>
+            <AccordionContent>@item.Content</AccordionContent>
+        </AccordionItem>
+    }
+</Accordion>
+
+@code {
+    private sealed record ItemEntry(string? Value, string? Trigger, string? Content);
+
+    private static readonly ItemEntry[] Items =
+    [
+        new("billing", "How does billing work?", "We offer monthly and annual subscription plans. Billing is charged at the beginning of each cycle, and you can cancel anytime. All plans include automatic backups, 24/7 support, and unlimited team members."),
+        new("security", "Is my data secure?", "Yes. We use end-to-end encryption, SOC 2 Type II compliance, and regular third-party security audits. All data is encrypted at rest and in transit using industry-standard protocols."),
+        new("integration", "What integrations do you support?", "We integrate with 500+ popular tools including Slack, Zapier, Salesforce, HubSpot, and more. You can also build custom integrations using our REST API and webhooks."),
+    ];
+}

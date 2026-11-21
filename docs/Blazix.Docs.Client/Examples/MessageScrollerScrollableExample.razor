@@ -1,0 +1,49 @@
+<div class="mx-auto flex w-full max-w-sm flex-col gap-4">
+    <Card Class="h-140 w-full gap-0 overflow-hidden">
+        <CardHeader Class="gap-1 border-b">
+            <CardTitle>Scroll Status</CardTitle>
+            <CardDescription>Where the reader can go scroll to based on current scroll position.</CardDescription>
+        </CardHeader>
+        <MessageScrollerProvider DefaultScrollPosition="MessageScrollerScrollPosition.Start">
+            <CardContent Class="flex-1 overflow-hidden p-0">
+                <MessageScroller>
+                    <MessageScrollerViewport>
+                        <MessageScrollerContent Class="gap-4 p-(--card-spacing)">
+                            @foreach (var message in Messages)
+                            {
+                                <MessageAnimated @key="message.Id" Message="message" />
+                            }
+                        </MessageScrollerContent>
+                    </MessageScrollerViewport>
+                    <MessageScrollerButton />
+                </MessageScroller>
+            </CardContent>
+            <MessageScrollerScrollable Context="scroll">
+                <CardFooter Class="justify-center border-t text-center text-sm text-muted-foreground">
+                    @Status(scroll)
+                </CardFooter>
+            </MessageScrollerScrollable>
+        </MessageScrollerProvider>
+    </Card>
+    <div class="px-0.5 text-center text-xs text-muted-foreground">
+        Scroll the transcript to see the footer update.
+    </div>
+</div>
+
+@code {
+    private static readonly ChatMessage[] Messages =
+    [
+        .. Enumerable.Range(1, 12).Select(n => n % 2 == 1
+            ? new ChatMessage($"scrollable-{n}", "user", $"Review scroll checkpoint {n}.")
+            : new ChatMessage($"scrollable-{n}", "assistant",
+                $"Checkpoint {n} is synced. The scrollable hook updates as the viewport moves.\n\nWhen the reader is at the first message, the footer should only point them down. Once they move into the middle of the transcript, it should explain that both directions are available.\n\nAt the latest message, the footer should switch again and only point them back up."))
+    ];
+
+    private static string Status(MessageScrollerScrollState scroll) => scroll switch
+    {
+        { Start: true, End: true } => "You can scroll both ways.",
+        { End: true } => "You are at the top. You can only scroll down.",
+        { Start: true } => "You are at the bottom. You can only scroll up.",
+        _ => "All messages fit in the viewport.",
+    };
+}

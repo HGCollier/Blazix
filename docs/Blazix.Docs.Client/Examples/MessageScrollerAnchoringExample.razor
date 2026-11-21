@@ -1,0 +1,77 @@
+<div class="relative flex flex-col gap-4">
+    <Card Class="mx-auto h-140 w-full max-w-sm gap-0">
+        <CardHeader Class="border-b">
+            <CardTitle>Anchoring Turns</CardTitle>
+            <CardDescription>Choose which role settles near the top edge.</CardDescription>
+            <CardAction>
+                <Button Type="button" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="Reset anchored turns"
+                        Disabled="@(_count == 0)" @onclick="() => _count = 0">
+                    <Icon Name="rotate-cw" />
+                </Button>
+            </CardAction>
+        </CardHeader>
+        <CardContent Class="min-h-0 flex-1 overflow-hidden p-0">
+            @if (_count == 0)
+            {
+                <Empty Class="h-full">
+                    <EmptyHeader>
+                        <EmptyMedia Variant="EmptyMediaVariant.Icon"><Icon Name="message-circle-dashed" /></EmptyMedia>
+                        <EmptyTitle>No anchored messages yet</EmptyTitle>
+                        <EmptyDescription>Send the first message to see the selected role anchor.</EmptyDescription>
+                    </EmptyHeader>
+                </Empty>
+            }
+            else
+            {
+                <MessageScrollerProvider>
+                    <MessageScroller>
+                        <MessageScrollerViewport>
+                            <MessageScrollerContent Class="p-(--card-spacing)">
+                                @foreach (var message in Script.Get(_count))
+                                {
+                                    <MessageAnimated @key="message.Id" Message="message" ScrollAnchor="@(message.Role == _anchorRole)" />
+                                }
+                            </MessageScrollerContent>
+                        </MessageScrollerViewport>
+                        <MessageScrollerButton />
+                    </MessageScroller>
+                </MessageScrollerProvider>
+            }
+        </CardContent>
+        <CardFooter>
+            <ToggleGroup aria-label="Select scroll anchor role" Value="@([_anchorRole])" ValueChanged="SetAnchorRole">
+                <ToggleGroupItem Value="user" aria-label="Anchor user messages">User</ToggleGroupItem>
+                <ToggleGroupItem Value="assistant" aria-label="Anchor assistant messages">Assistant</ToggleGroupItem>
+            </ToggleGroup>
+            <Button Type="button" Size="ButtonSize.Icon" Class="ml-auto" Disabled="@(_count == Script.Get().Count)" @onclick="() => _count++">
+                <Icon Name="arrow-up" />
+                <span class="sr-only">Send Message</span>
+            </Button>
+        </CardFooter>
+    </Card>
+    <div class="mx-auto max-w-xs px-0.5 text-center text-xs text-muted-foreground">
+        Toggle the anchor role, then send messages to compare where turns settle.
+    </div>
+</div>
+
+@code {
+    private static readonly ScriptedChat Script = new ScriptedChat()
+        .User("Can you show me how anchoring behaves when a new prompt starts the turn?")
+        .Assistant("Append the user prompt first, then append the assistant response. With User selected, the prompt settles near the top and the assistant response fills in below it.")
+        .User("What changes when assistant messages are the anchor?")
+        .Assistant("Now each assistant response is the item `MessageScroller` keeps in view. This is useful when the reply is the moment you want readers to land on after each turn.")
+        .User("Can I switch roles and keep adding turns?")
+        .Assistant("Yes. The next appended message with the selected role becomes the anchor, so you can compare user and assistant anchoring without resetting the demo.");
+
+    private string _anchorRole = "user";
+    private int _count;
+
+    private void SetAnchorRole(IReadOnlyList<string>? value)
+    {
+        if (value is [var role])
+        {
+            _anchorRole = role;
+            _count = 0;
+        }
+    }
+}

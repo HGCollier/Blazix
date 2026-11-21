@@ -1,0 +1,22 @@
+.keyboard-shortcut-text {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: oklch(14.5% 0 0deg);
+}
+
+.keyboard-shortcut-text:where(.dark *) {
+    color: white;
+}
+
+.keyboard-shortcut-key {
+    padding: 0 0.25rem;
+    border: 1px solid oklch(14.5% 0 0deg);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.75rem;
+    line-height: 1rem;
+}
+
+.keyboard-shortcut-key:where(.dark *) {
+    border-color: white;
+}

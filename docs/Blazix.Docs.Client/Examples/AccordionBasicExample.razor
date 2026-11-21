@@ -1,0 +1,20 @@
+<Accordion Value="@(["item-1"])" Class="max-w-lg">
+    @foreach (var item in Items)
+    {
+        <AccordionItem Value="@item.Value">
+            <AccordionTrigger>@item.Trigger</AccordionTrigger>
+            <AccordionContent>@item.Content</AccordionContent>
+        </AccordionItem>
+    }
+</Accordion>
+
+@code {
+    private sealed record ItemEntry(string? Value, string? Trigger, string? Content);
+
+    private static readonly ItemEntry[] Items =
+    [
+        new("item-1", "How do I reset my password?", "Click on 'Forgot Password' on the login page, enter your email address, and we'll send you a link to reset your password. The link will expire in 24 hours."),
+        new("item-2", "Can I change my subscription plan?", "Yes, you can upgrade or downgrade your plan at any time from your account settings. Changes will be reflected in your next billing cycle."),
+        new("item-3", "What payment methods do you accept?", "We accept all major credit cards, PayPal, and bank transfers. All payments are processed securely through our payment partners."),
+    ];
+}

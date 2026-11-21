@@ -1,0 +1,91 @@
+@page "/docs/components/command"
+
+<DocsPage Title="Command" Description="Command menu for search and quick actions.">
+    <ComponentPreview Name="command-demo" Align="start" PreviewClass="h-[24.5rem]" />
+    <DocsHeading Title="About" />
+    <p>The <code>Command</code> component is a port of <a href="https://github.com/dip/cmdk">cmdk</a> by <a href="https://www.dip.org/">Dip</a>: the same fuzzy filtering, ranking and keyboard navigation, with no JavaScript dependency.</p>
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="command" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <p>To open the menu with <kbd>⌘K</kbd> (<kbd>Ctrl+K</kbd> on Windows and Linux), put it in a <code>CommandDialog</code> and toggle it with a <code>KeyboardShortcut</code>. <code>OnSelect</code> passes the selected item&apos;s value: close the dialog, then run the command it names.</p>
+    <CodeFigure Code="@DialogCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>Command</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Basic" />
+    <p>A simple command menu in a dialog.</p>
+    <ComponentPreview Name="command-basic" />
+    <DocsHeading Title="Shortcuts" />
+    <ComponentPreview Name="command-shortcuts" />
+    <DocsHeading Title="Groups" />
+    <p>A command menu with groups, icons and separators.</p>
+    <ComponentPreview Name="command-groups" />
+    <DocsHeading Title="Scrollable" />
+    <p>Scrollable command menu with multiple items.</p>
+    <ComponentPreview Name="command-scrollable" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="command" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Command Class="max-w-sm rounded-lg border">
+            <CommandInput placeholder="Type a command or search..." />
+            <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup Heading="Suggestions">
+                    <CommandItem>Calendar</CommandItem>
+                    <CommandItem>Search Emoji</CommandItem>
+                    <CommandItem>Calculator</CommandItem>
+                </CommandGroup>
+                <CommandSeparator />
+                <CommandGroup Heading="Settings">
+                    <CommandItem>Profile</CommandItem>
+                    <CommandItem>Billing</CommandItem>
+                    <CommandItem>Settings</CommandItem>
+                </CommandGroup>
+            </CommandList>
+        </Command>
+        """;
+
+    private const string DialogCode = """
+        <KeyboardShortcut Key="k" OnPressed="() => _open = !_open" />
+        <CommandDialog @bind-Open="_open">
+            <Command>
+                <CommandInput placeholder="Type a command or search..." />
+                <CommandList>
+                    <CommandEmpty>No results found.</CommandEmpty>
+                    <CommandGroup Heading="Suggestions">
+                        <CommandItem OnSelect="RunCommand">Calendar</CommandItem>
+                        <CommandItem OnSelect="RunCommand">Search Emoji</CommandItem>
+                        <CommandItem OnSelect="RunCommand">Calculator</CommandItem>
+                    </CommandGroup>
+                </CommandList>
+            </Command>
+        </CommandDialog>
+
+        @code {
+            private bool _open;
+
+            private void RunCommand(string value)
+            {
+                _open = false;
+            }
+        }
+        """;
+
+    private const string CompositionCode = """
+        Command
+        ├── CommandInput
+        └── CommandList
+            ├── CommandEmpty
+            ├── CommandGroup
+            │   ├── CommandItem
+            │   └── CommandItem
+            ├── CommandSeparator
+            └── CommandGroup
+                ├── CommandItem
+                └── CommandItem
+        """;
+}

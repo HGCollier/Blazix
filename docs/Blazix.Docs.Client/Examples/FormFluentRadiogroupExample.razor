@@ -1,0 +1,105 @@
+@using FluentValidation
+@using System.Linq.Expressions
+@using System.Text.Json
+@inject ToastManager Toasts
+
+<Card Class="w-full sm:max-w-md">
+    <CardHeader>
+        <CardTitle>Subscription Plan</CardTitle>
+        <CardDescription>See pricing and features for each plan.</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <EditForm @key="_editContext" id="form-fluent-radiogroup" EditContext="_editContext" OnSubmit="Submit">
+            <FluentValidationValidator Validator="Validator" />
+            <FieldGroup>
+                <FieldSet data-invalid="@Invalid(() => _model.Plan)">
+                    <FieldLegend>Plan</FieldLegend>
+                    <FieldDescription>You can upgrade or downgrade your plan at any time.</FieldDescription>
+                    <RadioGroup Name="plan" Value="@_model.Plan" ValueChanged="@(value => Change(() => _model.Plan = value ?? ""))"
+                                aria-invalid="@Invalid(() => _model.Plan)">
+                        @foreach (var plan in Plans)
+                        {
+                            <FieldLabel @key="plan.Id" for="@($"form-fluent-radiogroup-{plan.Id}")">
+                                <Field Orientation="FieldOrientation.Horizontal" data-invalid="@Invalid(() => _model.Plan)">
+                                    <FieldContent>
+                                        <FieldTitle>@plan.Title</FieldTitle>
+                                        <FieldDescription>@plan.Description</FieldDescription>
+                                    </FieldContent>
+                                    <RadioGroupItem Value="@plan.Id" id="@($"form-fluent-radiogroup-{plan.Id}")" aria-invalid="@Invalid(() => _model.Plan)" />
+                                </Field>
+                            </FieldLabel>
+                        }
+                    </RadioGroup>
+                    <FieldError Errors="@Errors(() => _model.Plan)" />
+                </FieldSet>
+            </FieldGroup>
+        </EditForm>
+    </CardContent>
+    <CardFooter>
+        <Field Orientation="FieldOrientation.Horizontal">
+            <Button Type="button" Variant="ButtonVariant.Outline" @onclick="Reset">Reset</Button>
+            <Button Type="submit" form="form-fluent-radiogroup">Save</Button>
+        </Field>
+    </CardFooter>
+</Card>
+
+@code {
+    private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
+    private static readonly SubscriptionValidator Validator = new();
+
+    private static readonly (string Id, string Title, string Description)[] Plans =
+    [
+        ("starter", "Starter (100K tokens/month)", "For everyday use with basic features."),
+        ("pro", "Pro (1M tokens/month)", "For advanced AI usage with more features."),
+        ("enterprise", "Enterprise (Unlimited tokens)", "For large teams and heavy usage."),
+    ];
+
+    private Subscription _model = new();
+    private EditContext _editContext = null!;
+    private bool _submitted;
+
+    protected override void OnInitialized() => _editContext = new EditContext(_model);
+
+    private void Submit()
+    {
+        _submitted = true;
+        if (_editContext.Validate())
+        {
+            Toasts.Add(new ToastOptions { Title = "You submitted the following values:", Description = JsonSerializer.Serialize(_model, Json) });
+        }
+    }
+
+    private void Change(Action update)
+    {
+        update();
+        if (_submitted)
+        {
+            _editContext.Validate();
+        }
+    }
+
+    private void Reset()
+    {
+        _model = new Subscription();
+        _editContext = new EditContext(_model);
+        _submitted = false;
+    }
+
+    private IEnumerable<string> Errors(Expression<Func<object>> field) => _editContext.GetValidationMessages(field).Take(1);
+
+    private string Invalid(Expression<Func<object>> field) => Errors(field).Any() ? "true" : "false";
+
+    private sealed class Subscription
+    {
+        public string Plan { get; set; } = "";
+    }
+
+    private sealed class SubscriptionValidator : AbstractValidator<Subscription>
+    {
+        public SubscriptionValidator()
+        {
+            RuleFor(subscription => subscription.Plan)
+                .NotEmpty().WithMessage("You must select a subscription plan to continue.");
+        }
+    }
+}

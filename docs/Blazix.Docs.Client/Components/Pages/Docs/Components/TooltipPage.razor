@@ -1,0 +1,50 @@
+@page "/docs/components/tooltip"
+
+<DocsPage Title="Tooltip" Description="A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.">
+    <ComponentPreview Name="tooltip-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="tooltip">
+        <Setup>
+            <Step>Add the <code>TooltipProvider</code> to the root of your app.</Step>
+            <CodeFigure Code="@LayoutCode" Title="Components/Layout/MainLayout.razor" LineNumbers="true" Highlight="@([3, 5])" />
+        </Setup>
+    </InstallationTabs>
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>Tooltip</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Side" />
+    <p>Use the <code>Side</code> parameter to change the position of the tooltip.</p>
+    <ComponentPreview Name="tooltip-sides" />
+    <DocsHeading Title="With Keyboard Shortcut" />
+    <ComponentPreview Name="tooltip-keyboard" />
+    <DocsHeading Title="Disabled Button" />
+    <p>Show a tooltip on a disabled button by wrapping it with a span.</p>
+    <ComponentPreview Name="tooltip-disabled" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="tooltip" />
+</DocsPage>
+
+@code {
+    private const string LayoutCode = """
+        @inherits LayoutComponentBase
+
+        <TooltipProvider>
+            <main>@Body</main>
+        </TooltipProvider>
+        """;
+
+    private const string UsageCode = """
+        <Tooltip>
+            <TooltipTrigger>Hover</TooltipTrigger>
+            <TooltipContent><p>Add to library</p></TooltipContent>
+        </Tooltip>
+        """;
+
+    private const string CompositionCode = """
+        Tooltip
+        ├── TooltipTrigger
+        └── TooltipContent
+        """;
+}

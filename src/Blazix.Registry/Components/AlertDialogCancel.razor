@@ -1,0 +1,17 @@
+@using Blazix.Primitives
+
+<AlertDialogClose data-slot="alert-dialog-cancel" @attributes="AdditionalAttributes" Disabled="@Disabled"
+                  class="@ButtonVariants.Get(Variant, Size, Class)">
+    @ChildContent
+</AlertDialogClose>
+
+@code {
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Outline;
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Default;
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

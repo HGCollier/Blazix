@@ -1,0 +1,36 @@
+<PopoverRoot>
+    <PopoverTrigger class="popover-icon-button" aria-label="Shipping information">
+        @InfoIcon
+    </PopoverTrigger>
+    <PopoverPortal>
+        <PopoverPositioner SideOffset="8">
+            <PopoverPopup class="popover-popup">
+                <PopoverArrow class="popover-arrow" />
+                <PopoverTitle class="popover-title">Free shipping</PopoverTitle>
+                <PopoverDescription class="popover-description">
+                    Orders over $50 arrive in 3–5 business days at no extra cost.
+                </PopoverDescription>
+                <a href="#" class="popover-link">
+                    View shipping policy
+                </a>
+                <PopoverClose aria-label="Close" class="popover-close">
+                    @XIcon
+                </PopoverClose>
+            </PopoverPopup>
+        </PopoverPositioner>
+    </PopoverPortal>
+</PopoverRoot>
+
+@code {
+    private static readonly RenderFragment InfoIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round">
+            <circle cx="8" cy="8" r="6.5" />
+            <path d="M8 7.5v3.5" />
+            <circle cx="8" cy="5" r="0.75" fill="currentColor" stroke="none" />
+        </svg>;
+
+    private static readonly RenderFragment XIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round">
+            <path d="m4.5 4.5 7 7m-7 0 7-7" />
+        </svg>;
+}

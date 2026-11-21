@@ -1,0 +1,14 @@
+@inject ToastManager Toasts
+
+<Button Variant="ButtonVariant.Outline" @onclick="ShowToast">Show Toast</Button>
+
+@code {
+    private void ShowToast() =>
+        Toasts.Add(new ToastOptions
+        {
+            Title = "Event created",
+            Description = "Sunday, December 3 at 9:00 AM",
+            ActionLabel = "Undo",
+            OnAction = () => Task.CompletedTask,
+        });
+}

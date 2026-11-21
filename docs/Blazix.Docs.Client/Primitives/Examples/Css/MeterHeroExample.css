@@ -1,0 +1,49 @@
+.meter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 0.5rem;
+    width: 15rem;
+    max-width: 100%;
+}
+
+.meter-label {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 400;
+    color: oklch(14.5% 0 0deg);
+}
+
+.meter-label:where(.dark *) {
+    color: white;
+}
+
+.meter-value {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: oklch(14.5% 0 0deg);
+    text-align: right;
+}
+
+.meter-value:where(.dark *) {
+    color: white;
+}
+
+.meter-track {
+    grid-column: 1 / 3;
+    overflow: hidden;
+    height: 0.75rem;
+    background-color: oklch(92.2% 0 0deg);
+}
+
+.meter-track:where(.dark *) {
+    background-color: oklch(26.9% 0 0deg);
+}
+
+.meter-indicator {
+    background-color: oklch(14.5% 0 0deg);
+    transition: width 500ms;
+}
+
+.meter-indicator:where(.dark *) {
+    background-color: white;
+}

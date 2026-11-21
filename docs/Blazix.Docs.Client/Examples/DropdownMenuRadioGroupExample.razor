@@ -1,0 +1,17 @@
+<DropdownMenu>
+    <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+    <DropdownMenuContent Class="w-32">
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
+            <DropdownMenuRadioGroup @bind-Value="_position">
+                <DropdownMenuRadioItem Value="top">Top</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="bottom">Bottom</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="right">Right</DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+        </DropdownMenuGroup>
+    </DropdownMenuContent>
+</DropdownMenu>
+
+@code {
+    private string? _position = "bottom";
+}

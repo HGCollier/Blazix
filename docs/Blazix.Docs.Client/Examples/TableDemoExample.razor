@@ -1,0 +1,43 @@
+<Table>
+    <TableCaption>A list of your recent invoices.</TableCaption>
+    <TableHeader>
+        <TableRow>
+            <TableHead Class="w-[100px]">Invoice</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Method</TableHead>
+            <TableHead Class="text-right">Amount</TableHead>
+        </TableRow>
+    </TableHeader>
+    <TableBody>
+        @foreach (var invoice in Invoices)
+        {
+            <TableRow>
+                <TableCell Class="font-medium">@invoice.Invoice</TableCell>
+                <TableCell>@invoice.PaymentStatus</TableCell>
+                <TableCell>@invoice.PaymentMethod</TableCell>
+                <TableCell Class="text-right">@invoice.TotalAmount</TableCell>
+            </TableRow>
+        }
+    </TableBody>
+    <TableFooter>
+        <TableRow>
+            <TableCell colspan="3">Total</TableCell>
+            <TableCell Class="text-right">$2,500.00</TableCell>
+        </TableRow>
+    </TableFooter>
+</Table>
+
+@code {
+    private sealed record InvoiceEntry(string? Invoice, string? PaymentStatus, string? TotalAmount, string? PaymentMethod);
+
+    private static readonly InvoiceEntry[] Invoices =
+    [
+        new("INV001", "Paid", "$250.00", "Credit Card"),
+        new("INV002", "Pending", "$150.00", "PayPal"),
+        new("INV003", "Unpaid", "$350.00", "Bank Transfer"),
+        new("INV004", "Paid", "$450.00", "Credit Card"),
+        new("INV005", "Paid", "$550.00", "PayPal"),
+        new("INV006", "Pending", "$200.00", "Bank Transfer"),
+        new("INV007", "Unpaid", "$300.00", "Credit Card"),
+    ];
+}

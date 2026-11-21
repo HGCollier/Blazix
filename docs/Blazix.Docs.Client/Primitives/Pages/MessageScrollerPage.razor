@@ -1,0 +1,84 @@
+@page "/docs/primitives/message-scroller"
+
+<DocsPage Title="Message Scroller" Description="A chat scroll container that anchors turns, follows streamed responses, loads history without jumping and jumps to any message.">
+    <ComponentPreview Name="primitives/message-scroller-hero" PreviewClass="h-96" />
+    <p>
+        These are the headless parts of Message Scroller, which the styled
+        <a href="/docs/components/message-scroller">Message Scroller</a> is built on. The provider owns the behavior: it
+        follows new messages while the reader is at the end, keeps their place while they read earlier ones, and holds the
+        scroll position steady when history loads above.
+    </p>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="Scrolling from code" />
+    <p>
+        Keep a <code>@@ref</code> to the provider for its commands:
+        <code>ScrollToStartAsync</code>, <code>ScrollToEndAsync</code>, and <code>ScrollToMessageAsync</code> for an item
+        with a <code>MessageId</code>.
+    </p>
+    <CodeFigure Code="@CommandsCode" />
+    <p>
+        <code>MessageScrollerScrollable</code> renders its content with whether there's more to scroll toward each edge,
+        and <code>MessageScrollerVisibility</code> with the messages in view and the anchored turn, again whenever they
+        change.
+    </p>
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(MessageScrollerProvider)" />
+    <PartReference Type="typeof(MessageScrollerRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-scrollable" Type="'start' | 'end' | 'start end'">The edges there's more to scroll toward.</StyleHook>
+            <StyleHook Name="data-autoscrolling">Present while the scroller follows new content to the end.</StyleHook>
+            <StyleHook Name="data-pending-scroll">Present until the scroller has opened at its <code>DefaultScrollPosition</code> (<code>End</code> or <code>LastAnchor</code>), so you can hide the messages until then.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MessageScrollerViewport)">
+        <DataAttributes>
+            <StyleHook Name="data-scrollable" Type="'start' | 'end' | 'start end'">The edges there's more to scroll toward.</StyleHook>
+            <StyleHook Name="data-autoscrolling">Present while the scroller follows new content to the end.</StyleHook>
+            <StyleHook Name="data-pending-scroll">Present until the scroller has opened at its <code>DefaultScrollPosition</code> (<code>End</code> or <code>LastAnchor</code>), so you can hide the messages until then.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MessageScrollerContent)" />
+    <PartReference Type="typeof(MessageScrollerItem)">
+        <DataAttributes>
+            <StyleHook Name="data-message-id" Type="string">The item's <code>MessageId</code>.</StyleHook>
+            <StyleHook Name="data-scroll-anchor">Present when the item is a scroll anchor.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MessageScrollerButton)">
+        <DataAttributes>
+            <StyleHook Name="data-active" Type="'true' | 'false'">Whether there's more to scroll toward the button's edge. While it's <code>false</code> the button is inert.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MessageScrollerScrollable)" />
+    <PartReference Type="typeof(MessageScrollerVisibility)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <MessageScrollerProvider>
+            <MessageScrollerRoot>
+                <MessageScrollerViewport>
+                    <MessageScrollerContent>
+                        <MessageScrollerItem />
+                    </MessageScrollerContent>
+                </MessageScrollerViewport>
+                <MessageScrollerButton />
+            </MessageScrollerRoot>
+        </MessageScrollerProvider>
+        """;
+
+    private const string CommandsCode = """
+        <MessageScrollerProvider @ref="_scroller">
+            ...
+        </MessageScrollerProvider>
+        <button type="button" @onclick="() => _scroller!.ScrollToMessageAsync(firstUnreadId)">First unread</button>
+
+        @code {
+            private MessageScrollerProvider? _scroller;
+        }
+        """;
+}

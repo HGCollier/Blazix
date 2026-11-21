@@ -1,0 +1,53 @@
+<div class="message-scroller-container">
+    <MessageScrollerProvider AutoScroll="true" DefaultScrollPosition="MessageScrollerScrollPosition.End">
+        <MessageScrollerRoot class="message-scroller-root">
+            <MessageScrollerViewport class="message-scroller-viewport">
+                <MessageScrollerContent class="message-scroller-content">
+                    @foreach (var message in _messages)
+                    {
+                        <MessageScrollerItem @key="message.Id" MessageId="@message.Id" class="message-scroller-message" data-mine="@message.Mine">
+                            @message.Text
+                        </MessageScrollerItem>
+                    }
+                </MessageScrollerContent>
+            </MessageScrollerViewport>
+            <MessageScrollerButton aria-label="Scroll to the latest message" class="message-scroller-scroll-button">
+                <svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="square">
+                    <path d="M8 2.5v11M3.5 9 8 13.5 12.5 9" />
+                </svg>
+            </MessageScrollerButton>
+        </MessageScrollerRoot>
+    </MessageScrollerProvider>
+    <button type="button" @onclick="Add" class="message-scroller-button">
+        Add a message
+    </button>
+</div>
+
+@code {
+    private static readonly string[] Replies =
+    [
+        "Sounds good to me.",
+        "Can you send the latest draft?",
+        "I'll take a look this afternoon.",
+        "Let's ship it on Friday.",
+    ];
+
+    private sealed record Message(string Id, string Text, bool Mine);
+
+    private readonly List<Message> _messages =
+    [
+        new("m1", "Hi! Did you get a chance to review the design?", false),
+        new("m2", "Yes, I left a few comments on the layout.", true),
+        new("m3", "Thanks. I'll update the spacing and the colors.", false),
+        new("m4", "Great. The new header looks much cleaner.", true),
+        new("m5", "Should we add a dark theme too?", false),
+        new("m6", "Definitely, most of our users asked for it.", true),
+    ];
+
+    private void Add()
+    {
+        var next = _messages.Count + 1;
+        var mine = next % 2 == 0;
+        _messages.Add(new Message($"m{next}", mine ? "Noted." : Replies[next % Replies.Length], mine));
+    }
+}

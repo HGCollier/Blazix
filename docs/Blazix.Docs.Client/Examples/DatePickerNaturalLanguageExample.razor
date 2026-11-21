@@ -1,0 +1,96 @@
+@using System.Globalization
+@using System.Text.RegularExpressions
+<Field Class="mx-auto max-w-xs">
+    <FieldLabel for="date-optional">Schedule Date</FieldLabel>
+    <InputGroup>
+        <InputGroupInput id="date-optional" Value="@_value" ValueChanged="Change" placeholder="Tomorrow or next week"
+                         @onkeydown="OpenOnArrowDown" />
+        <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
+            <Popover @bind-Open="_open">
+                <PopoverTrigger id="date-picker-natural">
+                    <Render>
+                        <InputGroupButton @attributes="context.Attributes" Variant="ButtonVariant.Ghost" Size="InputGroupButtonSize.IconXs" aria-label="Select date">
+                            <Icon Name="calendar" />
+                            <span class="sr-only">Select date</span>
+                        </InputGroupButton>
+                    </Render>
+                </PopoverTrigger>
+                <PopoverContent Class="w-auto overflow-hidden p-0" Align="Align.End" SideOffset="8">
+                    <Calendar Mode="CalendarMode.Single" Selected="_date" CaptionLayout="CalendarCaptionLayout.Dropdown" DefaultMonth="_date" SelectedChanged="Select" />
+                </PopoverContent>
+            </Popover>
+        </InputGroupAddon>
+    </InputGroup>
+    <div class="px-1 text-sm text-muted-foreground">
+        Your post will be published on
+        <span class="font-medium">@Format(_date)</span>.
+    </div>
+</Field>
+
+@code {
+    private bool _open;
+    private string _value = "In 2 days";
+    private DateOnly? _date = Parse("In 2 days");
+
+    private static string Format(DateOnly? date) => date?.ToString("MMMM dd, yyyy", CultureInfo.InvariantCulture) ?? "";
+
+    private void Change(string? value)
+    {
+        _value = value ?? "";
+        if (Parse(_value) is { } date)
+            _date = date;
+    }
+
+    private void OpenOnArrowDown(KeyboardEventArgs e) => _open = _open || e.Key == "ArrowDown";
+
+    private void Select(DateOnly? date)
+    {
+        _date = date;
+        _value = Format(date);
+        _open = false;
+    }
+
+    private static DateOnly? Parse(string text)
+    {
+        var today = DateOnly.FromDateTime(DateTime.Today);
+        text = text.Trim().ToLowerInvariant();
+        switch (text)
+        {
+            case "today" or "now": return today;
+            case "tomorrow": return today.AddDays(1);
+            case "yesterday": return today.AddDays(-1);
+        }
+
+        var match = Regex.Match(text, @"^(?:in\s+)?(a|an|\d+)\s+(day|week|month|year)s?(\s+from\s+now)?$|^(next|last)\s+(day|week|month|year|\w+)$", RegexOptions.None, TimeSpan.FromSeconds(1));
+        if (match.Success && match.Groups[1].Success && (text.StartsWith("in ", StringComparison.Ordinal) || match.Groups[3].Success))
+        {
+            var count = int.TryParse(match.Groups[1].Value, CultureInfo.InvariantCulture, out var n) ? n : 1;
+            return Add(today, match.Groups[2].Value, count);
+        }
+        if (match.Success && match.Groups[4].Success)
+        {
+            var sign = match.Groups[4].Value == "next" ? 1 : -1;
+            return Add(today, match.Groups[5].Value, sign) ?? Weekday(today, match.Groups[5].Value, sign);
+        }
+        if (Weekday(today, text, 1) is { } weekday)
+            return weekday;
+        return DateTime.TryParse(text, CultureInfo.InvariantCulture, out var parsed) ? DateOnly.FromDateTime(parsed) : null;
+    }
+
+    private static DateOnly? Add(DateOnly date, string unit, int count) => unit switch
+    {
+        "day" => date.AddDays(count),
+        "week" => date.AddDays(7 * count),
+        "month" => date.AddMonths(count),
+        "year" => date.AddYears(count),
+        _ => null,
+    };
+
+    private static DateOnly? Weekday(DateOnly date, string name, int sign)
+    {
+        if (!Enum.TryParse<DayOfWeek>(name, true, out var day) || !Enum.IsDefined(day) || int.TryParse(name, out _))
+            return null;
+        var days = ((int)day - (int)date.DayOfWeek + 7 * sign) % 7;
+        return date.AddDays(days == 0 ? 7 * sign : days);
+    }
+}

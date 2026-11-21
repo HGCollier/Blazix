@@ -1,0 +1,61 @@
+@inject IJSRuntime JsRuntime
+
+<div class="grid w-full max-w-sm gap-6">
+    <InputGroup>
+        <InputGroupInput placeholder="https://example.com/blazix" readonly />
+        <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
+            <InputGroupButton aria-label="Copy" title="Copy" Size="InputGroupButtonSize.IconXs" @onclick="CopyAsync">
+                <Icon Name="@(_isCopied ? "check" : "copy")" />
+            </InputGroupButton>
+        </InputGroupAddon>
+    </InputGroup>
+    <InputGroup Class="[--radius:9999px]">
+        <Popover>
+            @* The button is the trigger: an addon around it would be a second, nested button. *@
+            <InputGroupAddon>
+                <PopoverTrigger>
+                    <Render Context="trigger">
+                        <InputGroupButton @attributes="trigger.Attributes" Variant="ButtonVariant.Secondary" Size="InputGroupButtonSize.IconXs"
+                                          aria-label="Connection details">
+                            <Icon Name="info" />
+                        </InputGroupButton>
+                    </Render>
+                </PopoverTrigger>
+            </InputGroupAddon>
+            <PopoverContent Align="Align.Start" Class="flex flex-col gap-1 rounded-xl text-sm">
+                <p class="font-medium">Your connection is not secure.</p>
+                <p>You should not enter any sensitive information on this site.</p>
+            </PopoverContent>
+        </Popover>
+        <InputGroupAddon Class="pl-1.5 text-muted-foreground">https://</InputGroupAddon>
+        <InputGroupInput id="input-secure-19" aria-label="URL" />
+        <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
+            <InputGroupButton Size="InputGroupButtonSize.IconXs" @onclick="ToggleFavorite" aria-label="Favorite"
+                              aria-pressed="@(_isFavorite ? "true" : "false")">
+                <Icon Name="star" data-favorite="@(_isFavorite ? "true" : "false")"
+                      class="data-[favorite=true]:fill-blue-600 data-[favorite=true]:stroke-blue-600" />
+            </InputGroupButton>
+        </InputGroupAddon>
+    </InputGroup>
+    <InputGroup>
+        <InputGroupInput placeholder="Type to search..." />
+        <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
+            <InputGroupButton Variant="ButtonVariant.Secondary">Search</InputGroupButton>
+        </InputGroupAddon>
+    </InputGroup>
+</div>
+
+@code {
+    private bool _isCopied;
+    private bool _isFavorite;
+
+    private async Task CopyAsync()
+    {
+        _isCopied = await BrowserClipboard.CopyAsync(JsRuntime, "https://example.com/blazix");
+        StateHasChanged();
+        await Task.Delay(2000);
+        _isCopied = false;
+    }
+
+    private void ToggleFavorite() => _isFavorite = !_isFavorite;
+}

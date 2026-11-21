@@ -1,0 +1,30 @@
+<RadioGroupRoot aria-labelledby="@_id" Value="fuji-apple" class="radio-group">
+    <div class="radio-group-caption" id="@_id">
+        Best apple
+    </div>
+
+    <label class="radio-group-item">
+        <RadioRoot Value="fuji-apple" class="radio-group-radio">
+            <RadioIndicator class="radio-group-indicator" />
+        </RadioRoot>
+        Fuji
+    </label>
+
+    <label class="radio-group-item">
+        <RadioRoot Value="gala-apple" class="radio-group-radio">
+            <RadioIndicator class="radio-group-indicator" />
+        </RadioRoot>
+        Gala
+    </label>
+
+    <label class="radio-group-item">
+        <RadioRoot Value="granny-smith-apple" class="radio-group-radio">
+            <RadioIndicator class="radio-group-indicator" />
+        </RadioRoot>
+        Granny Smith
+    </label>
+</RadioGroupRoot>
+
+@code {
+    private readonly string _id = $"best-apple-{Guid.NewGuid():N}";
+}

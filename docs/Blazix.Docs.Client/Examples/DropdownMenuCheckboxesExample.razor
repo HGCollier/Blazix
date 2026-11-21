@@ -1,0 +1,17 @@
+<DropdownMenu>
+    <DropdownMenuTrigger>Open</DropdownMenuTrigger>
+    <DropdownMenuContent Class="w-40">
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+            <DropdownMenuCheckboxItem @bind-Checked="_showStatusBar">Status Bar</DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem @bind-Checked="_showActivityBar" Disabled="true">Activity Bar</DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem @bind-Checked="_showPanel">Panel</DropdownMenuCheckboxItem>
+        </DropdownMenuGroup>
+    </DropdownMenuContent>
+</DropdownMenu>
+
+@code {
+    private bool _showStatusBar = true;
+    private bool _showActivityBar;
+    private bool _showPanel;
+}

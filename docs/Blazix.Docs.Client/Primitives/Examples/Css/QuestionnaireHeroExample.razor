@@ -1,0 +1,70 @@
+@if (_submitted)
+{
+    <div class="questionnaire-done">
+        <p class="questionnaire-done-text">Thanks! Your answers were submitted.</p>
+        <button type="button" class="questionnaire-button" @onclick="() => _submitted = false">Start over</button>
+    </div>
+}
+else
+{
+    <QuestionnaireRoot Shortcuts="QuestionnaireShortcuts.Letters" OnSubmit="() => _submitted = true" class="questionnaire">
+        <QuestionnaireProgress class="questionnaire-progress" />
+
+        <QuestionnaireItem Name="theme" Required="true" class="questionnaire-item">
+            <QuestionnaireTitle class="questionnaire-title">Which theme do you prefer?</QuestionnaireTitle>
+            <QuestionnaireDescription class="questionnaire-description">You can change it later in settings.</QuestionnaireDescription>
+            <QuestionnaireChoices class="questionnaire-choices">
+                <QuestionnaireChoice Value="light" class="questionnaire-choice">
+                    <QuestionnaireChoiceInput class="questionnaire-choice-input" />
+                    <QuestionnaireChoiceLabel>Light</QuestionnaireChoiceLabel>
+                    <QuestionnaireChoiceShortcut class="questionnaire-shortcut" />
+                </QuestionnaireChoice>
+                <QuestionnaireChoice Value="dark" class="questionnaire-choice">
+                    <QuestionnaireChoiceInput class="questionnaire-choice-input" />
+                    <QuestionnaireChoiceLabel>Dark</QuestionnaireChoiceLabel>
+                    <QuestionnaireChoiceShortcut class="questionnaire-shortcut" />
+                </QuestionnaireChoice>
+                <QuestionnaireChoice Value="system" class="questionnaire-choice">
+                    <QuestionnaireChoiceInput class="questionnaire-choice-input" />
+                    <QuestionnaireChoiceLabel>Match the system</QuestionnaireChoiceLabel>
+                    <QuestionnaireChoiceShortcut class="questionnaire-shortcut" />
+                </QuestionnaireChoice>
+            </QuestionnaireChoices>
+            <QuestionnaireError class="questionnaire-error" />
+        </QuestionnaireItem>
+
+        <QuestionnaireItem Name="notifications" Multiple="true" class="questionnaire-item">
+            <QuestionnaireTitle class="questionnaire-title">Which notifications do you want?</QuestionnaireTitle>
+            <QuestionnaireDescription class="questionnaire-description">Select all that apply, or skip this question.</QuestionnaireDescription>
+            <QuestionnaireChoices class="questionnaire-choices">
+                <QuestionnaireChoice Value="mentions" class="questionnaire-choice">
+                    <QuestionnaireChoiceInput class="questionnaire-choice-input" />
+                    <QuestionnaireChoiceLabel>Mentions</QuestionnaireChoiceLabel>
+                    <QuestionnaireChoiceShortcut class="questionnaire-shortcut" />
+                </QuestionnaireChoice>
+                <QuestionnaireChoice Value="replies" class="questionnaire-choice">
+                    <QuestionnaireChoiceInput class="questionnaire-choice-input" />
+                    <QuestionnaireChoiceLabel>Replies</QuestionnaireChoiceLabel>
+                    <QuestionnaireChoiceShortcut class="questionnaire-shortcut" />
+                </QuestionnaireChoice>
+                <QuestionnaireChoice Value="digest" class="questionnaire-choice">
+                    <QuestionnaireChoiceInput class="questionnaire-choice-input" />
+                    <QuestionnaireChoiceLabel>Weekly digest</QuestionnaireChoiceLabel>
+                    <QuestionnaireChoiceShortcut class="questionnaire-shortcut" />
+                </QuestionnaireChoice>
+            </QuestionnaireChoices>
+            <QuestionnaireError class="questionnaire-error" />
+        </QuestionnaireItem>
+
+        <div class="questionnaire-actions">
+            <QuestionnairePrevious class="questionnaire-button">Previous</QuestionnairePrevious>
+            <QuestionnaireSkip class="questionnaire-button">Skip</QuestionnaireSkip>
+            <QuestionnaireNext class="questionnaire-button">Next</QuestionnaireNext>
+            <QuestionnaireSubmit class="questionnaire-button">Submit</QuestionnaireSubmit>
+        </div>
+    </QuestionnaireRoot>
+}
+
+@code {
+    private bool _submitted;
+}

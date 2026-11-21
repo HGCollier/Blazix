@@ -1,0 +1,49 @@
+@inject ToastManager Toasts
+
+<div class="relative mx-auto flex h-full w-full max-w-md flex-col">
+    <NativeSelect aria-label="Shortcut style" Class="absolute end-0 top-0" Value="@ModeName" ValueChanged="@SetMode">
+        <NativeSelectOption value="none">No shortcuts</NativeSelectOption>
+        <NativeSelectOption value="letters">Letters</NativeSelectOption>
+        <NativeSelectOption value="numbers">Numbers</NativeSelectOption>
+    </NativeSelect>
+    <Questionnaire Class="mt-auto" Items="@Items" Shortcuts="@_shortcuts" OnSubmit="@HandleSubmit">
+        <QuestionnaireItem Name="action" Required>
+            <QuestionnaireTitle>What should the agent do next?</QuestionnaireTitle>
+            <QuestionnaireDescription>Use the displayed shortcut or navigate with the keyboard.</QuestionnaireDescription>
+            <QuestionnaireChoices>
+                <QuestionnaireChoice Value="inspect">Inspect the implementation</QuestionnaireChoice>
+                <QuestionnaireChoice Value="tests">Run the relevant tests</QuestionnaireChoice>
+                <QuestionnaireChoice Value="patch">Prepare the patch</QuestionnaireChoice>
+            </QuestionnaireChoices>
+            <QuestionnaireError />
+        </QuestionnaireItem>
+        <QuestionnaireActions>
+            <QuestionnaireSubmit>Confirm action</QuestionnaireSubmit>
+        </QuestionnaireActions>
+    </Questionnaire>
+</div>
+
+@code {
+    private static readonly QuestionnaireItemDefinition[] Items =
+    [
+        new("action", Required: true, Choices: [new("inspect"), new("tests"), new("patch")]),
+    ];
+
+    private QuestionnaireShortcuts? _shortcuts = QuestionnaireShortcuts.Letters;
+
+    private string ModeName => _shortcuts?.ToString().ToLowerInvariant() ?? "none";
+
+    private void SetMode(string? value) => _shortcuts = value switch
+    {
+        "letters" => QuestionnaireShortcuts.Letters,
+        "numbers" => QuestionnaireShortcuts.Numbers,
+        _ => null,
+    };
+
+    private void HandleSubmit(QuestionnaireAnswers answers) =>
+        Toasts.Add(new ToastOptions
+        {
+            Title = "Next action selected",
+            Description = $"Action: {answers.Get("action") ?? "None"} · Shortcuts: {ModeName}",
+        });
+}

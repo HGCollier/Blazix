@@ -1,0 +1,37 @@
+<FieldGroup Class="w-full max-w-xs">
+    <Field Orientation="FieldOrientation.Horizontal">
+        <FieldContent>
+            <FieldLabel for="align-item">Align Item</FieldLabel>
+            <FieldDescription>Toggle to align the item with the trigger.</FieldDescription>
+        </FieldContent>
+        <Switch id="align-item" @bind-Checked="_alignItemWithTrigger" />
+    </Field>
+    <Field>
+        <Select Items="Items" Value="banana">
+            <SelectTrigger aria-label="Fruit">
+                <SelectValue Placeholder="Select a fruit" />
+            </SelectTrigger>
+            <SelectContent AlignItemWithTrigger="@_alignItemWithTrigger">
+                <SelectGroup>
+                    @foreach (var item in Items)
+                    {
+                        <SelectItem Value="@item.Value">@item.Label</SelectItem>
+                    }
+                </SelectGroup>
+            </SelectContent>
+        </Select>
+    </Field>
+</FieldGroup>
+
+@code {
+    private bool _alignItemWithTrigger = true;
+
+    private static readonly SelectOption[] Items =
+    [
+        new("apple", "Apple"),
+        new("banana", "Banana"),
+        new("blueberry", "Blueberry"),
+        new("grapes", "Grapes"),
+        new("pineapple", "Pineapple"),
+    ];
+}

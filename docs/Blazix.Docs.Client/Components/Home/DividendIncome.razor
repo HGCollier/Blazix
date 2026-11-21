@@ -1,0 +1,47 @@
+<Card>
+    <CardHeader>
+        <CardTitle>Q2 Dividend Income</CardTitle>
+        <CardDescription>Quarterly dividend payouts across your portfolio holdings.</CardDescription>
+        <CardAction>
+            <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.IconSm" Class="bg-muted" aria-label="Dismiss dividend income">
+                <Icon Name="x" />
+            </Button>
+        </CardAction>
+    </CardHeader>
+    <CardContent>
+        <ItemGroup>
+            @foreach (var holding in Holdings)
+            {
+                var max = holding.Data.Max();
+                <Item @key="holding.Name" role="listitem" Variant="ItemVariant.Muted">
+                    <ItemContent>
+                        <ItemTitle>@holding.Name</ItemTitle>
+                        <ItemDescription>@holding.Shares</ItemDescription>
+                    </ItemContent>
+                    <div class="hidden h-8 w-24 items-end gap-1 md:flex" role="img" aria-label="@($"{holding.Name} quarterly dividends")">
+                        @foreach (var value in holding.Data)
+                        {
+                            <div class="min-h-1 flex-1 rounded-t-sm bg-chart-2" style="@($"height: {Percent(value, max)}%")"></div>
+                        }
+                    </div>
+                </Item>
+            }
+        </ItemGroup>
+    </CardContent>
+</Card>
+
+@code {
+    private sealed record Holding(string Name, string Shares, int[] Data);
+
+    // Q1 to Q4.
+    private static readonly Holding[] Holdings =
+    [
+        new("Vanguard", "450 Shares", [380, 420, 390, 652]),
+        new("S&P 500 VOO", "112 Shares", [180, 210, 320, 218]),
+        new("Apple AAPL", "85 Shares", [60, 70, 120, 90]),
+        new("Realty Income", "320 Shares", [240, 260, 280, 360]),
+    ];
+
+    private static string Percent(double value, double max) =>
+        (value / max * 100).ToString(System.Globalization.CultureInfo.InvariantCulture);
+}

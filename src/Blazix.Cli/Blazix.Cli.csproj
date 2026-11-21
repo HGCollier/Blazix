@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    The Blazix CLI, shipped as a .NET tool on NuGet. Nobody installs Node or this tool first:
+      dnx Blazix.Cli init
+      dnx Blazix.Cli add dropdown-menu
+    What it copies is embedded at build time straight from src/Blazix.Registry/ (which the docs app runs with
+    hot reload), so the files you develop against are exactly the files consumers get.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+
+    <IsPackable>true</IsPackable>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>blazix</ToolCommandName>
+    <PackageId>Blazix.Cli</PackageId>
+    <Description>Copies Blazix's styled Blazor components into your project as source you own.</Description>
+    <PackageTags>blazor;components;cli;tailwind</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
+    <None Include="..\..\THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <!--
+    The registry files are added inside a target, not a top-level ItemGroup, so they exist only
+    during a real build. IDEs (Rider/ReSharper, VS) evaluate top-level items and would otherwise
+    treat the .razor/.cs files as part of this project and analyze them without Blazor references.
+  -->
+  <Target Name="EmbedRegistrySources" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <_BlazixRegistry>$(MSBuildThisFileDirectory)..\Blazix.Registry\</_BlazixRegistry>
+    </PropertyGroup>
+    <ItemGroup>
+      <!-- Staged in a private item type: unqualified %(Filename) inside a target would batch over
+           every existing EmbeddedResource and rename it too. _Imports.razor is registry-only. -->
+      <_BlazixComponentSource Include="$(_BlazixRegistry)Components\*.razor;$(_BlazixRegistry)Components\*.cs"
+                              Exclude="$(_BlazixRegistry)Components\_Imports.razor" />
+      <EmbeddedResource Include="@(_BlazixComponentSource)"
+                        LogicalName="Components/%(_BlazixComponentSource.Filename)%(_BlazixComponentSource.Extension)" />
+      <EmbeddedResource Include="$(_BlazixRegistry)registry.json" LogicalName="registry.json" />
+      <EmbeddedResource Include="$(_BlazixRegistry)Setup\Tailwind.targets" LogicalName="Setup/Tailwind.targets" />
+      <EmbeddedResource Include="$(_BlazixRegistry)Setup\TailwindWatcher.cs" LogicalName="Setup/TailwindWatcher.cs" />
+      <EmbeddedResource Include="$(_BlazixRegistry)Setup\theme.css" LogicalName="Setup/theme.css" />
+      <EmbeddedResource Include="$(_BlazixRegistry)Setup\Vendor\tw-animate.css" LogicalName="Setup/Vendor/tw-animate.css" />
+      <EmbeddedResource Include="$(_BlazixRegistry)Setup\Vendor\variants.css" LogicalName="Setup/Vendor/variants.css" />
+    </ItemGroup>
+    <Error Condition="'@(_BlazixComponentSource)' == ''" Text="No component sources found in $(_BlazixRegistry)Components." />
+  </Target>
+
+</Project>

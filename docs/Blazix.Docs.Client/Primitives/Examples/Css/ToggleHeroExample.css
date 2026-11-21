@@ -1,0 +1,57 @@
+.toggle-button {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    color: oklch(14.5% 0 0deg);
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.toggle-button:where(.dark *) {
+    color: white;
+}
+
+@media (hover: hover) {
+    .toggle-button:hover:not([data-disabled]) {
+        background-color: oklch(97% 0 0deg);
+    }
+}
+
+@media (hover: hover) {
+    .toggle-button:hover:not([data-disabled]):where(.dark *) {
+        background-color: oklch(26.9% 0 0deg);
+    }
+}
+
+.toggle-button:active:not([data-disabled]) {
+    background-color: oklch(92.2% 0 0deg);
+}
+
+.toggle-button:active:not([data-disabled]):where(.dark *) {
+    background-color: oklch(37.1% 0 0deg);
+}
+
+.toggle-button[data-pressed] {
+    color: oklch(14.5% 0 0deg);
+}
+
+.toggle-button[data-pressed]:where(.dark *) {
+    color: white;
+}
+
+.toggle-button:focus-visible {
+    outline: 2px solid oklch(14.5% 0 0deg);
+    outline-offset: -1px;
+}
+
+.toggle-button:focus-visible:where(.dark *) {
+    outline-color: white;
+}

@@ -1,0 +1,112 @@
+@implements IDisposable
+
+<div class="flex w-full max-w-md flex-col gap-4">
+    @foreach (var (block, index) in Blocks.Select((b, i) => (b, i)).Where(b => _length > Offsets[b.i]))
+    {
+        var code = block.Code[..Math.Min(block.Code.Length, _length - Offsets[index])];
+        var rows = code.Split('\n');
+        <CodeBlock @key="block.Code">
+            @if (block.Title is not null)
+            {
+                <CodeBlockHeader>
+                    <CodeBlockTitle>@block.Title</CodeBlockTitle>
+                    <CodeBlockActions>
+                        <CodeBlockCopyButton Value="@Source(block, rows)" disabled="@(code.Length < block.Code.Length)" />
+                    </CodeBlockActions>
+                </CodeBlockHeader>
+            }
+            <CodeBlockContent LineNumbers="block.LineNumbers">
+                @foreach (var (row, line) in rows.Select((r, i) => (r, i)))
+                {
+                    <CodeBlockLine Variant="@VariantOf(block, row, line)">@(block.Diff ? row[Math.Min(1, row.Length)..] : row)</CodeBlockLine>
+                }
+            </CodeBlockContent>
+        </CodeBlock>
+    }
+    <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" Class="self-start" Disabled="@(_length < Total)" @onclick="ReplayAsync">
+        <Icon Name="rotate-ccw" />
+        Replay
+    </Button>
+</div>
+
+@code {
+    private sealed record Block(string? Title, string Code, bool LineNumbers = false, int[]? Highlight = null, bool Diff = false);
+
+    private static readonly Block[] Blocks =
+    [
+        new("hooks/use-debounce.ts",
+            """
+            export function useDebounce<T>(value: T, delay = 300) {
+              const [debounced, setDebounced] = React.useState(value)
+
+              React.useEffect(() => {
+                const timeout = setTimeout(() => setDebounced(value), delay)
+                return () => clearTimeout(timeout)
+              }, [value, delay])
+
+              return debounced
+            }
+            """, LineNumbers: true),
+        new(null, "dnx Blazix.Cli add code-block"),
+        new("components/search.tsx",
+            """
+             export function Search() {
+               const [query, setQuery] = React.useState("")
+            -  const results = useSearch(query)
+            +  const debounced = useDebounce(query, 300)
+            +  const results = useSearch(debounced)
+               return <SearchResults results={results} />
+             }
+            """, LineNumbers: true, Diff: true),
+        new("app/api/chat/route.ts", ChatSnippet.Route, LineNumbers: true, Highlight: [5, 6, 7, 8]),
+        new(".env.local", "AI_GATEWAY_API_KEY=your-api-key"),
+    ];
+
+    private static readonly int[] Offsets = [.. Blocks.Select((_, i) => Blocks.Take(i).Sum(b => b.Code.Length))];
+    private static readonly int Total = Blocks.Sum(b => b.Code.Length);
+
+    private CancellationTokenSource _cancel = new();
+    private int _length = Total;
+
+    private static string Source(Block block, string[] rows) =>
+        block.Diff ? string.Join('\n', rows.Select(r => r[Math.Min(1, r.Length)..])) : string.Join('\n', rows);
+
+    private static CodeBlockLineVariant VariantOf(Block block, string row, int line)
+    {
+        if (block.Diff && row.StartsWith('+'))
+        {
+            return CodeBlockLineVariant.Added;
+        }
+        if (block.Diff && row.StartsWith('-'))
+        {
+            return CodeBlockLineVariant.Removed;
+        }
+        return !block.Diff && block.Highlight?.Contains(line) == true ? CodeBlockLineVariant.Highlighted : CodeBlockLineVariant.Default;
+    }
+
+    private async Task ReplayAsync()
+    {
+        await _cancel.CancelAsync();
+        _cancel.Dispose();
+        _cancel = new CancellationTokenSource();
+        try
+        {
+            for (_length = 0; _length < Total; _length += 3)
+            {
+                StateHasChanged();
+                await Task.Delay(16, _cancel.Token);
+            }
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+        _length = Total;
+    }
+
+    public void Dispose()
+    {
+        _cancel.Cancel();
+        _cancel.Dispose();
+    }
+}

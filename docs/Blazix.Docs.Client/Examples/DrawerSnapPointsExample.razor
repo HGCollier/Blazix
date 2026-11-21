@@ -1,0 +1,27 @@
+<Drawer SnapPoints="SnapPoints" ShowSwipeHandle="true">
+    <DrawerTrigger>
+        <Render Context="trigger">
+            <Button @attributes="trigger.Attributes" Variant="ButtonVariant.Outline">Open Snap Drawer</Button>
+        </Render>
+    </DrawerTrigger>
+    <DrawerContent>
+        <DrawerHeader>
+            <DrawerTitle>Snap points</DrawerTitle>
+            <DrawerDescription>Drag the drawer to snap between a compact peek and a near full-height view.</DrawerDescription>
+        </DrawerHeader>
+        <div class="flex-1 p-4">
+            <div class="rounded-2xl bg-muted group-data-[swipe-axis=x]/drawer-popup:size-full group-data-[swipe-axis=y]/drawer-popup:h-80 group-data-[swipe-axis=y]/drawer-popup:w-full"></div>
+        </div>
+        <DrawerFooter>
+            <DrawerClose>
+                <Render Context="close">
+                    <Button @attributes="close.Attributes">Close</Button>
+                </Render>
+            </DrawerClose>
+        </DrawerFooter>
+    </DrawerContent>
+</Drawer>
+
+@code {
+    private static readonly DrawerSnapPoint[] SnapPoints = ["31rem", 1];
+}

@@ -1,0 +1,30 @@
+<div class="flex flex-wrap gap-4">
+    <ButtonGroup>
+        <Tooltip>
+            <TooltipTrigger>
+                <Render>
+                    <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">Save</Button>
+                </Render>
+            </TooltipTrigger>
+            <TooltipContent>
+                Save Changes
+                <Kbd>S</Kbd>
+            </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+            <TooltipTrigger>
+                <Render>
+                    <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">Print</Button>
+                </Render>
+            </TooltipTrigger>
+            <TooltipContent>
+                Print Document
+                @(" ")
+                <KbdGroup>
+                    <Kbd>Ctrl</Kbd>
+                    <Kbd>P</Kbd>
+                </KbdGroup>
+            </TooltipContent>
+        </Tooltip>
+    </ButtonGroup>
+</div>

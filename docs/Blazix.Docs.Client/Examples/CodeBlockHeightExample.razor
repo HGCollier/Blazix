@@ -1,0 +1,16 @@
+<div class="w-full max-w-md">
+    <CodeBlock>
+        <CodeBlockHeader>
+            <CodeBlockTitle>Logs</CodeBlockTitle>
+            <CodeBlockActions>
+                <CodeBlockCopyButton Value="@Logs" />
+            </CodeBlockActions>
+        </CodeBlockHeader>
+        <CodeBlockContent Class="max-h-48 scroll-fade-y" Code="@Logs" />
+    </CodeBlock>
+</div>
+
+@code {
+    private static readonly string Logs = string.Join('\n',
+        Enumerable.Range(0, 40).Select(index => $"[{index + 1:00}] GET /api/chat 200 in {12 + index * 7 % 40}ms"));
+}

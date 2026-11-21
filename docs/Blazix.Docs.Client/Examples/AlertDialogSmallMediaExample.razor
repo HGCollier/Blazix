@@ -1,0 +1,18 @@
+<AlertDialog>
+    <AlertDialogTrigger>
+        <Render>
+            <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">Show Dialog</Button>
+        </Render>
+    </AlertDialogTrigger>
+    <AlertDialogContent Size="AlertDialogSize.Sm">
+        <AlertDialogHeader>
+            <AlertDialogMedia><Icon Name="bluetooth" /></AlertDialogMedia>
+            <AlertDialogTitle>Allow accessory to connect?</AlertDialogTitle>
+            <AlertDialogDescription>Do you want to allow the USB accessory to connect to this device?</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+            <AlertDialogCancel>Don&apos;t allow</AlertDialogCancel>
+            <AlertDialogAction>Allow</AlertDialogAction>
+        </AlertDialogFooter>
+    </AlertDialogContent>
+</AlertDialog>

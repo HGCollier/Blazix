@@ -1,0 +1,63 @@
+@page "/docs/components/native-select"
+
+<DocsPage Title="Native Select" Description="A styled native HTML select element with consistent design system integration.">
+    <Callout Class="translate-y-[3px]!">}&gt; For a styled select component, see the <a href="/docs/components/select">Select</a> component.</Callout>
+    <ComponentPreview Name="native-select-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="native-select" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <DocsHeading Level="3" Title="Simple" />
+    <p>Options placed directly under <code>NativeSelect</code> (no <code>NativeSelectOptGroup</code>).</p>
+    <CodeFigure Code="@SimpleCode" Language="text" />
+    <DocsHeading Level="3" Title="With groups" />
+    <p>Use <code>NativeSelectOptGroup</code> to organize options into categories.</p>
+    <CodeFigure Code="@WithGroupsCode" Language="text" />
+    <DocsHeading Title="Groups" />
+    <p>Use <code>NativeSelectOptGroup</code> to organize options into categories.</p>
+    <ComponentPreview Name="native-select-groups" />
+    <DocsHeading Title="Disabled" />
+    <p>Add the <code>disabled</code> parameter to the <code>NativeSelect</code> component to disable the select.</p>
+    <ComponentPreview Name="native-select-disabled" />
+    <DocsHeading Title="Invalid" />
+    <p>Use <code>aria-invalid</code> to show validation errors and the <code>data-invalid</code> attribute to the <code>Field</code> component for styling.</p>
+    <ComponentPreview Name="native-select-invalid" />
+    <DocsHeading Title="Native Select vs Select" />
+    <ul>
+        <li>Use <code>NativeSelect</code> for native browser behavior, better performance, or mobile-optimized dropdowns.</li>
+        <li>Use <code>Select</code> for custom styling, animations, or complex interactions.</li>
+    </ul>
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="native-select" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <NativeSelect>
+            <NativeSelectOption value="">Select a fruit</NativeSelectOption>
+            <NativeSelectOption value="apple">Apple</NativeSelectOption>
+            <NativeSelectOption value="banana">Banana</NativeSelectOption>
+            <NativeSelectOption value="blueberry">Blueberry</NativeSelectOption>
+            <NativeSelectOption value="pineapple">Pineapple</NativeSelectOption>
+        </NativeSelect>
+        """;
+
+    private const string SimpleCode = """
+        NativeSelect
+        ├── NativeSelectOption
+        ├── NativeSelectOption
+        ├── NativeSelectOption
+        └── NativeSelectOption
+        """;
+
+    private const string WithGroupsCode = """
+        NativeSelect
+        ├── NativeSelectOptGroup
+        │   ├── NativeSelectOption
+        │   └── NativeSelectOption
+        └── NativeSelectOptGroup
+            ├── NativeSelectOption
+            └── NativeSelectOption
+        """;
+}

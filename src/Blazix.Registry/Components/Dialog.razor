@@ -1,0 +1,27 @@
+@using Blazix.Primitives
+
+<DialogRoot Open="@Open" OpenChanged="@OpenChanged" OnOpenChange="@OnOpenChange" OnOpenChangeComplete="@OnOpenChangeComplete"
+            Modal="@Modal" DisablePointerDismissal="@DisablePointerDismissal">
+    @ChildContent
+</DialogRoot>
+
+@code {
+    /// <summary>Supports <c>@bind-Open</c>; leave unset to let the dialog manage itself.</summary>
+    [Parameter] public bool Open { get; set; }
+
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+
+    /// <summary>Runs before the dialog opens or closes, with the reason; call <c>Cancel()</c> to keep it as it is.</summary>
+    [Parameter] public EventCallback<OpenChangeEventArgs> OnOpenChange { get; set; }
+
+    /// <summary>Runs once the open or close animation has finished.</summary>
+    [Parameter] public EventCallback<bool> OnOpenChangeComplete { get; set; }
+
+    /// <summary>Whether focus is trapped and the page behind is inert. Defaults to true.</summary>
+    [Parameter] public PopupModal Modal { get; set; } = PopupModal.True;
+
+    /// <summary>Keep the dialog open when the user presses outside it.</summary>
+    [Parameter] public bool DisablePointerDismissal { get; set; }
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

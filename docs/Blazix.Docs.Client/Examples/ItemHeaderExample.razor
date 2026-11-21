@@ -1,0 +1,27 @@
+<div class="flex w-full max-w-xl flex-col gap-6">
+    <ItemGroup Class="grid grid-cols-3 gap-4">
+        @foreach (var model in Models)
+        {
+            <Item Variant="ItemVariant.Outline">
+                <ItemHeader>
+                    <img src="@model.Image" alt="@model.Name" title="@($"Photo: {model.Credit}")" width="128" height="128" class="aspect-square w-full rounded-sm object-cover" />
+                </ItemHeader>
+                <ItemContent>
+                    <ItemTitle>@model.Name</ItemTitle>
+                    <ItemDescription>@model.Description</ItemDescription>
+                </ItemContent>
+            </Item>
+        }
+    </ItemGroup>
+</div>
+
+@code {
+    private sealed record ModelEntry(string? Name, string? Description, string? Image, string? Credit);
+
+    private static readonly ModelEntry[] Models =
+    [
+        new("v0-1.5-sm", "Everyday tasks and UI generation.", "https://images.unsplash.com/photo-1650804068570-7fb2e3dbf888?q=80&w=640&auto=format&fit=crop", "Valeria Reverdo on Unsplash"),
+        new("v0-1.5-lg", "Advanced thinking or reasoning.", "https://images.unsplash.com/photo-1610280777472-54133d004c8c?q=80&w=640&auto=format&fit=crop", "Michael Oeser on Unsplash"),
+        new("v0-2.0-mini", "Open Source model for everyone.", "https://images.unsplash.com/photo-1602146057681-08560aee8cde?q=80&w=640&auto=format&fit=crop", "Cherry Laithang on Unsplash"),
+    ];
+}

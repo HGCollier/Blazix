@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <!--
+      The docs app's host, the project to run: prerenders the pages, serves the files and, in Development, keeps
+      Tailwind compiling. The pages, examples and site are in ../Blazix.Docs.Client, which runs them on WebAssembly
+      with hot reload.
+    -->
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Blazix.Docs.Client\Blazix.Docs.Client.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Compiled here rather than in the registry: it reads the Tailwind settings from the app's own assembly. -->
+        <Compile Include="..\..\src\Blazix.Registry\Setup\TailwindWatcher.cs" Link="TailwindWatcher.cs"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <!-- Styles/app.css scans these with @source; editing them rebuilds the CSS. -->
+        <TailwindSources>..\..\src\Blazix.Registry\Components\**\*.razor;..\..\src\Blazix.Registry\Components\**\*.cs;..\..\src\Blazix.Registry\Setup\**\*.css;..\Blazix.Docs.Client\Components\**\*.razor;..\Blazix.Docs.Client\Components\**\*.cs;..\Blazix.Docs.Client\Examples\**\*.razor;..\Blazix.Docs.Client\Primitives\**\*.razor;..\Blazix.Docs.Client\Primitives\**\*.css</TailwindSources>
+    </PropertyGroup>
+
+    <Import Project="..\..\src\Blazix.Registry\Setup\Tailwind.targets"/>
+
+</Project>

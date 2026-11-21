@@ -1,0 +1,80 @@
+@page "/docs/primitives/dialog"
+
+<DocsPage Title="Dialog" Description="A popup that opens on top of the entire page.">
+    <ComponentPreview Name="primitives/dialog-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li><strong>Dialog doesn't support gestures:</strong> Use <a href="/docs/primitives/drawer">Drawer</a> when you need gestures or snap points. A panel that slides in from the edge of the screen and doesn't need gestures is a positioned Dialog.</li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(DialogRoot)" />
+    <PartReference Type="typeof(DialogTrigger)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding dialog is open.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the trigger is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(DialogPortal)" />
+    <PartReference Type="typeof(DialogBackdrop)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the dialog is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the dialog is closed.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the dialog begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the dialog is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(DialogPopup)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the dialog is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the dialog is closed.</StyleHook>
+            <StyleHook Name="data-nested">Present when the dialog is nested within another dialog.</StyleHook>
+            <StyleHook Name="data-nested-dialog-open">Present when the dialog has other open dialogs nested within it.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the dialog begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the dialog is animating out.</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--nested-dialogs" Type="number">Indicates how many dialogs are nested within.</StyleHook>
+        </CssVariables>
+    </PartReference>
+    <PartReference Type="typeof(DialogTitle)" />
+    <PartReference Type="typeof(DialogDescription)" />
+    <PartReference Type="typeof(DialogClose)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the button is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(DialogViewport)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the dialog is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the dialog is closed.</StyleHook>
+            <StyleHook Name="data-nested">Present when the dialog is nested within another dialog.</StyleHook>
+            <StyleHook Name="data-nested-dialog-open">Present when the dialog has other open dialogs nested within it.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the dialog begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the dialog is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(DialogHandle)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <DialogRoot>
+            <DialogTrigger />
+            <DialogPortal>
+                <DialogBackdrop />
+                <DialogViewport>
+                    <DialogPopup>
+                        <DialogTitle />
+                        <DialogDescription />
+                        <DialogClose />
+                    </DialogPopup>
+                </DialogViewport>
+            </DialogPortal>
+        </DialogRoot>
+        """;
+}

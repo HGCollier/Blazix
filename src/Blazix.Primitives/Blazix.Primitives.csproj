@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <!--
+      Headless primitives: behaviour + accessibility, zero styles.
+      `dotnet pack` puts wwwroot/menu.js inside the .nupkg as a static web asset, served at
+      _content/Blazix.Primitives/menu.js. Consumers need no Node, npm or <script> tags.
+    -->
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <!-- Trimmed WebAssembly apps and Native AOT: turns on the trim, AOT and single-file analyzers, and marks the package trimmable. -->
+        <IsAotCompatible>true</IsAotCompatible>
+
+        <IsPackable>true</IsPackable>
+        <PackageId>Blazix.Primitives</PackageId>
+        <Description>Unstyled, accessible Blazor primitives. Bring your own CSS.</Description>
+        <PackageTags>blazor;headless;unstyled;accessibility;aria;components</PackageTags>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);CS1591</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- A package (not a FrameworkReference) so the library also works in WebAssembly and Auto. -->
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="/"/>
+        <None Include="..\..\THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/" />
+    </ItemGroup>
+
+</Project>

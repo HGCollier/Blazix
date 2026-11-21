@@ -1,0 +1,128 @@
+<MenubarRoot class="menubar">
+    <MenuRoot>
+        <MenuTrigger class="menubar-menu-trigger">
+            File
+        </MenuTrigger>
+        <MenuPortal>
+            <MenuPositioner class="menubar-menu-positioner" SideOffset="4">
+                <MenuPopup class="menubar-menu-popup">
+                    <MenuItem class="menubar-menu-item">
+                        New
+                    </MenuItem>
+                    <MenuItem class="menubar-menu-item">
+                        Open
+                    </MenuItem>
+                    <MenuItem class="menubar-menu-item">
+                        Save
+                    </MenuItem>
+
+                    <MenuSubmenuRoot>
+                        <MenuSubmenuTrigger class="menubar-submenu-trigger">
+                            Export
+                            @CaretRightIcon
+                        </MenuSubmenuTrigger>
+                        <MenuPortal>
+                            <MenuPositioner class="menubar-menu-positioner" SideOffset="-4" AlignOffset="-4">
+                                <MenuPopup class="menubar-menu-popup">
+                                    <MenuItem class="menubar-menu-item">
+                                        PDF
+                                    </MenuItem>
+                                    <MenuItem class="menubar-menu-item">
+                                        PNG
+                                    </MenuItem>
+                                    <MenuItem class="menubar-menu-item">
+                                        SVG
+                                    </MenuItem>
+                                </MenuPopup>
+                            </MenuPositioner>
+                        </MenuPortal>
+                    </MenuSubmenuRoot>
+
+                    <MenuSeparator class="menubar-menu-separator" />
+                    <MenuItem class="menubar-menu-item">
+                        Print
+                    </MenuItem>
+                </MenuPopup>
+            </MenuPositioner>
+        </MenuPortal>
+    </MenuRoot>
+
+    <MenuRoot>
+        <MenuTrigger class="menubar-menu-trigger">
+            Edit
+        </MenuTrigger>
+        <MenuPortal>
+            <MenuPositioner class="menubar-menu-positioner" SideOffset="4">
+                <MenuPopup class="menubar-menu-popup">
+                    <MenuItem class="menubar-menu-item">
+                        Cut
+                    </MenuItem>
+                    <MenuItem class="menubar-menu-item">
+                        Copy
+                    </MenuItem>
+                    <MenuItem class="menubar-menu-item">
+                        Paste
+                    </MenuItem>
+                </MenuPopup>
+            </MenuPositioner>
+        </MenuPortal>
+    </MenuRoot>
+
+    <MenuRoot>
+        <MenuTrigger class="menubar-menu-trigger">
+            View
+        </MenuTrigger>
+        <MenuPortal>
+            <MenuPositioner class="menubar-menu-positioner" SideOffset="4">
+                <MenuPopup class="menubar-menu-popup">
+                    <MenuItem class="menubar-menu-item">
+                        Zoom In
+                    </MenuItem>
+                    <MenuItem class="menubar-menu-item">
+                        Zoom Out
+                    </MenuItem>
+
+                    <MenuSubmenuRoot>
+                        <MenuSubmenuTrigger class="menubar-submenu-trigger">
+                            Layout
+                            @CaretRightIcon
+                        </MenuSubmenuTrigger>
+                        <MenuPortal>
+                            <MenuPositioner class="menubar-menu-positioner" SideOffset="-4" AlignOffset="-4">
+                                <MenuPopup class="menubar-menu-popup">
+                                    <MenuItem class="menubar-menu-item">
+                                        Single Page
+                                    </MenuItem>
+                                    <MenuItem class="menubar-menu-item">
+                                        Two Pages
+                                    </MenuItem>
+                                    <MenuItem class="menubar-menu-item">
+                                        Continuous
+                                    </MenuItem>
+                                </MenuPopup>
+                            </MenuPositioner>
+                        </MenuPortal>
+                    </MenuSubmenuRoot>
+
+                    <MenuSeparator class="menubar-menu-separator" />
+                    <MenuItem class="menubar-menu-item">
+                        Full Screen
+                    </MenuItem>
+                </MenuPopup>
+            </MenuPositioner>
+        </MenuPortal>
+    </MenuRoot>
+
+    <MenuRoot Disabled="true">
+        <MenuTrigger class="menubar-menu-trigger">
+            Help
+        </MenuTrigger>
+    </MenuRoot>
+</MenubarRoot>
+
+@code {
+    private static readonly RenderFragment CaretRightIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M6 12V4l4.5 4z" />
+        </svg>;
+}

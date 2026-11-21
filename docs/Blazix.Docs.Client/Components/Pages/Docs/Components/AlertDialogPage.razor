@@ -1,0 +1,66 @@
+@page "/docs/components/alert-dialog"
+
+<DocsPage Title="Alert Dialog" Description="A modal dialog that interrupts the user with important content and expects a response.">
+    <ComponentPreview Name="alert-dialog-demo" PreviewClass="h-56" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="alert-dialog" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build an <code>AlertDialog</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Basic" />
+    <p>A basic alert dialog with a title, description, and cancel and continue buttons.</p>
+    <ComponentPreview Name="alert-dialog-basic" PreviewClass="h-56" />
+    <DocsHeading Title="Small" />
+    <p>Use the <code>size="sm"</code> parameter to make the alert dialog smaller.</p>
+    <ComponentPreview Name="alert-dialog-small" PreviewClass="h-56" />
+    <DocsHeading Title="Media" />
+    <p>Use the <code>AlertDialogMedia</code> component to add a media element such as an icon or image to the alert dialog.</p>
+    <ComponentPreview Name="alert-dialog-media" PreviewClass="h-56" />
+    <DocsHeading Title="Small with Media" />
+    <p>Use the <code>size="sm"</code> parameter to make the alert dialog smaller and the <code>AlertDialogMedia</code> component to add a media element such as an icon or image to the alert dialog.</p>
+    <ComponentPreview Name="alert-dialog-small-media" PreviewClass="h-56" />
+    <DocsHeading Title="Destructive" />
+    <p>Use the <code>AlertDialogAction</code> component to add a destructive action button to the alert dialog.</p>
+    <ComponentPreview Name="alert-dialog-destructive" PreviewClass="h-56" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="alert-dialog" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <AlertDialog>
+            <AlertDialogTrigger>
+                <Render>
+                    <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">Show Dialog</Button>
+                </Render>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+                <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete your account from our servers.
+                    </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction>Continue</AlertDialogAction>
+                </AlertDialogFooter>
+            </AlertDialogContent>
+        </AlertDialog>
+        """;
+
+    private const string CompositionCode = """
+        AlertDialog
+        ├── AlertDialogTrigger
+        └── AlertDialogContent
+            ├── AlertDialogHeader
+            │   ├── AlertDialogMedia
+            │   ├── AlertDialogTitle
+            │   └── AlertDialogDescription
+            └── AlertDialogFooter
+                ├── AlertDialogCancel
+                └── AlertDialogAction
+        """;
+}

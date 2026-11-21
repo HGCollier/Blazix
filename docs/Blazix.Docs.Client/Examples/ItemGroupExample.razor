@@ -1,0 +1,33 @@
+<ItemGroup Class="max-w-sm">
+    @foreach (var person in People)
+    {
+        <Item @key="person.Username" Variant="ItemVariant.Outline">
+            <ItemMedia>
+                <Avatar>
+                    <AvatarImage Src="@person.Avatar" alt="" Class="grayscale" />
+                    <AvatarFallback>@person.Username[0]</AvatarFallback>
+                </Avatar>
+            </ItemMedia>
+            <ItemContent Class="gap-1">
+                <ItemTitle>@person.Username</ItemTitle>
+                <ItemDescription>@person.Email</ItemDescription>
+            </ItemContent>
+            <ItemActions>
+                <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="rounded-full" aria-label="@($"Add {person.Username}")">
+                    <Icon Name="plus" />
+                </Button>
+            </ItemActions>
+        </Item>
+    }
+</ItemGroup>
+
+@code {
+    private sealed record Person(string Username, string Avatar, string Email);
+
+    private static readonly Person[] People =
+    [
+        new("blazix", "https://avatar.vercel.sh/blazix", "blazix@example.com"),
+        new("maxleiter", "https://github.com/maxleiter.png", "maxleiter@vercel.com"),
+        new("evilrabbit", "https://github.com/evilrabbit.png", "evilrabbit@vercel.com"),
+    ];
+}

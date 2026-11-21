@@ -1,0 +1,33 @@
+<Breadcrumb>
+    <BreadcrumbList>
+        <BreadcrumbItem>
+            <BreadcrumbLink>
+                <Render>
+                    <a @attributes="context.Attributes" href="/">Home</a>
+                </Render>
+            </BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator><Icon Name="dot" /></BreadcrumbSeparator>
+        <BreadcrumbItem>
+            <DropdownMenu>
+                <DropdownMenuTrigger>
+                    <Render>
+                        <button @attributes="context.Attributes" class="flex items-center gap-1">
+                            Components
+                            <Icon Name="chevron-down" data-icon="inline-end" class="size-3.5" />
+                        </button>
+                    </Render>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent Align="Align.Start">
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem>Documentation</DropdownMenuItem>
+                        <DropdownMenuItem>Themes</DropdownMenuItem>
+                        <DropdownMenuItem>GitHub</DropdownMenuItem>
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator><Icon Name="dot" /></BreadcrumbSeparator>
+        <BreadcrumbItem><BreadcrumbPage>Breadcrumb</BreadcrumbPage></BreadcrumbItem>
+    </BreadcrumbList>
+</Breadcrumb>

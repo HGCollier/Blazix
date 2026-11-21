@@ -1,0 +1,25 @@
+@page "/docs/components/skeleton"
+
+<DocsPage Title="Skeleton" Description="Use to show a placeholder while content is loading.">
+    <ComponentPreview Name="skeleton-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="skeleton" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Avatar" />
+    <ComponentPreview Name="skeleton-avatar" />
+    <DocsHeading Title="Card" />
+    <ComponentPreview Name="skeleton-card" PreviewClass="h-80" />
+    <DocsHeading Title="Text" />
+    <ComponentPreview Name="skeleton-text" />
+    <DocsHeading Title="Form" />
+    <ComponentPreview Name="skeleton-form" />
+    <DocsHeading Title="Table" />
+    <ComponentPreview Name="skeleton-table" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Skeleton Class="h-[20px] w-[100px] rounded-full" />
+        """;
+}

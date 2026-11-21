@@ -1,0 +1,24 @@
+@page "/docs/primitives/media-query"
+
+<DocsPage Title="Media Query" Description="Renders content according to whether a CSS media query matches.">
+    <ComponentPreview Name="primitives/media-query-hero" />
+    <p>
+        <code>MediaQuery</code> watches a media query: its content renders with whether the
+        query matches, again whenever that changes. Until the browser has answered, and while prerendering,
+        <code>DefaultMatches</code> applies.
+    </p>
+    <DocsHeading Title="Anatomy" />
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(MediaQuery)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <MediaQuery Query="(prefers-reduced-motion: reduce)" Context="reduced">
+            ...
+        </MediaQuery>
+        """;
+}

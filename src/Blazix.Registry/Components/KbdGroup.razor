@@ -1,0 +1,14 @@
+@using static Blazix.Registry.ClassNames
+
+<kbd data-slot="kbd-group" @attributes="AdditionalAttributes"
+     class="@Cn("inline-flex items-center gap-1", Class)">
+    @ChildContent
+</kbd>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

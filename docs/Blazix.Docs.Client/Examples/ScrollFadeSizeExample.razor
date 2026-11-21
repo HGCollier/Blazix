@@ -1,0 +1,28 @@
+<div class="mx-auto flex w-full max-w-xs flex-col gap-6">
+    <div class="flex flex-col gap-3">
+        <div class="overflow-hidden rounded-2xl border">
+            <div tabindex="0" role="region" aria-label="Small fade" class="h-48 scroll-fade no-scrollbar overflow-y-auto scroll-fade-4">
+                @Items
+            </div>
+        </div>
+        <p class="text-center font-mono text-xs text-muted-foreground">scroll-fade-4</p>
+    </div>
+    <div class="flex flex-col gap-3">
+        <div class="overflow-hidden rounded-2xl border">
+            <div tabindex="0" role="region" aria-label="Large fade" class="h-48 scroll-fade no-scrollbar overflow-y-auto scroll-fade-24">
+                @Items
+            </div>
+        </div>
+        <p class="text-center font-mono text-xs text-muted-foreground">scroll-fade-24</p>
+    </div>
+</div>
+
+@code {
+    private static readonly RenderFragment Items =
+        @<div class="flex flex-col gap-1.5 p-1.5">
+            @foreach (var item in Enumerable.Range(1, 8))
+            {
+                <div class="rounded-lg bg-muted px-3 py-2.5 text-sm">Item @item</div>
+            }
+        </div>;
+}

@@ -1,0 +1,53 @@
+@page "/docs/components/input"
+
+<DocsPage Title="Input" Description="A text input component for forms and user data entry with built-in styling and accessibility features.">
+    <ComponentPreview Name="input-demo" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="input" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Basic" />
+    <ComponentPreview Name="input-basic" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Field" />
+    <p>Use <code>Field</code>, <code>FieldLabel</code>, and <code>FieldDescription</code> to create an input with a label and description.</p>
+    <ComponentPreview Name="input-field" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Field Group" />
+    <p>Use <code>FieldGroup</code> to show multiple <code>Field</code> blocks and to build forms.</p>
+    <ComponentPreview Name="input-fieldgroup" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Disabled" />
+    <p>Use the <code>Disabled</code> parameter to disable the input. To style the disabled state, add the <code>data-disabled</code> attribute to the <code>Field</code> component.</p>
+    <ComponentPreview Name="input-disabled" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Invalid" />
+    <p>Use the <code>aria-invalid</code> parameter to mark the input as invalid. To style the invalid state, add the <code>data-invalid</code> attribute to the <code>Field</code> component.</p>
+    <ComponentPreview Name="input-invalid" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="File" />
+    <p>Use the <code>type="file"</code> parameter to create a file input.</p>
+    <ComponentPreview Name="input-file" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Inline" />
+    <p>Use <code>Field</code> with <code>orientation="horizontal"</code> to create an inline input. Pair with <code>Button</code> to create a search input with a button.</p>
+    <ComponentPreview Name="input-inline" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Grid" />
+    <p>Use a grid layout to place multiple inputs side by side.</p>
+    <ComponentPreview Name="input-grid" PreviewClass="p-6" />
+    <DocsHeading Title="Required" />
+    <p>Use the <code>required</code> attribute to indicate required inputs.</p>
+    <ComponentPreview Name="input-required" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Badge" />
+    <p>Use <code>Badge</code> in the label to highlight a recommended field.</p>
+    <ComponentPreview Name="input-badge" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Input Group" />
+    <p>To add icons, text, or buttons inside an input, use the <code>InputGroup</code> component. See the <a href="/docs/components/input-group">Input Group</a> component for more examples.</p>
+    <ComponentPreview Name="input-input-group" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Button Group" />
+    <p>To add buttons to an input, use the <code>ButtonGroup</code> component. See the <a href="/docs/components/button-group">Button Group</a> component for more examples.</p>
+    <ComponentPreview Name="input-button-group" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Form" />
+    <p>A full form example with multiple inputs, a select, and a button.</p>
+    <ComponentPreview Name="input-form" PreviewClass="h-[32rem]" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Input />
+        """;
+}

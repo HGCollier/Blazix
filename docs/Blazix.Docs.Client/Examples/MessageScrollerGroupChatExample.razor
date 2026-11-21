@@ -1,0 +1,104 @@
+<div class="relative flex flex-col gap-4">
+    <Card Class="mx-auto h-140 w-full max-w-sm gap-0">
+        <CardHeader Class="gap-1 border-b">
+            <CardTitle>Group Chat</CardTitle>
+            <CardDescription>A group chat with several participants and an assistant. The Marker is marked as a turn.</CardDescription>
+            <CardAction>
+                <Tooltip>
+                    <TooltipTrigger>
+                        <Render>
+                            <Button @attributes="context.Attributes" Type="button" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon"
+                                    aria-label="Reset conversation" Disabled="@(_rockyTurn == 0)" @onclick="Reset">
+                                <Icon Name="rotate-cw" />
+                            </Button>
+                        </Render>
+                    </TooltipTrigger>
+                    <TooltipContent><p>Reset</p></TooltipContent>
+                </Tooltip>
+            </CardAction>
+        </CardHeader>
+        <CardContent Class="min-h-0 flex-1 p-0">
+            <MessageScrollerProvider>
+                <MessageScroller @key="_demoKey">
+                    <MessageScrollerViewport>
+                        <MessageScrollerContent Class="p-(--card-spacing)">
+                            @foreach (var item in Items[..(3 + _rockyTurn)])
+                            {
+                                if (item.Sender is null)
+                                {
+                                    <MessageScrollerItem @key="item.Id" ScrollAnchor="@item.ScrollAnchor">
+                                        <Marker Variant="MarkerVariant.Separator">
+                                            <MarkerContent>@item.Text</MarkerContent>
+                                        </Marker>
+                                    </MessageScrollerItem>
+                                }
+                                else
+                                {
+                                    var isCurrentUser = item.Sender == CurrentUser;
+                                    <MessageScrollerItem @key="item.Id" MessageId="@item.Id" ScrollAnchor="@item.ScrollAnchor">
+                                        <Message Align="@(isCurrentUser ? MessageAlign.End : MessageAlign.Start)">
+                                            <MessageContent>
+                                                @if (!isCurrentUser)
+                                                {
+                                                    <MessageHeader>@item.Sender</MessageHeader>
+                                                }
+                                                <Bubble Variant="@VariantFor(item, isCurrentUser)">
+                                                    <BubbleContent>@item.Text</BubbleContent>
+                                                </Bubble>
+                                            </MessageContent>
+                                        </Message>
+                                    </MessageScrollerItem>
+                                }
+                            }
+                        </MessageScrollerContent>
+                    </MessageScrollerViewport>
+                    <MessageScrollerButton />
+                </MessageScroller>
+            </MessageScrollerProvider>
+        </CardContent>
+        <CardFooter Class="flex flex-col items-center gap-2 border-t">
+            <Button Type="button" Disabled="@(_rockyTurn == 2)" @onclick="() => _rockyTurn++" Class="w-full" Variant="ButtonVariant.Secondary">
+                @(_rockyTurn == 0 ? "Add Rocky" : "Send Message as Rocky")
+            </Button>
+            <p class="text-xs text-muted-foreground">
+                @(_rockyTurn == 0 ? "This will create a marker and make it the anchor" : "Now send Rocky's reply into the conversation")
+            </p>
+        </CardFooter>
+    </Card>
+    <div class="mx-auto max-w-sm px-0.5 text-center text-xs text-balance text-muted-foreground">
+        When a user joins, a marker is created. scrollAnchor on the marker marks it as the next turn
+    </div>
+</div>
+
+@code {
+    private const string CurrentUser = "Grace";
+
+    private static readonly GroupChatItem[] Items =
+    [
+        new("group-1", "Grace", false, "@mary, the astrophage line keeps matching Venus energy output. Can you check my math?"),
+        new("group-2", "Mary (Agent)", true, "Yes. Confirmed. The curve points to a microorganism harvesting stellar energy and breeding near carbon dioxide. If @rocky agrees, this is the clue we need."),
+        new("group-3", "Grace", false, "ping @rocky", ScrollAnchor: true),
+        new("group-4", null, false, "Rocky has joined the chat", ScrollAnchor: true),
+        new("group-5", "Rocky", false, "Amaze. Astrophage eats light, makes heat, goes to carbon dioxide. Rocky has fuel model. Grace is smart."),
+    ];
+
+    private int _demoKey;
+    private int _rockyTurn;
+
+    private void Reset()
+    {
+        _rockyTurn = 0;
+        _demoKey++;
+    }
+
+    private static BubbleVariant VariantFor(GroupChatItem item, bool isCurrentUser)
+    {
+        if (isCurrentUser)
+        {
+            return BubbleVariant.Muted;
+        }
+        return item.IsAssistant ? BubbleVariant.Ghost : BubbleVariant.Tinted;
+    }
+
+    private sealed record GroupChatItem(string Id, string? Sender, bool IsAssistant, string Text, bool ScrollAnchor = false);
+}

@@ -1,0 +1,37 @@
+<ToastProvider ToastManager="_toasts">
+    <button type="button" @onclick="CreateToast" class="toast-button">
+        Create toast
+    </button>
+    <ToastPortal>
+        <ToastViewport class="toast-viewport">
+            <Template Context="toast">
+                <ToastRoot Toast="toast" class="toast">
+                    <ToastContent class="toast-content">
+                        <div class="toast-text">
+                            <ToastTitle class="toast-title" />
+                            <ToastDescription class="toast-description" />
+                        </div>
+                        <ToastClose class="toast-close">
+                            Dismiss
+                        </ToastClose>
+                    </ToastContent>
+                </ToastRoot>
+            </Template>
+        </ToastViewport>
+    </ToastPortal>
+</ToastProvider>
+
+@code {
+    private readonly ToastManager _toasts = new();
+    private int _count;
+
+    private void CreateToast()
+    {
+        _count++;
+        _toasts.Add(new ToastOptions
+        {
+            Title = $"Toast {_count} created",
+            Description = "This is a toast notification.",
+        });
+    }
+}

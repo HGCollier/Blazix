@@ -1,0 +1,24 @@
+<Select Items="Items" Disabled="true">
+    <SelectTrigger Class="w-full max-w-48" aria-label="Fruit">
+        <SelectValue Placeholder="Select a fruit" />
+    </SelectTrigger>
+    <SelectContent>
+        <SelectGroup>
+            @foreach (var item in Items)
+            {
+                <SelectItem Value="@item.Value" Disabled="@(item.Value == "grapes")">@item.Label</SelectItem>
+            }
+        </SelectGroup>
+    </SelectContent>
+</Select>
+
+@code {
+    private static readonly SelectOption[] Items =
+    [
+        new("apple", "Apple"),
+        new("banana", "Banana"),
+        new("blueberry", "Blueberry"),
+        new("grapes", "Grapes"),
+        new("pineapple", "Pineapple"),
+    ];
+}

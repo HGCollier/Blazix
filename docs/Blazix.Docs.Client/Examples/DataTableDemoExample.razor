@@ -1,0 +1,226 @@
+@using System.Globalization
+@inject IJSRuntime JsRuntime
+
+<div class="w-full">
+    <div class="flex items-center py-4">
+        <Input placeholder="Filter emails..." Value="@_emailFilter" ValueChanged="FilterEmails" Class="max-w-sm" />
+        <DropdownMenu>
+            <DropdownMenuTrigger Variant="ButtonVariant.Outline" Class="ml-auto">
+                Columns
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6" />
+                </svg>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent Align="Align.End" Class="w-44">
+                <DropdownMenuGroup>
+                    @foreach (var column in HideableColumns)
+                    {
+                        <DropdownMenuCheckboxItem @key="column" Class="capitalize" Checked="@IsVisible(column)"
+                                                  CheckedChanged="@(value => SetVisible(column, value))">
+                            @column
+                        </DropdownMenuCheckboxItem>
+                    }
+                </DropdownMenuGroup>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    </div>
+    <div class="overflow-hidden rounded-md border">
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHead>
+                        <Checkbox Checked="@AllPageRowsSelected" Indeterminate="@(SomePageRowsSelected && !AllPageRowsSelected)"
+                                  CheckedChanged="ToggleAllPageRowsSelected" aria-label="Select all" />
+                    </TableHead>
+                    @if (IsVisible("status"))
+                    {
+                        <TableHead>Status</TableHead>
+                    }
+                    @if (IsVisible("email"))
+                    {
+                        <TableHead>
+                            <Button Variant="ButtonVariant.Ghost" @onclick="ToggleEmailSorting">
+                                Email
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="m21 16-4 4-4-4" />
+                                    <path d="M17 20V4" />
+                                    <path d="m3 8 4-4 4 4" />
+                                    <path d="M7 4v16" />
+                                </svg>
+                            </Button>
+                        </TableHead>
+                    }
+                    @if (IsVisible("amount"))
+                    {
+                        <TableHead><div class="text-right">Amount</div></TableHead>
+                    }
+                    <TableHead><span class="sr-only">Actions</span></TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                @if (PageRows.Count > 0)
+                {
+                    @foreach (var payment in PageRows)
+                    {
+                        var selected = _rowSelection.Contains(payment.Id);
+                        <TableRow @key="payment.Id" data-state="@(selected ? "selected" : null)">
+                            <TableCell>
+                                <Checkbox Checked="@selected" CheckedChanged="@(value => ToggleSelected(payment, value))" aria-label="@($"Select {payment.Email}")" />
+                            </TableCell>
+                            @if (IsVisible("status"))
+                            {
+                                <TableCell><div class="capitalize">@payment.Status</div></TableCell>
+                            }
+                            @if (IsVisible("email"))
+                            {
+                                <TableCell><div class="lowercase">@payment.Email</div></TableCell>
+                            }
+                            @if (IsVisible("amount"))
+                            {
+                                <TableCell><div class="text-right font-medium">@payment.Amount.ToString("C", UsCulture)</div></TableCell>
+                            }
+                            <TableCell>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger Variant="ButtonVariant.Ghost" Size="ButtonSize.IconXs">
+                                        <span class="sr-only">Open menu</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <circle cx="12" cy="12" r="1" />
+                                            <circle cx="19" cy="12" r="1" />
+                                            <circle cx="5" cy="12" r="1" />
+                                        </svg>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent Align="Align.End" Class="w-44">
+                                        <DropdownMenuGroup>
+                                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                            <DropdownMenuItem OnClick="@(() => CopyPaymentIdAsync(payment))">
+                                                Copy payment ID
+                                            </DropdownMenuItem>
+                                        </DropdownMenuGroup>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuGroup>
+                                            <DropdownMenuItem>View customer</DropdownMenuItem>
+                                            <DropdownMenuItem>View payment details</DropdownMenuItem>
+                                        </DropdownMenuGroup>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </TableCell>
+                        </TableRow>
+                    }
+                }
+                else
+                {
+                    <TableRow>
+                        <TableCell colspan="@Columns.Length" Class="h-24 text-center">No results.</TableCell>
+                    </TableRow>
+                }
+            </TableBody>
+        </Table>
+    </div>
+    <div class="flex items-center justify-end space-x-2 py-4">
+        <div class="flex-1 text-sm text-muted-foreground">
+            @(FilteredRows.Count(row => _rowSelection.Contains(row.Id))) of @FilteredRows.Count row(s) selected.
+        </div>
+        <div class="space-x-2">
+            <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" @onclick="() => _pageIndex--" Disabled="@(!CanPreviousPage)">
+                Previous
+            </Button>
+            <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" @onclick="() => _pageIndex++" Disabled="@(!CanNextPage)">
+                Next
+            </Button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private const int PageSize = 10;
+    private static readonly CultureInfo UsCulture = CultureInfo.GetCultureInfo("en-US");
+    private static readonly string[] Columns = ["select", "status", "email", "amount", "actions"];
+    private static readonly string[] HideableColumns = ["status", "email", "amount"];
+
+    private static readonly Payment[] Data =
+    [
+        new("m5gr84i9", 316, "success", "ken99@example.com"),
+        new("3u1reuv4", 242, "success", "Abe45@example.com"),
+        new("derv1ws0", 837, "processing", "Monserrat44@example.com"),
+        new("5kma53ae", 874, "success", "Silas22@example.com"),
+        new("bhqecj4p", 721, "failed", "carmella@example.com"),
+    ];
+
+    private string? _emailFilter;
+    private bool? _emailSortDescending;
+    private int _pageIndex;
+    private readonly HashSet<string> _hiddenColumns = [];
+    private readonly HashSet<string> _rowSelection = [];
+
+    private List<Payment> FilteredRows =>
+        [.. Data.Where(row => string.IsNullOrEmpty(_emailFilter) || row.Email.Contains(_emailFilter, StringComparison.OrdinalIgnoreCase))];
+
+    private List<Payment> SortedRows => _emailSortDescending switch
+    {
+        false => [.. FilteredRows.OrderBy(row => row.Email, StringComparer.OrdinalIgnoreCase)],
+        true => [.. FilteredRows.OrderByDescending(row => row.Email, StringComparer.OrdinalIgnoreCase)],
+        null => FilteredRows,
+    };
+
+    private List<Payment> PageRows => [.. SortedRows.Skip(_pageIndex * PageSize).Take(PageSize)];
+
+    private int PageCount => (int)Math.Ceiling(FilteredRows.Count / (double)PageSize);
+    private bool CanPreviousPage => _pageIndex > 0;
+    private bool CanNextPage => _pageIndex < PageCount - 1;
+
+    private bool AllPageRowsSelected => PageRows.Count > 0 && PageRows.All(row => _rowSelection.Contains(row.Id));
+    private bool SomePageRowsSelected => PageRows.Any(row => _rowSelection.Contains(row.Id));
+
+    private bool IsVisible(string column) => !_hiddenColumns.Contains(column);
+
+    private void SetVisible(string column, bool visible)
+    {
+        if (visible)
+        {
+            _hiddenColumns.Remove(column);
+        }
+        else
+        {
+            _hiddenColumns.Add(column);
+        }
+    }
+
+    private void FilterEmails(string? value)
+    {
+        _emailFilter = value;
+        _pageIndex = 0;
+    }
+
+    private void ToggleEmailSorting()
+    {
+        _emailSortDescending = _emailSortDescending == false;
+        _pageIndex = 0;
+    }
+
+    private void ToggleSelected(Payment payment, bool selected)
+    {
+        if (selected)
+        {
+            _rowSelection.Add(payment.Id);
+        }
+        else
+        {
+            _rowSelection.Remove(payment.Id);
+        }
+    }
+
+    private void ToggleAllPageRowsSelected(bool selected)
+    {
+        foreach (var payment in PageRows)
+        {
+            ToggleSelected(payment, selected);
+        }
+    }
+
+    private Task CopyPaymentIdAsync(Payment payment) => BrowserClipboard.CopyAsync(JsRuntime, payment.Id);
+
+    private sealed record Payment(string Id, decimal Amount, string Status, string Email);
+}

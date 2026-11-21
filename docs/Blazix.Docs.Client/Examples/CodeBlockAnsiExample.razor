@@ -1,0 +1,65 @@
+<div class="w-full max-w-md">
+    <CodeBlock>
+        <CodeBlockHeader>
+            <CodeBlockTitle>
+                <Icon Name="terminal" />
+                Terminal
+            </CodeBlockTitle>
+            <CodeBlockActions>
+                <CodeBlockCopyButton Value="@Ansi().Replace(Output, string.Empty)" />
+            </CodeBlockActions>
+        </CodeBlockHeader>
+        <CodeBlockContent Wrap="true">
+            @foreach (var line in Output.Split('\n'))
+            {
+                <CodeBlockLine>
+                    @foreach (var (text, classes) in Spans(line))
+                    {
+                        <span class="@classes">@text</span>
+                    }
+                </CodeBlockLine>
+            }
+        </CodeBlockContent>
+    </CodeBlock>
+</div>
+
+@code {
+    private const string Output =
+        "$ pnpm test\n\n" +
+        "\u001b[32m✓\u001b[39m src/format.test.ts \u001b[2m(4 tests)\u001b[22m\n" +
+        "\u001b[32m✓\u001b[39m src/parse.test.ts \u001b[2m(7 tests)\u001b[22m\n" +
+        "\u001b[31m✗\u001b[39m src/stream.test.ts \u001b[2m(3 tests | 1 failed)\u001b[22m\n\n" +
+        "\u001b[31mAssertionError: expected 'hello' to be 'hello world'\u001b[39m\n\n" +
+        "Tests  \u001b[31m1 failed\u001b[39m | \u001b[32m13 passed\u001b[39m (14)";
+
+    private static IEnumerable<(string Text, string? Classes)> Spans(string line)
+    {
+        string? color = null;
+        var dim = false;
+        var last = 0;
+        foreach (System.Text.RegularExpressions.Match code in Ansi().Matches(line))
+        {
+            if (code.Index > last)
+            {
+                yield return (line[last..code.Index], Cn(color, dim ? "opacity-60" : null));
+            }
+            switch (code.Groups[1].Value)
+            {
+                case "31": color = "text-red-600 dark:text-red-400"; break;
+                case "32": color = "text-green-600 dark:text-green-400"; break;
+                case "39": color = null; break;
+                case "2": dim = true; break;
+                case "22": dim = false; break;
+            }
+            last = code.Index + code.Length;
+        }
+        if (last < line.Length)
+        {
+            yield return (line[last..], Cn(color, dim ? "opacity-60" : null));
+        }
+    }
+
+    private static readonly System.Text.RegularExpressions.Regex AnsiCode = new(@"\u001b\[([\d;]*)m", System.Text.RegularExpressions.RegexOptions.None, TimeSpan.FromSeconds(1));
+
+    private static System.Text.RegularExpressions.Regex Ansi() => AnsiCode;
+}

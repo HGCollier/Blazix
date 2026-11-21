@@ -1,0 +1,66 @@
+@page "/docs/primitives/collapsible"
+
+<DocsPage Title="Collapsible" Description="A collapsible panel controlled by a button.">
+    <ComponentPreview Name="primitives/collapsible-hero" />
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="Examples" />
+    <DocsHeading Level="3" Title="Hidden until found" />
+    <p>
+        The <code>HiddenUntilFound</code> parameter hides the closed panel with
+        <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/hidden"><code>hidden="until-found"</code></a>,
+        so the browser can search its contents with find-in-page (<kbd>Ctrl</kbd>+<kbd>F</kbd>, or <kbd>Cmd</kbd>+<kbd>F</kbd>
+        on macOS) and open the panel when it finds a match. The closed panel always stays in the DOM, which also makes its
+        contents indexable by search engines.
+    </p>
+    <p>
+        Older browsers that don't support <code>hidden="until-found"</code> keep the panel hidden until its trigger opens it,
+        and find-in-page skips over the contents.
+    </p>
+    <CodeFigure Code="@HiddenUntilFoundCode" />
+    <p>See the <a href="/docs/primitives/accordion#hidden-until-found">Accordion example</a> for an interactive demo.</p>
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(CollapsibleRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the collapsible is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the collapsible is closed.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the collapsible begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the collapsible is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(CollapsibleTrigger)">
+        <DataAttributes>
+            <StyleHook Name="data-panel-open">Present when the collapsible panel is open.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(CollapsiblePanel)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the collapsible panel is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the collapsible panel is closed.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the panel begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the panel is animating out.</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--collapsible-panel-height" Type="number">The collapsible panel's height.</StyleHook>
+        </CssVariables>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <CollapsibleRoot>
+            <CollapsibleTrigger />
+            <CollapsiblePanel />
+        </CollapsibleRoot>
+        """;
+
+    private const string HiddenUntilFoundCode = """
+        <CollapsibleRoot>
+            <CollapsibleTrigger>Shipping details</CollapsibleTrigger>
+            <CollapsiblePanel HiddenUntilFound="true">Standard shipping takes 3–5 business days.</CollapsiblePanel>
+        </CollapsibleRoot>
+        """;
+}

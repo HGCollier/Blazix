@@ -1,0 +1,99 @@
+@implements IAsyncDisposable
+@inject SiteScript Site
+
+@* site.js marks the heading in view. *@
+@{
+    // Read once per render: headings add entries as they initialize, so by OnAfterRenderAsync the list may have
+    // entries that this render didn't draw (and no element to watch yet).
+    _rendered = Page.Toc.Count > 0;
+}
+@if (_rendered)
+{
+    <nav @ref="_element" aria-labelledby="docs-toc-title" class="@Cn("flex flex-col gap-2 p-4 pt-0 text-sm", Class)">
+        <p id="docs-toc-title" class="h-6 bg-background text-xs font-medium text-muted-foreground">On This Page</p>
+        @foreach (var item in Page.Toc)
+        {
+            <a href="@($"#{item.Id}")" data-depth="@item.Depth"
+               class="text-[0.8rem] text-muted-foreground no-underline transition-colors hover:text-foreground data-[active=true]:font-medium data-[active=true]:text-foreground data-[depth=3]:pl-4 data-[depth=4]:pl-6">@Inline.Plain(item.Title)</a>
+        }
+    </nav>
+}
+
+@code {
+    private ElementReference _element;
+    private IJSObjectReference? _watch;
+    // Whether the last render drew the list, whether it's watched, and which change the latest watch is for: the
+    // layout keeps this component across pages, so the list comes and goes, and a page can change while site.js loads.
+    private bool _rendered;
+    private bool _shown;
+    private int _generation;
+    private bool _disposed;
+
+    [CascadingParameter] private DocsPageState Page { get; set; } = null!;
+
+    [Parameter] public string? Class { get; set; }
+
+    protected override void OnInitialized() => Page.Changed += OnChanged;
+
+    private void OnChanged() => InvokeAsync(StateHasChanged);
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var shown = _rendered;
+        if (shown == _shown)
+        {
+            return;
+        }
+        _shown = shown;
+        var generation = ++_generation;
+        await StopAsync();
+        if (!shown)
+        {
+            return;
+        }
+
+        var module = await Site.GetAsync(Assets["site.js"]);
+        if (generation != _generation || _disposed)
+        {
+            return;
+        }
+        // The element as rendered now: the one rendered before the await may be gone.
+        var watch = await module.InvokeAsync<IJSObjectReference>("watchToc", _element);
+        if (generation != _generation || _disposed)
+        {
+            await DisposeWatchAsync(watch);
+            return;
+        }
+        _watch = watch;
+    }
+
+    private async Task StopAsync()
+    {
+        var watch = _watch;
+        _watch = null;
+        if (watch is not null)
+        {
+            await DisposeWatchAsync(watch);
+        }
+    }
+
+    private static async Task DisposeWatchAsync(IJSObjectReference watch)
+    {
+        try
+        {
+            await watch.InvokeVoidAsync("dispose");
+            await watch.DisposeAsync();
+        }
+        catch (JSDisconnectedException)
+        {
+            // The page is gone.
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        _disposed = true;
+        Page.Changed -= OnChanged;
+        await StopAsync();
+    }
+}

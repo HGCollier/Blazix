@@ -1,0 +1,26 @@
+<DropdownMenu>
+    <DropdownMenuTrigger>
+        <Render>
+            <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">Open</Button>
+        </Render>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+        <DropdownMenuItem>
+            <Icon Name="user" />
+            Profile
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+            <Icon Name="credit-card" />
+            Billing
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+            <Icon Name="settings" />
+            Settings
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem Destructive="true">
+            <Icon Name="log-out" />
+            Log out
+        </DropdownMenuItem>
+    </DropdownMenuContent>
+</DropdownMenu>

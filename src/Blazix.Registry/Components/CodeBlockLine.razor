@@ -1,0 +1,43 @@
+@using static Blazix.Registry.ClassNames
+
+@* An empty line keeps a newline, so copying keeps blank lines. *@
+<span data-slot="code-block-line" data-variant="@VariantName" @attributes="AdditionalAttributes"
+      class="@Cn(
+          "relative -mx-3 block min-h-lh px-3 group-data-[size=sm]/code-block:-mx-2.5 group-data-[size=sm]/code-block:px-2.5 " +
+          "before:min-w-6 before:text-end before:text-muted-foreground after:absolute after:start-1 after:top-0 " +
+          "after:text-muted-foreground after:select-none in-data-numbered:col-span-2 in-data-numbered:grid " +
+          "in-data-numbered:grid-cols-subgrid in-data-numbered:gap-x-3 in-data-numbered:[counter-increment:line] " +
+          "in-data-numbered:before:content-[counter(line)] in-data-numbered:before:select-none " +
+          "in-data-numbered:supports-[content:counter(line)_/_'']:before:content-[counter(line)_/_'']",
+          Variant switch
+          {
+              CodeBlockLineVariant.Added => "bg-muted after:content-['+']",
+              CodeBlockLineVariant.Removed => "bg-destructive/10 after:text-destructive after:content-['−']",
+              CodeBlockLineVariant.Highlighted => "bg-muted",
+              _ => "",
+          },
+          Class)"><span data-slot="code-block-line-content" class="min-w-0">@if (ChildContent is null)
+{
+    @("\n")
+}
+else
+{
+    @ChildContent
+}</span></span>
+
+@code {
+    [Parameter] public CodeBlockLineVariant Variant { get; set; } = CodeBlockLineVariant.Default;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string VariantName => Variant switch
+    {
+        CodeBlockLineVariant.Added => "added",
+        CodeBlockLineVariant.Removed => "removed",
+        CodeBlockLineVariant.Highlighted => "highlighted",
+        _ => "default",
+    };
+}

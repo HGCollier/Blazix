@@ -1,0 +1,128 @@
+@using System.ComponentModel.DataAnnotations
+@using System.Linq.Expressions
+@using System.Text.Json
+@inject ToastManager Toasts
+
+<Card Class="w-full sm:max-w-md">
+    <CardHeader Class="border-b">
+        <CardTitle>Contact Emails</CardTitle>
+        <CardDescription>Manage your contact email addresses.</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <EditForm @key="_editContext" id="form-annotations-array" EditContext="_editContext" OnSubmit="Submit">
+            <DataAnnotationsValidator />
+            <FieldSet Class="gap-4">
+                <FieldLegend Variant="FieldLegendVariant.Label">Email Addresses</FieldLegend>
+                <FieldDescription>Add up to 5 email addresses where we can contact you.</FieldDescription>
+                <FieldGroup Class="gap-4">
+                    @for (var index = 0; index < _model.Emails.Count; index++)
+                    {
+                        var number = index + 1;
+                        var id = $"form-annotations-array-email-{index}";
+                        var email = _model.Emails[index];
+                        <Field @key="email" Orientation="FieldOrientation.Horizontal" data-invalid="@Invalid(() => email.Address)">
+                            <FieldContent>
+                                <InputGroup>
+                                    <InputGroupInput id="@id" Value="@email.Address"
+                                                     ValueChanged="@(value => Change(() => email.Address = value ?? ""))"
+                                                     aria-invalid="@Invalid(() => email.Address)" placeholder="name@example.com" Type="email" autocomplete="email" />
+                                    @if (_model.Emails.Count > 1)
+                                    {
+                                        <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
+                                            <InputGroupButton Type="button" Variant="ButtonVariant.Ghost" Size="InputGroupButtonSize.IconXs"
+                                                              @onclick="@(() => Change(() => _model.Emails.Remove(email)))" aria-label="@($"Remove email {number}")">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                    <path d="M18 6 6 18" />
+                                                    <path d="m6 6 12 12" />
+                                                </svg>
+                                            </InputGroupButton>
+                                        </InputGroupAddon>
+                                    }
+                                </InputGroup>
+                                <FieldError Errors="@Errors(() => email.Address)" />
+                            </FieldContent>
+                        </Field>
+                    }
+                    <Button Type="button" Variant="ButtonVariant.Outline" Size="ButtonSize.Sm"
+                            @onclick="@(() => Change(() => _model.Emails.Add(new EmailAddress())))" Disabled="@(_model.Emails.Count >= 5)">
+                        Add Email Address
+                    </Button>
+                </FieldGroup>
+                <FieldError Errors="@Errors(() => _model.Emails)" />
+            </FieldSet>
+        </EditForm>
+    </CardContent>
+    <CardFooter Class="border-t">
+        <Field Orientation="FieldOrientation.Horizontal">
+            <Button Type="button" Variant="ButtonVariant.Outline" @onclick="Reset">Reset</Button>
+            <Button Type="submit" form="form-annotations-array">Save</Button>
+        </Field>
+    </CardFooter>
+</Card>
+
+@code {
+    private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
+    private static readonly EmailAddressAttribute EmailAttribute = new();
+
+    private ContactEmails _model = new();
+    private EditContext _editContext = null!;
+    private bool _submitted;
+
+    protected override void OnInitialized() => CreateEditContext();
+
+    private void CreateEditContext()
+    {
+        _editContext = new EditContext(_model);
+        var messages = new ValidationMessageStore(_editContext);
+        _editContext.OnValidationRequested += (_, _) =>
+        {
+            messages.Clear();
+            foreach (var email in _model.Emails.Where(email => !EmailAttribute.IsValid(email.Address)))
+            {
+                messages.Add(() => email.Address, "Enter a valid email address.");
+            }
+        };
+    }
+
+    private void Submit()
+    {
+        _submitted = true;
+        if (_editContext.Validate())
+        {
+            Toasts.Add(new ToastOptions { Title = "You submitted the following values:", Description = JsonSerializer.Serialize(_model, Json) });
+        }
+    }
+
+    private void Change(Action update)
+    {
+        update();
+        if (_submitted)
+        {
+            _editContext.Validate();
+        }
+    }
+
+    private void Reset()
+    {
+        _model = new ContactEmails();
+        _submitted = false;
+        CreateEditContext();
+    }
+
+    private IEnumerable<string> Errors(Expression<Func<object>> field) => _editContext.GetValidationMessages(field).Take(1);
+
+    private string Invalid(Expression<Func<object>> field) => Errors(field).Any() ? "true" : "false";
+
+    private sealed class ContactEmails
+    {
+        [MinLength(1, ErrorMessage = "Add at least one email address.")]
+        [MaxLength(5, ErrorMessage = "You can add up to 5 email addresses.")]
+        public List<EmailAddress> Emails { get; } = [new(), new()];
+    }
+
+    private sealed class EmailAddress
+    {
+        public string Address { get; set; } = "";
+    }
+}

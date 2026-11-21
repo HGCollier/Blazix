@@ -1,0 +1,59 @@
+<div class="flex h-72 w-80 flex-col gap-2 text-neutral-950 dark:text-white">
+    <MessageScrollerProvider AutoScroll="true" DefaultScrollPosition="MessageScrollerScrollPosition.End">
+        <MessageScrollerRoot class="relative flex min-h-0 flex-1 flex-col overflow-hidden border border-neutral-950 dark:border-white">
+            <MessageScrollerViewport class="min-h-0 flex-1 overflow-y-auto outline-none focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-neutral-950 dark:focus-visible:outline-white">
+                <MessageScrollerContent class="flex flex-col gap-2 p-3">
+                    @foreach (var message in _messages)
+                    {
+                        <MessageScrollerItem @key="message.Id" MessageId="@message.Id"
+                                             class="@(message.Mine ? MineClass : TheirsClass)">
+                            @message.Text
+                        </MessageScrollerItem>
+                    }
+                </MessageScrollerContent>
+            </MessageScrollerViewport>
+            <MessageScrollerButton aria-label="Scroll to the latest message"
+                                   class="absolute bottom-2 left-1/2 flex size-8 -translate-x-1/2 items-center justify-center border border-neutral-950 bg-white transition-opacity duration-200 hover:bg-neutral-100 data-[active=false]:pointer-events-none data-[active=false]:opacity-0 dark:border-white dark:bg-neutral-950 dark:hover:bg-neutral-800">
+                <svg class="block" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="square">
+                    <path d="M8 2.5v11M3.5 9 8 13.5 12.5 9" />
+                </svg>
+            </MessageScrollerButton>
+        </MessageScrollerRoot>
+    </MessageScrollerProvider>
+    <button type="button" @onclick="Add"
+            class="flex h-8 items-center justify-center border border-neutral-950 bg-white px-3 text-sm font-normal text-neutral-950 select-none hover:bg-neutral-100 active:bg-neutral-200 focus-visible:outline-2 focus-visible:-outline-offset-1 focus-visible:outline-neutral-950 dark:border-white dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-800 dark:active:bg-neutral-700 dark:focus-visible:outline-white">
+        Add a message
+    </button>
+</div>
+
+@code {
+    private const string MineClass = "max-w-[80%] self-end bg-neutral-950 px-3 py-2 text-sm text-white dark:bg-white dark:text-neutral-950";
+    private const string TheirsClass = "max-w-[80%] self-start border border-neutral-950 px-3 py-2 text-sm dark:border-white";
+
+    private static readonly string[] Replies =
+    [
+        "Sounds good to me.",
+        "Can you send the latest draft?",
+        "I'll take a look this afternoon.",
+        "Let's ship it on Friday.",
+    ];
+
+    private sealed record Message(string Id, string Text, bool Mine);
+
+    private readonly List<Message> _messages =
+    [
+        new("m1", "Hi! Did you get a chance to review the design?", false),
+        new("m2", "Yes, I left a few comments on the layout.", true),
+        new("m3", "Thanks. I'll update the spacing and the colors.", false),
+        new("m4", "Great. The new header looks much cleaner.", true),
+        new("m5", "Should we add a dark theme too?", false),
+        new("m6", "Definitely, most of our users asked for it.", true),
+    ];
+
+    private void Add()
+    {
+        var next = _messages.Count + 1;
+        var mine = next % 2 == 0;
+        _messages.Add(new Message($"m{next}", mine ? "Noted." : Replies[next % Replies.Length], mine));
+    }
+}

@@ -1,0 +1,177 @@
+@using System.ComponentModel.DataAnnotations
+@using System.Linq.Expressions
+@using System.Text.Json
+@inject ToastManager Toasts
+
+<Card Class="w-full max-w-sm">
+    <CardHeader Class="border-b">
+        <CardTitle>You&apos;re almost there!</CardTitle>
+        <CardDescription>Choose your subscription plan and billing period.</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <EditForm @key="_editContext" id="form-annotations-complex" EditContext="_editContext" OnSubmit="Submit">
+            <DataAnnotationsValidator />
+            <FieldGroup>
+                <FieldSet data-invalid="@Invalid(() => _model.Plan)">
+                    <FieldLegend Variant="FieldLegendVariant.Label">Subscription Plan</FieldLegend>
+                    <FieldDescription>Choose your subscription plan.</FieldDescription>
+                    <RadioGroup Name="plan" Value="@_model.Plan" ValueChanged="@(value => Change(() => _model.Plan = value ?? ""))"
+                                aria-invalid="@Invalid(() => _model.Plan)">
+                        <FieldLabel for="form-annotations-complex-basic">
+                            <Field Orientation="FieldOrientation.Horizontal">
+                                <FieldContent>
+                                    <FieldTitle>Basic</FieldTitle>
+                                    <FieldDescription>For individuals and small teams</FieldDescription>
+                                </FieldContent>
+                                <RadioGroupItem Value="basic" id="form-annotations-complex-basic" />
+                            </Field>
+                        </FieldLabel>
+                        <FieldLabel for="form-annotations-complex-pro">
+                            <Field Orientation="FieldOrientation.Horizontal">
+                                <FieldContent>
+                                    <FieldTitle>Pro</FieldTitle>
+                                    <FieldDescription>For businesses with higher demands</FieldDescription>
+                                </FieldContent>
+                                <RadioGroupItem Value="pro" id="form-annotations-complex-pro" />
+                            </Field>
+                        </FieldLabel>
+                    </RadioGroup>
+                    <FieldError Errors="@Errors(() => _model.Plan)" />
+                </FieldSet>
+                <FieldSeparator />
+                <Field data-invalid="@Invalid(() => _model.BillingPeriod)">
+                    <FieldLabel for="form-annotations-complex-billingPeriod">Billing Period</FieldLabel>
+                    <Select Items="BillingPeriods" Name="billingPeriod" Value="@_model.BillingPeriod"
+                            ValueChanged="@(value => Change(() => _model.BillingPeriod = value ?? ""))">
+                        <SelectTrigger id="form-annotations-complex-billingPeriod" aria-invalid="@Invalid(() => _model.BillingPeriod)">
+                            <SelectValue Placeholder="Select" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                @foreach (var period in BillingPeriods)
+                                {
+                                    <SelectItem @key="period.Value" Value="@period.Value">@period.Label</SelectItem>
+                                }
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                    <FieldDescription>Choose how often you want to be billed.</FieldDescription>
+                    <FieldError Errors="@Errors(() => _model.BillingPeriod)" />
+                </Field>
+                <FieldSeparator />
+                <FieldSet>
+                    <FieldLegend>Add-ons</FieldLegend>
+                    <FieldDescription>Select additional features you&apos;d like to include.</FieldDescription>
+                    <FieldGroup data-slot="checkbox-group">
+                        @foreach (var addon in AddonOptions)
+                        {
+                            <Field @key="addon.Id" Orientation="FieldOrientation.Horizontal" data-invalid="@Invalid(() => _model.Addons)">
+                                <Checkbox id="@($"form-annotations-complex-{addon.Id}")" Name="addons" aria-invalid="@Invalid(() => _model.Addons)"
+                                          Checked="@_model.Addons.Contains(addon.Id)" CheckedChanged="@(value => Change(() => ToggleAddon(addon.Id, value)))" />
+                                <FieldContent>
+                                    <FieldLabel for="@($"form-annotations-complex-{addon.Id}")">@addon.Title</FieldLabel>
+                                    <FieldDescription>@addon.Description</FieldDescription>
+                                </FieldContent>
+                            </Field>
+                        }
+                    </FieldGroup>
+                    <FieldError Errors="@Errors(() => _model.Addons)" />
+                </FieldSet>
+                <FieldSeparator />
+                <Field Orientation="FieldOrientation.Horizontal" data-invalid="@Invalid(() => _model.EmailNotifications)">
+                    <FieldContent>
+                        <FieldLabel for="form-annotations-complex-emailNotifications">Email Notifications</FieldLabel>
+                        <FieldDescription>Receive email updates about your subscription</FieldDescription>
+                    </FieldContent>
+                    <Switch id="form-annotations-complex-emailNotifications" Name="emailNotifications" Checked="@_model.EmailNotifications"
+                            CheckedChanged="@(value => Change(() => _model.EmailNotifications = value))"
+                            aria-invalid="@Invalid(() => _model.EmailNotifications)" />
+                    <FieldError Errors="@Errors(() => _model.EmailNotifications)" />
+                </Field>
+            </FieldGroup>
+        </EditForm>
+    </CardContent>
+    <CardFooter Class="border-t">
+        <Field>
+            <Button Type="submit" form="form-annotations-complex">Save Preferences</Button>
+            <Button Type="button" Variant="ButtonVariant.Outline" @onclick="Reset">Reset</Button>
+        </Field>
+    </CardFooter>
+</Card>
+
+@code {
+    private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
+
+    private static readonly (string Id, string Title, string Description)[] AddonOptions =
+    [
+        ("analytics", "Analytics", "Advanced analytics and reporting"),
+        ("backup", "Backup", "Automated daily backups"),
+        ("support", "Priority Support", "24/7 premium customer support"),
+    ];
+
+    private static readonly SelectOption[] BillingPeriods = [new("monthly", "Monthly"), new("yearly", "Yearly")];
+
+    private Subscription _model = new();
+    private EditContext _editContext = null!;
+    private bool _submitted;
+
+    protected override void OnInitialized() => _editContext = new EditContext(_model);
+
+    private void Submit()
+    {
+        _submitted = true;
+        if (_editContext.Validate())
+        {
+            Toasts.Add(new ToastOptions { Title = "You submitted the following values:", Description = JsonSerializer.Serialize(_model, Json) });
+        }
+    }
+
+    private void Change(Action update)
+    {
+        update();
+        if (_submitted)
+        {
+            _editContext.Validate();
+        }
+    }
+
+    private void ToggleAddon(string id, bool selected) =>
+        _model.Addons = selected ? [.. _model.Addons, id] : [.. _model.Addons.Where(addon => addon != id)];
+
+    private void Reset()
+    {
+        _model = new Subscription();
+        _editContext = new EditContext(_model);
+        _submitted = false;
+    }
+
+    private IEnumerable<string> Errors(Expression<Func<object>> field) => _editContext.GetValidationMessages(field).Take(1);
+
+    private string Invalid(Expression<Func<object>> field) => Errors(field).Any() ? "true" : "false";
+
+    private sealed class Subscription : IValidatableObject
+    {
+        private static readonly string[] AddonIds = ["analytics", "backup", "support"];
+
+        [Required(ErrorMessage = "Please select a subscription plan")]
+        [AllowedValues("basic", "pro", ErrorMessage = "Invalid plan selection. Please choose Basic or Pro")]
+        public string Plan { get; set; } = "basic";
+
+        [Required(ErrorMessage = "Please select a billing period")]
+        public string BillingPeriod { get; set; } = "";
+
+        [MinLength(1, ErrorMessage = "Please select at least one add-on")]
+        [MaxLength(3, ErrorMessage = "You can select up to 3 add-ons")]
+        public List<string> Addons { get; set; } = [];
+
+        public bool EmailNotifications { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Addons.Exists(addon => !AddonIds.Contains(addon)))
+            {
+                yield return new ValidationResult("You selected an invalid add-on", [nameof(Addons)]);
+            }
+        }
+    }
+}

@@ -1,0 +1,63 @@
+<div class="flex w-full max-w-sm flex-col gap-6 py-12">
+    <Message Align="MessageAlign.End">
+        <MessageAvatar>
+            <Avatar>
+                <AvatarImage Src="https://avatar.vercel.sh/blazix" alt="@("@me")" />
+                <AvatarFallback>ME</AvatarFallback>
+            </Avatar>
+        </MessageAvatar>
+        <MessageContent>
+            <Bubble><BubbleContent>Deploying to prod real quick.</BubbleContent></Bubble>
+        </MessageContent>
+    </Message>
+    <Message>
+        <MessageAvatar>
+            <Avatar>
+                <AvatarImage Src="https://github.com/evilrabbit.png" alt="@("@rabbit")" />
+                <AvatarFallback>R</AvatarFallback>
+            </Avatar>
+        </MessageAvatar>
+        <MessageContent>
+            <Bubble Variant="BubbleVariant.Muted">
+                <BubbleContent>It&apos;s 4:55 PM. On a Friday.</BubbleContent>
+            </Bubble>
+        </MessageContent>
+    </Message>
+    <Message Align="MessageAlign.End">
+        <MessageAvatar>
+            <Avatar>
+                <AvatarImage Src="https://avatar.vercel.sh/blazix" alt="@("@me")" />
+                <AvatarFallback>ME</AvatarFallback>
+            </Avatar>
+        </MessageAvatar>
+        <MessageContent>
+            <Bubble><BubbleContent>It&apos;s a one-line change.</BubbleContent></Bubble>
+            <MessageFooter>Delivered</MessageFooter>
+        </MessageContent>
+    </Message>
+    <Message>
+        <MessageAvatar>
+            <Avatar>
+                <AvatarImage Src="https://github.com/evilrabbit.png" alt="@("@rabbit")" />
+                <AvatarFallback>R</AvatarFallback>
+            </Avatar>
+        </MessageAvatar>
+        <MessageContent>
+            <BubbleGroup>
+                <Bubble Variant="BubbleVariant.Muted">
+                    <BubbleContent>It&apos;s always a one-line change 😭.</BubbleContent>
+                </Bubble>
+                <Bubble Variant="BubbleVariant.Muted">
+                    <BubbleContent>Alright, let me take a look.</BubbleContent>
+                    <BubbleReactions aria-label="Reactions: thumbs up"><span>👍</span></BubbleReactions>
+                </Bubble>
+            </BubbleGroup>
+        </MessageContent>
+    </Message>
+    <Marker role="status">
+        <MarkerContent Class="shimmer">
+            <span class="font-medium">Oliver</span>
+            is typing...
+        </MarkerContent>
+    </Marker>
+</div>

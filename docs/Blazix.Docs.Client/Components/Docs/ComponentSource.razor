@@ -1,0 +1,124 @@
+@if (Source is { } source)
+{
+    if (Collapsible)
+    {
+        <div data-state="@(_open ? "open" : "closed")" class="@Cn("group/collapsible relative md:-mx-1", Class)">
+            <div class="absolute top-1.5 right-9 z-10 flex items-center">
+                <button type="button" data-slot="button" aria-expanded="@(_open ? "true" : "false")" aria-controls="@_id" @onclick="Toggle"
+                        class="@SiteButton.Get(SiteButton.Ghost, SiteButton.SizeSm, "h-7 rounded-md px-2 text-muted-foreground")">
+                    @(_open ? "Collapse" : "Expand")
+                </button>
+                <Separator Orientation="Orientation.Vertical" Class="mx-1.5 h-4!" />
+            </div>
+            <div id="@_id" class="relative mt-6 overflow-hidden group-data-[state=closed]/collapsible:max-h-64 group-data-[state=closed]/collapsible:[content-visibility:auto] [&>figure]:mt-0 [&>figure]:md:mx-0!">
+                <CodeFigure Code="@source" Language="@Language" Title="@DisplayTitle" LineNumbers="true" />
+            </div>
+            <button type="button" tabindex="-1" aria-hidden="true" @onclick="Toggle"
+                    class="absolute inset-x-0 -bottom-2 flex h-20 items-center justify-center rounded-b-lg bg-linear-to-b from-(--code)/70 to-(--code) text-sm text-muted-foreground group-data-[state=open]/collapsible:hidden">
+                @(_open ? "Collapse" : "Expand")
+            </button>
+        </div>
+    }
+    else
+    {
+        <div class="@Cn("relative", Class)">
+            <CodeFigure Code="@source" Language="@Language" Title="@DisplayTitle" LineNumbers="true" />
+        </div>
+    }
+}
+
+@code {
+    private readonly string _id = "source-" + Guid.NewGuid().ToString("N")[..8];
+    private bool _open;
+
+    private void Toggle() => _open = !_open;
+
+    /// <summary>A registry file, e.g. "Button.razor".</summary>
+    [Parameter] public string? File { get; set; }
+
+    /// <summary>An example, by its name ("button-demo").</summary>
+    [Parameter] public string? Example { get; set; }
+
+    /// <summary>A file from src/Blazix.Registry/Setup that isn't a component, e.g. "typeset.css".</summary>
+    [Parameter] public string? Setup { get; set; }
+
+    /// <summary>A helper component from the docs' Examples folder that a guide has you copy, e.g. "FluentValidationValidator.razor".</summary>
+    [Parameter] public string? Helper { get; set; }
+
+    /// <summary>Code to show as is, e.g. a primitive example's stylesheet, in place of a file or example.</summary>
+    [Parameter] public string? Code { get; set; }
+
+    /// <summary>The language of <see cref="Code" />: razor (the default) or css.</summary>
+    [Parameter] public string? CodeLanguage { get; set; }
+
+    /// <summary>The file name to show above the code. Defaults to where the CLI puts a registry file.</summary>
+    [Parameter] public string? Title { get; set; }
+
+    [Parameter] public bool Collapsible { get; set; } = true;
+
+    /// <summary>Show only the first lines (the preview's code teaser).</summary>
+    [Parameter] public int? MaxLines { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+
+    private string? Source
+    {
+        get
+        {
+            var code = SourceText();
+            if (code is null || MaxLines is not { } max)
+            {
+                return code;
+            }
+            return string.Join('\n', code.Split('\n').Take(max));
+        }
+    }
+
+    private string? SourceText()
+    {
+        if (Code is not null)
+        {
+            return Code;
+        }
+        if (File is not null)
+        {
+            return Sources.RegistryFile(File);
+        }
+        if (Setup is not null)
+        {
+            return Sources.SetupFile(Setup);
+        }
+        if (Helper is not null)
+        {
+            return Sources.ExampleFile(Helper);
+        }
+        return Example is null ? null : Sources.Example(Example);
+    }
+
+    private string Language => CodeLanguage ?? Path.GetExtension(File ?? Setup ?? Helper ?? "") switch
+    {
+        ".cs" => "csharp",
+        ".css" => "css",
+        _ => "razor",
+    };
+
+    private string? DisplayTitle
+    {
+        get
+        {
+            if (Title is not null)
+            {
+                return Title;
+            }
+            if (File is not null)
+            {
+                return $"Components/UI/{File}";
+            }
+            if (Helper is not null)
+            {
+                return $"Components/{Helper}";
+            }
+            return Setup is null ? null : $"Styles/{Setup}";
+        }
+    }
+}

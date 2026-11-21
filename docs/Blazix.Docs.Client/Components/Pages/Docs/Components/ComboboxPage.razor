@@ -1,0 +1,173 @@
+@page "/docs/components/combobox"
+
+<DocsPage Title="Combobox" Description="Autocomplete input with a list of suggestions.">
+    <ComponentPreview Name="combobox-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="combobox" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <DocsHeading Level="3" Title="Simple" />
+    <p>A single-line input and a flat list (see <a href="#basic">Basic</a>).</p>
+    <CodeFigure Code="@SimpleCode" Language="text" />
+    <DocsHeading Level="3" Title="With chips" />
+    <p>Multi-select with <code>Multiple</code>, chips, and a chips input (see <a href="#multiple">Multiple</a>).</p>
+    <CodeFigure Code="@WithChipsCode" Language="text" />
+    <DocsHeading Level="3" Title="With groups and collection" />
+    <p>Nested items per group using <code>ComboboxCollection</code> inside each <code>ComboboxGroup</code>, with a separator between groups (see <a href="#groups">Groups</a>).</p>
+    <CodeFigure Code="@WithGroupsAndCollectionCode" Language="text" />
+    <DocsHeading Title="Custom Items" />
+    <p>Items are string values. When your items are objects, use their values as the items and <code>ItemToLabel</code> to name them.</p>
+    <CodeFigure Code="@CustomItemsCode" LineNumbers="true" />
+    <DocsHeading Title="Multiple Selection" />
+    <p>Use <code>Multiple</code> with chips for multi-select behavior.</p>
+    <CodeFigure Code="@MultipleSelectionCode" LineNumbers="true" />
+    <DocsHeading Title="Basic" />
+    <p>A simple combobox with a list of frameworks.</p>
+    <ComponentPreview Name="combobox-basic" />
+    <DocsHeading Title="Multiple" />
+    <p>A combobox with multiple selection using <code>Multiple</code> and <code>ComboboxChips</code>.</p>
+    <ComponentPreview Name="combobox-multiple" />
+    <DocsHeading Title="Clear Button" />
+    <p>Use the <code>ShowClear</code> parameter to show a clear button.</p>
+    <ComponentPreview Name="combobox-clear" />
+    <DocsHeading Title="Groups" />
+    <p>Use <code>ComboboxGroup</code> and <code>ComboboxSeparator</code> to group items.</p>
+    <ComponentPreview Name="combobox-groups" />
+    <DocsHeading Title="Custom Items" />
+    <p>You can render a custom component inside <code>ComboboxItem</code>.</p>
+    <ComponentPreview Name="combobox-custom" />
+    <DocsHeading Title="Invalid" />
+    <p>Use the <code>aria-invalid</code> parameter to make the combobox invalid.</p>
+    <ComponentPreview Name="combobox-invalid" />
+    <DocsHeading Title="Disabled" />
+    <p>Use the <code>Disabled</code> parameter to disable the combobox.</p>
+    <ComponentPreview Name="combobox-disabled" />
+    <DocsHeading Title="Auto Highlight" />
+    <p>Use the <code>AutoHighlight</code> parameter to automatically highlight the first item on filter.</p>
+    <ComponentPreview Name="combobox-auto-highlight" />
+    <DocsHeading Title="Popup" />
+    <p>You can trigger the combobox from a button or any other component by using the <code>Render</code> parameter. Move the <code>ComboboxInput</code> inside the <code>ComboboxContent</code>.</p>
+    <ComponentPreview Name="combobox-popup" />
+    <DocsHeading Title="Input Group" />
+    <p>You can add an addon to the combobox by using the <code>InputGroupAddon</code> component inside the <code>ComboboxInput</code>.</p>
+    <ComponentPreview Name="combobox-input-group" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="combobox" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Combobox Items="Frameworks">
+            <ComboboxInput Placeholder="Select a framework" />
+            <ComboboxContent>
+                <ComboboxEmpty>No items found.</ComboboxEmpty>
+                <ComboboxList>
+                    <Template Context="item">
+                        <ComboboxItem Value="@item">@item</ComboboxItem>
+                    </Template>
+                </ComboboxList>
+            </ComboboxContent>
+        </Combobox>
+
+        @code {
+            private static readonly string[] Frameworks = ["Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro"];
+        }
+        """;
+
+    private const string SimpleCode = """
+        Combobox
+        ├── ComboboxInput
+        └── ComboboxContent
+            ├── ComboboxEmpty
+            └── ComboboxList
+                ├── ComboboxItem
+                └── ComboboxItem
+        """;
+
+    private const string WithChipsCode = """
+        Combobox
+        ├── ComboboxChips
+        │   ├── ComboboxValue
+        │   │   └── ComboboxChip
+        │   └── ComboboxChipsInput
+        └── ComboboxContent
+            ├── ComboboxEmpty
+            └── ComboboxList
+                ├── ComboboxItem
+                └── ComboboxItem
+        """;
+
+    private const string WithGroupsAndCollectionCode = """
+        Combobox
+        ├── ComboboxInput
+        └── ComboboxContent
+            ├── ComboboxEmpty
+            └── ComboboxList
+                ├── ComboboxGroup
+                │   ├── ComboboxLabel
+                │   └── ComboboxCollection
+                │       ├── ComboboxItem
+                │       └── ComboboxItem
+                ├── ComboboxSeparator
+                └── ComboboxGroup
+                    ├── ComboboxLabel
+                    └── ComboboxCollection
+                        ├── ComboboxItem
+                        └── ComboboxItem
+        """;
+
+    private const string CustomItemsCode = """
+        <Combobox Items="@Frameworks.Select(f => f.Value)" ItemToLabel="LabelOf">
+            <ComboboxInput Placeholder="Select a framework" />
+            <ComboboxContent>
+                <ComboboxEmpty>No items found.</ComboboxEmpty>
+                <ComboboxList>
+                    <Template Context="value">
+                        <ComboboxItem Value="@value">@LabelOf(value)</ComboboxItem>
+                    </Template>
+                </ComboboxList>
+            </ComboboxContent>
+        </Combobox>
+
+        @code {
+            private sealed record Framework(string Label, string Value);
+
+            private static readonly Framework[] Frameworks =
+            [
+                new("Next.js", "next"),
+                new("SvelteKit", "sveltekit"),
+                new("Nuxt", "nuxt"),
+            ];
+
+            private static string LabelOf(string value) => Frameworks.First(f => f.Value == value).Label;
+        }
+        """;
+
+    private const string MultipleSelectionCode = """
+        <Combobox Items="Frameworks" Multiple="true" @bind-Values="_values">
+            <ComboboxChips id="frameworks-chips">
+                <Template Context="item">
+                    <ComboboxChip Value="@item">@item</ComboboxChip>
+                </Template>
+                <ChildContent>
+                    <ComboboxChipsInput Placeholder="Add framework" />
+                </ChildContent>
+            </ComboboxChips>
+            <ComboboxContent Anchor="frameworks-chips">
+                <ComboboxEmpty>No items found.</ComboboxEmpty>
+                <ComboboxList>
+                    <Template Context="item">
+                        <ComboboxItem Value="@item">@item</ComboboxItem>
+                    </Template>
+                </ComboboxList>
+            </ComboboxContent>
+        </Combobox>
+
+        @code {
+            private static readonly string[] Frameworks = ["Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro"];
+
+            private IReadOnlyList<string> _values = [];
+        }
+        """;
+}

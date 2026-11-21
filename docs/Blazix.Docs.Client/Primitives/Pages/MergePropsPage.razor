@@ -1,0 +1,54 @@
+@page "/docs/primitives/merge-props"
+
+<DocsPage Title="Merge Props" Description="Merges attributes the way the primitives do: event handlers chain, classes join and styles append.">
+    <p>
+        Merging sets of attributes means handling event handlers, <code>class</code> and
+        <code>style</code>. Here it's two helpers, one for each place you need it.
+    </p>
+    <DocsHeading Title="MergeProps" />
+    <p>
+        <code>MergeProps.Merge</code> merges sets of attributes. Later sets win, except that event handlers all run (the later
+        set's first), <code>class</code> values are joined, and <code>style</code> declarations are appended, so the later
+        set's win. Use it when a <code>Render</code> fragment needs a part's attributes and your own on one element:
+    </p>
+    <CodeFigure Code="@MergeCode" />
+    <DocsHeading Title="AttributeBuilder" />
+    <p>
+        <code>AttributeBuilder</code> builds the attributes a part renders: the ones its author wrote (<code>class</code>,
+        <code>style</code>, <code>data-testid</code>, handlers...) overlaid with the part's own. The part's values win,
+        except that both event handlers run (the author's first), the author's <code>style</code> comes after the part's, and
+        <code>Default</code> values apply only when the author didn't set one. A null value removes the attribute, and
+        <code>Flag</code> renders a presence attribute such as <code>data-open</code>.
+    </p>
+    <p>
+        Here the button gets <code>type="button"</code> unless its author set a type, <code>data-pressed=""</code> only while
+        it's pressed, and an <code>onclick</code> that runs after the author's.
+    </p>
+    <CodeFigure Code="@BuilderCode" Language="csharp" />
+    <p>See <a href="/docs/primitives/use-render">Use Render</a> for building a whole part with it.</p>
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(MergeProps)" />
+    <PartReference Type="typeof(AttributeBuilder)" />
+</DocsPage>
+
+@code {
+    private const string MergeCode = """
+        <MenuItem>
+            <Render Context="item">
+                <a @attributes="MergeProps.Merge(item.Attributes, _link)">Settings</a>
+            </Render>
+        </MenuItem>
+
+        @code {
+            private readonly Dictionary<string, object> _link = new() { ["href"] = "/settings", ["class"] = "menu-link" };
+        }
+        """;
+
+    private const string BuilderCode = """
+        protected override void BuildAttributes(AttributeBuilder attributes) => attributes
+            .Default("type", "button")
+            .Set("aria-pressed", Pressed ? "true" : "false")
+            .Flag("data-pressed", Pressed)
+            .Set("onclick", _onClick);
+        """;
+}

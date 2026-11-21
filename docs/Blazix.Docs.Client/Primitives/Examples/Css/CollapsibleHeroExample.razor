@@ -1,0 +1,20 @@
+<CollapsibleRoot class="collapsible">
+    <CollapsibleTrigger class="collapsible-trigger">
+        Recovery keys
+        @CaretRightIcon
+    </CollapsibleTrigger>
+    <CollapsiblePanel class="collapsible-panel">
+        <div class="collapsible-content">
+            <div>alien-bean-pasta</div>
+            <div>wild-irish-burrito</div>
+            <div>horse-battery-staple</div>
+        </div>
+    </CollapsiblePanel>
+</CollapsibleRoot>
+
+@code {
+    private static readonly RenderFragment CaretRightIcon =
+        @<svg class="collapsible-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="display: block">
+            <path d="M6 12V4l4.5 4z" />
+        </svg>;
+}

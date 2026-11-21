@@ -1,0 +1,47 @@
+@page "/docs/components/popover"
+
+<DocsPage Title="Popover" Description="Displays rich content in a portal, triggered by a button.">
+    <ComponentPreview Name="popover-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="popover" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>Popover</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Basic" />
+    <p>A simple popover with a header, title, and description.</p>
+    <ComponentPreview Name="popover-basic" />
+    <DocsHeading Title="Align" />
+    <p>Use the <code>Align</code> parameter on <code>PopoverContent</code> to control the horizontal alignment.</p>
+    <ComponentPreview Name="popover-alignments" />
+    <DocsHeading Title="With Form" />
+    <p>A popover with form fields inside.</p>
+    <ComponentPreview Name="popover-form" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="popover" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Popover>
+            <PopoverTrigger>
+                <Render>
+                    <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">Open Popover</Button>
+                </Render>
+            </PopoverTrigger>
+            <PopoverContent>
+                <PopoverHeader>
+                    <PopoverTitle>Title</PopoverTitle>
+                    <PopoverDescription>Description text here.</PopoverDescription>
+                </PopoverHeader>
+            </PopoverContent>
+        </Popover>
+        """;
+
+    private const string CompositionCode = """
+        Popover
+        ├── PopoverTrigger
+        └── PopoverContent
+        """;
+}

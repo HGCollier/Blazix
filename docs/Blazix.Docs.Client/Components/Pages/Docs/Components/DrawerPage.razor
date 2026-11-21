@@ -1,0 +1,136 @@
+@page "/docs/components/drawer"
+
+<DocsPage Title="Drawer" Description="A panel that slides in from the edge of the screen and can be swiped away.">
+    <ComponentPreview Name="drawer-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="drawer" />
+    <p>Add the following to your global styles. On iOS Safari, the drawer overlay is absolutely positioned and requires a positioned <code>body</code> to cover the viewport after the page is scrolled.</p>
+    <CodeFigure Code="@InstallationCode" Language="css" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>Drawer</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <p><code>DrawerContent</code> composes the portal, overlay, viewport, and popup from Blazix.Primitives. For lower-level control, <code>DrawerPortal</code>, <code>DrawerOverlay</code>, and <code>DrawerSwipeHandle</code> are also exported.</p>
+    <DocsHeading Title="Custom Sizes" />
+    <p>A vertical drawer sizes itself to its content and is capped at <code>calc(100dvh - 6rem)</code> by default. A side drawer spans <code>75%</code> of the viewport width, or <code>24rem</code> on larger screens.</p>
+    <p>To customize the height of a vertical drawer, use the <code>h-*</code> and <code>max-h-*</code> utilities on <code>DrawerContent</code>.</p>
+    <CodeFigure Code="@CustomSizesCode" />
+    <p>To customize the width of a side drawer, use the <code>w-*</code> and <code>max-w-*</code> utilities on <code>DrawerContent</code>.</p>
+    <CodeFigure Code="@CustomSizesCode2" />
+    <p>When the same component renders in multiple directions, scope an override to one axis using the <code>data-[swipe-axis=*]</code> variants.</p>
+    <CodeFigure Code="@CustomSizesCode3" />
+    <p>To make a region of the drawer scrollable, make the scroll container a flex item. Avoid <code>h-full</code>, which does not resolve inside a content-sized drawer.</p>
+    <CodeFigure Code="@CustomSizesCode4" />
+    <DocsHeading Title="Styling" />
+    <p>The drawer exposes CSS variables for style-level customization. Set the sizing variables on <code>DrawerContent</code>. Set the overlay variable on <code>[data-slot=drawer-overlay]</code> in your CSS.</p>
+    <DocsTable>
+        <table>
+            <thead><tr><th>Variable</th><th>Default</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>--drawer-inset</code></td><td><code>0px</code></td><td>Floats the drawer from the viewport edges.</td></tr>
+                <tr><td><code>--drawer-bleed-background</code></td><td><code>var(--color-popover)</code></td><td>Fills the gap behind the drawer on swipe overshoot.</td></tr>
+                <tr><td><code>--drawer-overlay-min-opacity</code></td><td><code>0</code></td><td>Minimum overlay opacity. Defaults to <code>0.5</code> when snap points are active.</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <p>The drawer also sets data attributes you can target with variants such as <code>data-[swipe-direction=down]:</code> on <code>DrawerContent</code>, or <code>group-data-[swipe-axis=y]/drawer-popup:</code> on its descendants.</p>
+    <DocsTable>
+        <table>
+            <thead><tr><th>Attribute</th><th>Values</th><th>Set when</th></tr></thead>
+            <tbody>
+                <tr><td><code>data-swipe-direction</code></td><td><code>up</code>, <code>right</code>, <code>down</code>, <code>left</code></td><td>Always.</td></tr>
+                <tr><td><code>data-swipe-axis</code></td><td><code>x</code>, <code>y</code></td><td>Always.</td></tr>
+                <tr><td><code>data-snap-points</code></td><td>Present</td><td>The drawer has snap points.</td></tr>
+                <tr><td><code>data-expanded</code></td><td>Present</td><td>The drawer is at the full snap point.</td></tr>
+                <tr><td><code>data-swiping</code></td><td>Present</td><td>A swipe is in progress.</td></tr>
+                <tr><td><code>data-nested-drawer-open</code></td><td>Present</td><td>A nested drawer is open on top.</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <DocsHeading Title="Position" />
+    <p>Use the <code>SwipeDirection</code> parameter to set the side of the drawer.</p>
+    <p>Available options are <code>DrawerSwipeDirection.Up</code>, <code>Right</code>, <code>Down</code> (the default), and <code>Left</code>.</p>
+    <ComponentPreview Name="drawer-sides" />
+    <DocsHeading Title="Swipe Handle" />
+    <p>Use <code>ShowSwipeHandle</code> on <code>Drawer</code> to render a swipe handle.</p>
+    <ComponentPreview Name="drawer-swipe-handle" />
+    <DocsHeading Title="Nested" />
+    <p>Open drawers from inside another drawer. Parent drawers stay mounted and stack behind the frontmost drawer.</p>
+    <ComponentPreview Name="drawer-nested" />
+    <DocsHeading Title="Non Modal" />
+    <p>Set <code>Modal="false"</code> to allow interaction with the rest of the page while the drawer is open. Combine with <code>DisablePointerDismissal</code> to prevent the drawer from closing on outside presses.</p>
+    <ComponentPreview Name="drawer-non-modal" />
+    <DocsHeading Title="Snap Points" />
+    <p>Use <code>SnapPoints</code> to snap a drawer to preset heights. Numbers between <code>0</code> and <code>1</code> represent fractions of the viewport. Numbers greater than <code>1</code> are treated as pixel values. String values support <code>px</code> and <code>rem</code> units. Snap points apply to vertical drawers.</p>
+    <p>Track the active snap point with <code>@@bind-SnapPoint</code>. At the full snap point, the drawer gets a <code>data-expanded</code> attribute you can style with the <code>data-expanded:</code> variant.</p>
+    <ComponentPreview Name="drawer-snap-points" />
+    <DocsHeading Title="Responsive" />
+    <p>You can combine the <code>Dialog</code> and <code>Drawer</code> components to create a responsive dialog. This renders a <code>Dialog</code> component on desktop and a <code>Drawer</code> on mobile.</p>
+    <ComponentPreview Name="drawer-dialog" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="drawer" />
+</DocsPage>
+
+@code {
+    private const string InstallationCode = """
+        body {
+          position: relative;
+        }
+        """;
+
+    private const string UsageCode = """
+        <Drawer>
+            <DrawerTrigger>
+                <Render>
+                    <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">Open</Button>
+                </Render>
+            </DrawerTrigger>
+            <DrawerContent>
+                <DrawerHeader>
+                    <DrawerTitle>Are you absolutely sure?</DrawerTitle>
+                    <DrawerDescription>This action cannot be undone.</DrawerDescription>
+                </DrawerHeader>
+                <div class="p-4">...</div>
+                <DrawerFooter>
+                    <Button>Submit</Button>
+                    <DrawerClose>
+                        <Render>
+                            <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">Cancel</Button>
+                        </Render>
+                    </DrawerClose>
+                </DrawerFooter>
+            </DrawerContent>
+        </Drawer>
+        """;
+
+    private const string CompositionCode = """
+        Drawer
+        ├── DrawerTrigger
+        └── DrawerContent
+            ├── DrawerHeader
+            │   ├── DrawerTitle
+            │   └── DrawerDescription
+            └── DrawerFooter
+        """;
+
+    private const string CustomSizesCode = """
+        <DrawerContent Class="h-[50vh]">...</DrawerContent>
+        """;
+
+    private const string CustomSizesCode2 = """
+        <DrawerContent Class="w-96">...</DrawerContent>
+        """;
+
+    private const string CustomSizesCode3 = """
+        <DrawerContent Class="data-[swipe-axis=y]:max-h-[50vh] data-[swipe-axis=x]:w-96">...</DrawerContent>
+        """;
+
+    private const string CustomSizesCode4 = """
+        <DrawerContent>
+            <DrawerHeader>...</DrawerHeader>
+            <div class="flex-1 overflow-y-auto p-4">...</div>
+            <DrawerFooter>...</DrawerFooter>
+        </DrawerContent>
+        """;
+}

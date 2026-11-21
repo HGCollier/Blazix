@@ -1,0 +1,13 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<Separator data-slot="button-group-separator" Orientation="@Orientation" @attributes="AdditionalAttributes"
+           Class="@Cn("relative self-stretch bg-border dark:bg-input data-horizontal:mx-px data-horizontal:w-auto data-vertical:my-px data-vertical:h-auto", Class)" />
+
+@code {
+    [Parameter] public Orientation Orientation { get; set; } = Orientation.Vertical;
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

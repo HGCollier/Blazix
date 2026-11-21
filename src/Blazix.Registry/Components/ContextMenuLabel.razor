@@ -1,0 +1,19 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<MenuGroupLabel data-slot="context-menu-label" @attributes="AdditionalAttributes" Render="@Render" data-inset="@Inset"
+                class="@Cn("px-1.5 py-1 text-xs font-medium text-muted-foreground data-inset:pl-7", Class)">
+    @ChildContent
+</MenuGroupLabel>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<MenuGroupLabelRenderProps>? Render { get; set; }
+
+    [Parameter] public bool Inset { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

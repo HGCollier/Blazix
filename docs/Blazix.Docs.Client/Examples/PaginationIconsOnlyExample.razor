@@ -1,0 +1,22 @@
+<div class="flex items-center justify-between gap-4">
+    <Field Orientation="FieldOrientation.Horizontal" Class="w-fit">
+        <FieldLabel for="select-rows-per-page">Rows per page</FieldLabel>
+        <Select Value="25">
+            <SelectTrigger Class="w-20" id="select-rows-per-page"><SelectValue /></SelectTrigger>
+            <SelectContent Align="Align.Start">
+                <SelectGroup>
+                    <SelectItem Value="10">10</SelectItem>
+                    <SelectItem Value="25">25</SelectItem>
+                    <SelectItem Value="50">50</SelectItem>
+                    <SelectItem Value="100">100</SelectItem>
+                </SelectGroup>
+            </SelectContent>
+        </Select>
+    </Field>
+    <Pagination Class="mx-0 w-auto">
+        <PaginationContent>
+            <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
+            <PaginationItem><PaginationNext href="#" /></PaginationItem>
+        </PaginationContent>
+    </Pagination>
+</div>

@@ -1,0 +1,36 @@
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.QuestionnaireItem data-slot="questionnaire-item" @attributes="AdditionalAttributes" Render="@Render"
+                                   Name="@Name" Required="@Required" Multiple="@Multiple" Disabled="@Disabled" Invalid="@Invalid"
+                                   OnStatusChange="@OnStatusChange"
+                                   class="@Cn("flex min-w-0 flex-col gap-4 border-0 p-0 outline-none", Class)">
+    @ChildContent
+</Blazix.Primitives.QuestionnaireItem>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<QuestionnaireItemRenderProps>? Render { get; set; }
+
+    /// <summary>The item's name: its answers submit under it.</summary>
+    [Parameter, EditorRequired] public string Name { get; set; } = "";
+
+    /// <summary>Must be answered: it can't be skipped.</summary>
+    [Parameter] public bool Required { get; set; }
+
+    /// <summary>Allow more than one choice.</summary>
+    [Parameter] public bool Multiple { get; set; }
+
+    /// <summary>Leave the item out of the flow.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>Mark the item invalid from outside.</summary>
+    [Parameter] public bool Invalid { get; set; }
+
+    [Parameter] public EventCallback<QuestionnaireItemStatus> OnStatusChange { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

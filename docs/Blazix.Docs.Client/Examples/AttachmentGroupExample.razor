@@ -1,0 +1,43 @@
+<div class="mx-auto w-full max-w-sm py-12">
+    <AttachmentGroup Class="w-full">
+        @foreach (var item in Items)
+        {
+            <Attachment @key="item.Name" Class="w-64">
+                @if (item.Src is not null)
+                {
+                    <AttachmentMedia Variant="AttachmentMediaVariant.Image">
+                        <img src="@item.Src" alt="@item.Name" />
+                    </AttachmentMedia>
+                }
+                else if (item.Icon is not null)
+                {
+                    <AttachmentMedia>
+                        <Icon Name="@item.Icon" />
+                    </AttachmentMedia>
+                }
+                <AttachmentContent>
+                    <AttachmentTitle>@item.Name</AttachmentTitle>
+                    <AttachmentDescription>@item.Meta</AttachmentDescription>
+                </AttachmentContent>
+                <AttachmentActions>
+                    <AttachmentAction aria-label="@($"Remove {item.Name}")">
+                        <Icon Name="x" />
+                    </AttachmentAction>
+                </AttachmentActions>
+            </Attachment>
+        }
+    </AttachmentGroup>
+</div>
+
+@code {
+    private sealed record AttachmentItem(string Name, string Meta, string? Icon = null, string? Src = null);
+
+    private static readonly AttachmentItem[] Items =
+    [
+        new("briefing-notes.pdf", "PDF · 1.4 MB", Icon: "file-text"),
+        new("workspace.png", "PNG · 820 KB",
+            Src: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80"),
+        new("customers.csv", "CSV · 18 KB", Icon: "table"),
+        new("renderer.tsx", "TSX · 12 KB", Icon: "file-code"),
+    ];
+}

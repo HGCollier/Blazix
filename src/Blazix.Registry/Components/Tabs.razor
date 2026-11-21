@@ -1,0 +1,28 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<TabsRoot data-slot="tabs" @attributes="AdditionalAttributes" Render="@Render"
+          Value="@Value" ValueChanged="@ValueChanged" OnValueChange="@OnValueChange" Orientation="@Orientation"
+          class="@Cn("group/tabs flex gap-2 data-horizontal:flex-col", Class)">
+    @ChildContent
+</TabsRoot>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<TabsRenderProps>? Render { get; set; }
+
+    /// <summary>The selected tab's value. Supports <c>@bind-Value</c>; set it once for uncontrolled tabs.</summary>
+    [Parameter] public string? Value { get; set; }
+
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+
+    /// <summary>Runs before the selection changes; call <c>Cancel()</c> to keep it.</summary>
+    [Parameter] public EventCallback<ValueChangeEventArgs<string?>> OnValueChange { get; set; }
+
+    [Parameter] public Orientation Orientation { get; set; } = Orientation.Horizontal;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

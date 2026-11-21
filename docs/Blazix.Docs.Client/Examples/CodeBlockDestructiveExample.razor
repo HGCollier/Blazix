@@ -1,0 +1,18 @@
+<div class="w-full max-w-md">
+    <CodeBlock Variant="CodeBlockVariant.Destructive">
+        <CodeBlockHeader>
+            <CodeBlockTitle>Error</CodeBlockTitle>
+            <CodeBlockActions><CodeBlockCopyButton Value="@Error" /></CodeBlockActions>
+        </CodeBlockHeader>
+        <CodeBlockContent Wrap="true" Code="@Error" />
+    </CodeBlock>
+</div>
+
+@code {
+    private const string Error =
+        """
+        TypeError: Cannot read properties of undefined (reading 'map')
+            at MessageList (components/message-list.tsx:18:22)
+            at renderWithHooks (react-dom.development.js:16305:18)
+        """;
+}

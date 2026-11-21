@@ -1,0 +1,76 @@
+@page "/docs/primitives/alert-dialog"
+
+<DocsPage Title="Alert Dialog" Description="A dialog that requires a user response to proceed.">
+    <ComponentPreview Name="primitives/alert-dialog-hero" />
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(AlertDialogRoot)" />
+    <PartReference Type="typeof(AlertDialogTrigger)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding alert dialog is open.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the trigger is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(AlertDialogPortal)" />
+    <PartReference Type="typeof(AlertDialogBackdrop)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the dialog is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the dialog is closed.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the dialog begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the dialog is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(AlertDialogPopup)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the dialog is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the dialog is closed.</StyleHook>
+            <StyleHook Name="data-nested">Present when the dialog is nested within another dialog.</StyleHook>
+            <StyleHook Name="data-nested-dialog-open">Present when the dialog has other open dialogs nested within it.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the dialog begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the dialog is animating out.</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--nested-dialogs" Type="number">Indicates how many dialogs are nested within.</StyleHook>
+        </CssVariables>
+    </PartReference>
+    <PartReference Type="typeof(AlertDialogTitle)" />
+    <PartReference Type="typeof(AlertDialogDescription)" />
+    <PartReference Type="typeof(AlertDialogClose)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the button is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(AlertDialogViewport)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the dialog is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the dialog is closed.</StyleHook>
+            <StyleHook Name="data-nested">Present when the dialog is nested within another dialog.</StyleHook>
+            <StyleHook Name="data-nested-dialog-open">Present when the dialog has other open dialogs nested within it.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the dialog begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the dialog is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(AlertDialogHandle)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <AlertDialogRoot>
+            <AlertDialogTrigger />
+            <AlertDialogPortal>
+                <AlertDialogBackdrop />
+                <AlertDialogViewport>
+                    <AlertDialogPopup>
+                        <AlertDialogTitle />
+                        <AlertDialogDescription />
+                        <AlertDialogClose />
+                    </AlertDialogPopup>
+                </AlertDialogViewport>
+            </AlertDialogPortal>
+        </AlertDialogRoot>
+        """;
+}

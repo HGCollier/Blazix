@@ -1,0 +1,41 @@
+name: release
+
+# Push a tag like v0.2.0 to publish Blazix.Primitives and Blazix.Cli at that version.
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # NuGet Trusted Publishing: the job's OIDC token is exchanged for a short-lived API key.
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      # Builds the docs app and Blazix.Registry too, so Tailwind.targets and the components are compiled before release.
+      - run: dotnet build -c Release
+
+      - name: Pack both packages at the tag's version
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          dotnet pack src/Blazix.Primitives -c Release -p:Version="$VERSION"
+          dotnet pack src/Blazix.Cli -c Release -p:Version="$VERSION"
+
+      # Matches the Trusted Publishing policy on nuget.org (owner HGCollier, repo Blazix, release.yml). No stored secret.
+      - uses: NuGet/login@v1
+        id: nuget
+        with:
+          user: HGCollier
+
+      - run: >
+          dotnet nuget push "artifacts/packages/*.nupkg"
+          --api-key "${{ steps.nuget.outputs.NUGET_API_KEY }}"
+          --source https://api.nuget.org/v3/index.json
+          --skip-duplicate

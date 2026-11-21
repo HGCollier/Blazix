@@ -1,0 +1,11 @@
+<div class="mx-auto grid w-full max-w-xs gap-3">
+    <div class="flex items-center justify-between gap-2">
+        <Label for="slider-demo-temperature">Temperature</Label>
+        <span class="text-sm text-muted-foreground">@string.Join(", ", _value)</span>
+    </div>
+    <Slider id="slider-demo-temperature" @bind-Values="_value" Min="0" Max="1" Step="0.1" />
+</div>
+
+@code {
+    private IReadOnlyList<double> _value = [0.3, 0.7];
+}

@@ -1,0 +1,14 @@
+<ScrollArea Class="h-72 w-48 rounded-md border">
+    <div class="p-4">
+        <h4 class="mb-4 text-sm leading-none font-medium">Tags</h4>
+        @foreach (var tag in Tags)
+        {
+            <div class="text-sm">@tag</div>
+            <Separator Class="my-2" />
+        }
+    </div>
+</ScrollArea>
+
+@code {
+    private static readonly string[] Tags = [.. Enumerable.Range(0, 50).Select(i => $"v1.2.0-beta.{50 - i}")];
+}

@@ -1,0 +1,49 @@
+<Select Items="Items">
+    <SelectTrigger Class="w-full max-w-64" aria-label="Timezone">
+        <SelectValue Placeholder="Select a timezone" />
+    </SelectTrigger>
+    <SelectContent>
+        @foreach (var (label, zones) in Groups)
+        {
+            <SelectGroup>
+                <SelectLabel>@label</SelectLabel>
+                @foreach (var item in zones)
+                {
+                    <SelectItem Value="@item.Value">@item.Label</SelectItem>
+                }
+            </SelectGroup>
+        }
+    </SelectContent>
+</Select>
+
+@code {
+    private static readonly (string Label, SelectOption[] Zones)[] Groups =
+    [
+        ("North America",
+        [
+            new("est", "Eastern Standard Time"), new("cst", "Central Standard Time"), new("mst", "Mountain Standard Time"),
+            new("pst", "Pacific Standard Time"), new("akst", "Alaska Standard Time"), new("hst", "Hawaii Standard Time"),
+        ]),
+        ("Europe & Africa",
+        [
+            new("gmt", "Greenwich Mean Time"), new("cet", "Central European Time"), new("eet", "Eastern European Time"),
+            new("west", "Western European Summer Time"), new("cat", "Central Africa Time"), new("eat", "East Africa Time"),
+        ]),
+        ("Asia",
+        [
+            new("msk", "Moscow Time"), new("ist", "India Standard Time"), new("cst_china", "China Standard Time"),
+            new("jst", "Japan Standard Time"), new("kst", "Korea Standard Time"), new("ist_indonesia", "Indonesia Central Standard Time"),
+        ]),
+        ("Australia & Pacific",
+        [
+            new("awst", "Australian Western Standard Time"), new("acst", "Australian Central Standard Time"),
+            new("aest", "Australian Eastern Standard Time"), new("nzst", "New Zealand Standard Time"), new("fjt", "Fiji Time"),
+        ]),
+        ("South America",
+        [
+            new("art", "Argentina Time"), new("bot", "Bolivia Time"), new("brt", "Brasilia Time"), new("clt", "Chile Standard Time"),
+        ]),
+    ];
+
+    private static readonly SelectOption[] Items = [.. Groups.SelectMany(g => g.Zones)];
+}

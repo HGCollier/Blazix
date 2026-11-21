@@ -1,0 +1,40 @@
+<div class="grid w-full grid-cols-2 gap-4 xl:gap-6">
+    <SidebarSection Label="Overview" Class="xl:col-start-1 xl:row-start-2">
+        @Entry("chart-column", "Analytics", active: true)
+        @Entry("arrow-left-right", "Transactions")
+        @Entry("trending-up", "Investments")
+        @Entry("landmark", "Accounts")
+        @Entry("chart-pie", "Spending")
+    </SidebarSection>
+    <SidebarSection Label="Planning" Class="xl:col-start-1 xl:row-start-1">
+        @Entry("file-text", "Documents")
+        @Entry("wallet", "Budget")
+        @Entry("chart-column-increasing", "Reports")
+        @Entry("target", "Goals")
+        @Entry("calendar", "Calendar")
+    </SidebarSection>
+    <SidebarSection Label="Support" Class="flex xl:col-start-2 xl:row-start-1">
+        @Entry("circle-help", "Help Center")
+        @Entry("book-open", "Docs")
+        @Entry("message-square", "Contact Us")
+        @Entry("activity", "Status")
+        @Entry("globe", "Community")
+    </SidebarSection>
+    <SidebarSection Label="Account" Class="flex xl:col-start-2 xl:row-start-2">
+        @Entry("user", "Profile")
+        @Entry("credit-card", "Billing", active: true)
+        @Entry("bell", "Notifications")
+        @Entry("shield", "Security")
+        @Entry("palette", "Appearance")
+    </SidebarSection>
+</div>
+
+@code {
+    private static RenderFragment Entry(string icon, string label, bool active = false) =>
+        @<SidebarMenuItem>
+            <SidebarMenuButton IsActive="@active">
+                <Icon Name="@icon" />
+                @label
+            </SidebarMenuButton>
+        </SidebarMenuItem>;
+}

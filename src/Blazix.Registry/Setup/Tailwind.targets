@@ -1,0 +1,115 @@
+<!--
+  Tailwind CSS for .NET projects. No Node.js, npm or package.json.
+
+  First build downloads the pinned standalone Tailwind CLI (a single native binary) into a
+  per-user cache. Every build then compiles $(TailwindInput) to $(TailwindOutput), and skips
+  that step when no .razor/.cs/.css file changed. In Development, TailwindWatcher keeps
+  the output fresh between builds so hot reload picks up new classes.
+
+  `blazix init` copies this file into your project and imports it from your .csproj.
+  Optional overrides (set them in your .csproj before the Import):
+    <TailwindVersion>4.3.5</TailwindVersion>
+    <TailwindExecutable>/opt/tailwindcss</TailwindExecutable>  use your own binary, skip the download
+    <TailwindInput>Styles/app.css</TailwindInput>
+    <TailwindOutput>wwwroot/app.css</TailwindOutput>
+    <TailwindEnabled>false</TailwindEnabled>                   e.g. on a CI step that doesn't need CSS
+  Files outside this project that your CSS scans with @source (a shared component library, a .Client
+  project) should rebuild the CSS when they change too. List them in a property, not as items: an IDE
+  takes .razor items for components of this project.
+    <TailwindSources>../Shared/**/*.razor;../Shared/**/*.cs</TailwindSources>
+-->
+<Project>
+
+  <PropertyGroup>
+    <TailwindVersion Condition="'$(TailwindVersion)' == ''">4.3.5</TailwindVersion>
+    <TailwindInput Condition="'$(TailwindInput)' == ''">Styles/app.css</TailwindInput>
+    <TailwindOutput Condition="'$(TailwindOutput)' == ''">wwwroot/app.css</TailwindOutput>
+
+    <_TailwindDownload Condition="'$(TailwindExecutable)' == ''">true</_TailwindDownload>
+    <_TailwindArch>$([System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString().ToLowerInvariant())</_TailwindArch>
+    <_TailwindAsset Condition="$([MSBuild]::IsOSPlatform('Windows'))">tailwindcss-windows-$(_TailwindArch).exe</_TailwindAsset>
+    <_TailwindAsset Condition="$([MSBuild]::IsOSPlatform('OSX'))">tailwindcss-macos-$(_TailwindArch)</_TailwindAsset>
+    <_TailwindAsset Condition="$([MSBuild]::IsOSPlatform('Linux'))">tailwindcss-linux-$(_TailwindArch)</_TailwindAsset>
+    <_TailwindCacheDir>$([System.IO.Path]::Combine($([System.Environment]::GetFolderPath(SpecialFolder.LocalApplicationData)), 'tailwindcss', '$(TailwindVersion)'))</_TailwindCacheDir>
+    <TailwindExecutable Condition="'$(TailwindExecutable)' == ''">$([System.IO.Path]::Combine('$(_TailwindCacheDir)', '$(_TailwindAsset)'))</TailwindExecutable>
+    <_TailwindMinify Condition="'$(Configuration)' == 'Release'"> --minify</_TailwindMinify>
+    <_TailwindStamp>$(BaseIntermediateOutputPath)tailwind.stamp</_TailwindStamp>
+    <_TailwindOutputFullPath>$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)/$(TailwindOutput)'))</_TailwindOutputFullPath>
+  </PropertyGroup>
+
+  <!--
+    In Debug, TailwindWatcher rewrites the output while the app is running, so a build-time .gz copy
+    would go stale and could be served instead of the fresh file. Don't pre-compress it there;
+    Release builds and publish compress it like any other asset.
+  -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' and '$(TailwindEnabled)' != 'false'">
+    <CompressionExcludePatterns>$(CompressionExcludePatterns);$([System.String]::Copy('$(TailwindOutput)').Replace('\', '/').Replace('wwwroot/', ''))</CompressionExcludePatterns>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <_TailwindInputs Include="Styles/**/*.css;**/*.razor;**/*.cshtml;**/*.cs" Exclude="**/bin/**;**/obj/**" />
+    <!-- TailwindSource items still work, for projects set up before TailwindSources. -->
+    <_TailwindInputs Include="@(TailwindSource)" />
+  </ItemGroup>
+
+  <!-- $(TailwindSources), globbed only while building, so IDEs never see the files as part of this project. -->
+  <Target Name="_TailwindCollectSources" BeforeTargets="TailwindBuild" Condition="'$(TailwindSources)' != ''">
+    <ItemGroup>
+      <_TailwindInputs Include="$(TailwindSources)" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Tells TailwindWatcher where the CLI and files are. Debug builds only. -->
+  <ItemGroup Condition="'$(Configuration)' == 'Debug' and '$(TailwindEnabled)' != 'false'">
+    <AssemblyMetadata Include="Tailwind.Executable" Value="$(TailwindExecutable)" />
+    <AssemblyMetadata Include="Tailwind.Input" Value="$(TailwindInput)" />
+    <AssemblyMetadata Include="Tailwind.Output" Value="$(TailwindOutput)" />
+  </ItemGroup>
+
+  <Target Name="TailwindDownload"
+          Condition="'$(TailwindEnabled)' != 'false' and '$(_TailwindDownload)' == 'true' and !Exists('$(TailwindExecutable)')">
+    <Message Importance="high" Text="Downloading Tailwind CSS $(TailwindVersion) standalone CLI (one time, no Node.js needed)..." />
+    <DownloadFile SourceUrl="https://github.com/tailwindlabs/tailwindcss/releases/download/v$(TailwindVersion)/$(_TailwindAsset)"
+                  DestinationFolder="$(_TailwindCacheDir)"
+                  DestinationFileName="$(_TailwindAsset).partial"
+                  Retries="2" />
+    <!-- Rename only after a complete download, so an interrupted build can't leave a broken binary. -->
+    <Move SourceFiles="$(TailwindExecutable).partial" DestinationFiles="$(TailwindExecutable)" />
+    <Exec Condition="!$([MSBuild]::IsOSPlatform('Windows'))" Command="chmod +x &quot;$(TailwindExecutable)&quot;" />
+  </Target>
+
+  <!-- Changes only when settings change (e.g. Debug -> Release turns on minification), so that rebuilds too. -->
+  <Target Name="_TailwindWriteStamp" Condition="'$(TailwindEnabled)' != 'false'">
+    <WriteLinesToFile File="$(_TailwindStamp)"
+                      Lines="$(TailwindVersion)|$(TailwindInput)|$(TailwindOutput)|$(_TailwindMinify)"
+                      Overwrite="true"
+                      WriteOnlyWhenDifferent="true" />
+  </Target>
+
+  <Target Name="TailwindBuild"
+          BeforeTargets="BeforeBuild"
+          DependsOnTargets="TailwindDownload;_TailwindWriteStamp"
+          Condition="'$(TailwindEnabled)' != 'false'"
+          Inputs="@(_TailwindInputs);$(MSBuildThisFileFullPath);$(_TailwindStamp)"
+          Outputs="$(TailwindOutput)">
+    <Exec Command="&quot;$(TailwindExecutable)&quot; --input &quot;$(TailwindInput)&quot; --output &quot;$(TailwindOutput)&quot;$(_TailwindMinify)"
+          WorkingDirectory="$(MSBuildProjectDirectory)"
+          StandardErrorImportance="low"
+          StandardOutputImportance="low" />
+  </Target>
+
+  <!--
+    On a fresh clone the output didn't exist when the SDK globbed wwwroot/**, so it isn't a static
+    web asset yet. Add it the same way the SDK would (same metadata, so it's compressed and published).
+  -->
+  <Target Name="TailwindIncludeOutput" AfterTargets="TailwindBuild" Condition="Exists('$(TailwindOutput)')">
+    <ItemGroup>
+      <_TailwindOutputContent Include="@(Content)" Condition="'%(FullPath)' == '$(_TailwindOutputFullPath)'" />
+      <Content Include="$(TailwindOutput)"
+               ExcludeFromSingleFile="true"
+               CopyToPublishDirectory="PreserveNewest"
+               Condition="'@(_TailwindOutputContent)' == ''" />
+    </ItemGroup>
+  </Target>
+
+</Project>

@@ -1,0 +1,40 @@
+﻿@* Slides that move by themselves need a way to stop them: the button, besides hover and focus. *@
+<div class="flex w-full flex-col items-center gap-2">
+    <Carousel Plugins="@([_plugin])" aria-label="Autoplaying slides" Class="w-full max-w-[10rem] sm:max-w-xs"
+              @onmouseenter="_plugin.StopAsync" @onmouseleave="ResumeAsync">
+        <CarouselContent>
+            @foreach (var index in Enumerable.Range(0, 5))
+            {
+                <CarouselItem @key="index">
+                    <div class="p-1">
+                        <Card>
+                            <CardContent Class="flex aspect-square items-center justify-center p-6">
+                                <span class="text-4xl font-semibold">@(index + 1)</span>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </CarouselItem>
+            }
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+    </Carousel>
+    <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" @onclick="ToggleAsync">
+        @(_paused ? "Play" : "Pause")
+    </Button>
+</div>
+
+@code {
+    private readonly CarouselAutoplay _plugin = new() { Delay = 2000, StopOnInteraction = true };
+
+    // Paused with the button: moving the mouse away doesn't start it again.
+    private bool _paused;
+
+    private async Task ToggleAsync()
+    {
+        _paused = await _plugin.IsPlayingAsync();
+        await (_paused ? _plugin.StopAsync() : _plugin.PlayAsync());
+    }
+
+    private Task ResumeAsync() => _paused ? Task.CompletedTask : _plugin.ResetAsync();
+}

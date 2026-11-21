@@ -1,0 +1,78 @@
+@using System.Collections
+@using System.Globalization
+@using FluentValidation
+@implements IDisposable
+
+@code {
+    private EditContext? _editContext;
+    private ValidationMessageStore? _messages;
+
+    [CascadingParameter] private EditContext? CurrentEditContext { get; set; }
+
+    [Parameter, EditorRequired] public IValidator Validator { get; set; } = null!;
+
+    protected override void OnParametersSet()
+    {
+        if (CurrentEditContext is null)
+        {
+            throw new InvalidOperationException($"{nameof(FluentValidationValidator)} needs an EditContext: put it inside an EditForm.");
+        }
+        if (CurrentEditContext == _editContext)
+        {
+            return;
+        }
+        Detach();
+        _editContext = CurrentEditContext;
+        _messages = new ValidationMessageStore(_editContext);
+        _editContext.OnValidationRequested += Validate;
+    }
+
+    private void Validate(object? sender, ValidationRequestedEventArgs args)
+    {
+        if (_editContext is null || _messages is null)
+        {
+            return;
+        }
+        _messages.Clear();
+        var result = Validator.Validate(new ValidationContext<object>(_editContext.Model));
+        foreach (var failure in result.Errors)
+        {
+            _messages.Add(FieldFor(_editContext.Model, failure.PropertyName), failure.ErrorMessage);
+        }
+        _editContext.NotifyValidationStateChanged();
+    }
+
+    private static FieldIdentifier FieldFor(object model, string path)
+    {
+        var parts = path.Split('.');
+        var owner = model;
+        foreach (var part in parts[..^1])
+        {
+            owner = Member(owner, part) ?? owner;
+        }
+        return new FieldIdentifier(owner, parts[^1]);
+    }
+
+    private static object? Member(object owner, string part)
+    {
+        var bracket = part.IndexOf('[');
+        var name = bracket < 0 ? part : part[..bracket];
+        var value = owner.GetType().GetProperty(name)?.GetValue(owner);
+        if (bracket < 0 || value is not IList list)
+        {
+            return value;
+        }
+        var index = int.Parse(part[(bracket + 1)..^1], CultureInfo.InvariantCulture);
+        return index < list.Count ? list[index] : null;
+    }
+
+    private void Detach()
+    {
+        if (_editContext is not null)
+        {
+            _editContext.OnValidationRequested -= Validate;
+        }
+    }
+
+    public void Dispose() => Detach();
+}

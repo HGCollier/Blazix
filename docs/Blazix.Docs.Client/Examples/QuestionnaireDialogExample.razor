@@ -1,0 +1,87 @@
+@inject ToastManager Toasts
+
+<Dialog @bind-Open="_open">
+    <DialogTrigger>
+        <Render>
+            <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">Open clarification</Button>
+        </Render>
+    </DialogTrigger>
+    <DialogContent>
+        <Questionnaire DefaultItem="scope" Items="@Items" OnSubmit="@HandleSubmit">
+            <QuestionnaireItem Name="scope" Required>
+                <DialogHeader>
+                    <QuestionnaireProgress />
+                    <QuestionnaireTitle>
+                        <Render>
+                            <DialogTitle @attributes="context.Attributes">Which files are in scope?</DialogTitle>
+                        </Render>
+                    </QuestionnaireTitle>
+                    <QuestionnaireDescription>
+                        <Render>
+                            <DialogDescription @attributes="context.Attributes">Choose how broadly the agent can update the workspace.</DialogDescription>
+                        </Render>
+                    </QuestionnaireDescription>
+                </DialogHeader>
+                <QuestionnaireChoices>
+                    <QuestionnaireChoice Value="component">Component only</QuestionnaireChoice>
+                    <QuestionnaireChoice Value="feature">Complete feature directory</QuestionnaireChoice>
+                    <QuestionnaireChoice Value="workspace">Any related workspace file</QuestionnaireChoice>
+                </QuestionnaireChoices>
+                <QuestionnaireError />
+            </QuestionnaireItem>
+            <QuestionnaireItem Name="tests" Required>
+                <DialogHeader>
+                    <QuestionnaireProgress />
+                    <QuestionnaireTitle>
+                        <Render>
+                            <DialogTitle @attributes="context.Attributes">How much verification is needed?</DialogTitle>
+                        </Render>
+                    </QuestionnaireTitle>
+                    <QuestionnaireDescription>
+                        <Render>
+                            <DialogDescription @attributes="context.Attributes">Choose the checks the agent should run before handoff.</DialogDescription>
+                        </Render>
+                    </QuestionnaireDescription>
+                </DialogHeader>
+                <QuestionnaireChoices>
+                    <QuestionnaireChoice Value="targeted">Targeted tests</QuestionnaireChoice>
+                    <QuestionnaireChoice Value="package">Package tests</QuestionnaireChoice>
+                    <QuestionnaireChoice Value="full">Full workspace verification</QuestionnaireChoice>
+                </QuestionnaireChoices>
+                <QuestionnaireError />
+            </QuestionnaireItem>
+            <DialogFooter>
+                <DialogClose>
+                    <Render>
+                        <Button @attributes="context.Attributes" Type="button" Variant="ButtonVariant.Outline">Cancel</Button>
+                    </Render>
+                </DialogClose>
+                <QuestionnaireActions>
+                    <QuestionnairePrevious />
+                    <QuestionnaireNext>Next</QuestionnaireNext>
+                    <QuestionnaireSubmit>Send answer</QuestionnaireSubmit>
+                </QuestionnaireActions>
+            </DialogFooter>
+        </Questionnaire>
+    </DialogContent>
+</Dialog>
+
+@code {
+    private static readonly QuestionnaireItemDefinition[] Items =
+    [
+        new("scope", Required: true),
+        new("tests", Required: true),
+    ];
+
+    private bool _open;
+
+    private void HandleSubmit(QuestionnaireAnswers answers)
+    {
+        _open = false;
+        Toasts.Add(new ToastOptions
+        {
+            Title = "Clarification sent",
+            Description = $"Scope: {answers.Get("scope") ?? "None"} · Verification: {answers.Get("tests") ?? "None"}",
+        });
+    }
+}

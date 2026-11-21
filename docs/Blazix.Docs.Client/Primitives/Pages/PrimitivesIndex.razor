@@ -1,0 +1,33 @@
+@page "/docs/primitives"
+
+<DocsPage Title="Introduction" Description="Unstyled, accessible Blazor components for design systems and web apps.">
+    <p>
+        <code>Blazix.Primitives</code> is the layer the styled components are built on. Each primitive handles behaviour and
+        accessibility (ARIA, keyboard navigation, focus management, dismissal) and renders no styles of its own. It has Base
+        UI's parts, data attributes and CSS variables, so you can style it with Tailwind, plain CSS, CSS isolation or
+        anything else.
+    </p>
+
+    <DocsHeading Title="Assemble a component" />
+    <p>
+        This demo assembles a <a href="/docs/primitives/popover">Popover</a>'s parts and styles them with Tailwind. The
+        primitives are unstyled, so plain CSS, CSS isolation or any other way of styling works just as well.
+    </p>
+    <ComponentPreview Name="primitives/popover-hero" />
+
+    <DocsHeading Title="Next steps" />
+    <p>
+        <a href="/docs/primitives/installation">Install the library</a> and set up your app. The handbook then explains how to
+        <a href="/docs/primitives/styling">style</a>, <a href="/docs/primitives/animation">animate</a>,
+        <a href="/docs/primitives/composition">compose</a> and <a href="/docs/primitives/customization">customize</a> the
+        primitives, and what they do for <a href="/docs/primitives/accessibility">accessibility</a>. Each primitive's page
+        lists its parts, with their parameters, data attributes and CSS variables.
+    </p>
+    <p>
+        Want them styled? The <a href="/docs">components</a> are built on these primitives, and the CLI copies them into
+        your project as source you own.
+    </p>
+
+    <DocsHeading Title="All Primitives" />
+    <ComponentsList Pages="DocsNav.Primitives" />
+</DocsPage>

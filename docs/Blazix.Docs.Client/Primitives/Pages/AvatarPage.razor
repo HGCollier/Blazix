@@ -1,0 +1,86 @@
+@page "/docs/primitives/avatar"
+
+<DocsPage Title="Avatar" Description="An easily stylable avatar component.">
+    <ComponentPreview Name="primitives/avatar-hero" />
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="Lazy-loaded images" />
+    <p>
+        By default, <code>AvatarImage</code> preloads <code>Src</code> and renders the image only once it has loaded. That
+        doesn't work with <code>loading="lazy"</code>, or with an image component that serves a different URL than the raw
+        <code>Src</code>.
+    </p>
+    <p>
+        Add the <code>KeepMounted</code> parameter to render the image element right away and let it load in place. Only the
+        image that's actually displayed is requested:
+    </p>
+    <CodeFigure Code="@KeepMountedCode" />
+    <DocsHeading Level="3" Title="Stacking" />
+    <p>
+        With <code>KeepMounted</code>, the image and the fallback are both present until the image loads. The image is hidden
+        from assistive technology until then, so the fallback provides the accessible name on its own.
+    </p>
+    <p>
+        Stack the two in the same box, and place <code>AvatarImage</code> after <code>AvatarFallback</code>. Both are
+        positioned, so whichever comes later in the DOM paints on top, and the fallback shows through until the image covers
+        it.
+    </p>
+    <p>
+        A loading image paints nothing, so the fallback shows through on its own. An image that failed to load paints a
+        broken-image icon on top of it. Hide the image in either state with the <code>data-loading</code> and
+        <code>data-error</code> attributes:
+    </p>
+    <CodeFigure Code="@StackingCss" Title="app.css" Language="css" />
+    <p>
+        Avoid <code>display: none</code> here: an element without a box never intersects the viewport, so
+        <code>loading="lazy"</code> would never fetch the image. <code>visibility</code> and <code>opacity</code> both keep
+        lazy loading working.
+    </p>
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(AvatarRoot)" />
+    <PartReference Type="typeof(AvatarImage)">
+        <DataAttributes>
+            <StyleHook Name="data-error">Present when the image failed to load.</StyleHook>
+            <StyleHook Name="data-loading">Present while the image is loading.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the image begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the image is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(AvatarFallback)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <AvatarRoot>
+            <AvatarImage Src="" />
+            <AvatarFallback>LT</AvatarFallback>
+        </AvatarRoot>
+        """;
+
+    private const string KeepMountedCode = """
+        <AvatarRoot class="avatar">
+            <AvatarFallback class="fallback">LT</AvatarFallback>
+            <AvatarImage KeepMounted="true" Src="/avatar.png" loading="lazy" width="32" height="32" alt="" class="image" />
+        </AvatarRoot>
+        """;
+
+    private const string StackingCss = """
+        .avatar {
+          position: relative;
+        }
+
+        .image,
+        .fallback {
+          position: absolute;
+          inset: 0;
+        }
+
+        .image[data-loading],
+        .image[data-error] {
+          visibility: hidden;
+        }
+        """;
+}

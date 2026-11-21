@@ -1,0 +1,60 @@
+@page "/docs/primitives/button"
+
+<DocsPage Title="Button" Description="A button component that can be rendered as another tag or focusable when disabled.">
+    <ComponentPreview Name="primitives/button-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li><strong>Submit buttons:</strong> Unlike the native button element, <code>ButtonRoot</code> needs <code>type="submit"</code> to act as a submit button.</li>
+        <li><strong>Links:</strong> The button enforces button semantics (<code>role="button"</code>, keyboard interaction, disabled state). Don't use it for links. See <a href="#rendering-links-as-buttons">Rendering links as buttons</a>.</li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and use the part:</p>
+    <CodeFigure Code="@Anatomy" />
+    <p>
+        It's named <code>ButtonRoot</code> rather than <code>Button</code>, so it never clashes with a styled
+        <code>Button</code> in your app.
+    </p>
+    <DocsHeading Title="Examples" />
+    <DocsHeading Level="3" Title="Rendering as another tag" />
+    <p>
+        The button stays keyboard accessible when you render it as another tag, such as a <code>&lt;div&gt;</code>, with
+        <code>Render</code>. The browser reports the element it got, and the button adds <code>role="button"</code>, a tab
+        stop and Enter and Space to anything that isn't a native <code>&lt;button&gt;</code>:
+    </p>
+    <CodeFigure Code="@CustomTagCode" />
+    <DocsHeading Level="3" Title="Rendering links as buttons" />
+    <p>
+        The button enforces button semantics, so the element you render must be one that can take them
+        (<code>role="button"</code> and the keyboard handling). Links (<code>&lt;a&gt;</code>) have semantics of their own
+        and shouldn't be rendered as buttons. If a link needs to look like a button, style the <code>&lt;a&gt;</code> itself.
+    </p>
+    <DocsHeading Level="3" Title="Loading states" />
+    <p>
+        For a button that enters a loading state when pressed, set <code>FocusableWhenDisabled</code> so focus stays on the
+        button while it's disabled. A button that's focusable while disabled still receives clicks, so ignore them while it's loading. Some browsers and screen readers don't reliably announce changes to the text inside a
+        focused button, so use <code>aria-labelledby</code> to make the changing text the button's accessible name.
+    </p>
+    <ComponentPreview Name="primitives/button-loading" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(ButtonRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the button is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <ButtonRoot />
+        """;
+
+    private const string CustomTagCode = """
+        <ButtonRoot>
+            <Render Context="button">
+                <div @attributes="button.Attributes">Button that can contain complex children</div>
+            </Render>
+        </ButtonRoot>
+        """;
+}

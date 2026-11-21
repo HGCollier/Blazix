@@ -1,0 +1,31 @@
+<div class="flex w-full max-w-sm flex-col gap-8 py-12">
+    <Message>
+        <MessageContent>
+            <Bubble Variant="BubbleVariant.Muted">
+                <BubbleContent>The install failure is coming from the workspace package.</BubbleContent>
+            </Bubble>
+            <MessageFooter>
+                <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" aria-label="Copy" title="Copy">
+                    <Icon Name="copy" />
+                </Button>
+                <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" aria-label="Like" title="Like">
+                    <Icon Name="thumbs-up" />
+                </Button>
+                <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" aria-label="Dislike" title="Dislike">
+                    <Icon Name="thumbs-down" />
+                </Button>
+            </MessageFooter>
+        </MessageContent>
+    </Message>
+    <Message Align="MessageAlign.End">
+        <MessageContent>
+            <Bubble><BubbleContent>Okay drop me a link. Taking a look...</BubbleContent></Bubble>
+            <MessageFooter Class="gap-2">
+                <span class="font-normal text-destructive">Failed to send</span>
+                <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.IconXs" title="Retry" aria-label="Retry">
+                    <Icon Name="refresh-ccw" />
+                </Button>
+            </MessageFooter>
+        </MessageContent>
+    </Message>
+</div>

@@ -1,0 +1,6 @@
+<Calendar Mode="CalendarMode.Range" DefaultMonth="@_dateRange?.From" @bind-SelectedRange="_dateRange" NumberOfMonths="2" Class="rounded-lg border" />
+
+@code {
+    private static readonly DateOnly From = new(DateTime.Today.Year, 1, 12);
+    private DateRange? _dateRange = new(From, From.AddDays(30));
+}

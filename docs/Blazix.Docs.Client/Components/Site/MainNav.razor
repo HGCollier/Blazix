@@ -1,0 +1,13 @@
+<nav aria-label="Main" class="@Cn("items-center gap-0", Class)">
+    @foreach (var item in DocsNav.MainNav)
+    {
+        <a href="@item.Href" class="@LinkClasses">@item.Title</a>
+    }
+</nav>
+
+@code {
+    // A ghost, small Button with px-2.5, as the link. The links have no active state.
+    private static readonly string LinkClasses = SiteButton.Get(SiteButton.Ghost, SiteButton.SizeSm, "relative items-center px-2.5");
+
+    [Parameter] public string? Class { get; set; }
+}

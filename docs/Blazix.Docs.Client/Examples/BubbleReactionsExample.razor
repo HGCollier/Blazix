@@ -1,0 +1,35 @@
+@inject ToastManager Toasts
+
+<div class="flex w-full max-w-sm flex-col gap-12 py-12">
+    <Bubble Variant="BubbleVariant.Muted" Align="BubbleAlign.End">
+        <BubbleContent>I don&apos;t need tests, I know my code works.</BubbleContent>
+        <BubbleReactions Align="BubbleAlign.Start" role="img" aria-label="Reactions: thumbs up, surprised">
+            <span>👍</span>
+            <span>😮</span>
+        </BubbleReactions>
+    </Bubble>
+    <Bubble Variant="BubbleVariant.Muted">
+        <BubbleContent>Bold. Fine I&apos;ll add some tests. I&apos;ll let you know when they&apos;re done.</BubbleContent>
+        <BubbleReactions role="img" aria-label="Reactions: eyes, rocket, and 2 more">
+            <span>👀</span>
+            <span>🚀</span>
+            <span>+2</span>
+        </BubbleReactions>
+    </Bubble>
+    <Bubble Variant="BubbleVariant.Default" Align="BubbleAlign.End">
+        <BubbleContent>Tests passed on the first try. All 142 of them. Looking good!</BubbleContent>
+        <BubbleReactions Side="BubbleReactionsSide.Top" Align="BubbleAlign.Start" role="img" aria-label="Reactions: party popper, clapping hands">
+            <span>🎉</span>
+            <span>👏</span>
+        </BubbleReactions>
+    </Bubble>
+    <Bubble Variant="BubbleVariant.Destructive">
+        <BubbleContent>Are you sure I can run this command?</BubbleContent>
+        <BubbleReactions>
+            <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Xs"
+                    @onclick="@(() => Toasts.Add(new ToastOptions { Type = "success", Title = "You clicked yes, running command..." }))">
+                Yes, run it
+            </Button>
+        </BubbleReactions>
+    </Bubble>
+</div>

@@ -1,0 +1,59 @@
+<MessageScrollerProvider>
+    <div class="relative flex flex-col gap-4">
+        <Card Class="mx-auto h-140 w-full max-w-sm gap-0">
+            <CardHeader Class="gap-1 border-b">
+                <CardTitle>New Chat</CardTitle>
+                <CardDescription>How can I help you today?</CardDescription>
+                <CardAction>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Render>
+                                <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon"
+                                        aria-label="Reset conversation" Disabled="@_chat.IsBusy" @onclick="_chat.Reset">
+                                    <Icon Name="rotate-cw" />
+                                </Button>
+                            </Render>
+                        </TooltipTrigger>
+                        <TooltipContent><p>Reset</p></TooltipContent>
+                    </Tooltip>
+                </CardAction>
+            </CardHeader>
+            <CardContent Class="flex-1 overflow-hidden p-0">
+                @if (_chat.Messages.Count == 0)
+                {
+                    <Empty Class="h-full">
+                        <EmptyHeader>
+                            <EmptyMedia Variant="EmptyMediaVariant.Icon"><Icon Name="message-circle-dashed" /></EmptyMedia>
+                            <EmptyTitle>Good morning!</EmptyTitle>
+                            <EmptyDescription>What are we working on today? Press send to start a new conversation</EmptyDescription>
+                        </EmptyHeader>
+                    </Empty>
+                }
+                else
+                {
+                    <MessageScroller>
+                        <MessageScrollerViewport>
+                            <MessageScrollerContent aria-busy="@(_chat.IsBusy ? "true" : "false")" Class="p-(--card-spacing)">
+                                @foreach (var message in _chat.Messages)
+                                {
+                                    <MessageAnimated @key="message.Id" Message="message" />
+                                }
+                            </MessageScrollerContent>
+                        </MessageScrollerViewport>
+                        <MessageScrollerButton />
+                    </MessageScroller>
+                }
+            </CardContent>
+            <CardFooter Class="flex-col gap-2">
+                <ChatComposer Session="_chat" EmptyText="No messages queued. Reset the conversation." OnChange="StateHasChanged" />
+            </CardFooter>
+        </Card>
+        <div class="px-0.5 text-center text-xs text-muted-foreground">
+            Demo is read only. Press send to send messages.
+        </div>
+    </div>
+</MessageScrollerProvider>
+
+@code {
+    private readonly ChatSession _chat = new(ScriptedChat.ScrollBehavior, 0, 20);
+}

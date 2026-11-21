@@ -1,0 +1,79 @@
+<MessageScrollerProvider @ref="_scroller" DefaultScrollPosition="MessageScrollerScrollPosition.End">
+    <div class="relative flex flex-col gap-4">
+        <Card Class="mx-auto h-140 w-full max-w-sm gap-0">
+            <CardHeader Class="gap-1 border-b">
+                <CardTitle>Commands</CardTitle>
+                <CardDescription>Drive the transcript from outside.</CardDescription>
+                <CardAction>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <Render>
+                                <Button @attributes="context.Attributes" Type="button" Variant="ButtonVariant.Secondary">Jump to...</Button>
+                            </Render>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent Align="Align.End" Side="Side.Bottom" Class="w-64">
+                            <DropdownMenuGroup>
+                                <DropdownMenuLabel>Conversations</DropdownMenuLabel>
+                                @foreach (var message in Messages.Where(m => m.IsUser))
+                                {
+                                    <DropdownMenuItem @key="message.Id" OnClick="() => JumpTo(message.Id)">
+                                        <span class="line-clamp-1 min-w-0">@Trim(message.Text)</span>
+                                    </DropdownMenuItem>
+                                }
+                            </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </CardAction>
+            </CardHeader>
+            <CardContent Class="flex-1 overflow-hidden p-0">
+                <MessageScroller>
+                    <MessageScrollerViewport>
+                        <MessageScrollerContent Class="p-(--card-spacing)">
+                            @foreach (var message in Messages)
+                            {
+                                <MessageScrollerItem @key="message.Id" MessageId="@message.Id" ScrollAnchor="@message.IsUser">
+                                    <Message Align="@(message.IsUser ? MessageAlign.End : MessageAlign.Start)">
+                                        <MessageContent>
+                                            <Bubble Variant="@(message.IsUser ? BubbleVariant.Muted : BubbleVariant.Ghost)">
+                                                <BubbleContent Class="space-y-2">
+                                                    @foreach (var paragraph in ScriptedChat.Paragraphs(message.Text))
+                                                    {
+                                                        <p class="whitespace-pre-wrap">@paragraph</p>
+                                                    }
+                                                </BubbleContent>
+                                            </Bubble>
+                                        </MessageContent>
+                                    </Message>
+                                </MessageScrollerItem>
+                            }
+                        </MessageScrollerContent>
+                    </MessageScrollerViewport>
+                    <MessageScrollerButton />
+                </MessageScroller>
+            </CardContent>
+        </Card>
+        <div class="mx-auto max-w-sm px-0.5 text-center text-xs text-balance text-muted-foreground">
+            Use the controls to jump to any message in the conversation.
+        </div>
+    </div>
+</MessageScrollerProvider>
+
+@code {
+    private static readonly IReadOnlyList<ChatMessage> Messages = new ScriptedChat()
+        .User("We're seeing activation dip after workspace creation. Can you help me find the likely step?", "command-activation")
+        .Assistant("The sharpest drop is between creating the workspace and inviting the first teammate.\n\nWorkspace creation is still healthy, but the invite step is where users pause. That suggests the product is asking for collaboration before the user has enough confidence in the workspace.")
+        .User("What should I compare before we change the onboarding flow?", "command-compare")
+        .Assistant("Compare three cohorts:\n\n1. Users who choose a template before inviting teammates.\n2. Users who start from a blank workspace.\n3. Users who skip invites and return within 24 hours.\n\nIf template users invite faster, the fix is probably better first-run guidance rather than a louder invite prompt.")
+        .User("Can you turn that into an experiment?", "command-experiment")
+        .Assistant("Yes. Create a variant that shows a short checklist after workspace creation:\n\n- Pick a template.\n- Add one project detail.\n- Invite a teammate when the workspace has context.\n\nMeasure first invite completion, 24-hour return rate, and whether teams create a second project.")
+        .User("What's the risk if we delay the invite prompt?", "command-risk")
+        .Assistant("The main risk is reducing team creation for accounts that already know who they want to invite.\n\nTo protect that path, keep the invite action visible in the header and only change the primary empty-state guidance. That gives confident teams a direct route without forcing uncertain users through the invite step too early.")
+        .Get();
+
+    private MessageScrollerProvider _scroller = null!;
+
+    private Task JumpTo(string id) =>
+        _scroller.ScrollToMessageAsync(id, new MessageScrollerScrollOptions(Behavior: ScrollBehavior.Smooth));
+
+    private static string Trim(string text) => text.Length > 42 ? $"{text[..39]}..." : text;
+}

@@ -1,0 +1,37 @@
+@using Blazix.Primitives
+
+<ToggleRoot data-slot="toggle" @attributes="AdditionalAttributes" Render="@Render" NativeButton="@NativeButton"
+            Pressed="@Pressed" PressedChanged="@PressedChanged" OnPressedChange="@OnPressedChange"
+            Disabled="@Disabled" Value="@Value"
+            class="@ToggleVariants.Get(Variant, Size, Class)">
+    @ChildContent
+</ToggleRoot>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<ToggleRenderProps>? Render { get; set; }
+
+    /// <summary>Leave unset: whether Render produced a real &lt;button&gt; is detected. Set it to skip the check.</summary>
+    [Parameter] public bool? NativeButton { get; set; }
+
+    /// <summary>Supports <c>@bind-Pressed</c>; set it once for an uncontrolled toggle.</summary>
+    [Parameter] public bool Pressed { get; set; }
+
+    [Parameter] public EventCallback<bool> PressedChanged { get; set; }
+
+    /// <summary>Runs before the pressed state changes; call <c>Cancel()</c> to keep it.</summary>
+    [Parameter] public EventCallback<ValueChangeEventArgs<bool>> OnPressedChange { get; set; }
+
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>Identifies the toggle inside a toggle group.</summary>
+    [Parameter] public string? Value { get; set; }
+
+    [Parameter] public ToggleVariant Variant { get; set; } = ToggleVariant.Default;
+    [Parameter] public ToggleSize Size { get; set; } = ToggleSize.Default;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

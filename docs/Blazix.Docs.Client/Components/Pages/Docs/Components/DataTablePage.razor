@@ -1,0 +1,667 @@
+@page "/docs/components/data-table"
+
+<DocsPage Title="Data Table" Description="Powerful table and datagrids built using the Table component and plain C#.">
+    <ComponentPreview Name="data-table-demo" Align="start" HideCode="true" PreviewClass="items-start h-auto px-4 md:px-8" />
+
+    <DocsHeading Title="Introduction" />
+    <p>
+        Every data table or datagrid I&apos;ve created has been unique. They all behave differently, have specific sorting and filtering
+        requirements, and work with different data sources.
+    </p>
+    <p>
+        It doesn&apos;t make sense to combine all of these variations into a single component. If we do that, we&apos;ll lose the flexibility
+        that headless UI provides.
+    </p>
+    <p>
+        So instead of a data table component, I thought it would be more helpful to provide a guide on how to build your own. We&apos;ll start
+        with the basic <code>&lt;Table /&gt;</code> component and build a complex data table from scratch.
+    </p>
+    <Callout>
+        <strong>Tip:</strong> If you find yourself using the same table in multiple places in your app, you can always extract it into a
+        reusable component.
+    </Callout>
+
+    <DocsHeading Title="Table of Contents" />
+    <p>This guide will show you how to use the <code>&lt;Table /&gt;</code> component and LINQ to build your own custom data table. We&apos;ll cover the following topics:</p>
+    <ul>
+        <li><a href="#basic-table">Basic Table</a></li>
+        <li><a href="#row-actions">Row Actions</a></li>
+        <li><a href="#pagination">Pagination</a></li>
+        <li><a href="#sorting">Sorting</a></li>
+        <li><a href="#filtering">Filtering</a></li>
+        <li><a href="#visibility">Visibility</a></li>
+        <li><a href="#row-selection">Row Selection</a></li>
+        <li><a href="#reusable-components">Reusable Components</a></li>
+    </ul>
+
+    <DocsHeading Title="Installation" />
+    <Steps>
+        <Step>Add the <code>&lt;Table /&gt;</code> component to your project:</Step>
+        <CliCommand Args="add table" />
+    </Steps>
+
+    <DocsHeading Title="Prerequisites" />
+    <p>We are going to build a table to show recent payments. Here&apos;s what our data looks like:</p>
+    <CodeFigure Code="@PrerequisitesCode" Language="csharp" />
+
+    <DocsHeading Title="Project Structure" />
+    <p>Start by creating the following file structure:</p>
+    <CodeFigure Code="@StructureCode" Language="text" />
+    <p>I&apos;m using a Blazor Web App example here but this works for any other Blazor project.</p>
+    <ul>
+        <li><code>Payment.cs</code> will contain our data type and sample data.</li>
+        <li><code>DataTable.razor</code> will contain our <code>&lt;DataTable /&gt;</code> component: the columns, the rows and the table state.</li>
+        <li><code>Payments.razor</code> is the page where we&apos;ll fetch data and render our table.</li>
+    </ul>
+
+    <DocsHeading Title="Set up Table Features" />
+    <p>
+        There&apos;s no table engine to install. The table state (filter, sort, page, visibility and selection) is a handful of fields, and the
+        rows you render are a LINQ pipeline over your data: filter, then sort, then page.
+    </p>
+
+    <DocsHeading Title="Basic Table" />
+    <p>Let&apos;s start by building a basic table.</p>
+    <Steps>
+        <Step>Column Definitions</Step>
+        <p>
+            Columns are just markup: a <code>&lt;TableHead /&gt;</code> per column in the header and a matching <code>&lt;TableCell /&gt;</code> per
+            row. Add the columns you want to display.
+        </p>
+        <Step><code>&lt;DataTable /&gt;</code> component</Step>
+        <p>Next, we&apos;ll create a <code>&lt;DataTable /&gt;</code> component to render our table.</p>
+        <CodeFigure Code="@BasicTableCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+        <Step>Render the table</Step>
+        <p>Finally, we&apos;ll render our table in our page component. Fetch the data in <code>OnInitializedAsync</code>; this example reads <code>Payments.Data</code>, but you&apos;d call your API there.</p>
+        <CodeFigure Code="@PageCode" Title="Components/Pages/Payments/Payments.razor" LineNumbers="true" />
+    </Steps>
+
+    <DocsHeading Title="Cell Formatting" />
+    <p>Let&apos;s format the amount cell to display the dollar amount. We&apos;ll also align the cell to the right.</p>
+    <Steps>
+        <Step>Update the amount header and cell</Step>
+        <p>Format the amount with <code>ToString("C", culture)</code> and right-align the header and the cell.</p>
+        <CodeFigure Code="@CellFormattingCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+    </Steps>
+    <p>You can use the same approach to format other cells and headers.</p>
+
+    <DocsHeading Title="Row Actions" />
+    <p>Let&apos;s add row actions to our table. We&apos;ll use a <code>&lt;DropdownMenu /&gt;</code> component for this.</p>
+    <Steps>
+        <Step>Add the actions column</Step>
+        <CodeFigure Code="@RowActionsCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+    </Steps>
+    <p>
+        You can access the row data inside the cell markup, since it&apos;s rendered in the <code>@@foreach</code> loop. Use this to handle actions
+        for your row, e.g. use the <code>Id</code> to make a request to your API.
+    </p>
+
+    <DocsHeading Title="Pagination" />
+    <p>Next, we&apos;ll add pagination to our table.</p>
+    <Steps>
+        <Step>Page the rows</Step>
+        <p>Keep the page index in a field and take one page of rows. This will paginate your rows into pages of 10.</p>
+        <CodeFigure Code="@PaginationStateCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+        <Step>Add pagination controls</Step>
+        <p>We can add pagination controls to our table using the <code>&lt;Button /&gt;</code> component.</p>
+        <CodeFigure Code="@PaginationControlsCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+    </Steps>
+    <p>See <a href="#reusable-components">Reusable Components</a> section for a more advanced pagination component.</p>
+
+    <DocsHeading Title="Sorting" />
+    <p>Let&apos;s make the email column sortable.</p>
+    <Steps>
+        <Step>Sort the rows</Step>
+        <p>Keep the sort direction in a nullable <code>bool</code>: <code>null</code> is unsorted, <code>false</code> ascending and <code>true</code> descending. Sort the rows by it before taking a page.</p>
+        <CodeFigure Code="@SortingStateCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+        <Step>Make header cell sortable</Step>
+        <p>We can now update the <code>email</code> header cell to add sorting controls.</p>
+        <CodeFigure Code="@SortingHeaderCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+    </Steps>
+    <p>This will automatically sort the table (asc and desc) when the user toggles on the header cell.</p>
+
+    <DocsHeading Title="Filtering" />
+    <p>Let&apos;s add a search input to filter emails in our table.</p>
+    <Steps>
+        <Step>Filter the rows</Step>
+        <p>Filter the rows by the search text, then sort the filtered rows instead of all of them.</p>
+        <CodeFigure Code="@FilteringStateCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+        <Step>Add the filter input</Step>
+        <CodeFigure Code="@FilteringInputCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+    </Steps>
+    <p>Filtering is now enabled for the <code>email</code> column. You can add filters to other columns as well.</p>
+
+    <DocsHeading Title="Visibility" />
+    <p>Adding column visibility is fairly simple using a set of hidden column ids.</p>
+    <Steps>
+        <Step>Track hidden columns</Step>
+        <CodeFigure Code="@VisibilityStateCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+        <Step>Add the column toggle</Step>
+        <p>Render a checkbox item per hideable column, and wrap each column&apos;s header and cell in <code>@@if (IsVisible("status"))</code>.</p>
+        <CodeFigure Code="@VisibilityMenuCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+    </Steps>
+    <p>This adds a dropdown menu that you can use to toggle column visibility.</p>
+
+    <DocsHeading Title="Row Selection" />
+    <p>Next, we&apos;re going to add row selection to our table.</p>
+    <Steps>
+        <Step>Track selected rows</Step>
+        <CodeFigure Code="@SelectionStateCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+        <Step>Add the select column</Step>
+        <CodeFigure Code="@SelectionColumnCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+        <Step>Show selected rows</Step>
+        <p>You can show the number of selected rows using the selection set and the filtered rows.</p>
+        <CodeFigure Code="@SelectionCountCode" Title="Components/Pages/Payments/DataTable.razor" LineNumbers="true" />
+    </Steps>
+
+    <DocsHeading Title="Reusable Components" />
+    <p>
+        Here are some components you can use to build your data tables.
+    </p>
+    <DocsHeading Level="3" Title="Column header" />
+    <p>Make any column header sortable and hideable. <code>Sorted</code> is <code>null</code> when the column is unsorted, <code>false</code> when it&apos;s ascending and <code>true</code> when it&apos;s descending; show an <code>arrow-up</code>, <code>arrow-down</code> or <code>chevrons-up-down</code> icon in the trigger to match.</p>
+    <CodeFigure Code="@ColumnHeaderCode" Title="Components/DataTableColumnHeader.razor" LineNumbers="true" />
+    <CodeFigure Code="@ColumnHeaderUsageCode" />
+    <DocsHeading Level="3" Title="Pagination" />
+    <p>Add pagination controls to your table including page size and selection count.</p>
+    <CodeFigure Code="@PaginationComponentCode" Title="Components/DataTablePagination.razor" LineNumbers="true" />
+    <CodeFigure Code="@PaginationUsageCode" />
+    <DocsHeading Level="3" Title="Column toggle" />
+    <p>A component to toggle column visibility.</p>
+    <CodeFigure Code="@ViewOptionsCode" Title="Components/DataTableViewOptions.razor" LineNumbers="true" />
+    <CodeFigure Code="@ViewOptionsUsageCode" />
+</DocsPage>
+
+@code {
+    private const string PrerequisitesCode = """
+        public sealed record Payment(string Id, decimal Amount, string Status, string Email);
+
+        public static class Payments
+        {
+            public static readonly Payment[] Data =
+            [
+                new("728ed52f", 100, "pending", "m@example.com"),
+                new("489e1d42", 125, "processing", "example@gmail.com"),
+            ];
+        }
+        """;
+
+    private const string StructureCode = """
+        Components
+        └── Pages
+            └── Payments
+                ├── DataTable.razor
+                ├── Payment.cs
+                └── Payments.razor
+        """;
+
+    private const string BasicTableCode = """
+        <div class="overflow-hidden rounded-md border">
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Email</TableHead>
+                        <TableHead>Amount</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    @if (Data.Count > 0)
+                    {
+                        @foreach (var payment in Data)
+                        {
+                            <TableRow @key="payment.Id">
+                                <TableCell>@payment.Status</TableCell>
+                                <TableCell>@payment.Email</TableCell>
+                                <TableCell>@payment.Amount</TableCell>
+                            </TableRow>
+                        }
+                    }
+                    else
+                    {
+                        <TableRow>
+                            <TableCell colspan="3" Class="h-24 text-center">No results.</TableCell>
+                        </TableRow>
+                    }
+                </TableBody>
+            </Table>
+        </div>
+
+        @code {
+            [Parameter, EditorRequired] public IReadOnlyList<Payment> Data { get; set; } = [];
+        }
+        """;
+
+    private const string PageCode = """
+        @page "/payments"
+
+        <div class="container mx-auto py-10">
+            <DataTable Data="@_data" />
+        </div>
+
+        @code {
+            private IReadOnlyList<Payment> _data = [];
+
+            protected override async Task OnInitializedAsync()
+            {
+                _data = await Task.FromResult(Payments.Data);
+            }
+        }
+        """;
+
+    private const string CellFormattingCode = """
+        <TableHead><div class="text-right">Amount</div></TableHead>
+
+        ...
+
+        <TableCell>
+            <div class="text-right font-medium">@payment.Amount.ToString("C", UsCulture)</div>
+        </TableCell>
+
+        @code {
+            private static readonly CultureInfo UsCulture = CultureInfo.GetCultureInfo("en-US");
+        }
+        """;
+
+    private const string RowActionsCode = """
+        @inject IJSRuntime JsRuntime
+
+        <TableHead />
+
+        ...
+
+        <TableCell>
+            <DropdownMenu>
+                <DropdownMenuTrigger Variant="ButtonVariant.Ghost" Size="ButtonSize.IconXs">
+                    <span class="sr-only">Open menu</span>
+                    <svg>...</svg>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent Align="Align.End">
+                    <DropdownMenuGroup>
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem OnClick="@(() => BrowserClipboard.CopyAsync(JsRuntime, payment.Id))">
+                            Copy payment ID
+                        </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem>View customer</DropdownMenuItem>
+                        <DropdownMenuItem>View payment details</DropdownMenuItem>
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </TableCell>
+        """;
+
+    private const string PaginationStateCode = """
+        @foreach (var payment in PageRows)
+        {
+            ...
+        }
+
+        @code {
+            private const int PageSize = 10;
+            private int _pageIndex;
+
+            private List<Payment> PageRows => [.. Data.Skip(_pageIndex * PageSize).Take(PageSize)];
+
+            private int PageCount => (int)Math.Ceiling(Data.Count / (double)PageSize);
+            private bool CanPreviousPage => _pageIndex > 0;
+            private bool CanNextPage => _pageIndex < PageCount - 1;
+        }
+        """;
+
+    private const string PaginationControlsCode = """
+        <div>
+            <div class="overflow-hidden rounded-md border">
+                <Table>
+                    ...
+                </Table>
+            </div>
+            <div class="flex items-center justify-end space-x-2 py-4">
+                <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" @onclick="() => _pageIndex--" Disabled="@(!CanPreviousPage)">
+                    Previous
+                </Button>
+                <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" @onclick="() => _pageIndex++" Disabled="@(!CanNextPage)">
+                    Next
+                </Button>
+            </div>
+        </div>
+        """;
+
+    private const string SortingStateCode = """
+        @code {
+            private bool? _emailSortDescending;
+
+            private List<Payment> SortedRows => _emailSortDescending switch
+            {
+                false => [.. Data.OrderBy(row => row.Email, StringComparer.OrdinalIgnoreCase)],
+                true => [.. Data.OrderByDescending(row => row.Email, StringComparer.OrdinalIgnoreCase)],
+                null => [.. Data],
+            };
+
+            private List<Payment> PageRows => [.. SortedRows.Skip(_pageIndex * PageSize).Take(PageSize)];
+
+            private void ToggleEmailSorting()
+            {
+                _emailSortDescending = _emailSortDescending == false;
+                _pageIndex = 0;
+            }
+        }
+        """;
+
+    private const string SortingHeaderCode = """
+        <TableHead>
+            <Button Variant="ButtonVariant.Ghost" @onclick="ToggleEmailSorting">
+                Email
+                <svg>...</svg>
+            </Button>
+        </TableHead>
+        """;
+
+    private const string FilteringStateCode = """
+        @code {
+            private string? _emailFilter;
+
+            private List<Payment> FilteredRows =>
+                [.. Data.Where(row => string.IsNullOrEmpty(_emailFilter) || row.Email.Contains(_emailFilter, StringComparison.OrdinalIgnoreCase))];
+
+            private List<Payment> SortedRows => _emailSortDescending switch
+            {
+                false => [.. FilteredRows.OrderBy(row => row.Email, StringComparer.OrdinalIgnoreCase)],
+                true => [.. FilteredRows.OrderByDescending(row => row.Email, StringComparer.OrdinalIgnoreCase)],
+                null => FilteredRows,
+            };
+
+            private int PageCount => (int)Math.Ceiling(FilteredRows.Count / (double)PageSize);
+
+            private void FilterEmails(string? value)
+            {
+                _emailFilter = value;
+                _pageIndex = 0;
+            }
+        }
+        """;
+
+    private const string FilteringInputCode = """
+        <div>
+            <div class="flex items-center py-4">
+                <Input placeholder="Filter emails..." Value="@_emailFilter" ValueChanged="FilterEmails" Class="max-w-sm" />
+            </div>
+            <div class="overflow-hidden rounded-md border">
+                <Table>
+                    ...
+                </Table>
+            </div>
+        </div>
+        """;
+
+    private const string VisibilityStateCode = """
+        @code {
+            private static readonly string[] HideableColumns = ["status", "email", "amount"];
+            private readonly HashSet<string> _hiddenColumns = [];
+
+            private bool IsVisible(string column) => !_hiddenColumns.Contains(column);
+
+            private void SetVisible(string column, bool visible)
+            {
+                if (visible)
+                {
+                    _hiddenColumns.Remove(column);
+                }
+                else
+                {
+                    _hiddenColumns.Add(column);
+                }
+            }
+        }
+        """;
+
+    private const string VisibilityMenuCode = """
+        <div class="flex items-center py-4">
+            <Input placeholder="Filter emails..." Value="@_emailFilter" ValueChanged="FilterEmails" Class="max-w-sm" />
+            <DropdownMenu>
+                <DropdownMenuTrigger Variant="ButtonVariant.Outline" Class="ml-auto">Columns</DropdownMenuTrigger>
+                <DropdownMenuContent Align="Align.End">
+                    <DropdownMenuGroup>
+                        @foreach (var column in HideableColumns)
+                        {
+                            <DropdownMenuCheckboxItem @key="column" Class="capitalize" Checked="@IsVisible(column)"
+                                                      CheckedChanged="@(value => SetVisible(column, value))">
+                                @column
+                            </DropdownMenuCheckboxItem>
+                        }
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </div>
+
+        ...
+
+        @if (IsVisible("status"))
+        {
+            <TableCell><div class="capitalize">@payment.Status</div></TableCell>
+        }
+        """;
+
+    private const string SelectionStateCode = """
+        @code {
+            private readonly HashSet<string> _rowSelection = [];
+
+            private bool AllPageRowsSelected => PageRows.Count > 0 && PageRows.All(row => _rowSelection.Contains(row.Id));
+            private bool SomePageRowsSelected => PageRows.Any(row => _rowSelection.Contains(row.Id));
+
+            private void ToggleSelected(Payment payment, bool selected)
+            {
+                if (selected)
+                {
+                    _rowSelection.Add(payment.Id);
+                }
+                else
+                {
+                    _rowSelection.Remove(payment.Id);
+                }
+            }
+
+            private void ToggleAllPageRowsSelected(bool selected)
+            {
+                foreach (var payment in PageRows)
+                {
+                    ToggleSelected(payment, selected);
+                }
+            }
+        }
+        """;
+
+    private const string SelectionColumnCode = """
+        <TableHead>
+            <Checkbox Checked="@AllPageRowsSelected" Indeterminate="@(SomePageRowsSelected && !AllPageRowsSelected)"
+                      CheckedChanged="ToggleAllPageRowsSelected" aria-label="Select all" />
+        </TableHead>
+
+        ...
+
+        @foreach (var payment in PageRows)
+        {
+            var selected = _rowSelection.Contains(payment.Id);
+            <TableRow @key="payment.Id" data-state="@(selected ? "selected" : null)">
+                <TableCell>
+                    <Checkbox Checked="@selected" CheckedChanged="@(value => ToggleSelected(payment, value))" aria-label="Select row" />
+                </TableCell>
+                ...
+            </TableRow>
+        }
+        """;
+
+    private const string SelectionCountCode = """
+        <div class="flex-1 text-sm text-muted-foreground">
+            @(FilteredRows.Count(row => _rowSelection.Contains(row.Id))) of @FilteredRows.Count row(s) selected.
+        </div>
+        """;
+
+    private const string ColumnHeaderCode = """
+        @if (!CanSort)
+        {
+            <div class="@Class">@Title</div>
+        }
+        else
+        {
+            <div class="@Cn("flex items-center gap-2", Class)">
+                <DropdownMenu>
+                    <DropdownMenuTrigger Variant="ButtonVariant.Ghost" Size="ButtonSize.Sm" Class="-ml-3 h-8 data-popup-open:bg-accent">
+                        <span>@Title</span>
+                        <svg>...</svg>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent Align="Align.Start">
+                        <DropdownMenuGroup>
+                            <DropdownMenuItem OnClick="@(() => SortedChanged.InvokeAsync(false))">Asc</DropdownMenuItem>
+                            <DropdownMenuItem OnClick="@(() => SortedChanged.InvokeAsync(true))">Desc</DropdownMenuItem>
+                        </DropdownMenuGroup>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuGroup>
+                            <DropdownMenuItem OnClick="OnHide">Hide</DropdownMenuItem>
+                        </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+        }
+
+        @code {
+            [Parameter, EditorRequired] public string Title { get; set; } = "";
+            [Parameter] public bool CanSort { get; set; } = true;
+
+            [Parameter] public bool? Sorted { get; set; }
+            [Parameter] public EventCallback<bool?> SortedChanged { get; set; }
+            [Parameter] public EventCallback OnHide { get; set; }
+            [Parameter] public string? Class { get; set; }
+        }
+        """;
+
+    private const string ColumnHeaderUsageCode = """
+        <TableHead>
+            <DataTableColumnHeader Title="Email" @bind-Sorted="_emailSortDescending" OnHide="@(() => SetVisible("email", false))" />
+        </TableHead>
+        """;
+
+    private const string PaginationComponentCode = """
+        <div class="flex items-center justify-between px-2">
+            <div class="flex-1 text-sm text-muted-foreground">
+                @SelectedCount of @RowCount row(s) selected.
+            </div>
+            <div class="flex items-center space-x-6 lg:space-x-8">
+                <div class="flex items-center space-x-2">
+                    <p class="text-sm font-medium">Rows per page</p>
+                    <Select Value="@PageSize.ToString(CultureInfo.InvariantCulture)" ValueChanged="SetPageSize" Items="@PageSizes">
+                        <SelectTrigger Class="h-8 w-[70px]"><SelectValue /></SelectTrigger>
+                        <SelectContent Side="Side.Top">
+                            <SelectGroup>
+                                @foreach (var size in PageSizes)
+                                {
+                                    <SelectItem @key="size.Value" Value="@size.Value">@size.Label</SelectItem>
+                                }
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
+                <div class="flex w-[100px] items-center justify-center text-sm font-medium">
+                    Page @(PageIndex + 1) of @PageCount
+                </div>
+                <div class="flex items-center space-x-2">
+                    <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" Class="hidden size-8 lg:flex"
+                            @onclick="() => PageIndexChanged.InvokeAsync(0)" Disabled="@(PageIndex == 0)">
+                        <span class="sr-only">Go to first page</span>
+                        <svg>...</svg>
+                    </Button>
+                    <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" Class="size-8"
+                            @onclick="() => PageIndexChanged.InvokeAsync(PageIndex - 1)" Disabled="@(PageIndex == 0)">
+                        <span class="sr-only">Go to previous page</span>
+                        <svg>...</svg>
+                    </Button>
+                    <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" Class="size-8"
+                            @onclick="() => PageIndexChanged.InvokeAsync(PageIndex + 1)" Disabled="@(PageIndex >= PageCount - 1)">
+                        <span class="sr-only">Go to next page</span>
+                        <svg>...</svg>
+                    </Button>
+                    <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" Class="hidden size-8 lg:flex"
+                            @onclick="() => PageIndexChanged.InvokeAsync(PageCount - 1)" Disabled="@(PageIndex >= PageCount - 1)">
+                        <span class="sr-only">Go to last page</span>
+                        <svg>...</svg>
+                    </Button>
+                </div>
+            </div>
+        </div>
+
+        @code {
+            private static readonly SelectOption[] PageSizes =
+                [.. new[] { 10, 20, 25, 30, 40, 50 }.Select(size => new SelectOption($"{size}", $"{size}"))];
+
+            [Parameter] public int PageIndex { get; set; }
+            [Parameter] public EventCallback<int> PageIndexChanged { get; set; }
+            [Parameter] public int PageSize { get; set; } = 10;
+            [Parameter] public EventCallback<int> PageSizeChanged { get; set; }
+            [Parameter] public int RowCount { get; set; }
+            [Parameter] public int SelectedCount { get; set; }
+
+            private int PageCount => Math.Max(1, (int)Math.Ceiling(RowCount / (double)PageSize));
+
+            private async Task SetPageSize(string? value)
+            {
+                await PageSizeChanged.InvokeAsync(int.Parse(value!, CultureInfo.InvariantCulture));
+                await PageIndexChanged.InvokeAsync(0);
+            }
+        }
+        """;
+
+    private const string PaginationUsageCode = """
+        <DataTablePagination @bind-PageIndex="_pageIndex" @bind-PageSize="_pageSize"
+                             RowCount="@FilteredRows.Count" SelectedCount="@FilteredRows.Count(row => _rowSelection.Contains(row.Id))" />
+        """;
+
+    private const string ViewOptionsCode = """
+        <DropdownMenu>
+            <DropdownMenuTrigger Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" Class="ml-auto hidden h-8 lg:flex">
+                <svg>...</svg>
+                View
+            </DropdownMenuTrigger>
+            <DropdownMenuContent Align="Align.End" Class="w-[150px]">
+                <DropdownMenuGroup>
+                    <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    @foreach (var column in Columns)
+                    {
+                        <DropdownMenuCheckboxItem @key="column" Class="capitalize" Checked="@(!HiddenColumns.Contains(column))"
+                                                  CheckedChanged="@(visible => Toggle(column, visible))">
+                            @column
+                        </DropdownMenuCheckboxItem>
+                    }
+                </DropdownMenuGroup>
+            </DropdownMenuContent>
+        </DropdownMenu>
+
+        @code {
+            [Parameter, EditorRequired] public IReadOnlyList<string> Columns { get; set; } = [];
+            [Parameter, EditorRequired] public ISet<string> HiddenColumns { get; set; } = new HashSet<string>();
+            [Parameter] public EventCallback HiddenColumnsChanged { get; set; }
+
+            private Task Toggle(string column, bool visible)
+            {
+                if (visible)
+                {
+                    HiddenColumns.Remove(column);
+                }
+                else
+                {
+                    HiddenColumns.Add(column);
+                }
+
+                return HiddenColumnsChanged.InvokeAsync();
+            }
+        }
+        """;
+
+    private const string ViewOptionsUsageCode = """
+        <DataTableViewOptions Columns="@HideableColumns" HiddenColumns="@_hiddenColumns" />
+        """;
+}

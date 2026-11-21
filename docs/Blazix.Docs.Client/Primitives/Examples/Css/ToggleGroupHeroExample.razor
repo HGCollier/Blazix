@@ -1,0 +1,28 @@
+<ToggleGroupRoot aria-label="Text alignment" Value="@(["left"])" class="toggle-group-panel">
+    <ToggleRoot aria-label="Align left" Value="left" class="toggle-group-button">
+        @AlignLeftIcon
+    </ToggleRoot>
+    <ToggleRoot aria-label="Align center" Value="center" class="toggle-group-button">
+        @AlignCenterIcon
+    </ToggleRoot>
+    <ToggleRoot aria-label="Align right" Value="right" class="toggle-group-button">
+        @AlignRightIcon
+    </ToggleRoot>
+</ToggleGroupRoot>
+
+@code {
+    private static readonly RenderFragment AlignLeftIcon =
+        @<svg style="display: block" width="16" height="16" fill="none" viewBox="0 0 16 16" stroke="currentColor">
+            <path stroke-linecap="square" stroke-linejoin="round" d="M2.5 4.5h11m-11 7h9M2.5 8h5" />
+        </svg>;
+
+    private static readonly RenderFragment AlignCenterIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor">
+            <path stroke-linecap="square" stroke-linejoin="round" d="M2.5 4.5h11m-10 7h9M5.5 8h5" />
+        </svg>;
+
+    private static readonly RenderFragment AlignRightIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" stroke="currentColor">
+            <path stroke-linecap="square" stroke-linejoin="round" d="M2.5 4.5h11m-9 7h9M8.5 8h5" />
+        </svg>;
+}

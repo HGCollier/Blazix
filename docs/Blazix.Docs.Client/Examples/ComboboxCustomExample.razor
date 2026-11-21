@@ -1,0 +1,19 @@
+<Combobox Items="Countries.Values" ItemToLabel="Countries.LabelOf">
+    <ComboboxInput Placeholder="Search countries..." />
+    <ComboboxContent>
+        <ComboboxEmpty>No countries found.</ComboboxEmpty>
+        <ComboboxList>
+            <Template Context="value">
+                @{ var country = Countries.Find(value); }
+                <ComboboxItem Value="@value">
+                    <Item Size="ItemSize.Xs" Class="p-0">
+                        <ItemContent>
+                            <ItemTitle Class="whitespace-nowrap">@country.Label</ItemTitle>
+                            <ItemDescription>@country.Continent (@country.Code)</ItemDescription>
+                        </ItemContent>
+                    </Item>
+                </ComboboxItem>
+            </Template>
+        </ComboboxList>
+    </ComboboxContent>
+</Combobox>

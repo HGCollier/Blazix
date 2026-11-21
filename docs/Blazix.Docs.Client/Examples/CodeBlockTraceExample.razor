@@ -1,0 +1,45 @@
+<div class="w-full max-w-md">
+    <Trace>
+        <TraceCollapsible Open="true">
+            <TraceCollapsibleTrigger>
+                <TraceLine>
+                    <TraceIcon><Icon Name="terminal" /></TraceIcon>
+                    <TraceTitle>Ran node --version</TraceTitle>
+                </TraceLine>
+            </TraceCollapsibleTrigger>
+            <TraceCollapsibleContent>
+                <CodeBlock Size="CodeBlockSize.Sm">
+                    <CodeBlockContent Wrap="true" Class="max-h-64" Code="@Output" />
+                </CodeBlock>
+            </TraceCollapsibleContent>
+        </TraceCollapsible>
+        <TraceCollapsible Open="true">
+            <TraceCollapsibleTrigger>
+                <TraceLine Status="TraceLineStatus.Error">
+                    <TraceIcon><Icon Name="terminal" /></TraceIcon>
+                    <TraceTitle>Failed to run pnpm dev</TraceTitle>
+                </TraceLine>
+            </TraceCollapsibleTrigger>
+            <TraceCollapsibleContent>
+                <CodeBlock Size="CodeBlockSize.Sm" Variant="CodeBlockVariant.Destructive">
+                    <CodeBlockContent Wrap="true" Class="max-h-64" Code="@Error" />
+                </CodeBlock>
+            </TraceCollapsibleContent>
+        </TraceCollapsible>
+    </Trace>
+</div>
+
+@code {
+    private const string Output =
+        """
+        $ node --version
+        v24.18.0
+        """;
+
+    private const string Error =
+        """
+        $ pnpm dev
+        Error: listen EADDRINUSE: address already in use :::3000
+            at Server.setupListenHandle [as _listen2] (node:net:1908:16)
+        """;
+}

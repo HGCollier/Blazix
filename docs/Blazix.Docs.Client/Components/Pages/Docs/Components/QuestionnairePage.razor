@@ -1,0 +1,164 @@
+@page "/docs/components/questionnaire"
+
+<DocsPage Title="Questionnaire" Description="A multi-step questionnaire with single-choice, multiple-choice, freeform, and skippable questions.">
+    <ComponentPreview Name="questionnaire-demo" Align="end" PreviewClass="min-h-[560px] p-4 sm:p-8" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="questionnaire" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@DataCode" LineNumbers="true" />
+    <p>Define the collection once: pass it to <code>Items</code> on <code>Questionnaire</code> so progress, actions, and shortcuts are right on the first render, then map it into the parts. <code>OnSubmit</code> receives the answers: <code>Get</code> returns an item&apos;s answer, and <code>GetAll</code> every answer of an item that takes several.</p>
+    <CodeFigure Code="@MarkupCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <p>Questionnaire owns the ordered items, active item, answer state, validation, progress, and navigation. The containing page, card, dialog, or drawer owns close and cancellation behavior, persistence, transport, and branching.</p>
+    <DocsHeading Title="Server Rendering" />
+    <p>Pass <code>Items</code> to render the active item, progress, actions, and answer shortcuts before the items register, including during prerendering.</p>
+    <DocsHeading Title="Multiple Selection" />
+    <p>Use <code>Multiple</code> for an item that accepts more than one fixed answer.</p>
+    <ComponentPreview Name="questionnaire-multiple" Align="end" PreviewClass="min-h-[420px] p-4 sm:p-8" />
+    <DocsHeading Title="Freeform Answer" />
+    <p>Compose <code>QuestionnaireInput</code> with fixed choices when the user can provide another answer.</p>
+    <ComponentPreview Name="questionnaire-freeform" Align="end" PreviewClass="min-h-[420px] p-4 sm:p-8" />
+    <DocsHeading Title="Explicit Skip" />
+    <p>Add <code>QuestionnaireSkip</code> when an optional item may be intentionally left unanswered.</p>
+    <ComponentPreview Name="questionnaire-skip" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <DocsHeading Title="Shortcuts" />
+    <p>Assign a letter or number key to each answer with <code>Shortcuts</code>.</p>
+    <ComponentPreview Name="questionnaire-shortcuts" Align="end" PreviewClass="min-h-[480px] p-4 sm:p-8" />
+    <DocsHeading Title="Custom Validation" />
+    <p>Combine controlled navigation with your own validation to return to an invalid item and present its error.</p>
+    <ComponentPreview Name="questionnaire-validation" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <DocsHeading Title="Controlled" />
+    <p>Control the active item from host state with <code>@@bind-Item</code>, such as returning to an invalid step.</p>
+    <ComponentPreview Name="questionnaire-controlled" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <DocsHeading Title="Resume" />
+    <p>Restore a saved active item and default answers, then reset changes back to that saved state.</p>
+    <ComponentPreview Name="questionnaire-resume" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <DocsHeading Title="Conditional Items" />
+    <p>Disable items that do not apply to the user's earlier answers.</p>
+    <ComponentPreview Name="questionnaire-conditional" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <DocsHeading Title="Navigation State" />
+    <p>Read item status to opt into disabled navigation and custom action styling.</p>
+    <ComponentPreview Name="questionnaire-navigation-state" Align="end" PreviewClass="min-h-[480px] p-4 sm:p-8" />
+    <DocsHeading Title="Custom Progress" />
+    <p>Use the <code>Render</code> fragment of <code>QuestionnaireProgress</code> to build a custom progress indicator.</p>
+    <ComponentPreview Name="questionnaire-progress" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <DocsHeading Title="Animated Items" />
+    <p>Animate the active item while keeping progress and navigation stationary.</p>
+    <ComponentPreview Name="questionnaire-animated" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <DocsHeading Title="Card" />
+    <p>Compose Questionnaire with Card slots while keeping the question title and description semantic.</p>
+    <ComponentPreview Name="questionnaire-card" Align="end" PreviewClass="min-h-[560px] p-4 sm:p-8" />
+    <DocsHeading Title="Dialog" />
+    <p>Compose Questionnaire inside a Dialog while keeping cancellation and dismissal host-owned.</p>
+    <ComponentPreview Name="questionnaire-dialog" Align="end" PreviewClass="min-h-[320px] p-4 sm:p-8" />
+    <DocsHeading Title="Accessibility" />
+    <p><code>QuestionnaireItem</code> renders a <code>fieldset</code>, and <code>QuestionnaireTitle</code> renders its <code>legend</code>. Descriptions and active errors are associated with the current item, and invalid items and answer controls expose <code>aria-invalid</code>. If the title renders something else through <code>Render</code>, give it an <code>id</code> and point the item's <code>aria-labelledby</code> at it, as the Card example does.</p>
+    <p>Fixed choices preserve native radio and checkbox behavior. Progress is exposed as a named progressbar, navigation uses real buttons, and inactive items and actions are hidden and inert. Successful navigation focuses the newly active item; failed validation focuses an available answer control.</p>
+    <p>Always give <code>QuestionnaireInput</code> an accessible name with a visible label, <code>aria-label</code>, or <code>aria-labelledby</code>. A placeholder is not a label.</p>
+    <DocsTable>
+        <table>
+            <thead><tr><th>Key</th><th>Behavior</th></tr></thead>
+            <tbody>
+                <tr><td><code>Tab</code></td><td>Moves focus between answer controls and visible actions.</td></tr>
+                <tr><td><code>ArrowUp</code> / <code>ArrowDown</code></td><td>Moves to the previous or next answer from the item, a fixed answer, or an empty freeform input. Native radios also select it.</td></tr>
+                <tr><td><code>ArrowLeft</code></td><td>Moves to the previous item when focus is outside a radio or text field.</td></tr>
+                <tr><td><code>ArrowRight</code></td><td>Moves to the next item when the active item is answered or skipped and focus is outside a radio or text field.</td></tr>
+                <tr><td><code>Space</code></td><td>Selects a radio, toggles a checkbox, or activates a focused action.</td></tr>
+                <tr><td><code>Enter</code></td><td>Continues from a selected choice or a selected, filled input; activates a focused action.</td></tr>
+                <tr><td><code>Ctrl</code> / <code>Cmd</code> + <code>Enter</code></td><td>Validates and continues from anywhere inside the questionnaire, or submits on the last item.</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <p>Shortcuts and arrow navigation pause while you type in a text field.</p>
+    <DocsHeading Title="Unstyled" />
+    <p>The behavior comes from the Questionnaire parts in Blazix.Primitives (<code>QuestionnaireRoot</code>, <code>QuestionnaireItem</code>, <code>QuestionnaireChoice</code>, <code>QuestionnaireChoiceInput</code>, and the rest). Use them directly with your own markup and styles.</p>
+    <DocsHeading Title="API Reference" />
+    <p>Navigation components also take Button's <code>Size</code> and <code>Variant</code>, and <code>QuestionnaireActions</code> is a styled-only layout helper.</p>
+    <ApiReference Name="questionnaire" />
+</DocsPage>
+
+@code {
+    private const string MarkupCode = """
+        <Questionnaire Items="@Definitions" OnSubmit="@HandleSubmit">
+            <QuestionnaireProgress />
+            @foreach (var question in Questions)
+            {
+                <QuestionnaireItem @key="question.Name" Name="@question.Name" Required="@question.Required">
+                    <QuestionnaireTitle>@question.Prompt</QuestionnaireTitle>
+                    <QuestionnaireDescription>@question.Description</QuestionnaireDescription>
+                    <QuestionnaireChoices>
+                        @foreach (var choice in question.Choices)
+                        {
+                            <QuestionnaireChoice @key="choice.Value" Value="@choice.Value">
+                                <span class="font-medium">@choice.Label</span>
+                                @if (choice.Description is not null)
+                                {
+                                    <span class="text-muted-foreground">@choice.Description</span>
+                                }
+                            </QuestionnaireChoice>
+                        }
+                        @if (question.Input is { } input)
+                        {
+                            <QuestionnaireInput aria-label="@input.Label" placeholder="@input.Placeholder" />
+                        }
+                    </QuestionnaireChoices>
+                    <QuestionnaireError />
+                </QuestionnaireItem>
+            }
+            <QuestionnaireActions>
+                <QuestionnairePrevious />
+                <QuestionnaireSkip />
+                <QuestionnaireNext />
+                <QuestionnaireSubmit />
+            </QuestionnaireActions>
+        </Questionnaire>
+        """;
+
+    private const string DataCode = """
+        @code {
+            private sealed record Choice(string Value, string Label, string? Description = null);
+            private sealed record FreeformInput(string Label, string Placeholder);
+            private sealed record Question(string Name, bool Required, string Prompt, string Description,
+                                           Choice[] Choices, FreeformInput? Input = null);
+
+            private static readonly Question[] Questions =
+            [
+                new("direction", true, "What should we prototype next?", "Choose a direction or write your own.",
+                    [
+                        new("delegation", "Delegation", "Show how work moves to a specialist."),
+                        new("questions", "Question prompts", "Show choices while the interface waits."),
+                        new("both", "Both together"),
+                    ],
+                    new("Another answer", "Type another answer…")),
+                new("detail", false, "How much detail should it include?", "Skip this if you are not sure yet.",
+                    [new("focused", "Focused"), new("complete", "Complete flow")]),
+            ];
+
+            private static readonly Blazix.Primitives.QuestionnaireItemDefinition[] Definitions =
+                Questions.Select(q => new Blazix.Primitives.QuestionnaireItemDefinition(q.Name, q.Required)).ToArray();
+
+            private void HandleSubmit(Blazix.Primitives.QuestionnaireAnswers answers)
+            {
+                var direction = answers.Get("direction");
+            }
+        }
+        """;
+
+    private const string CompositionCode = """
+        Questionnaire
+        ├── QuestionnaireProgress
+        ├── QuestionnaireItem
+        │   ├── QuestionnaireTitle
+        │   ├── QuestionnaireDescription
+        │   ├── QuestionnaireChoices
+        │   │   ├── QuestionnaireChoice
+        │   │   └── QuestionnaireInput
+        │   └── QuestionnaireError
+        └── QuestionnaireActions
+            ├── QuestionnairePrevious
+            ├── QuestionnaireSkip
+            ├── QuestionnaireNext
+            └── QuestionnaireSubmit
+        """;
+}

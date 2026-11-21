@@ -1,0 +1,62 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<SheetOverlay />
+<DialogPopup data-slot="sheet-content" data-side="@SideName" @attributes="AdditionalAttributes" Render="@Render"
+             InitialFocus="@InitialFocus" FinalFocus="@FinalFocus"
+             class="@Cn(
+                 "fixed z-50 flex flex-col gap-4 bg-popover bg-clip-padding text-sm text-popover-foreground shadow-lg transition " +
+                 "duration-200 ease-in-out data-ending-style:opacity-0 data-starting-style:opacity-0 data-[side=bottom]:inset-x-0 " +
+                 "data-[side=bottom]:bottom-0 data-[side=bottom]:h-auto data-[side=bottom]:border-t " +
+                 "data-[side=bottom]:data-ending-style:translate-y-[2.5rem] data-[side=bottom]:data-starting-style:translate-y-[2.5rem] " +
+                 "data-[side=left]:inset-y-0 data-[side=left]:left-0 data-[side=left]:h-full data-[side=left]:w-3/4 " +
+                 "data-[side=left]:border-r data-[side=left]:data-ending-style:translate-x-[-2.5rem] " +
+                 "data-[side=left]:data-starting-style:translate-x-[-2.5rem] data-[side=right]:inset-y-0 data-[side=right]:right-0 " +
+                 "data-[side=right]:h-full data-[side=right]:w-3/4 data-[side=right]:border-l " +
+                 "data-[side=right]:data-ending-style:translate-x-[2.5rem] data-[side=right]:data-starting-style:translate-x-[2.5rem] " +
+                 "data-[side=top]:inset-x-0 data-[side=top]:top-0 data-[side=top]:h-auto data-[side=top]:border-b " +
+                 "data-[side=top]:data-ending-style:translate-y-[-2.5rem] data-[side=top]:data-starting-style:translate-y-[-2.5rem] " +
+                 "data-[side=left]:sm:max-w-sm data-[side=right]:sm:max-w-sm",
+                 Class)">
+    @ChildContent
+    @if (ShowCloseButton)
+    {
+        <Blazix.Primitives.DialogClose data-slot="sheet-close" class="@ButtonVariants.Get(ButtonVariant.Ghost, ButtonSize.IconSm, "absolute top-3 right-3")">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+            </svg>
+            <span class="sr-only">Close</span>
+        </Blazix.Primitives.DialogClose>
+    }
+</DialogPopup>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<DialogPopupRenderProps>? Render { get; set; }
+
+    [Parameter] public SheetSide Side { get; set; } = SheetSide.Right;
+
+    /// <summary>Show the X button in the corner. Defaults to true.</summary>
+    [Parameter] public bool ShowCloseButton { get; set; } = true;
+
+    /// <summary>What gets focus on open: a CSS selector inside the sheet, "popup", or "none". Defaults to the first tabbable element.</summary>
+    [Parameter] public string? InitialFocus { get; set; }
+
+    /// <summary>The id of the element that gets focus on close. Defaults to the trigger.</summary>
+    [Parameter] public string? FinalFocus { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string SideName => Side switch
+    {
+        SheetSide.Left => "left",
+        SheetSide.Top => "top",
+        SheetSide.Bottom => "bottom",
+        _ => "right",
+    };
+}

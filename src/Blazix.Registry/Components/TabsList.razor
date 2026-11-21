@@ -1,0 +1,30 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.TabsList data-slot="tabs-list" @attributes="AdditionalAttributes" Render="@Render" ActivateOnFocus="@ActivateOnFocus" LoopFocus="@LoopFocus"
+                          data-variant="@(Variant == TabsListVariant.Line ? "line" : "default")"
+                          class="@Cn(
+                              "group/tabs-list inline-flex w-fit items-center justify-center rounded-lg p-[3px] text-muted-foreground " +
+                              "group-data-horizontal/tabs:h-8 group-data-vertical/tabs:h-fit group-data-vertical/tabs:flex-col data-[variant=line]:rounded-none",
+                              Variant == TabsListVariant.Line ? "gap-1 bg-transparent" : "bg-muted",
+                              Class)">
+    @ChildContent
+</Blazix.Primitives.TabsList>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<TabsRenderProps>? Render { get; set; }
+
+    /// <summary>Default: a muted pill. Line: an underline under the active tab.</summary>
+    [Parameter] public TabsListVariant Variant { get; set; } = TabsListVariant.Default;
+
+    /// <summary>Whether moving focus with the arrow keys also selects the tab.</summary>
+    [Parameter] public bool ActivateOnFocus { get; set; }
+
+    [Parameter] public bool LoopFocus { get; set; } = true;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

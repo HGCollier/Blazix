@@ -1,0 +1,33 @@
+<DropdownMenu>
+    <DropdownMenuTrigger>
+        <Render>
+            <Button @attributes="context.Attributes" Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Class="rounded-full">
+                <Avatar>
+                    <AvatarImage Src="https://avatar.vercel.sh/blazix" alt="blazix" />
+                    <AvatarFallback>LR</AvatarFallback>
+                </Avatar>
+            </Button>
+        </Render>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent Align="Align.End">
+        <DropdownMenuGroup>
+            <DropdownMenuItem>
+                <Icon Name="badge-check" />
+                Account
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <Icon Name="credit-card" />
+                Billing
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <Icon Name="bell" />
+                Notifications
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+            <Icon Name="log-out" />
+            Sign Out
+        </DropdownMenuItem>
+    </DropdownMenuContent>
+</DropdownMenu>

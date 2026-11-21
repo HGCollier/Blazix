@@ -1,0 +1,44 @@
+@page "/docs/components/sheet"
+
+<DocsPage Title="Sheet" Description="Extends the Dialog component to display content that complements the main content of the screen.">
+    <ComponentPreview Name="sheet-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="sheet" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>Sheet</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Side" />
+    <p>Use the <code>Side</code> parameter on <code>SheetContent</code> to set the edge of the screen where the sheet appears. Values are <code>top</code>, <code>right</code>, <code>bottom</code>, or <code>left</code>.</p>
+    <ComponentPreview Name="sheet-side" />
+    <DocsHeading Title="No Close Button" />
+    <p>Use <code>ShowCloseButton="false"</code> on <code>SheetContent</code> to hide the close button.</p>
+    <ComponentPreview Name="sheet-no-close-button" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="sheet" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Sheet>
+            <SheetTrigger>Open</SheetTrigger>
+            <SheetContent>
+                <SheetHeader>
+                    <SheetTitle>Are you absolutely sure?</SheetTitle>
+                    <SheetDescription>This action cannot be undone.</SheetDescription>
+                </SheetHeader>
+            </SheetContent>
+        </Sheet>
+        """;
+
+    private const string CompositionCode = """
+        Sheet
+        ├── SheetTrigger
+        └── SheetContent
+            ├── SheetHeader
+            │   ├── SheetTitle
+            │   └── SheetDescription
+            └── SheetFooter
+        """;
+}

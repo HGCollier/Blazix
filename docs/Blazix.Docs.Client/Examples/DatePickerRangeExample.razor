@@ -1,0 +1,31 @@
+@using System.Globalization
+<Field Class="mx-auto w-60">
+    <FieldLabel for="date-picker-range">Date Picker Range</FieldLabel>
+    <Popover>
+        <PopoverTrigger id="date-picker-range">
+            <Render>
+                <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline" Class="justify-start px-2.5 font-normal">
+                    <Icon Name="calendar" data-icon="inline-start" />
+                    @if (_date?.From is { } from)
+                    {
+                        @(_date.To is { } to ? $"{Format(from)} - {Format(to)}" : Format(from))
+                    }
+                    else
+                    {
+                        <span>Pick a date</span>
+                    }
+                </Button>
+            </Render>
+        </PopoverTrigger>
+        <PopoverContent Class="w-auto p-0" Align="Align.Start">
+            <Calendar Mode="CalendarMode.Range" DefaultMonth="@_date?.From" @bind-SelectedRange="_date" NumberOfMonths="2" />
+        </PopoverContent>
+    </Popover>
+</Field>
+
+@code {
+    private static readonly DateOnly From = new(DateTime.Today.Year, 1, 20);
+    private DateRange? _date = new(From, From.AddDays(20));
+
+    private static string Format(DateOnly date) => date.ToString("MMM dd, yyyy", CultureInfo.InvariantCulture);
+}

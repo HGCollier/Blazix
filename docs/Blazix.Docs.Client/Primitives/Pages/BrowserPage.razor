@@ -1,0 +1,46 @@
+@page "/docs/primitives/browser"
+
+<DocsPage Title="Browser" Description="Copies text to the clipboard and writes cookies from the browser.">
+    <p>
+        Two small helpers the styled components need: <code>BrowserClipboard</code> copies text,
+        for a code block's copy button, and <code>BrowserCookies</code> writes a cookie, for a sidebar that remembers whether
+        it was open. Both run in the browser, through the JavaScript runtime you pass them.
+    </p>
+    <DocsHeading Title="Clipboard" />
+    <p>
+        <code>CopyAsync</code> returns false when the browser refuses, such as without permission or outside a secure
+        context:
+    </p>
+    <CodeFigure Code="@ClipboardCode" Title="CopyButton.razor" />
+    <DocsHeading Title="Cookies" />
+    <p><code>SetAsync</code> sets a cookie for the whole site, kept for the time you give it:</p>
+    <CodeFigure Code="@CookiesCode" Title="Sidebar.razor" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(BrowserClipboard)" />
+    <PartReference Type="typeof(BrowserCookies)" />
+</DocsPage>
+
+@code {
+    private const string ClipboardCode = """
+        @inject IJSRuntime JS
+
+        <button type="button" @onclick="CopyAsync">@(_copied ? "Copied" : "Copy")</button>
+
+        @code {
+            [Parameter] public string Text { get; set; } = "";
+
+            private bool _copied;
+
+            private async Task CopyAsync() => _copied = await BrowserClipboard.CopyAsync(JS, Text);
+        }
+        """;
+
+    private const string CookiesCode = """
+        @inject IJSRuntime JS
+
+        @code {
+            private async Task RememberAsync(bool open) =>
+                await BrowserCookies.SetAsync(JS, "sidebar_state", open ? "true" : "false", TimeSpan.FromDays(7));
+        }
+        """;
+}

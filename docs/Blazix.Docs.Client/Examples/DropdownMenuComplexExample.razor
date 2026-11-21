@@ -1,0 +1,192 @@
+<DropdownMenu>
+    <DropdownMenuTrigger>Complex Menu</DropdownMenuTrigger>
+    <DropdownMenuContent Class="w-44">
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>File</DropdownMenuLabel>
+            <DropdownMenuItem>
+                <Icon Name="file" />
+                New File
+                <DropdownMenuShortcut>⌘N</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <Icon Name="folder" />
+                New Folder
+                <DropdownMenuShortcut>⇧⌘N</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                    <Icon Name="folder-open" />
+                    Open Recent
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                    <DropdownMenuGroup>
+                        <DropdownMenuLabel>Recent Projects</DropdownMenuLabel>
+                        <DropdownMenuItem>
+                            <Icon Name="file-code" />
+                            Project Alpha
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Icon Name="file-code" />
+                            Project Beta
+                        </DropdownMenuItem>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger>
+                                <Icon Name="ellipsis" />
+                                More Projects
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuSubContent>
+                                <DropdownMenuItem>
+                                    <Icon Name="file-code" />
+                                    Project Gamma
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Icon Name="file-code" />
+                                    Project Delta
+                                </DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuSub>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem>
+                            <Icon Name="folder-search" />
+                            Browse...
+                        </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                </DropdownMenuSubContent>
+            </DropdownMenuSub>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+                <Icon Name="save" />
+                Save
+                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <Icon Name="download" />
+                Export
+                <DropdownMenuShortcut>⇧⌘E</DropdownMenuShortcut>
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>View</DropdownMenuLabel>
+            <DropdownMenuCheckboxItem @bind-Checked="_email">
+                <Icon Name="eye" />
+                Show Sidebar
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem @bind-Checked="_sms">
+                <Icon Name="layout" />
+                Show Status Bar
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                    <Icon Name="palette" />
+                    Theme
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                    <DropdownMenuGroup>
+                        <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+                        <DropdownMenuRadioGroup @bind-Value="_theme">
+                            <DropdownMenuRadioItem Value="light">
+                                <Icon Name="sun" />
+                                Light
+                            </DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem Value="dark">
+                                <Icon Name="moon" />
+                                Dark
+                            </DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem Value="system">
+                                <Icon Name="monitor" />
+                                System
+                            </DropdownMenuRadioItem>
+                        </DropdownMenuRadioGroup>
+                    </DropdownMenuGroup>
+                </DropdownMenuSubContent>
+            </DropdownMenuSub>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Account</DropdownMenuLabel>
+            <DropdownMenuItem>
+                <Icon Name="user" />
+                Profile
+                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <Icon Name="credit-card" />
+                Billing
+            </DropdownMenuItem>
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                    <Icon Name="settings" />
+                    Settings
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                    <DropdownMenuGroup>
+                        <DropdownMenuLabel>Preferences</DropdownMenuLabel>
+                        <DropdownMenuItem>
+                            <Icon Name="keyboard" />
+                            Keyboard Shortcuts
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Icon Name="languages" />
+                            Language
+                        </DropdownMenuItem>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger>
+                                <Icon Name="bell" />
+                                Notifications
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuSubContent>
+                                <DropdownMenuGroup>
+                                    <DropdownMenuLabel>Notification Types</DropdownMenuLabel>
+                                    <DropdownMenuCheckboxItem @bind-Checked="_push">
+                                        <Icon Name="bell" />
+                                        Push Notifications
+                                    </DropdownMenuCheckboxItem>
+                                    <DropdownMenuCheckboxItem @bind-Checked="_email">
+                                        <Icon Name="mail" />
+                                        Email Notifications
+                                    </DropdownMenuCheckboxItem>
+                                </DropdownMenuGroup>
+                            </DropdownMenuSubContent>
+                        </DropdownMenuSub>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem>
+                            <Icon Name="shield" />
+                            Privacy &amp; Security
+                        </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                </DropdownMenuSubContent>
+            </DropdownMenuSub>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuItem>
+                <Icon Name="circle-question-mark" />
+                Help &amp; Support
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <Icon Name="file-text" />
+                Documentation
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuItem Destructive="true">
+                <Icon Name="log-out" />
+                Sign Out
+                <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+    </DropdownMenuContent>
+</DropdownMenu>
+
+@code {
+    private bool _email = true;
+    private bool _sms;
+    private bool _push = true;
+    private string? _theme = "light";
+}

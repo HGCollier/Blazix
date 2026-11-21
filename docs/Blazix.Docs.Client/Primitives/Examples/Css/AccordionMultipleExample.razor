@@ -1,0 +1,49 @@
+<AccordionRoot Multiple="true" class="accordion">
+    <AccordionItem class="accordion-item">
+        <AccordionHeader class="accordion-header">
+            <AccordionTrigger class="accordion-trigger">
+                What is Blazix.Primitives?
+                @PlusIcon
+            </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionPanel class="accordion-panel">
+            <div class="accordion-content">
+                Blazix.Primitives is a library of high-quality unstyled Blazor components for design systems and web apps.
+            </div>
+        </AccordionPanel>
+    </AccordionItem>
+
+    <AccordionItem class="accordion-item">
+        <AccordionHeader class="accordion-header">
+            <AccordionTrigger class="accordion-trigger">
+                How do I get started?
+                @PlusIcon
+            </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionPanel class="accordion-panel">
+            <div class="accordion-content">
+                Head to the “Primitives” page in the docs. If you’ve used unstyled libraries before, you’ll feel at home.
+            </div>
+        </AccordionPanel>
+    </AccordionItem>
+
+    <AccordionItem class="accordion-item">
+        <AccordionHeader class="accordion-header">
+            <AccordionTrigger class="accordion-trigger">
+                Can I use it for my project?
+                @PlusIcon
+            </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionPanel class="accordion-panel">
+            <div class="accordion-content">Of course! Blazix is free and open source.</div>
+        </AccordionPanel>
+    </AccordionItem>
+</AccordionRoot>
+
+@code {
+    private static readonly RenderFragment PlusIcon =
+        @<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round"
+              class="accordion-icon" style="display: block">
+            <path d="M1.5 8h13M8 14.5v-13" />
+        </svg>;
+}

@@ -1,0 +1,51 @@
+@using System.Globalization
+<Field Class="mx-auto w-48">
+    <FieldLabel for="date-required">Subscription Date</FieldLabel>
+    <InputGroup>
+        <InputGroupInput id="date-required" Value="@_value" ValueChanged="Change" placeholder="June 01, 2025"
+                         @onkeydown="OpenOnArrowDown" />
+        <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
+            <Popover @bind-Open="_open">
+                <PopoverTrigger id="date-picker">
+                    <Render>
+                        <InputGroupButton @attributes="context.Attributes" Variant="ButtonVariant.Ghost" Size="InputGroupButtonSize.IconXs" aria-label="Select date">
+                            <Icon Name="calendar" />
+                            <span class="sr-only">Select date</span>
+                        </InputGroupButton>
+                    </Render>
+                </PopoverTrigger>
+                <PopoverContent Class="w-auto overflow-hidden p-0" Align="Align.End" AlignOffset="-8" SideOffset="10">
+                    <Calendar Mode="CalendarMode.Single" Selected="_date" Month="_month" MonthChanged="month => _month = month" SelectedChanged="Select" />
+                </PopoverContent>
+            </Popover>
+        </InputGroupAddon>
+    </InputGroup>
+</Field>
+
+@code {
+    private bool _open;
+    private DateOnly? _date = new(2025, 6, 1);
+    private DateOnly? _month = new(2025, 6, 1);
+    private string _value = Format(new DateOnly(2025, 6, 1));
+
+    private static string Format(DateOnly? date) => date?.ToString("MMMM dd, yyyy", CultureInfo.InvariantCulture) ?? "";
+
+    private void Change(string? value)
+    {
+        _value = value ?? "";
+        if (DateTime.TryParse(_value, CultureInfo.InvariantCulture, out var parsed))
+        {
+            _date = DateOnly.FromDateTime(parsed);
+            _month = _date;
+        }
+    }
+
+    private void OpenOnArrowDown(KeyboardEventArgs e) => _open = _open || e.Key == "ArrowDown";
+
+    private void Select(DateOnly? date)
+    {
+        _date = date;
+        _value = Format(date);
+        _open = false;
+    }
+}

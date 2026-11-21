@@ -1,0 +1,34 @@
+<Combobox Items="AllTimezones">
+    <ComboboxInput Placeholder="Select a timezone">
+        <InputGroupAddon>
+            <Icon Name="globe" />
+        </InputGroupAddon>
+    </ComboboxInput>
+    <ComboboxContent AlignOffset="-28" Class="w-60">
+        <ComboboxEmpty>No timezones found.</ComboboxEmpty>
+        <ComboboxList>
+            @foreach (var group in Timezones)
+            {
+                <ComboboxGroup @key="group.Value" Items="group.Items">
+                    <ComboboxLabel>@group.Value</ComboboxLabel>
+                    <ComboboxCollection Context="item">
+                        <ComboboxItem Value="@item">@item</ComboboxItem>
+                    </ComboboxCollection>
+                </ComboboxGroup>
+            }
+        </ComboboxList>
+    </ComboboxContent>
+</Combobox>
+
+@code {
+    private sealed record TimezoneGroup(string Value, string[] Items);
+
+    private static readonly TimezoneGroup[] Timezones =
+    [
+        new("Americas", ["(GMT-5) New York", "(GMT-8) Los Angeles", "(GMT-6) Chicago", "(GMT-5) Toronto", "(GMT-8) Vancouver", "(GMT-3) São Paulo"]),
+        new("Europe", ["(GMT+0) London", "(GMT+1) Paris", "(GMT+1) Berlin", "(GMT+1) Rome", "(GMT+1) Madrid", "(GMT+1) Amsterdam"]),
+        new("Asia/Pacific", ["(GMT+9) Tokyo", "(GMT+8) Shanghai", "(GMT+8) Singapore", "(GMT+4) Dubai", "(GMT+11) Sydney", "(GMT+9) Seoul"]),
+    ];
+
+    private static readonly string[] AllTimezones = [.. Timezones.SelectMany(g => g.Items)];
+}

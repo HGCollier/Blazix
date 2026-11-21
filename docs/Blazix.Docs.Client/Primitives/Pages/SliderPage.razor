@@ -1,0 +1,104 @@
+@page "/docs/primitives/slider"
+
+<DocsPage Title="Slider" Description="An easily stylable range input.">
+    <ComponentPreview Name="primitives/slider-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li><strong>Form controls must have an accessible name:</strong> Prefer <code>SliderLabel</code>, or give each <code>SliderThumb</code> an <code>aria-label</code> when no visible label is rendered.</li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(SliderRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-dragging">Present while the user is dragging.</StyleHook>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the slider.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the slider is disabled.</StyleHook>
+            <StyleHook Name="data-valid">Present when the slider is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the slider is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the slider's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the slider has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the slider is focused (when wrapped in FieldRoot).</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SliderValue)">
+        <DataAttributes>
+            <StyleHook Name="data-dragging">Present while the user is dragging.</StyleHook>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the slider.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the slider is disabled.</StyleHook>
+            <StyleHook Name="data-valid">Present when the slider is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the slider is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the slider's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the slider has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the slider is focused (when wrapped in FieldRoot).</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SliderIndicator)">
+        <DataAttributes>
+            <StyleHook Name="data-dragging">Present while the user is dragging.</StyleHook>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the slider.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the slider is disabled.</StyleHook>
+            <StyleHook Name="data-valid">Present when the slider is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the slider is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the slider's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the slider has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the slider is focused (when wrapped in FieldRoot).</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SliderTrack)">
+        <DataAttributes>
+            <StyleHook Name="data-dragging">Present while the user is dragging.</StyleHook>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the slider.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the slider is disabled.</StyleHook>
+            <StyleHook Name="data-valid">Present when the slider is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the slider is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the slider's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the slider has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the slider is focused (when wrapped in FieldRoot).</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SliderThumb)">
+        <DataAttributes>
+            <StyleHook Name="data-dragging">Present while the user is dragging.</StyleHook>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the slider.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the slider is disabled.</StyleHook>
+            <StyleHook Name="data-valid">Present when the slider is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the slider is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the slider's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the slider has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the slider is focused (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-index">Indicates the index of the thumb in range sliders.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SliderControl)">
+        <DataAttributes>
+            <StyleHook Name="data-dragging">Present while the user is dragging.</StyleHook>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the slider.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the slider is disabled.</StyleHook>
+            <StyleHook Name="data-valid">Present when the slider is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the slider is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the slider's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the slider has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the slider is focused (when wrapped in FieldRoot).</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SliderLabel)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <SliderRoot>
+            <SliderLabel />
+            <SliderValue />
+            <SliderControl>
+                <SliderTrack>
+                    <SliderIndicator />
+                    <SliderThumb />
+                </SliderTrack>
+            </SliderControl>
+        </SliderRoot>
+        """;
+}

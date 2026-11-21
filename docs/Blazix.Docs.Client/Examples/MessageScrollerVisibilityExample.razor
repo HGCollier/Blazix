@@ -1,0 +1,91 @@
+<MessageScrollerProvider @ref="_scroller" ScrollMargin="12">
+    <div class="relative flex flex-col gap-4">
+        <div class="relative mx-auto w-full max-w-sm">
+            <Card Class="h-140 w-full gap-0">
+                <CardHeader Class="gap-1 border-b">
+                    <CardTitle>Transcript Outline</CardTitle>
+                    <CardDescription>Track the current anchored turn.</CardDescription>
+                </CardHeader>
+                <CardContent Class="flex-1 overflow-hidden p-0">
+                    <MessageScroller>
+                        <MessageScrollerViewport>
+                            <MessageScrollerContent Class="p-(--card-spacing)">
+                                @foreach (var message in Messages)
+                                {
+                                    <MessageScrollerItem @key="message.Id" MessageId="@message.Id" ScrollAnchor="@message.IsUser">
+                                        <Message Align="@(message.IsUser ? MessageAlign.End : MessageAlign.Start)">
+                                            <MessageContent>
+                                                <Bubble Variant="@(message.IsUser ? BubbleVariant.Muted : BubbleVariant.Ghost)">
+                                                    <BubbleContent Class="space-y-2">
+                                                        @foreach (var paragraph in ScriptedChat.Paragraphs(message.Text))
+                                                        {
+                                                            <p class="whitespace-pre-wrap">@paragraph</p>
+                                                        }
+                                                    </BubbleContent>
+                                                </Bubble>
+                                            </MessageContent>
+                                        </Message>
+                                    </MessageScrollerItem>
+                                }
+                            </MessageScrollerContent>
+                        </MessageScrollerViewport>
+                        <MessageScrollerButton />
+                    </MessageScroller>
+                </CardContent>
+            </Card>
+            <div class="absolute top-1/2 -right-12 -translate-y-1/2">
+                <MessageScrollerVisibility Context="visibility">
+                    <HoverCard>
+                        <HoverCardTrigger>
+                            <Render>
+                                <button @attributes="context.Attributes" type="button" aria-label="Open transcript outline"
+                                        class="flex h-9 w-9 flex-col items-center justify-center gap-1 rounded-md transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
+                                    @foreach (var id in UserMessages.Select(m => m.Id))
+                                    {
+                                        <span @key="id" data-current="@(id == visibility.CurrentAnchorId ? "true" : "false")"
+                                              class="h-0.5 w-4 rounded-full bg-muted-foreground/40 data-[current=true]:bg-foreground"></span>
+                                    }
+                                </button>
+                            </Render>
+                        </HoverCardTrigger>
+                        <HoverCardContent Align="Align.Center" Side="Side.Left" SideOffset="-28" Class="flex w-64 flex-col gap-1 rounded-2xl p-1">
+                            @foreach (var message in UserMessages)
+                            {
+                                <button @key="message.Id" type="button" aria-current="@(visibility.CurrentAnchorId == message.Id ? "location" : null)"
+                                        class="flex min-h-7 items-center rounded-xl px-2 py-1.5 text-left text-sm transition-colors outline-none hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground aria-current:bg-accent aria-current:text-accent-foreground"
+                                        @onclick="() => JumpTo(message.Id)">
+                                    <span class="line-clamp-1 min-w-0">@Trim(message.Text)</span>
+                                </button>
+                            }
+                        </HoverCardContent>
+                    </HoverCard>
+                </MessageScrollerVisibility>
+            </div>
+        </div>
+        <div class="mx-auto max-w-sm px-0.5 text-center text-xs text-muted-foreground">
+            Open the outline to jump between anchored turns as you read.
+        </div>
+    </div>
+</MessageScrollerProvider>
+
+@code {
+    private static readonly IReadOnlyList<ChatMessage> Messages = new ScriptedChat()
+        .User("Review the incident handoff and tell me what to read first.", "vis-brief")
+        .Assistant("Start with the summary and the impact section. The regression affected the upload queue, but the recovery path completed for every queued job.")
+        .User("What was the customer impact?", "vis-impact")
+        .Assistant("Impact was limited to delayed processing.\n\nNo records were dropped, and the reconciliation worker confirmed each retry batch. Support saw confusion from two customers, but there were no checkout or billing errors.")
+        .User("What actions are open?", "vis-actions")
+        .Assistant("Keep the retry window enabled until the next deploy, then add a queue-depth alert as the long-term fix.\n\nThe alert should fire on sustained queue growth, not a single short spike.")
+        .User("Give me the follow-up checklist.", "vis-checklist")
+        .Assistant("After that, compare the queue recovery graph with the deploy timeline so the handoff shows exactly when processing returned to baseline. That makes it easier for support and engineering to answer the same customer questions without re-reading the whole incident thread.\n\nI would also add a short owner note beside each follow-up item. The checklist is small, but ownership keeps the retry-window decision, alert tuning, and support macro from drifting into separate follow-up conversations.\n\nKeep the retry window enabled until the next deploy, then add a queue-depth alert as the long-term fix.\n\nThe alert should fire on sustained queue growth, not a single short spike.")
+        .Get();
+
+    private static readonly ChatMessage[] UserMessages = [.. Messages.Where(m => m.IsUser)];
+
+    private MessageScrollerProvider _scroller = null!;
+
+    private Task JumpTo(string id) =>
+        _scroller.ScrollToMessageAsync(id, new MessageScrollerScrollOptions(Behavior: ScrollBehavior.Smooth));
+
+    private static string Trim(string text) => text.Length > 42 ? $"{text[..39]}..." : text;
+}

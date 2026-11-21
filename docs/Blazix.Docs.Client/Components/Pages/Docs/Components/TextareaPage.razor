@@ -1,0 +1,27 @@
+@page "/docs/components/textarea"
+
+<DocsPage Title="Textarea" Description="Displays a form textarea or a component that looks like a textarea.">
+    <ComponentPreview Name="textarea-demo" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="textarea" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Field" />
+    <p>Use <code>Field</code>, <code>FieldLabel</code>, and <code>FieldDescription</code> to create a textarea with a label and description.</p>
+    <ComponentPreview Name="textarea-field" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Disabled" />
+    <p>Use the <code>disabled</code> parameter to disable the textarea. To style the disabled state, add the <code>data-disabled</code> attribute to the <code>Field</code> component.</p>
+    <ComponentPreview Name="textarea-disabled" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Invalid" />
+    <p>Use the <code>aria-invalid</code> parameter to mark the textarea as invalid. To style the invalid state, add the <code>data-invalid</code> attribute to the <code>Field</code> component.</p>
+    <ComponentPreview Name="textarea-invalid" PreviewClass="*:max-w-xs" />
+    <DocsHeading Title="Button" />
+    <p>Pair with <code>Button</code> to create a textarea with a submit button.</p>
+    <ComponentPreview Name="textarea-button" PreviewClass="*:max-w-xs" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Textarea />
+        """;
+}

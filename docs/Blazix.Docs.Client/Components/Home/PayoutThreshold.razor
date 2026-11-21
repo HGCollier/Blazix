@@ -1,0 +1,59 @@
+<Card>
+    <CardHeader>
+        <CardTitle>Payout Threshold</CardTitle>
+        <CardDescription>Set the minimum balance required before a payout is triggered.</CardDescription>
+        <CardAction>
+            <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.IconSm" Class="bg-muted" aria-label="Dismiss payout threshold">
+                <Icon Name="x" />
+            </Button>
+        </CardAction>
+    </CardHeader>
+    <CardContent>
+        <FieldGroup>
+            <Field>
+                <FieldLabel for="preferred-currency">Preferred Currency</FieldLabel>
+                <Select Items="Currencies" Value="usd">
+                    <SelectTrigger id="preferred-currency" Class="w-full">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            @foreach (var item in Currencies)
+                            {
+                                <SelectItem @key="item.Value" Value="@item.Value">@item.Label</SelectItem>
+                            }
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            </Field>
+            <Field>
+                <div class="flex items-baseline justify-between">
+                    <FieldLabel id="min-payout-label">Minimum Payout Amount</FieldLabel>
+                    <span class="text-2xl font-semibold tabular-nums">$2500.00</span>
+                </div>
+                <Progress Value="25" aria-labelledby="min-payout-label" aria-valuetext="$2,500 of $10,000" />
+                <div class="flex items-center justify-between">
+                    <FieldDescription>$50 (MIN)</FieldDescription>
+                    <FieldDescription>$10,000 (MAX)</FieldDescription>
+                </div>
+            </Field>
+            <Field>
+                <FieldLabel for="payout-notes">Notes</FieldLabel>
+                <Textarea id="payout-notes" placeholder="Add any notes for this payout configuration..." Class="min-h-[100px]" />
+            </Field>
+        </FieldGroup>
+    </CardContent>
+    <CardFooter>
+        <Button Class="w-full">Save Threshold</Button>
+    </CardFooter>
+</Card>
+
+@code {
+    private static readonly SelectOption[] Currencies =
+    [
+        new("usd", "USD — United States Dollar"),
+        new("eur", "EUR — Euro"),
+        new("gbp", "GBP — British Pound"),
+        new("jpy", "JPY — Japanese Yen"),
+    ];
+}

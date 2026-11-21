@@ -1,0 +1,157 @@
+@page "/docs/components/bubble"
+
+<DocsPage Title="Bubble" Description="Displays conversational content in a message bubble. Supports variants, alignment, grouping, reactions, and collapsible content.">
+    <ComponentPreview Name="bubble-demo" PreviewClass="h-auto theme-blue" />
+    <p>The <code>Bubble</code> component displays framed conversational content. Use it for chat text, short structured output, quoted replies, suggestions, and reactions.</p>
+    <p>For full-featured chat interfaces, use the <a href="/docs/components/message"><code>Message</code></a> component. <code>Bubble</code> is intentionally scoped to the bubble surface. Place avatars, names, timestamps, metadata, and message-level actions in <a href="/docs/components/message"><code>Message</code></a>.</p>
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="bubble" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a bubble:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <p>Use <code>BubbleGroup</code> to group consecutive bubbles from the same sender:</p>
+    <CodeFigure Code="@CompositionCode2" Language="text" />
+    <DocsHeading Title="Features" />
+    <ul>
+        <li>Seven visual variants, from a strong primary bubble to unframed ghost content</li>
+        <li>Start and end alignment for sender and receiver bubbles</li>
+        <li>Reactions that anchor to the bubble edge with configurable side and alignment</li>
+        <li>Bubbles size to their content, up to 80% of the container width</li>
+        <li>Polymorphic content via <code>Render</code> for link and button bubbles</li>
+        <li>Customizable styling through the <code>Class</code> parameter on every part</li>
+    </ul>
+    <DocsHeading Title="Variants" />
+    <p>Use <code>Variant</code> to change the visual treatment of the bubble.</p>
+    <ComponentPreview Name="bubble-variants" PreviewClass="h-auto theme-blue" />
+    <DocsTable>
+        <table>
+            <thead><tr><th>Variant</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>default</code></td><td>A strong primary bubble, usually for the current user.</td></tr>
+                <tr><td><code>secondary</code></td><td>The standard neutral bubble for conversation content.</td></tr>
+                <tr><td><code>muted</code></td><td>A lower-emphasis bubble for quiet supporting content.</td></tr>
+                <tr><td><code>tinted</code></td><td>A subtle primary-tinted bubble.</td></tr>
+                <tr><td><code>outline</code></td><td>A bordered bubble for secondary or rich content.</td></tr>
+                <tr><td><code>ghost</code></td><td>Unframed content for assistant text or rich content.</td></tr>
+                <tr><td><code>destructive</code></td><td>A destructive bubble for error or failed actions.</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <p>A bubble sizes to its content, up to 80% of the container width. The <code>ghost</code> variant removes the max-width so assistant text and rich content can span the full row.</p>
+    <DocsHeading Title="Alignment" />
+    <p>Use <code>Align</code> on <code>Bubble</code> to align the bubble to the start or end of the conversation.</p>
+    <ComponentPreview Name="bubble-alignment" PreviewClass="h-auto theme-blue" />
+    <DocsTable>
+        <table>
+            <thead><tr><th>align</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>start</code></td><td>Align the bubble to the start of the conversation.</td></tr>
+                <tr><td><code>end</code></td><td>Align the bubble to the end of the conversation.</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <p><strong>Note:</strong> When building chat interfaces, you probably want to use alignment on the <code>Message</code> component itself, not the <code>Bubble</code> component. You can use the <code>role</code> parameter on the <code>Message</code> component to automatically align the bubble to the start or end of the conversation.</p>
+    <DocsHeading Title="Bubble Group" />
+    <p>Use <code>BubbleGroup</code> to group consecutive bubbles from the same sender. Note the <code>Align</code> parameter should be set on the <code>Bubble</code> component itself, not the <code>BubbleGroup</code> component.</p>
+    <CodeFigure Code="@BubbleGroupCode" Language="text" />
+    <ComponentPreview Name="bubble-group-demo" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="Links and Buttons" />
+    <p>You can turn a bubble into a link or button by using the <code>Render</code> parameter on <code>BubbleContent</code>.</p>
+    <ComponentPreview Name="bubble-link-button" PreviewClass="h-auto theme-blue" />
+    <CodeFigure Code="@LinksAndButtonsCode" LineNumbers="true" />
+    <DocsHeading Title="Reactions" />
+    <p>Use <code>BubbleReactions</code> for bubble reactions. You can use it to display reactions or quick action buttons. Use <code>Side</code> and <code>Align</code> to position the row — <code>Side="BubbleReactionsSide.Top"</code> anchors it to the upper edge. Reactions overlap the bubble edge, so leave vertical space between rows — the examples below use a larger <code>gap</code> for this reason.</p>
+    <ComponentPreview Name="bubble-reactions" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="Show More / Collapsible" />
+    <p>Long bubble content can be composed with <a href="/docs/components/collapsible"><code>Collapsible</code></a> to allow for a show more or show less interaction. Use the <code>CollapsibleTrigger</code> component to trigger the collapsible content.</p>
+    <ComponentPreview Name="bubble-collapsible" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="Tooltip" />
+    <p>Wrap a bubble in a <a href="/docs/components/tooltip"><code>Tooltip</code></a> to reveal metadata on hover, such as when a message was read.</p>
+    <ComponentPreview Name="bubble-tooltip" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="Popover" />
+    <p>Pair a bubble with a <a href="/docs/components/popover"><code>Popover</code></a> to surface more information on demand, such as the full error message for a failed action.</p>
+    <ComponentPreview Name="bubble-popover" PreviewClass="h-auto theme-blue" />
+    <DocsHeading Title="Accessibility" />
+    <p><code>Bubble</code> renders the presentational message surface. Keep conversation-level semantics on the surrounding container and follow the guidelines below.</p>
+    <DocsHeading Level="3" Title="Labeling Reactions" />
+    <p>Reactions render as a row of emoji. A screen reader reads each glyph with no context, and counters like <code>+8</code> are announced as "plus eight". Group the row as a single image with a descriptive <code>aria-label</code> so it announces once. <code>role="img"</code> also hides the individual emoji from assistive tech, so no <code>aria-hidden</code> is needed.</p>
+    <CodeFigure Code="@LabelingReactionsCode" LineNumbers="true" />
+    <p>When reactions are interactive, render buttons instead and give icon-only buttons an <code>aria-label</code>.</p>
+    <CodeFigure Code="@LabelingReactionsCode2" LineNumbers="true" />
+    <DocsHeading Level="3" Title="Interactive Bubbles" />
+    <p>When a bubble is clickable, render it as a real <code>&lt;button&gt;</code> or <code>&lt;a&gt;</code> with the <code>Render</code> parameter so it is focusable and exposes the correct role. <code>BubbleContent</code> ships a visible focus ring for interactive elements, and the accessible name comes from the bubble text. No extra label is needed.</p>
+    <CodeFigure Code="@InteractiveBubblesCode" LineNumbers="true" />
+    <DocsHeading Level="3" Title="Meaning Beyond Color" />
+    <p>Bubble variants signal role and tone with color. Pair them with text, alignment, or icons so meaning is not conveyed by color alone. For a <code>destructive</code> bubble, keep the error context in the message text rather than relying on the color treatment.</p>
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="bubble" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Bubble>
+            <BubbleContent>I checked the registry output and removed the stale route.</BubbleContent>
+            <BubbleReactions><span>👍</span></BubbleReactions>
+        </Bubble>
+        """;
+
+    private const string CompositionCode = """
+        Bubble
+        ├── BubbleContent
+        └── BubbleReactions
+        """;
+
+    private const string CompositionCode2 = """
+        BubbleGroup
+        ├── Bubble
+        │   └── BubbleContent
+        └── Bubble
+            └── BubbleContent
+        """;
+
+    private const string BubbleGroupCode = """
+        BubbleGroup
+        ├── Bubble
+        │   └── BubbleContent
+        └── Bubble
+            └── BubbleContent
+        """;
+
+    private const string LinksAndButtonsCode = """
+        <Bubble Variant="BubbleVariant.Muted">
+            <BubbleContent>
+                <Render Context="content">
+                    <button @attributes="content.Attributes" type="button">Click here</button>
+                </Render>
+            </BubbleContent>
+        </Bubble>
+        """;
+
+    private const string LabelingReactionsCode = """
+        <BubbleReactions role="img" aria-label="Reactions: thumbs up, fire, and 8 more">
+            <span>👍</span>
+            <span>🔥</span>
+            <span>+8</span>
+        </BubbleReactions>
+        """;
+
+    private const string LabelingReactionsCode2 = """
+        <BubbleReactions>
+            <Button aria-label="Thumbs up" Variant="ButtonVariant.Secondary" Size="ButtonSize.IconXs">
+                <Icon Name="thumbs-up" />
+            </Button>
+        </BubbleReactions>
+        """;
+
+    private const string InteractiveBubblesCode = """
+        <Bubble Variant="BubbleVariant.Muted" Align="BubbleAlign.End">
+            <BubbleContent>
+                <Render Context="content">
+                    <button @attributes="content.Attributes" type="button" @onclick="Reply">I forgot my password</button>
+                </Render>
+            </BubbleContent>
+        </Bubble>
+        """;
+}

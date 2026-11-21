@@ -1,0 +1,35 @@
+@using System.Globalization
+<Popover>
+    <PopoverTrigger>
+        <Render>
+            <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline" data-empty="@(_date is null ? "true" : "false")"
+                    Class="w-[212px] justify-between text-left font-normal data-[empty=true]:text-muted-foreground">
+                @if (_date is { } date)
+                {
+                    @Format(date)
+                }
+                else
+                {
+                    <span>Pick a date</span>
+                }
+                <Icon Name="chevron-down" data-icon="inline-end" />
+            </Button>
+        </Render>
+    </PopoverTrigger>
+    <PopoverContent Class="w-auto p-0" Align="Align.Start">
+        <Calendar Mode="CalendarMode.Single" @bind-Selected="_date" DefaultMonth="_date" />
+    </PopoverContent>
+</Popover>
+
+@code {
+    private DateOnly? _date;
+
+    private static string Format(DateOnly date) =>
+        date.ToString("MMMM ", CultureInfo.InvariantCulture) + date.Day + (date.Day switch
+        {
+            1 or 21 or 31 => "st",
+            2 or 22 => "nd",
+            3 or 23 => "rd",
+            _ => "th",
+        }) + ", " + date.Year;
+}

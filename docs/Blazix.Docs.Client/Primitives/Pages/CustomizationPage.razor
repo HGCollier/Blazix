@@ -1,0 +1,86 @@
+@page "/docs/primitives/customization"
+
+<DocsPage Title="Customization" Description="A guide to customizing the behavior of the primitives.">
+    <DocsHeading Title="Change events" />
+    <p>
+        Parts raise change events such as <code>OnOpenChange</code> and <code>OnValueChange</code> before their state
+        changes, whether a pointer, a key, focus or your own code caused the change. Popups and panels have <code>OnOpenChange</code>, and parts with a value have <code>OnValueChange</code>:
+    </p>
+    <CodeFigure Code="@SignaturesCode" Language="csharp" />
+    <p>The event's arguments describe the change, and let you stop it:</p>
+    <ul>
+        <li><code>Open</code> or <code>Value</code> is the state the part is about to change to.</li>
+        <li>
+            <code>Reason</code> is what caused the change, so you can run side effects for some causes only. For popups it's an
+            <code>OpenChangeReason</code> (<code>TriggerPress</code>, <code>OutsidePress</code>, <code>EscapeKey</code>...);
+            for values it's a string such as <code>"trigger-press"</code>, <code>"item-press"</code> or
+            <code>"keyboard"</code>.
+        </li>
+        <li><code>Cancel()</code> keeps the part's current state.</li>
+        <li><code>Canceled</code> says whether a handler has canceled the change.</li>
+    </ul>
+
+    <DocsHeading Level="3" Title="Canceling a change" />
+    <p>Call <code>Cancel()</code> to stop a change from happening, for example to keep a tooltip open when its trigger is pressed (pressing the trigger would otherwise close it):</p>
+    <CodeFigure Code="@CancelCode" Title="Hint.razor" />
+    <p>
+        The part keeps managing its own state, which is often simpler than controlling it with a field of your own and
+        guarding every update.
+    </p>
+
+    <DocsHeading Title="Controlling a part with state" />
+    <p>
+        Parts manage their own state by default. A value you set once, such as <code>Open="true"</code> or
+        <code>Value="@@("apple")"</code>, is where it starts. To control a part from your own state, bind it, and it changes
+        whenever your field does:
+    </p>
+    <CodeFigure Code="@UncontrolledCode" Title="Uncontrolled dialog" />
+    <p>The uncontrolled dialog opens when its trigger is pressed. Bound, a <a href="/docs/primitives/dialog">Dialog</a> can open a second after the page loads, without a trigger:</p>
+    <CodeFigure Code="@ControlledCode" Title="Controlled dialog" />
+    <p>Binding also lets the rest of your component read the part's state.</p>
+</DocsPage>
+
+@code {
+    private const string SignaturesCode = """
+        [Parameter] public EventCallback<OpenChangeEventArgs> OnOpenChange { get; set; }
+        [Parameter] public EventCallback<ValueChangeEventArgs<T>> OnValueChange { get; set; }
+        """;
+
+    private const string CancelCode = """
+        <TooltipRoot OnOpenChange="KeepOpenOnPress">
+            ...
+        </TooltipRoot>
+
+        @code {
+            private void KeepOpenOnPress(OpenChangeEventArgs args)
+            {
+                if (args.Reason == OpenChangeReason.TriggerPress)
+                {
+                    args.Cancel();
+                }
+            }
+        }
+        """;
+
+    private const string UncontrolledCode = """
+        <DialogRoot>
+            <DialogTrigger>Open</DialogTrigger>
+        </DialogRoot>
+        """;
+
+    private const string ControlledCode = """
+        <DialogRoot @bind-Open="_open">
+            No trigger is needed in this case.
+        </DialogRoot>
+
+        @code {
+            private bool _open;
+
+            protected override async Task OnInitializedAsync()
+            {
+                await Task.Delay(1000);
+                _open = true;
+            }
+        }
+        """;
+}

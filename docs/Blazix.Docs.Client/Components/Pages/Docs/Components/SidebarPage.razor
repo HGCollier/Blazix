@@ -1,0 +1,488 @@
+@page "/docs/components/sidebar"
+
+<DocsPage Title="Sidebar" Description="A composable, themeable and customizable sidebar component.">
+    <ComponentPreview Name="sidebar-demo" Caption="A sidebar that collapses to icons." ChromeLessOnMobile="true"
+                      PreviewClass="@("h-[600px]! overflow-hidden p-0! [transform:translateZ(0)] [&_[data-slot=sidebar-wrapper]]:min-h-full [&_[data-slot=sidebar-container]]:h-full")" />
+    <p>Sidebars are one of the most complex components to build. They are central to any application and often contain a lot of moving parts.</p>
+    <p>We now have a solid foundation to build on top of. Composable. Themeable. Customizable.</p>
+
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="sidebar" />
+
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@LayoutCode" Title="Components/Layout/MainLayout.razor" LineNumbers="true" />
+    <CodeFigure Code="@AppSidebarCode" Title="Components/Layout/AppSidebar.razor" LineNumbers="true" />
+
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>Sidebar</code> layout:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+
+    <DocsHeading Title="Structure" />
+    <ul>
+        <li><strong>SidebarProvider</strong> — Handles collapsible state and provides sidebar context to child components.</li>
+        <li><strong>Sidebar</strong> — The main collapsible sidebar panel.</li>
+        <li><strong>SidebarHeader</strong> — Sticky at the top; use for branding, titles, or workspace switchers.</li>
+        <li><strong>SidebarFooter</strong> — Sticky at the bottom; use for user menus, settings, or actions.</li>
+        <li><strong>SidebarContent</strong> — Scrollable region between the header and footer.</li>
+        <li><strong>SidebarGroup</strong> — Groups related navigation with optional label, action, and content areas.</li>
+        <li><strong>SidebarMenu</strong> / <strong>SidebarMenuItem</strong> — Menu structure for links, badges, actions, and nested submenus.</li>
+        <li><strong>SidebarRail</strong> — A strip along the sidebar&apos;s edge that toggles it.</li>
+        <li><strong>SidebarInset</strong> — Wraps main content when using the <code>Inset</code> variant.</li>
+        <li><strong>SidebarTrigger</strong> — Control that toggles the sidebar open or collapsed.</li>
+    </ul>
+
+    <DocsHeading Title="SidebarProvider" />
+    <p>The <code>SidebarProvider</code> component is used to provide the sidebar context to the <code>Sidebar</code> component. You should always wrap your application in a <code>SidebarProvider</code> component.</p>
+    <DocsHeading Level="3" Title="Parameters" />
+    <DocsTable>
+        <table>
+            <thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>DefaultOpen</code></td><td><code>bool</code></td><td>Default open state of the sidebar.</td></tr>
+                <tr><td><code>Open</code></td><td><code>bool?</code></td><td>Open state of the sidebar (controlled).</td></tr>
+                <tr><td><code>OpenChanged</code></td><td><code>EventCallback&lt;bool&gt;</code></td><td>Sets open state of the sidebar (controlled).</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <DocsHeading Level="3" Title="Width" />
+    <p>If you have a single sidebar in your application, you can use the <code>Width</code> and <code>WidthMobile</code> constants in <code>SidebarProvider.razor</code> to set the width of the sidebar.</p>
+    <CodeFigure Code="@WidthCode" Language="csharp" Title="Components/UI/SidebarProvider.razor" LineNumbers="true" />
+    <p>For multiple sidebars in your application, you can set the <code>--sidebar-width</code> CSS variable with the <code>Style</code> parameter.</p>
+    <CodeFigure Code="@StyleCode" LineNumbers="true" />
+    <DocsHeading Level="3" Title="Keyboard Shortcut" />
+    <p>To trigger the sidebar, you use the <code>cmd+b</code> keyboard shortcut on Mac and <code>ctrl+b</code> on Windows.</p>
+    <CodeFigure Code="@ShortcutCode" Language="csharp" Title="Components/UI/SidebarProvider.razor" LineNumbers="true" />
+    <DocsHeading Level="3" Title="Persisted State" />
+    <p>The provider keeps the sidebar&apos;s state in the <code>sidebar_state</code> cookie. Read it when the page renders and pass it as <code>DefaultOpen</code> to start the way the user left it.</p>
+    <CodeFigure Code="@PersistedCode" LineNumbers="true" />
+
+    <DocsHeading Title="Sidebar" />
+    <p>The main <code>Sidebar</code> component used to render a collapsible sidebar.</p>
+    <DocsHeading Level="3" Title="Parameters" Id="sidebar-parameters" />
+    <DocsTable>
+        <table>
+            <thead><tr><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>Side</code></td><td><code>SidebarSide.Left</code> or <code>Right</code></td><td>The side of the sidebar.</td></tr>
+                <tr><td><code>Variant</code></td><td><code>SidebarVariant.Sidebar</code>, <code>Floating</code>, or <code>Inset</code></td><td>The variant of the sidebar.</td></tr>
+                <tr><td><code>Collapsible</code></td><td><code>SidebarCollapsible.Offcanvas</code>, <code>Icon</code>, or <code>None</code></td><td>Collapsible state of the sidebar.</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <DocsTable>
+        <table>
+            <thead><tr><th>Collapsible</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>Offcanvas</code></td><td>A collapsible sidebar that slides in from the left or right.</td></tr>
+                <tr><td><code>Icon</code></td><td>A sidebar that collapses to icons.</td></tr>
+                <tr><td><code>None</code></td><td>A non-collapsible sidebar.</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <Callout><strong>Note:</strong> If you use the <code>Inset</code> variant, remember to wrap your main content in a <code>SidebarInset</code> component.</Callout>
+    <CodeFigure Code="@InsetCode" LineNumbers="true" />
+
+    <DocsHeading Title="SidebarContext" />
+    <p>The <code>SidebarProvider</code> cascades a <code>SidebarContext</code>. Take it as a cascading parameter to read or control the sidebar from any component inside the provider.</p>
+    <CodeFigure Code="@ContextCode" LineNumbers="true" />
+    <DocsTable>
+        <table>
+            <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td><code>State</code></td><td><code>"expanded"</code> or <code>"collapsed"</code></td><td>The current state of the sidebar.</td></tr>
+                <tr><td><code>Open</code></td><td><code>bool</code></td><td>Whether the sidebar is open.</td></tr>
+                <tr><td><code>SetOpenAsync</code></td><td><code>Func&lt;bool, Task&gt;</code></td><td>Sets the open state of the sidebar.</td></tr>
+                <tr><td><code>OpenMobile</code></td><td><code>bool</code></td><td>Whether the sidebar is open on mobile.</td></tr>
+                <tr><td><code>SetOpenMobileAsync</code></td><td><code>Func&lt;bool, Task&gt;</code></td><td>Sets the open state of the sidebar on mobile.</td></tr>
+                <tr><td><code>IsMobile</code></td><td><code>bool</code></td><td>Whether the sidebar is on mobile.</td></tr>
+                <tr><td><code>ToggleAsync</code></td><td><code>Func&lt;Task&gt;</code></td><td>Toggles the sidebar. Desktop and mobile.</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+
+    <DocsHeading Title="SidebarHeader" />
+    <p>Use the <code>SidebarHeader</code> component to add a sticky header to the sidebar.</p>
+    <CodeFigure Code="@HeaderCode" Title="Components/Layout/AppSidebar.razor" LineNumbers="true" />
+
+    <DocsHeading Title="SidebarFooter" />
+    <p>Use the <code>SidebarFooter</code> component to add a sticky footer to the sidebar.</p>
+    <CodeFigure Code="@FooterCode" LineNumbers="true" />
+
+    <DocsHeading Title="SidebarContent" />
+    <p>The <code>SidebarContent</code> component is used to wrap the content of the sidebar. This is where you add your <code>SidebarGroup</code> components. It is scrollable.</p>
+    <CodeFigure Code="@ContentCode" LineNumbers="true" />
+
+    <DocsHeading Title="SidebarGroup" />
+    <p>Use the <code>SidebarGroup</code> component to create a section within the sidebar.</p>
+    <p>A <code>SidebarGroup</code> has a <code>SidebarGroupLabel</code>, a <code>SidebarGroupContent</code> and an optional <code>SidebarGroupAction</code>.</p>
+    <CodeFigure Code="@GroupCode" LineNumbers="true" />
+    <p>To make a <code>SidebarGroup</code> collapsible, wrap it in a <code>Collapsible</code>.</p>
+    <CodeFigure Code="@CollapsibleGroupCode" LineNumbers="true" />
+
+    <DocsHeading Title="SidebarMenu" />
+    <p>The <code>SidebarMenu</code> component is used for building a menu within a <code>SidebarGroup</code>.</p>
+    <CodeFigure Code="@MenuCode" LineNumbers="true" />
+
+    <DocsHeading Title="SidebarMenuButton" />
+    <p>The <code>SidebarMenuButton</code> component is used to render a menu button within a <code>SidebarMenuItem</code>.</p>
+    <p>By default, the <code>SidebarMenuButton</code> renders a button but you can use the <code>Render</code> parameter to render a different element, such as an <code>&lt;a&gt;</code> tag or a <code>NavLink</code>.</p>
+    <p>Use the <code>IsActive</code> parameter to mark a menu item as active.</p>
+    <CodeFigure Code="@MenuButtonCode" LineNumbers="true" />
+
+    <DocsHeading Title="SidebarMenuAction" />
+    <p>The <code>SidebarMenuAction</code> component is used to render a menu action within a <code>SidebarMenuItem</code>.</p>
+    <CodeFigure Code="@MenuActionCode" LineNumbers="true" />
+
+    <DocsHeading Title="SidebarMenuSub" />
+    <p>The <code>SidebarMenuSub</code> component is used to render a submenu within a <code>SidebarMenu</code>.</p>
+    <CodeFigure Code="@MenuSubCode" LineNumbers="true" />
+
+    <DocsHeading Title="SidebarMenuBadge" />
+    <p>The <code>SidebarMenuBadge</code> component is used to render a badge within a <code>SidebarMenuItem</code>.</p>
+    <CodeFigure Code="@MenuBadgeCode" LineNumbers="true" />
+
+    <DocsHeading Title="SidebarMenuSkeleton" />
+    <p>The <code>SidebarMenuSkeleton</code> component is used to render a skeleton for a <code>SidebarMenu</code>.</p>
+    <CodeFigure Code="@MenuSkeletonCode" LineNumbers="true" />
+
+    <DocsHeading Title="SidebarTrigger" />
+    <p>Use the <code>SidebarTrigger</code> component to render a button that toggles the sidebar.</p>
+    <p>To build your own trigger, take the <code>SidebarContext</code> and call <code>ToggleAsync</code>.</p>
+    <CodeFigure Code="@TriggerCode" Title="Components/Layout/CustomTrigger.razor" LineNumbers="true" />
+
+    <DocsHeading Title="SidebarRail" />
+    <p>The <code>SidebarRail</code> component is used to render a rail within a <code>Sidebar</code>. This rail can be used to toggle the sidebar.</p>
+    <CodeFigure Code="@RailCode" LineNumbers="true" />
+
+    <DocsHeading Title="Controlled Sidebar" />
+    <p>Use <code>@@bind-Open</code> on the <code>SidebarProvider</code> to control the sidebar.</p>
+    <CodeFigure Code="@ControlledCode" LineNumbers="true" />
+
+    <DocsHeading Title="Theming" />
+    <p>We use the following CSS variables to theme the sidebar. They are in <code>Styles/theme.css</code>.</p>
+    <CodeFigure Code="@ThemingCode" Language="css" />
+
+    <DocsHeading Title="Styling" />
+    <p>Here are some tips for styling the sidebar based on different states.</p>
+    <CodeFigure Code="@StylingCode" />
+    <CodeFigure Code="@StylingCode2" />
+
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="sidebar" />
+</DocsPage>
+
+@code {
+    private const string LayoutCode = """
+        @inherits LayoutComponentBase
+
+        <SidebarProvider>
+            <AppSidebar />
+            <main>
+                <SidebarTrigger />
+                @Body
+            </main>
+        </SidebarProvider>
+        """;
+
+    private const string AppSidebarCode = """
+        <Sidebar>
+            <SidebarHeader />
+            <SidebarContent>
+                <SidebarGroup />
+                <SidebarGroup />
+            </SidebarContent>
+            <SidebarFooter />
+        </Sidebar>
+        """;
+
+    private const string CompositionCode = """
+        SidebarProvider
+        ├── Sidebar
+        │   ├── SidebarHeader
+        │   ├── SidebarContent
+        │   │   ├── SidebarGroup
+        │   │   │   ├── SidebarGroupLabel
+        │   │   │   ├── SidebarGroupAction
+        │   │   │   ├── SidebarGroupContent
+        │   │   │   └── SidebarMenu
+        │   │   │       ├── SidebarMenuItem
+        │   │   │       │   ├── SidebarMenuButton
+        │   │   │       │   ├── SidebarMenuAction
+        │   │   │       │   └── SidebarMenuBadge
+        │   │   │       └── SidebarMenuItem
+        │   │   │           ├── SidebarMenuButton
+        │   │   │           └── SidebarMenuSub
+        │   │   │               ├── SidebarMenuSubItem
+        │   │   │               └── SidebarMenuSubItem
+        │   │   └── SidebarGroup
+        │   │       └── SidebarMenu
+        │   │           ├── SidebarMenuItem
+        │   │           └── SidebarMenuItem
+        │   ├── SidebarFooter
+        │   └── SidebarRail
+        ├── SidebarInset
+        └── SidebarTrigger
+        """;
+
+    private const string WidthCode = """
+        private const string Width = "16rem";
+        public const string WidthMobile = "18rem";
+        """;
+
+    private const string StyleCode = """
+        <SidebarProvider Style="--sidebar-width: 20rem">
+            <Sidebar />
+        </SidebarProvider>
+        """;
+
+    private const string ShortcutCode = """
+        private const string KeyboardShortcut = "b";
+        """;
+
+    private const string PersistedCode = """
+        @inject IHttpContextAccessor HttpContextAccessor
+
+        <SidebarProvider DefaultOpen="@DefaultOpen">
+            <AppSidebar />
+            <main>@Body</main>
+        </SidebarProvider>
+
+        @code {
+            private bool DefaultOpen =>
+                HttpContextAccessor.HttpContext?.Request.Cookies[SidebarProvider.CookieName] != "false";
+        }
+        """;
+
+    private const string InsetCode = """
+        <SidebarProvider>
+            <Sidebar Variant="SidebarVariant.Inset" />
+            <SidebarInset>
+                <main>@Body</main>
+            </SidebarInset>
+        </SidebarProvider>
+        """;
+
+    private const string ContextCode = """
+        <p>The sidebar is @Sidebar.State.</p>
+
+        @code {
+            [CascadingParameter] private SidebarContext Sidebar { get; set; } = null!;
+        }
+        """;
+
+    private const string HeaderCode = """
+        <Sidebar>
+            <SidebarHeader>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger>
+                                <Render Context="trigger">
+                                    <SidebarMenuButton @attributes="trigger.Attributes">
+                                        Select Workspace
+                                        <Icon Name="chevron-down" class="ml-auto" />
+                                    </SidebarMenuButton>
+                                </Render>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem>
+                                    <span>Blazix Inc</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarHeader>
+        </Sidebar>
+        """;
+
+    private const string FooterCode = """
+        <Sidebar>
+            <SidebarFooter>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton>
+                            <Icon Name="user-round" /> Username
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarFooter>
+        </Sidebar>
+        """;
+
+    private const string ContentCode = """
+        <Sidebar>
+            <SidebarContent>
+                <SidebarGroup />
+                <SidebarGroup />
+            </SidebarContent>
+        </Sidebar>
+        """;
+
+    private const string GroupCode = """
+        <SidebarGroup>
+            <SidebarGroupLabel>Application</SidebarGroupLabel>
+            <SidebarGroupAction>
+                <Icon Name="plus" /> <span class="sr-only">Add Project</span>
+            </SidebarGroupAction>
+            <SidebarGroupContent></SidebarGroupContent>
+        </SidebarGroup>
+        """;
+
+    private const string CollapsibleGroupCode = """
+        <Collapsible Open="true" Class="group/collapsible">
+            <SidebarGroup>
+                <SidebarGroupLabel>
+                    <Render Context="label">
+                        <CollapsibleTrigger @attributes="label.Attributes">
+                            Help
+                            <Icon Name="chevron-down" class="ml-auto transition-transform group-data-open/collapsible:rotate-180" />
+                        </CollapsibleTrigger>
+                    </Render>
+                </SidebarGroupLabel>
+                <CollapsibleContent>
+                    <SidebarGroupContent />
+                </CollapsibleContent>
+            </SidebarGroup>
+        </Collapsible>
+        """;
+
+    private const string MenuCode = """
+        <SidebarMenu>
+            @foreach (var project in Projects)
+            {
+                <SidebarMenuItem @key="project.Name">
+                    <SidebarMenuButton>
+                        <Render Context="link">
+                            <a @attributes="link.Attributes" href="@project.Url">
+                                <Icon Name="@project.Icon" />
+                                <span>@project.Name</span>
+                            </a>
+                        </Render>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            }
+        </SidebarMenu>
+        """;
+
+    private const string MenuButtonCode = """
+        <SidebarMenuButton IsActive="true">
+            <Render Context="link">
+                <a @attributes="link.Attributes" href="#">Home</a>
+            </Render>
+        </SidebarMenuButton>
+        """;
+
+    private const string MenuActionCode = """
+        <SidebarMenuItem>
+            <SidebarMenuButton>
+                <Render Context="link">
+                    <a @attributes="link.Attributes" href="#">
+                        <Icon Name="house" />
+                        <span>Home</span>
+                    </a>
+                </Render>
+            </SidebarMenuButton>
+            <SidebarMenuAction>
+                <Icon Name="plus" /> <span class="sr-only">Add Project</span>
+            </SidebarMenuAction>
+        </SidebarMenuItem>
+        """;
+
+    private const string MenuSubCode = """
+        <SidebarMenuItem>
+            <SidebarMenuButton />
+            <SidebarMenuSub>
+                <SidebarMenuSubItem>
+                    <SidebarMenuSubButton />
+                </SidebarMenuSubItem>
+            </SidebarMenuSub>
+        </SidebarMenuItem>
+        """;
+
+    private const string MenuBadgeCode = """
+        <SidebarMenuItem>
+            <SidebarMenuButton />
+            <SidebarMenuBadge>24</SidebarMenuBadge>
+        </SidebarMenuItem>
+        """;
+
+    private const string MenuSkeletonCode = """
+        <SidebarMenu>
+            @for (var i = 0; i < 5; i++)
+            {
+                <SidebarMenuItem>
+                    <SidebarMenuSkeleton />
+                </SidebarMenuItem>
+            }
+        </SidebarMenu>
+        """;
+
+    private const string TriggerCode = """
+        <button type="button" @onclick="Sidebar.ToggleAsync">Toggle Sidebar</button>
+
+        @code {
+            [CascadingParameter] private SidebarContext Sidebar { get; set; } = null!;
+        }
+        """;
+
+    private const string RailCode = """
+        <Sidebar>
+            <SidebarHeader />
+            <SidebarContent>
+                <SidebarGroup />
+            </SidebarContent>
+            <SidebarFooter />
+            <SidebarRail />
+        </Sidebar>
+        """;
+
+    private const string ControlledCode = """
+        <SidebarProvider @bind-Open="_open">
+            <Sidebar />
+        </SidebarProvider>
+
+        @code {
+            private bool? _open = false;
+        }
+        """;
+
+    private const string ThemingCode = """
+        :root {
+          --sidebar: oklch(0.985 0 0);
+          --sidebar-foreground: oklch(0.145 0 0);
+          --sidebar-primary: oklch(0.205 0 0);
+          --sidebar-primary-foreground: oklch(0.985 0 0);
+          --sidebar-accent: oklch(0.97 0 0);
+          --sidebar-accent-foreground: oklch(0.205 0 0);
+          --sidebar-border: oklch(0.922 0 0);
+          --sidebar-ring: oklch(0.205 0 0);
+        }
+
+        .dark {
+          --sidebar: oklch(0.205 0 0);
+          --sidebar-foreground: oklch(0.985 0 0);
+          --sidebar-primary: oklch(0.488 0.243 264.376);
+          --sidebar-primary-foreground: oklch(0.985 0 0);
+          --sidebar-accent: oklch(0.269 0 0);
+          --sidebar-accent-foreground: oklch(0.985 0 0);
+          --sidebar-border: oklch(1 0 0 / 10%);
+          --sidebar-ring: oklch(0.922 0 0);
+        }
+        """;
+
+    private const string StylingCode = """
+        <Sidebar Collapsible="SidebarCollapsible.Icon">
+            <SidebarContent>
+                <SidebarGroup Class="group-data-[collapsible=icon]:hidden" />
+            </SidebarContent>
+        </Sidebar>
+        """;
+
+    private const string StylingCode2 = """
+        <SidebarMenuItem>
+            <SidebarMenuButton />
+            <SidebarMenuAction Class="peer-data-[active=true]/menu-button:opacity-100" />
+        </SidebarMenuItem>
+        """;
+}

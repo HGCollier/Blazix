@@ -1,0 +1,113 @@
+@page "/docs/components/attachment"
+
+<DocsPage Title="Attachment" Description="Displays a file or image attachment with media, metadata, upload state, and actions.">
+    <ComponentPreview Name="attachment-demo" PreviewClass="h-auto theme-blue bg-surface dark:bg-background" />
+    <p>The <code>Attachment</code> component displays a file or image attachment, its media, name, and metadata, with optional actions and upload state. Use it for files and images in chat composers, message threads, and upload lists.</p>
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="attachment" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build an attachment:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <p>Use <code>AttachmentGroup</code> to lay out multiple attachments in a scrollable row:</p>
+    <CodeFigure Code="@CompositionCode2" Language="text" />
+    <DocsHeading Title="Features" />
+    <ul>
+        <li>Icon and image media through <code>AttachmentMedia</code></li>
+        <li>Upload states: <code>idle</code>, <code>uploading</code>, <code>processing</code>, <code>error</code>, and <code>done</code> with built-in styling and a shimmer while in progress</li>
+        <li>Three sizes and horizontal or vertical orientation</li>
+        <li>A full-card <code>AttachmentTrigger</code> that opens a link or dialog while the actions stay independently clickable</li>
+        <li>Scrollable, snapping <code>AttachmentGroup</code> with an edge fade</li>
+        <li>Customizable styling through the <code>Class</code> parameter on every part</li>
+    </ul>
+    <DocsHeading Title="Image" />
+    <p>Set <code>variant="image"</code> on <code>AttachmentMedia</code> and render an <code>&lt;img&gt;</code> inside it. Use <code>orientation="vertical"</code> to stack the media above the content.</p>
+    <ComponentPreview Name="attachment-image" PreviewClass="h-auto theme-blue bg-surface dark:bg-background" />
+    <DocsHeading Title="States" />
+    <p>Set <code>State</code> to reflect the upload lifecycle. <code>uploading</code> and <code>processing</code> shimmer the title, and <code>error</code> switches to a destructive treatment.</p>
+    <ComponentPreview Name="attachment-states" PreviewClass="h-auto theme-blue bg-surface dark:bg-background" />
+    <DocsHeading Title="Sizes" />
+    <p>Use <code>Size</code> to switch between <code>default</code>, <code>sm</code>, and <code>xs</code>.</p>
+    <ComponentPreview Name="attachment-sizes" PreviewClass="h-auto theme-blue bg-surface dark:bg-background" />
+    <DocsHeading Title="Group" />
+    <p>Wrap attachments in <code>AttachmentGroup</code> to lay them out in a horizontally scrollable, snapping row with an edge fade.</p>
+    <ComponentPreview Name="attachment-group" PreviewClass="h-auto theme-blue bg-surface dark:bg-background" />
+    <DocsHeading Title="Trigger" />
+    <p>Add an <code>AttachmentTrigger</code> to make the whole card open a link or dialog. It fills the card behind the actions, so the actions stay clickable.</p>
+    <ComponentPreview Name="attachment-trigger" PreviewClass="h-auto theme-blue bg-surface dark:bg-background" />
+    <CodeFigure Code="@TriggerCode" LineNumbers="true" />
+    <DocsHeading Title="Accessibility" />
+    <p><code>AttachmentAction</code> renders a <code>Button</code>, and <code>AttachmentTrigger</code> renders a real <code>&lt;button&gt;</code> (or your element via <code>Render</code>). Follow the guidance below so both are operable and announced.</p>
+    <DocsHeading Level="3" Title="Label icon-only actions" />
+    <p><code>AttachmentAction</code> is usually icon-only, so give each one an <code>aria-label</code> describing the action and its target.</p>
+    <CodeFigure Code="@LabelIconOnlyActionsCode" LineNumbers="true" />
+    <DocsHeading Level="3" Title="Label the trigger" />
+    <p><code>AttachmentTrigger</code> covers the card with no text of its own, so give it an <code>aria-label</code> for what activating it does.</p>
+    <CodeFigure Code="@LabelTheTriggerCode" LineNumbers="true" />
+    <p>The trigger sits behind the actions in the stacking order, so an <code>AttachmentAction</code> and the <code>AttachmentTrigger</code> never trap each other — both remain separately focusable and clickable.</p>
+    <DocsHeading Level="3" Title="Keyboard scrolling" />
+    <p>An <code>AttachmentGroup</code> scrolls horizontally. When its attachments are interactive: a trigger or actions, keyboard users reach off-screen items by tabbing to them. For a row of presentational attachments, make the group itself focusable and scrollable by adding <code>tabindex="0"</code>, <code>role="group"</code>, and an <code>aria-label</code>.</p>
+    <DocsHeading Level="3" Title="Meaning beyond color" />
+    <p>The <code>error</code> state uses a destructive color. Keep the failure reason in <code>AttachmentDescription</code> so the state is not conveyed by color alone.</p>
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="attachment" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Attachment>
+            <AttachmentMedia><Icon Name="file-text" /></AttachmentMedia>
+            <AttachmentContent>
+                <AttachmentTitle>sales-dashboard.pdf</AttachmentTitle>
+                <AttachmentDescription>PDF · 2.4 MB</AttachmentDescription>
+            </AttachmentContent>
+            <AttachmentActions>
+                <AttachmentAction aria-label="Remove sales-dashboard.pdf"><Icon Name="x" /></AttachmentAction>
+            </AttachmentActions>
+        </Attachment>
+        """;
+
+    private const string CompositionCode = """
+        Attachment
+        ├── AttachmentMedia
+        ├── AttachmentContent
+        │   ├── AttachmentTitle
+        │   └── AttachmentDescription
+        ├── AttachmentActions
+        │   └── AttachmentAction
+        └── AttachmentTrigger
+        """;
+
+    private const string CompositionCode2 = """
+        AttachmentGroup
+        ├── Attachment
+        └── Attachment
+        """;
+
+    private const string TriggerCode = """
+        <Dialog>
+            <Attachment>
+                ...
+                <DialogTrigger>
+                    <Render>
+                        <AttachmentTrigger @attributes="context.Attributes" aria-label="Preview research-summary.pdf" />
+                    </Render>
+                </DialogTrigger>
+            </Attachment>
+            <DialogContent>...</DialogContent>
+        </Dialog>
+        """;
+
+    private const string LabelIconOnlyActionsCode = """
+        <AttachmentAction aria-label="Remove sales-dashboard.pdf"><Icon Name="x" /></AttachmentAction>
+        """;
+
+    private const string LabelTheTriggerCode = """
+        <AttachmentTrigger>
+            <Render Context="trigger">
+                <a @attributes="trigger.Attributes" href="@url" target="_blank" rel="noreferrer" aria-label="Open workspace.png"></a>
+            </Render>
+        </AttachmentTrigger>
+        """;
+}

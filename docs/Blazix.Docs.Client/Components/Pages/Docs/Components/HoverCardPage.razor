@@ -1,0 +1,53 @@
+@page "/docs/components/hover-card"
+
+<DocsPage Title="Hover Card" Description="For sighted users to preview content available behind a link.">
+    <ComponentPreview Name="hover-card-demo" PreviewClass="h-80" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="hover-card" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>HoverCard</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Trigger Delays" />
+    <p>Use <code>Delay</code> and <code>CloseDelay</code> on the trigger to control when the card opens and closes.</p>
+    <CodeFigure Code="@TriggerDelaysCode" LineNumbers="true" />
+    <DocsHeading Title="Positioning" />
+    <p>Use the <code>Side</code> and <code>Align</code> parameters on <code>HoverCardContent</code> to control placement.</p>
+    <CodeFigure Code="@PositioningCode" LineNumbers="true" />
+    <DocsHeading Title="Basic" />
+    <ComponentPreview Name="hover-card-demo" PreviewClass="h-80" />
+    <DocsHeading Title="Sides" />
+    <ComponentPreview Name="hover-card-sides" PreviewClass="h-[22rem]" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="hover-card" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <HoverCard>
+            <HoverCardTrigger>Hover</HoverCardTrigger>
+            <HoverCardContent>The React Framework – created and maintained by @@vercel.</HoverCardContent>
+        </HoverCard>
+        """;
+
+    private const string CompositionCode = """
+        HoverCard
+        ├── HoverCardTrigger
+        └── HoverCardContent
+        """;
+
+    private const string TriggerDelaysCode = """
+        <HoverCard>
+            <HoverCardTrigger Delay="100" CloseDelay="200">Hover</HoverCardTrigger>
+            <HoverCardContent>Content</HoverCardContent>
+        </HoverCard>
+        """;
+
+    private const string PositioningCode = """
+        <HoverCard>
+            <HoverCardTrigger>Hover</HoverCardTrigger>
+            <HoverCardContent Side="Side.Top" Align="Align.Start">Content</HoverCardContent>
+        </HoverCard>
+        """;
+}

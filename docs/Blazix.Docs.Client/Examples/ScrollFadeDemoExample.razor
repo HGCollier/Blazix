@@ -1,0 +1,10 @@
+<div class="mx-auto w-full max-w-xs overflow-hidden rounded-2xl border">
+    <div tabindex="0" role="region" aria-label="Scrolling list" class="h-72 scroll-fade no-scrollbar overflow-y-auto">
+        <div class="flex flex-col gap-1.5 p-1.5">
+            @foreach (var item in Enumerable.Range(1, 12))
+            {
+                <div class="rounded-lg bg-muted px-3 py-2.5 text-sm">Item @item</div>
+            }
+        </div>
+    </div>
+</div>

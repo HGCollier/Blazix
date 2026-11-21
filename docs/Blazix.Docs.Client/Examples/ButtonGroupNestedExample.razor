@@ -1,0 +1,18 @@
+<ButtonGroup>
+    <ButtonGroup>
+        <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="Add"><Icon Name="plus" /></Button>
+    </ButtonGroup>
+    <ButtonGroup>
+        <InputGroup>
+            <InputGroupInput placeholder="Send a message..." />
+            <Tooltip>
+                <TooltipTrigger>
+                    <Render>
+                        <InputGroupAddon @attributes="context.Attributes" Align="InputGroupAddonAlign.InlineEnd" aria-label="Voice mode"><Icon Name="audio-lines" /></InputGroupAddon>
+                    </Render>
+                </TooltipTrigger>
+                <TooltipContent>Voice Mode</TooltipContent>
+            </Tooltip>
+        </InputGroup>
+    </ButtonGroup>
+</ButtonGroup>

@@ -1,0 +1,23 @@
+<Drawer SwipeDirection="DrawerSwipeDirection.Left">
+    <DrawerTrigger>
+        <Render>
+            <Button @attributes="context.Attributes" Variant="ButtonVariant.Secondary">Open Left Drawer</Button>
+        </Render>
+    </DrawerTrigger>
+    <DrawerContent>
+        <DrawerHeader>
+            <DrawerTitle>Move Goal</DrawerTitle>
+            <DrawerDescription>Set your daily activity goal.</DrawerDescription>
+        </DrawerHeader>
+        <div class="flex-1 p-4">
+            <div class="size-full rounded-2xl bg-muted"></div>
+        </div>
+        <DrawerFooter>
+            <DrawerClose>
+                <Render>
+                    <Button @attributes="context.Attributes">Close</Button>
+                </Render>
+            </DrawerClose>
+        </DrawerFooter>
+    </DrawerContent>
+</Drawer>

@@ -1,0 +1,9 @@
+@using Blazix.Primitives
+
+@* Only tells the components inside the direction (arrow keys, placement): set dir="rtl" on an element yourself for the layout. *@
+<Blazix.Primitives.DirectionProvider Direction="@Direction">@ChildContent</Blazix.Primitives.DirectionProvider>
+
+@code {
+    [Parameter] public TextDirection Direction { get; set; } = TextDirection.Ltr;
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

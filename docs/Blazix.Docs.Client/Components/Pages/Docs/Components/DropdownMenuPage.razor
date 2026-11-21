@@ -1,0 +1,99 @@
+@page "/docs/components/dropdown-menu"
+
+<DocsPage Title="Dropdown Menu" Description="Displays a menu to the user — such as a set of actions or functions — triggered by a button.">
+    <ComponentPreview Name="dropdown-menu-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="dropdown-menu" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>DropdownMenu</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Basic" />
+    <p>A basic dropdown menu with labels and separators.</p>
+    <ComponentPreview Name="dropdown-menu-basic" />
+    <DocsHeading Title="Submenu" />
+    <p>Use <code>DropdownMenuSub</code> to nest secondary actions.</p>
+    <ComponentPreview Name="dropdown-menu-submenu" />
+    <DocsHeading Title="Shortcuts" />
+    <p>Add <code>DropdownMenuShortcut</code> to show keyboard hints.</p>
+    <ComponentPreview Name="dropdown-menu-shortcuts" />
+    <DocsHeading Title="Icons" />
+    <p>Combine icons with labels for quick scanning.</p>
+    <ComponentPreview Name="dropdown-menu-icons" />
+    <DocsHeading Title="Checkboxes" />
+    <p>Use <code>DropdownMenuCheckboxItem</code> for toggles.</p>
+    <ComponentPreview Name="dropdown-menu-checkboxes" />
+    <DocsHeading Title="Checkboxes Icons" />
+    <p>Add icons to checkbox items.</p>
+    <ComponentPreview Name="dropdown-menu-checkboxes-icons" />
+    <DocsHeading Title="Radio Group" />
+    <p>Use <code>DropdownMenuRadioGroup</code> for exclusive choices.</p>
+    <ComponentPreview Name="dropdown-menu-radio-group" />
+    <DocsHeading Title="Radio Icons" />
+    <p>Show radio options with icons.</p>
+    <ComponentPreview Name="dropdown-menu-radio-icons" />
+    <DocsHeading Title="Destructive" />
+    <p>Use <code>variant="destructive"</code> for irreversible actions.</p>
+    <ComponentPreview Name="dropdown-menu-destructive" />
+    <DocsHeading Title="Avatar" />
+    <p>An account switcher dropdown triggered by an avatar.</p>
+    <ComponentPreview Name="dropdown-menu-avatar" />
+    <DocsHeading Title="Complex" />
+    <p>A richer example combining groups, icons, and submenus.</p>
+    <ComponentPreview Name="dropdown-menu-complex" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="dropdown-menu" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <DropdownMenu>
+            <DropdownMenuTrigger>
+                <Render>
+                    <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">Open</Button>
+                </Render>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+                <DropdownMenuGroup>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuItem>Billing</DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    <DropdownMenuItem>Team</DropdownMenuItem>
+                    <DropdownMenuItem>Subscription</DropdownMenuItem>
+                </DropdownMenuGroup>
+            </DropdownMenuContent>
+        </DropdownMenu>
+        """;
+
+    private const string CompositionCode = """
+        DropdownMenu
+        ├── DropdownMenuTrigger
+        └── DropdownMenuContent
+            ├── DropdownMenuGroup
+            │   ├── DropdownMenuLabel
+            │   ├── DropdownMenuItem
+            │   └── DropdownMenuItem
+            ├── DropdownMenuSeparator
+            ├── DropdownMenuGroup
+            │   ├── DropdownMenuLabel
+            │   ├── DropdownMenuCheckboxItem
+            │   └── DropdownMenuCheckboxItem
+            ├── DropdownMenuSeparator
+            ├── DropdownMenuGroup
+            │   ├── DropdownMenuLabel
+            │   └── DropdownMenuRadioGroup
+            │       ├── DropdownMenuRadioItem
+            │       └── DropdownMenuRadioItem
+            └── DropdownMenuSub
+                ├── DropdownMenuSubTrigger
+                └── DropdownMenuSubContent
+                    └── DropdownMenuGroup
+                        ├── DropdownMenuLabel
+                        ├── DropdownMenuItem
+                        └── DropdownMenuItem
+        """;
+}

@@ -1,0 +1,43 @@
+<div class="w-full max-w-sm">
+    <TraceCollapsible Open="true">
+        <TraceCollapsibleTrigger>
+            <TraceLine Status="TraceLineStatus.Running"><TraceTitle>Looking into the slow deploy</TraceTitle></TraceLine>
+        </TraceCollapsibleTrigger>
+        <TraceCollapsibleContent keepMounted>
+            <Trace>
+                <TraceCollapsible>
+                    <TraceCollapsibleTrigger>
+                        <TraceLine>
+                            <TraceIcon><Icon Name="search" /></TraceIcon>
+                            <TraceTitle>Searched for the checkout build log</TraceTitle>
+                        </TraceLine>
+                    </TraceCollapsibleTrigger>
+                    <TraceCollapsibleContent Class="flex flex-wrap gap-1.5">
+                        <Badge Variant="BadgeVariant.Secondary">vercel.com</Badge>
+                        <Badge Variant="BadgeVariant.Secondary">github.com</Badge>
+                    </TraceCollapsibleContent>
+                </TraceCollapsible>
+                <a href="#steps">
+                    <TraceLine>
+                        <TraceIcon><Icon Name="file-text" /></TraceIcon>
+                        <TraceTitle>Read the last twelve deploys</TraceTitle>
+                        <TraceIcon><Icon Name="chevron-right" /></TraceIcon>
+                    </TraceLine>
+                </a>
+                <TraceCollapsible>
+                    <TraceCollapsibleTrigger>
+                        <TraceLine Status="TraceLineStatus.Running">
+                            <TraceIcon><Icon Name="search" /></TraceIcon>
+                            <TraceTitle>Searching for the cache key</TraceTitle>
+                        </TraceLine>
+                    </TraceCollapsibleTrigger>
+                    <TraceCollapsibleContent>
+                        <CodeBlock Size="CodeBlockSize.Sm">
+                            <CodeBlockContent Wrap="true" Class="max-h-64">cache key image optimization</CodeBlockContent>
+                        </CodeBlock>
+                    </TraceCollapsibleContent>
+                </TraceCollapsible>
+            </Trace>
+        </TraceCollapsibleContent>
+    </TraceCollapsible>
+</div>

@@ -1,0 +1,36 @@
+<div class="flex w-full max-w-sm flex-col gap-12 py-12">
+    <Bubble>
+        <BubbleContent>This is the default primary bubble.</BubbleContent>
+    </Bubble>
+    <Bubble Variant="BubbleVariant.Secondary" Align="BubbleAlign.End">
+        <BubbleContent>This is the secondary variant.</BubbleContent>
+    </Bubble>
+    <Bubble Variant="BubbleVariant.Muted">
+        <BubbleContent>This one is muted. It uses a lower emphasis color for the chat bubble.</BubbleContent>
+        <BubbleReactions role="img" aria-label="Reaction: thumbs up">
+            <span>👍</span>
+        </BubbleReactions>
+    </Bubble>
+    <Bubble Variant="BubbleVariant.Tinted" Align="BubbleAlign.End">
+        <BubbleContent>This one is tinted. The tint is a softer color derived from the primary color.</BubbleContent>
+    </Bubble>
+    <Bubble Variant="BubbleVariant.Outline">
+        <BubbleContent>We can also use an outlined variant.</BubbleContent>
+    </Bubble>
+    <Bubble Variant="BubbleVariant.Destructive" Align="BubbleAlign.End">
+        <BubbleContent>Or a destructive variant with a reaction.</BubbleContent>
+        <BubbleReactions role="img" aria-label="Reaction: fire">
+            <span>🔥</span>
+        </BubbleReactions>
+    </Bubble>
+    <Bubble Variant="BubbleVariant.Ghost">
+        <BubbleContent Class="@("flex flex-col gap-3 [&_code]:rounded-md [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.8em]")">
+            <p>Ghost bubbles work for assistant text, <strong>markdown</strong>, and other content that should not be framed.</p>
+            <p>
+                This is perfect for assistant messages that should not have a frame and can take the full width of the container.
+                You can also render <code>code</code> in it.
+            </p>
+            <p>Ghost bubbles are full width and can take the full width of the container.</p>
+        </BubbleContent>
+    </Bubble>
+</div>

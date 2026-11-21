@@ -1,0 +1,31 @@
+@page "/docs/components/switch"
+
+<DocsPage Title="Switch" Description="A control that allows the user to toggle between checked and not checked.">
+    <ComponentPreview Name="switch-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="switch" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Description" />
+    <ComponentPreview Name="switch-description" />
+    <DocsHeading Title="Choice Card" />
+    <p>Card-style selection where <code>FieldLabel</code> wraps the entire <code>Field</code> for a clickable card pattern.</p>
+    <ComponentPreview Name="switch-choice-card" />
+    <DocsHeading Title="Disabled" />
+    <p>Add the <code>Disabled</code> parameter to the <code>Switch</code> component to disable the switch. Add the <code>data-disabled</code> parameter to the <code>Field</code> component for styling.</p>
+    <ComponentPreview Name="switch-disabled" />
+    <DocsHeading Title="Invalid" />
+    <p>Add the <code>aria-invalid</code> parameter to the <code>Switch</code> component to indicate an invalid state. Add the <code>data-invalid</code> parameter to the <code>Field</code> component for styling.</p>
+    <ComponentPreview Name="switch-invalid" />
+    <DocsHeading Title="Size" />
+    <p>Use the <code>Size</code> parameter to change the size of the switch.</p>
+    <ComponentPreview Name="switch-sizes" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="switch" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Switch />
+        """;
+}

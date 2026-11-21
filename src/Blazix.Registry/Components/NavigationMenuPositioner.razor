@@ -1,0 +1,21 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.NavigationMenuPositioner Side="@Side" SideOffset="@SideOffset" Align="@Align" AlignOffset="@AlignOffset"
+                                          class="@Cn(
+                                              "isolate z-50 h-(--positioner-height) w-(--positioner-width) max-w-(--available-width) transition-[top,left,right,bottom] " +
+                                              "duration-[0.35s] ease-[cubic-bezier(0.22,1,0.36,1)] data-instant:transition-none data-[side=bottom]:before:top-[-10px] " +
+                                              "data-[side=bottom]:before:right-0 data-[side=bottom]:before:left-0",
+                                              Class)">
+    <NavigationMenuPopup class="data-[ending-style]:easing-[ease] xs:w-(--popup-width) relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) rounded-lg bg-popover text-popover-foreground shadow ring-1 ring-foreground/10 transition-[opacity,transform,width,height,scale,translate] duration-[0.35s] ease-[cubic-bezier(0.22,1,0.36,1)] outline-none data-ending-style:scale-90 data-ending-style:opacity-0 data-ending-style:duration-150 data-starting-style:scale-90 data-starting-style:opacity-0">
+        <NavigationMenuViewport class="relative size-full overflow-hidden" />
+    </NavigationMenuPopup>
+</Blazix.Primitives.NavigationMenuPositioner>
+
+@code {
+    [Parameter] public Side Side { get; set; } = Side.Bottom;
+    [Parameter] public int SideOffset { get; set; } = 8;
+    [Parameter] public Align Align { get; set; } = Align.Start;
+    [Parameter] public int AlignOffset { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

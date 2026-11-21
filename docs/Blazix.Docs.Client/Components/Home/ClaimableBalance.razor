@@ -1,0 +1,42 @@
+<Card>
+    <CardHeader>
+        <CardDescription>Claimable Balance</CardDescription>
+        <CardTitle Class="text-4xl tabular-nums">@("$" + Currency(TotalClaimable))</CardTitle>
+        <Badge Variant="BadgeVariant.Outline">
+            <span class="size-2 rounded-full bg-yellow-500"></span>
+            Pending Setup
+        </Badge>
+    </CardHeader>
+    <CardContent Class="flex flex-1 flex-col justify-end">
+        <Item Variant="ItemVariant.Muted" Class="flex-col items-stretch">
+            <ItemContent Class="gap-3">
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-muted-foreground">Net Royalties</span>
+                    <span class="text-sm font-medium tabular-nums">@("$" + Currency(NetRoyalties))</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-muted-foreground">Processing Fee</span>
+                    <span class="text-sm font-medium tabular-nums">@("-$" + Currency(ProcessingFee))</span>
+                </div>
+                <Separator />
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-muted-foreground">Total Ready to Claim</span>
+                    <span class="text-sm font-semibold tabular-nums">@("$" + Currency(TotalClaimable) + " USD")</span>
+                </div>
+            </ItemContent>
+        </Item>
+    </CardContent>
+    <CardFooter>
+        <CardDescription>
+            Once your bank is connected, balances over $10.00 are automatically eligible for monthly distribution on the 15th of each month.
+        </CardDescription>
+    </CardFooter>
+</Card>
+
+@code {
+    private const decimal NetRoyalties = 1248.75m;
+    private const decimal ProcessingFee = 37.46m;
+    private const decimal TotalClaimable = NetRoyalties - ProcessingFee;
+
+    private static string Currency(decimal amount) => amount.ToString("N2", System.Globalization.CultureInfo.GetCultureInfo("en-US"));
+}

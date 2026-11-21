@@ -1,0 +1,99 @@
+@page "/docs/primitives/preview-card"
+
+<DocsPage Title="Preview Card" Description="A link that shows a destination preview without interrupting keyboard or screen reader navigation.">
+    <ComponentPreview Name="primitives/preview-card-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li><strong>Protect screen reader users' current context:</strong> Exposing each preview to screen readers would force people through its contents before they could continue through the page. Keep the link as the only accessible interface, and include all the previewed information at its destination.</li>
+        <li><strong>Keep popup content supplementary:</strong> Don't put unique or essential information in the popup unless it's also on the linked page. For the reason above, the card's content isn't reachable by touch, keyboard or screen reader: it's a visual progressive enhancement for sighted mouse and keyboard users only.</li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(PreviewCardRoot)" />
+    <PartReference Type="typeof(PreviewCardTrigger)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding preview card is open.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(PreviewCardPortal)" />
+    <PartReference Type="typeof(PreviewCardBackdrop)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the preview card is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the preview card is closed.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the preview card begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the preview card is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(PreviewCardPositioner)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the preview card is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the preview card is closed.</StyleHook>
+            <StyleHook Name="data-anchor-hidden">Present when the anchor is hidden.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to specified side.</StyleHook>
+            <StyleHook Name="data-side" Type="'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the trigger.</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--anchor-height" Type="number">The anchor's height.</StyleHook>
+            <StyleHook Name="--anchor-width" Type="number">The anchor's width.</StyleHook>
+            <StyleHook Name="--available-height" Type="number">The available height between the trigger and the edge of the viewport.</StyleHook>
+            <StyleHook Name="--available-width" Type="number">The available width between the trigger and the edge of the viewport.</StyleHook>
+            <StyleHook Name="--positioner-height" Type="number">The height of the preview card's positioner. It is important to set <code>height</code> to this value when using CSS to animate size changes.</StyleHook>
+            <StyleHook Name="--positioner-width" Type="number">The width of the preview card's positioner. It is important to set <code>width</code> to this value when using CSS to animate size changes.</StyleHook>
+            <StyleHook Name="--transform-origin" Type="string">The coordinates that this element is anchored to. Used for animations and transitions.</StyleHook>
+        </CssVariables>
+    </PartReference>
+    <PartReference Type="typeof(PreviewCardPopup)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the preview card is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the preview card is closed.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to specified side.</StyleHook>
+            <StyleHook Name="data-side" Type="'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the trigger.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the preview card begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the preview card is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(PreviewCardArrow)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the preview card is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the preview card is closed.</StyleHook>
+            <StyleHook Name="data-uncentered">Present when the preview card arrow is uncentered.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to specified side.</StyleHook>
+            <StyleHook Name="data-side" Type="'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the trigger.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(PreviewCardViewport)">
+        <DataAttributes>
+            <StyleHook Name="data-activation-direction" Type="`${'left' | 'right' | ''} ${'down' | 'up' | ''}`">Indicates the direction from which the popup was activated. This can be used to create directional animations based on how the popup was triggered. Contains space-separated values for both horizontal and vertical axes.</StyleHook>
+            <StyleHook Name="data-current">Applied to the direct child of the viewport when no transitions are present or the new content when it's entering.</StyleHook>
+            <StyleHook Name="data-instant" Type="'dismiss' | 'focus'">Present if animations should be instant.</StyleHook>
+            <StyleHook Name="data-previous">Applied to the direct child of the viewport that contains the exiting content when transitions are present.</StyleHook>
+            <StyleHook Name="data-transitioning">Indicates that the viewport is currently transitioning between old and new content.</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--popup-height" Type="\`\`">The height of the parent popup. This variable is placed on the 'previous' container and stores the height of the popup when the previous content was rendered. It can be used to freeze the dimensions of the popup when animating between different content.</StyleHook>
+            <StyleHook Name="--popup-width" Type="\`\`">The width of the parent popup. This variable is placed on the 'previous' container and stores the width of the popup when the previous content was rendered. It can be used to freeze the dimensions of the popup when animating between different content.</StyleHook>
+        </CssVariables>
+    </PartReference>
+    <PartReference Type="typeof(PreviewCardHandle)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <PreviewCardRoot>
+            <PreviewCardTrigger />
+            <PreviewCardPortal>
+                <PreviewCardBackdrop />
+                <PreviewCardPositioner>
+                    <PreviewCardPopup>
+                        <PreviewCardArrow />
+                        <PreviewCardViewport />
+                    </PreviewCardPopup>
+                </PreviewCardPositioner>
+            </PreviewCardPortal>
+        </PreviewCardRoot>
+        """;
+}

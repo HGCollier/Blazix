@@ -1,0 +1,80 @@
+@page "/docs/components/button-group"
+
+<DocsPage Title="Button Group" Description="A container that groups related buttons together with consistent styling.">
+    <ComponentPreview Name="button-group-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="button-group" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>ButtonGroup</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Accessibility" />
+    <ul>
+        <li>The <code>ButtonGroup</code> component has the <code>role</code> attribute set to <code>group</code>.</li>
+        <li>Use &lt;Kbd&gt;Tab&lt;/Kbd&gt; to navigate between the buttons in the group.</li>
+        <li>Use <code>aria-label</code> or <code>aria-labelledby</code> to label the button group.</li>
+    </ul>
+    <CodeFigure Code="@AccessibilityCode" LineNumbers="true" />
+    <DocsHeading Title="ButtonGroup vs ToggleGroup" />
+    <ul>
+        <li>Use the <code>ButtonGroup</code> component when you want to group buttons that perform an action.</li>
+        <li>Use the <code>ToggleGroup</code> component when you want to group buttons that toggle a state.</li>
+    </ul>
+    <DocsHeading Title="Orientation" />
+    <p>Set the <code>Orientation</code> parameter to change the button group layout.</p>
+    <ComponentPreview Name="button-group-orientation" />
+    <DocsHeading Title="Size" />
+    <p>Control the size of buttons using the <code>size</code> parameter on individual buttons.</p>
+    <ComponentPreview Name="button-group-size" />
+    <DocsHeading Title="Nested" />
+    <p>Nest <code>&lt;ButtonGroup&gt;</code> components to create button groups with spacing.</p>
+    <ComponentPreview Name="button-group-nested" />
+    <DocsHeading Title="Separator" />
+    <p>The <code>ButtonGroupSeparator</code> component visually divides buttons within a group.</p>
+    <p>Buttons with variant <code>outline</code> do not need a separator since they have a border. For other variants, a separator is recommended to improve the visual hierarchy.</p>
+    <ComponentPreview Name="button-group-separator" />
+    <DocsHeading Title="Split" />
+    <p>Create a split button group by adding two buttons separated by a <code>ButtonGroupSeparator</code>.</p>
+    <ComponentPreview Name="button-group-split" />
+    <DocsHeading Title="Input" />
+    <p>Wrap an <code>Input</code> component with buttons.</p>
+    <ComponentPreview Name="button-group-input" />
+    <DocsHeading Title="Input Group" />
+    <p>Wrap an <code>InputGroup</code> component to create complex input layouts.</p>
+    <ComponentPreview Name="button-group-input-group" />
+    <DocsHeading Title="Dropdown Menu" />
+    <p>Create a split button group with a <code>DropdownMenu</code> component.</p>
+    <ComponentPreview Name="button-group-dropdown" />
+    <DocsHeading Title="Select" />
+    <p>Pair with a <code>Select</code> component.</p>
+    <ComponentPreview Name="button-group-select" />
+    <DocsHeading Title="Popover" />
+    <p>Use with a <code>Popover</code> component.</p>
+    <ComponentPreview Name="button-group-popover" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="button-group" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <ButtonGroup>
+            <Button>Button 1</Button>
+            <Button>Button 2</Button>
+        </ButtonGroup>
+        """;
+
+    private const string CompositionCode = """
+        ButtonGroup
+        ├── Button or Input
+        ├── ButtonGroupSeparator
+        └── ButtonGroupText
+        """;
+
+    private const string AccessibilityCode = """
+        <ButtonGroup aria-label="Button group">
+            <Button>Button 1</Button>
+            <Button>Button 2</Button>
+        </ButtonGroup>
+        """;
+}

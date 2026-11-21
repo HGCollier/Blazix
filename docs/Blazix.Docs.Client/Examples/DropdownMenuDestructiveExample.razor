@@ -1,0 +1,26 @@
+<DropdownMenu>
+    <DropdownMenuTrigger>
+        <Render>
+            <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">Actions</Button>
+        </Render>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent>
+        <DropdownMenuGroup>
+            <DropdownMenuItem>
+                <Icon Name="pencil" />
+                Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+                <Icon Name="share" />
+                Share
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuItem Destructive="true">
+                <Icon Name="trash" />
+                Delete
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+    </DropdownMenuContent>
+</DropdownMenu>

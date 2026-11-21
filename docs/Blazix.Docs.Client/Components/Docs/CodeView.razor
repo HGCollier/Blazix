@@ -1,0 +1,110 @@
+@*
+    With LineNumbers the numbers get their own column beside the code, and only the code scrolls sideways. Pinning
+    them inside the scrolling code instead (a sticky ::before) breaks where the block's edge falls on half a device pixel
+    Firefox draws text one pixel past the edge that clips backgrounds, so code would show to the left of the numbers.
+*@
+@* The element that scrolls sideways takes Tab (tabindex="0"), so the arrow keys scroll code that's wider than the page. *@
+@if (LineNumbers)
+{
+    <pre class="@Cn(NumberedPreClasses, Class)"><span aria-hidden="true" class="@GutterClasses">@Gutter</span><code tabindex="0" data-language="@Language" data-line-numbers="" class="@NumberedCodeClasses">@Markup</code></pre>
+}
+else
+{
+    <pre tabindex="0" class="@Cn(PreClasses, Class)"><code data-language="@Language" class="@CodeClasses">@Markup</code></pre>
+}
+
+@code {
+    // The lines and their token colours, in both layouts. pr-12 on each line (not on the scroller, whose end padding
+    // browsers don't all count as scrollable) lets a long line scroll fully clear of the copy button.
+    private const string LineClasses =
+        "grid font-mono text-sm leading-[1.75] whitespace-pre [box-decoration-break:clone] " +
+        "[&>[data-line]]:inline-block [&>[data-line]]:w-full [&>[data-line]]:py-[calc(var(--spacing)*0.25)] " +
+        "[&>[data-line]]:pr-12 " +
+        "[&_[data-line]_span]:text-(--shiki-light) dark:[&_[data-line]_span]:text-(--shiki-dark) " +
+        "[&>[data-highlighted-line]]:bg-(--code-highlight)";
+
+    private const string PreClasses =
+        "no-scrollbar min-w-0 overflow-x-auto overflow-y-auto overscroll-x-contain overscroll-y-auto px-4 py-3.5 " +
+        "font-mono outline-none has-[[data-highlighted-line]]:px-0 " + FocusClasses;
+
+    private const string CodeClasses =
+        LineClasses + " min-w-full [&>[data-line]]:min-h-[calc(var(--spacing)*0.875)] " +
+        "[&>[data-highlighted-line]]:relative [&>[data-highlighted-line]]:after:absolute " +
+        "[&>[data-highlighted-line]]:after:top-0 [&>[data-highlighted-line]]:after:left-0 [&>[data-highlighted-line]]:after:h-full " +
+        "[&>[data-highlighted-line]]:after:w-0.5 [&>[data-highlighted-line]]:after:bg-muted-foreground/50 " +
+        "[&>[data-highlighted-line]]:after:content-['']";
+
+    // Scrolls up and down; the code inside it scrolls sideways. items-start: stretched to a capped <pre>'s height
+    // (max-h-72 under "View Code"), the code column clipped every line past the cap, leaving only the numbers.
+    private const string NumberedPreClasses =
+        "no-scrollbar flex min-w-0 items-start overflow-x-hidden overflow-y-auto overscroll-y-auto py-3.5 font-mono outline-none";
+
+    // One row per line, painted over the code's left edge; rows and lines share a fixed height so they stay level.
+    private const string GutterClasses =
+        "relative z-10 grid shrink-0 bg-(--code) text-sm leading-[1.75] text-(--code-number) select-none " +
+        "[counter-reset:line] *:h-[calc(1lh+var(--spacing)*0.5)] *:w-16 *:py-[calc(var(--spacing)*0.25)] *:pr-6 " +
+        "*:text-right *:[counter-increment:line] *:before:content-[counter(line)] " +
+        "*:data-highlighted-line:relative *:data-highlighted-line:bg-(--code-highlight) " +
+        "*:data-highlighted-line:after:absolute *:data-highlighted-line:after:top-0 *:data-highlighted-line:after:h-full " +
+        "*:data-highlighted-line:after:left-0 *:data-highlighted-line:after:w-0.5 " +
+        "*:data-highlighted-line:after:bg-muted-foreground/50 *:data-highlighted-line:after:content-['']";
+
+    // Starts 4px under the number column (pl-1 keeps the text where it was), so the code's own clip edge, and any
+    // text drawn a pixel past it, stays hidden behind the column.
+    private const string NumberedCodeClasses =
+        LineClasses + " no-scrollbar -ml-1 min-w-0 flex-1 overflow-x-auto overflow-y-hidden overscroll-x-contain " +
+        "pl-1 outline-none [&>[data-line]]:h-[calc(1lh+var(--spacing)*0.5)] " + FocusClasses;
+
+    // Inset: the rounded figure around the code clips anything outside it.
+    private const string FocusClasses = "rounded-[inherit] focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:ring-inset";
+
+    [Parameter, EditorRequired] public string Code { get; set; } = "";
+
+    /// <summary>razor, csharp, js, css, bash, json, diff or text.</summary>
+    [Parameter] public string Language { get; set; } = "razor";
+
+    [Parameter] public bool LineNumbers { get; set; }
+
+    /// <summary>1-based line numbers to shade.</summary>
+    [Parameter] public IReadOnlyCollection<int>? Highlight { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+
+    private IReadOnlyList<string> Lines => Highlighter.Lines(Code, Language);
+
+    private bool Highlighted(int index) => Highlight?.Contains(index + 1) == true;
+
+    private MarkupString Markup
+    {
+        get
+        {
+            var lines = Lines;
+            var html = new System.Text.StringBuilder();
+            for (var i = 0; i < lines.Count; i++)
+            {
+                if (i > 0)
+                {
+                    html.Append('\n');
+                }
+                html.Append(Highlighted(i) ? "<span data-line=\"\" data-highlighted-line=\"\">" : "<span data-line=\"\">")
+                    .Append(lines[i]).Append("</span>");
+            }
+            return new MarkupString(html.ToString());
+        }
+    }
+
+    // The number column: an empty row per line, numbered by the counter.
+    private MarkupString Gutter
+    {
+        get
+        {
+            var count = Lines.Count;
+            var html = new System.Text.StringBuilder();
+            for (var i = 0; i < count; i++)
+            {
+                html.Append(Highlighted(i) ? "<span data-highlighted-line=\"\"></span>" : "<span></span>");
+            }
+            return new MarkupString(html.ToString());
+        }
+    }
+}

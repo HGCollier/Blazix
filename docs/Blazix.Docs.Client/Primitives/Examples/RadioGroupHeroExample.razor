@@ -1,0 +1,33 @@
+<RadioGroupRoot aria-labelledby="@_id" Value="fuji-apple" class="flex flex-col items-start gap-1 text-neutral-950 dark:text-white">
+    <div class="text-sm font-bold" id="@_id">
+        Best apple
+    </div>
+
+    <label class="flex items-center gap-2 text-sm font-normal text-neutral-950 dark:text-white">
+        <RadioRoot Value="fuji-apple" class="@RadioClass">
+            <RadioIndicator class="flex items-center justify-center data-unchecked:hidden before:size-2 before:rounded-full before:bg-current" />
+        </RadioRoot>
+        Fuji
+    </label>
+
+    <label class="flex items-center gap-2 text-sm font-normal text-neutral-950 dark:text-white">
+        <RadioRoot Value="gala-apple" class="@RadioClass">
+            <RadioIndicator class="flex items-center justify-center data-unchecked:hidden before:size-2 before:rounded-full before:bg-current" />
+        </RadioRoot>
+        Gala
+    </label>
+
+    <label class="flex items-center gap-2 text-sm font-normal text-neutral-950 dark:text-white">
+        <RadioRoot Value="granny-smith-apple" class="@RadioClass">
+            <RadioIndicator class="flex items-center justify-center data-unchecked:hidden before:size-2 before:rounded-full before:bg-current" />
+        </RadioRoot>
+        Granny Smith
+    </label>
+</RadioGroupRoot>
+
+@code {
+    private const string RadioClass =
+        "flex size-4 shrink-0 items-center justify-center border rounded-full p-0 border-neutral-950 bg-white text-white dark:border-white dark:bg-neutral-950 dark:text-neutral-950 data-checked:bg-neutral-950 data-checked:text-white dark:data-checked:bg-white dark:data-checked:text-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-950 dark:focus-visible:outline-white";
+
+    private readonly string _id = $"best-apple-{Guid.NewGuid():N}";
+}

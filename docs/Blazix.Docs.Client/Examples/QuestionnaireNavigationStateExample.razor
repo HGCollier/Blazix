@@ -1,0 +1,54 @@
+@inject ToastManager Toasts
+
+<Questionnaire Class="mx-auto max-w-md" @bind-Item="_item" Items="@Items" OnSubmit="@HandleSubmit">
+    <QuestionnaireProgress />
+    <QuestionnaireItem Name="permission" Required OnStatusChange="@(status => _statuses["permission"] = status)">
+        <QuestionnaireTitle>What may the agent modify?</QuestionnaireTitle>
+        <QuestionnaireDescription>Next is intentionally disabled until an answer is selected.</QuestionnaireDescription>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Value="files">Project files</QuestionnaireChoice>
+            <QuestionnaireChoice Value="tests">Project files and tests</QuestionnaireChoice>
+            <QuestionnaireChoice Value="config">Files, tests, and configuration</QuestionnaireChoice>
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+    <QuestionnaireItem Name="verification" Required OnStatusChange="@(status => _statuses["verification"] = status)">
+        <QuestionnaireTitle>What must pass before completion?</QuestionnaireTitle>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Value="tests">Tests</QuestionnaireChoice>
+            <QuestionnaireChoice Value="types">Tests and types</QuestionnaireChoice>
+            <QuestionnaireChoice Value="all">Tests, types, and visual QA</QuestionnaireChoice>
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+    <QuestionnaireActions>
+        <QuestionnairePrevious />
+        <QuestionnaireNext Class="data-[status=unanswered]:opacity-50" Disabled="@Unanswered" Variant="ButtonVariant.Secondary">Next</QuestionnaireNext>
+        <QuestionnaireSubmit Disabled="@Unanswered">Save permissions</QuestionnaireSubmit>
+    </QuestionnaireActions>
+</Questionnaire>
+
+@code {
+    private static readonly QuestionnaireItemDefinition[] Items =
+    [
+        new("permission", Required: true),
+        new("verification", Required: true),
+    ];
+
+    private readonly Dictionary<string, QuestionnaireItemStatus> _statuses = new()
+    {
+        ["permission"] = QuestionnaireItemStatus.Unanswered,
+        ["verification"] = QuestionnaireItemStatus.Unanswered,
+    };
+
+    private string _item = "permission";
+
+    private bool Unanswered => _statuses[_item] == QuestionnaireItemStatus.Unanswered;
+
+    private void HandleSubmit(QuestionnaireAnswers answers) =>
+        Toasts.Add(new ToastOptions
+        {
+            Title = "Permissions saved",
+            Description = $"Permission: {answers.Get("permission") ?? "None"} · Verification: {answers.Get("verification") ?? "None"}",
+        });
+}

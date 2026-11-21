@@ -1,0 +1,79 @@
+@using System.ComponentModel.DataAnnotations
+@using System.Linq.Expressions
+@using System.Text.Json
+@inject ToastManager Toasts
+
+<Card Class="w-full sm:max-w-md">
+    <CardHeader>
+        <CardTitle>Personalization</CardTitle>
+        <CardDescription>Customize your experience by telling us more about yourself.</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <EditForm @key="_editContext" id="form-annotations-textarea" EditContext="_editContext" OnSubmit="Submit">
+            <DataAnnotationsValidator />
+            <FieldGroup>
+                <Field data-invalid="@Invalid(() => _model.About)">
+                    <FieldLabel for="form-annotations-textarea-about">More about you</FieldLabel>
+                    <Textarea id="form-annotations-textarea-about" Value="@_model.About" @oninput="@(e => Change(() => _model.About = e.Value?.ToString() ?? ""))"
+                              aria-invalid="@Invalid(() => _model.About)" placeholder="I'm a software engineer..." Class="min-h-[120px]" />
+                    <FieldDescription>
+                        Tell us more about yourself. This will be used to help us personalize your experience.
+                    </FieldDescription>
+                    <FieldError Errors="@Errors(() => _model.About)" />
+                </Field>
+            </FieldGroup>
+        </EditForm>
+    </CardContent>
+    <CardFooter>
+        <Field Orientation="FieldOrientation.Horizontal">
+            <Button Type="button" Variant="ButtonVariant.Outline" @onclick="Reset">Reset</Button>
+            <Button Type="submit" form="form-annotations-textarea">Save</Button>
+        </Field>
+    </CardFooter>
+</Card>
+
+@code {
+    private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
+
+    private Personalization _model = new();
+    private EditContext _editContext = null!;
+    private bool _submitted;
+
+    protected override void OnInitialized() => _editContext = new EditContext(_model);
+
+    private void Submit()
+    {
+        _submitted = true;
+        if (_editContext.Validate())
+        {
+            Toasts.Add(new ToastOptions { Title = "You submitted the following values:", Description = JsonSerializer.Serialize(_model, Json) });
+        }
+    }
+
+    private void Change(Action update)
+    {
+        update();
+        if (_submitted)
+        {
+            _editContext.Validate();
+        }
+    }
+
+    private void Reset()
+    {
+        _model = new Personalization();
+        _editContext = new EditContext(_model);
+        _submitted = false;
+    }
+
+    private IEnumerable<string> Errors(Expression<Func<object>> field) => _editContext.GetValidationMessages(field).Take(1);
+
+    private string Invalid(Expression<Func<object>> field) => Errors(field).Any() ? "true" : "false";
+
+    private sealed class Personalization
+    {
+        [MinLength(10, ErrorMessage = "Please provide at least 10 characters.")]
+        [MaxLength(200, ErrorMessage = "Please keep it under 200 characters.")]
+        public string About { get; set; } = "";
+    }
+}

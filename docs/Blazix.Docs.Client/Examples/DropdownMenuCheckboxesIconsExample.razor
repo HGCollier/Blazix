@@ -1,0 +1,26 @@
+<DropdownMenu>
+    <DropdownMenuTrigger>Notifications</DropdownMenuTrigger>
+    <DropdownMenuContent Class="w-48">
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Notification Preferences</DropdownMenuLabel>
+            <DropdownMenuCheckboxItem @bind-Checked="_email">
+                <Icon Name="mail" />
+                Email notifications
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem @bind-Checked="_sms">
+                <Icon Name="message-square" />
+                SMS notifications
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem @bind-Checked="_push">
+                <Icon Name="bell" />
+                Push notifications
+            </DropdownMenuCheckboxItem>
+        </DropdownMenuGroup>
+    </DropdownMenuContent>
+</DropdownMenu>
+
+@code {
+    private bool _email = true;
+    private bool _sms;
+    private bool _push = true;
+}

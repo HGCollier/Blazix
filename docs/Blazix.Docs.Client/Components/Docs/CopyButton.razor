@@ -1,0 +1,45 @@
+@implements IDisposable
+@inject IJSRuntime JsRuntime
+
+<button type="button" data-slot="copy-button" data-copied="@(_copied ? "true" : "false")" @onclick="CopyAsync"
+        class="@SiteButton.Get(SiteButton.Ghost, SiteButton.SizeIcon, Cn("absolute top-3 right-2 z-10 size-7 bg-(--code) hover:opacity-100 focus-visible:opacity-100", Class))">
+    <span class="sr-only">Copy</span>
+    <Icon Name="@(_copied ? "check" : "copy")" />
+</button>
+@* Beside the button, not in it: the button keeps its name. *@
+<span aria-live="polite" class="sr-only">@(_copied ? "Copied" : "")</span>
+
+@code {
+    private bool _copied;
+    private CancellationTokenSource? _reset;
+
+    [Parameter, EditorRequired] public string Value { get; set; } = "";
+    [Parameter] public string? Class { get; set; }
+
+    private async Task CopyAsync()
+    {
+        if (!await BrowserClipboard.CopyAsync(JsRuntime, Value))
+        {
+            return;
+        }
+        _copied = true;
+        if (_reset is not null)
+        {
+            await _reset.CancelAsync();
+            _reset.Dispose();
+        }
+        _reset = new CancellationTokenSource();
+        var token = _reset.Token;
+        _ = Task.Delay(TimeSpan.FromSeconds(2), token).ContinueWith(_ => InvokeAsync(() =>
+        {
+            _copied = false;
+            StateHasChanged();
+        }), token, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Default);
+    }
+
+    public void Dispose()
+    {
+        _reset?.Cancel();
+        _reset?.Dispose();
+    }
+}

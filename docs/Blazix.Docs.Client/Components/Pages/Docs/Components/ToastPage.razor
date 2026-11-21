@@ -1,0 +1,67 @@
+@page "/docs/components/toast"
+
+<DocsPage Title="Toast" Description="A succinct message that is displayed temporarily.">
+    <ComponentPreview Name="toast-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="toast">
+        <Setup>
+            <Step>Register a <code>ToastManager</code> for each user.</Step>
+            <CodeFigure Code="@ProgramCode" Language="csharp" Title="Program.cs" LineNumbers="true" Highlight="@([3])" />
+            <Step>Add the <code>Toaster</code> component.</Step>
+            <CodeFigure Code="@LayoutCode" Title="Components/Layout/MainLayout.razor" LineNumbers="true" Highlight="@([4])" />
+        </Setup>
+    </InstallationTabs>
+    <DocsHeading Title="Usage" />
+    <p>Inject the <code>ToastManager</code> and add toasts to it. The <code>Toaster</code> in your layout shows them.</p>
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Types" />
+    <p>Set the <code>Type</code> option to render a status icon. The built-in renderer recognizes <code>success</code>, <code>info</code>, <code>warning</code>, <code>error</code>, and <code>loading</code>.</p>
+    <ComponentPreview Name="toast-types" />
+    <DocsHeading Title="Action" />
+    <p>Set <code>ActionLabel</code> and <code>OnAction</code> to render an action button. The toast closes after the action runs.</p>
+    <CodeFigure Code="@ActionCode" Language="csharp" />
+    <DocsHeading Title="Promise" />
+    <p>Use <code>ToastManager.Promise</code> to update one toast as an asynchronous task moves through loading, success, and error states.</p>
+    <ComponentPreview Name="toast-promise" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="toast" />
+</DocsPage>
+
+@code {
+    private const string ProgramCode = """
+        builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+
+        builder.Services.AddScoped<ToastManager>();
+        """;
+
+    private const string LayoutCode = """
+        @inherits LayoutComponentBase
+
+        <main>@Body</main>
+        <Toaster />
+        """;
+
+    private const string UsageCode = """
+        @inject ToastManager Toasts
+
+        <Button @onclick="Notify">Show Toast</Button>
+
+        @code {
+            private void Notify() =>
+                Toasts.Add(new ToastOptions
+                {
+                    Title = "Event created",
+                    Description = "Sunday, December 3 at 9:00 AM",
+                });
+        }
+        """;
+
+    private const string ActionCode = """
+        Toasts.Add(new ToastOptions
+        {
+            Title = "Event created",
+            ActionLabel = "Undo",
+            OnAction = UndoAsync,
+        });
+        """;
+}

@@ -1,0 +1,160 @@
+@implements IDisposable
+@inject DocsConfig Config
+@inject SiteScript Site
+
+@if (Sources.ExampleType(Name) is { } tailwindType)
+{
+    var cssType = Sources.CssExampleType(Name);
+    var css = cssType is not null && Config.StylingMethod == "css";
+    var type = css ? cssType! : tailwindType;
+    var stylesheet = css && _file == "css";
+    string? source = null;
+    if (css)
+    {
+        source = stylesheet ? Sources.CssExampleStylesheet(Name) : Sources.CssExample(Name);
+    }
+    var language = stylesheet ? "css" : null;
+    <figure data-not-typeset data-hide-code="@(HideCode ? "true" : "false")" class="flex flex-col data-[hide-code=true]:gap-4">
+        @* The whole source, for Copy Page: the code view only shows a few lines until expanded. *@
+        <template data-example-source>@Sources.Example(Name)</template>
+        <div data-slot="component-preview" class="@Cn("group relative mt-4 mb-12 flex flex-col overflow-hidden rounded-2xl border", Class)">
+            <div data-slot="preview" dir="ltr">
+                <div data-align="@Align" data-chromeless="@(ChromeLessOnMobile ? "true" : "false")"
+                     class="@Cn("preview relative flex h-72 w-full justify-center p-10 data-[align=center]:items-center data-[align=end]:items-start data-[align=start]:items-start data-[chromeless=true]:h-auto data-[chromeless=true]:p-0 sm:data-[align=end]:items-end", PreviewClass)">
+                    <DynamicComponent Type="type" />
+                </div>
+            </div>
+            @if (!HideCode && cssType is not null)
+            {
+                <div data-slot="demo-toolbar" class="flex h-11 items-center justify-between gap-2 border-t bg-(--code) px-2">
+                    <div class="flex min-w-0 items-center gap-1 overflow-x-auto">
+                        <button type="button" aria-pressed="@(stylesheet ? "false" : "true")" @onclick="@(() => _file = "razor")" class="@FileTabClasses">
+                            @Sources.ExampleFileName(Name)
+                        </button>
+                        @if (css)
+                        {
+                            <button type="button" aria-pressed="@(stylesheet ? "true" : "false")" @onclick="@(() => _file = "css")" class="@FileTabClasses">
+                                @Sources.StylesheetFileName(Name)
+                            </button>
+                        }
+                    </div>
+                    <Select Items="StylingMethods" Value="@Config.StylingMethod" ValueChanged="SetStylingMethod">
+                        <SelectTrigger Size="SelectTriggerSize.Sm" aria-label="Styling method"
+                                       Class="h-7 shrink-0 border-0 bg-transparent px-2 shadow-none hover:bg-muted dark:bg-transparent dark:hover:bg-muted">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent Align="Blazix.Primitives.Align.End" AlignItemWithTrigger="false">
+                            <SelectGroup>
+                                @foreach (var method in StylingMethods)
+                                {
+                                    <SelectItem Value="@method.Value">@method.Label</SelectItem>
+                                }
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
+            }
+            @if (!HideCode)
+            {
+                <div @ref="_code" data-slot="code" data-mobile-code-visible="@(_codeVisible ? "true" : "false")"
+                     class="@("relative overflow-hidden **:data-[slot=copy-button]:right-4 **:data-[slot=copy-button]:hidden data-[mobile-code-visible=true]:**:data-[slot=copy-button]:flex [&_[data-code-figure]]:m-0! [&_[data-code-figure]]:rounded-t-none [&_[data-code-figure]]:border-t [&_pre]:max-h-72")">
+                    @if (_codeVisible)
+                    {
+                        <ComponentSource Example="@Name" Code="@source" CodeLanguage="@language" Collapsible="false" />
+                    }
+                    else
+                    {
+                        <div class="relative">
+                            <ComponentSource Example="@Name" Code="@source" CodeLanguage="@language" Collapsible="false" MaxLines="3" />
+                            <div class="absolute inset-0 flex items-center justify-center pb-4">
+                                <div class="absolute inset-0 bg-linear-to-t from-(--code) via-(--code)/60 to-transparent"></div>
+                                <button type="button" data-slot="button" @onclick="ShowCode"
+                                        class="@SiteButton.Get(SiteButton.Outline, SiteButton.SizeSm, "relative z-10 rounded-lg bg-background text-foreground shadow-none hover:bg-muted dark:bg-background dark:text-foreground dark:hover:bg-muted")">
+                                    View Code
+                                </button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        @if (Caption is not null)
+        {
+            <figcaption class="-mt-8 text-center text-sm text-muted-foreground data-[hide-code=true]:mt-0">@Caption</figcaption>
+        }
+    </figure>
+}
+else
+{
+    <p class="mt-6 text-sm text-muted-foreground">
+        Example <code class="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">@Name</code> not found.
+    </p>
+}
+
+@code {
+    private const string FileTabClasses =
+        "h-7 shrink-0 rounded-md px-2 font-mono text-[0.8125rem] whitespace-nowrap text-muted-foreground hover:text-foreground " +
+        "aria-pressed:bg-muted aria-pressed:text-foreground";
+
+    /// <summary>The styling methods the primitives' examples come in.</summary>
+    private static readonly SelectOption[] StylingMethods = [new("css", "CSS"), new("tailwind", "Tailwind")];
+
+    private bool _codeVisible;
+    private bool _focusCode;
+    private ElementReference _code;
+
+    /// <summary>The file the code shows: "razor", or "css" for the plain CSS version's stylesheet.</summary>
+    private string _file = "razor";
+
+    private void ShowCode()
+    {
+        _codeVisible = true;
+        _focusCode = true; // the button that had focus is gone
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_focusCode)
+        {
+            _focusCode = false;
+            var module = await Site.GetAsync(Assets["site.js"]);
+            await module.InvokeVoidAsync("focusCode", _code);
+        }
+    }
+
+    private void SetStylingMethod(string? method)
+    {
+        _file = "razor";
+        Config.SetStylingMethod(method);
+    }
+
+    protected override void OnInitialized() => Config.Changed += OnConfigChanged;
+
+    private void OnConfigChanged()
+    {
+        if (Config.StylingMethod != "css")
+        {
+            _file = "razor";
+        }
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose() => Config.Changed -= OnConfigChanged;
+
+    /// <summary>The example's name, e.g. "button-demo" (Examples/ButtonDemoExample.razor).</summary>
+    [Parameter, EditorRequired] public string Name { get; set; } = "";
+
+    /// <summary>center, start or end.</summary>
+    [Parameter] public string Align { get; set; } = "center";
+
+    [Parameter] public bool HideCode { get; set; }
+
+    /// <summary>No padding or fixed height around the example: for full-width ones like the sidebar.</summary>
+    [Parameter] public bool ChromeLessOnMobile { get; set; }
+
+    /// <summary>Classes for the preview area, e.g. a height.</summary>
+    [Parameter] public string? PreviewClass { get; set; }
+
+    [Parameter] public string? Caption { get; set; }
+    [Parameter] public string? Class { get; set; }
+}

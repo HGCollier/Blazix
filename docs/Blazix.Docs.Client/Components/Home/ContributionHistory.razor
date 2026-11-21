@@ -1,0 +1,56 @@
+<Card>
+    <CardHeader>
+        <CardTitle>Contribution History</CardTitle>
+        <CardDescription>Last 6 months of activity</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <div class="flex h-[200px] w-full items-end gap-3" role="img" aria-label="Last 6 months of contribution activity">
+            @foreach (var (month, amount, index) in ChartData.Select((item, index) => (item.Month, item.Amount, index)))
+            {
+                <div class="flex h-full flex-1 flex-col justify-end gap-2">
+                    <div data-index="@index"
+                         class="min-h-2 rounded-lg data-[index=0]:bg-chart-1 data-[index=1]:bg-chart-2 data-[index=2]:bg-chart-3 data-[index=3]:bg-chart-4 data-[index=4]:bg-chart-5"
+                         style="@($"height: {Percent(amount, MaxAmount)}%")"></div>
+                    <span class="text-center text-xs text-muted-foreground">@month</span>
+                </div>
+            }
+        </div>
+    </CardContent>
+    <CardContent>
+        <div class="grid w-full grid-cols-1 gap-3 xl:grid-cols-2">
+            <Item Variant="ItemVariant.Muted" Class="flex-col items-stretch">
+                <ItemContent Class="gap-1">
+                    <ItemDescription Class="text-xs font-medium tracking-wider text-muted-foreground uppercase">Upcoming</ItemDescription>
+                    <span class="text-base font-semibold">May 2024</span>
+                    <span class="text-sm text-muted-foreground">Scheduled</span>
+                </ItemContent>
+            </Item>
+            <Item Variant="ItemVariant.Muted" Class="hidden flex-col items-stretch xl:flex">
+                <ItemContent Class="gap-1">
+                    <ItemDescription Class="text-xs font-medium tracking-wider text-muted-foreground uppercase">Savings Plan</ItemDescription>
+                    <span class="text-base font-semibold">Accelerated</span>
+                    <span class="text-sm text-muted-foreground">Recurring</span>
+                </ItemContent>
+            </Item>
+        </div>
+    </CardContent>
+    <CardFooter>
+        <Button Class="w-full">View Full Report</Button>
+    </CardFooter>
+</Card>
+
+@code {
+    private static readonly (string Month, int Amount)[] ChartData =
+    [
+        ("Dec", 800),
+        ("Jan", 1100),
+        ("Feb", 900),
+        ("Mar", 1300),
+        ("Apr", 750),
+    ];
+
+    private static readonly int MaxAmount = ChartData.Max(item => item.Amount);
+
+    private static string Percent(double value, double max) =>
+        (value / max * 100).ToString(System.Globalization.CultureInfo.InvariantCulture);
+}

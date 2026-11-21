@@ -1,0 +1,72 @@
+<AutocompleteRoot Items="Tags">
+    <label class="autocomplete-label">
+        Search tags
+        <AutocompleteInput Placeholder="e.g. feature" class="autocomplete-input" />
+    </label>
+
+    <AutocompletePortal>
+        <AutocompletePositioner class="autocomplete-positioner" SideOffset="4">
+            <AutocompletePopup class="autocomplete-popup">
+                <AutocompleteEmpty>
+                    <div class="autocomplete-empty">
+                        No tags found.
+                    </div>
+                </AutocompleteEmpty>
+                <AutocompleteList class="autocomplete-list">
+                    <Template Context="tag">
+                        <AutocompleteItem Value="@tag" class="autocomplete-item">
+                            @tag
+                        </AutocompleteItem>
+                    </Template>
+                </AutocompleteList>
+            </AutocompletePopup>
+        </AutocompletePositioner>
+    </AutocompletePortal>
+</AutocompleteRoot>
+
+@code {
+    private static readonly string[] Tags =
+    [
+        "feature",
+        "fix",
+        "bug",
+        "docs",
+        "internal",
+        "mobile",
+        "component: accordion",
+        "component: alert dialog",
+        "component: autocomplete",
+        "component: avatar",
+        "component: checkbox",
+        "component: checkbox group",
+        "component: collapsible",
+        "component: combobox",
+        "component: context menu",
+        "component: dialog",
+        "component: field",
+        "component: fieldset",
+        "component: filterable menu",
+        "component: form",
+        "component: input",
+        "component: menu",
+        "component: menubar",
+        "component: meter",
+        "component: navigation menu",
+        "component: number field",
+        "component: popover",
+        "component: preview card",
+        "component: progress",
+        "component: radio",
+        "component: scroll area",
+        "component: select",
+        "component: separator",
+        "component: slider",
+        "component: switch",
+        "component: tabs",
+        "component: toast",
+        "component: toggle",
+        "component: toggle group",
+        "component: toolbar",
+        "component: tooltip",
+    ];
+}

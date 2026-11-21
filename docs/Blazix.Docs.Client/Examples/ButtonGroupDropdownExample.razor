@@ -1,0 +1,45 @@
+<ButtonGroup>
+    <Button Variant="ButtonVariant.Outline">Follow</Button>
+    <DropdownMenu>
+        <DropdownMenuTrigger>
+            <Render>
+                <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline" Class="pl-2!" aria-label="More options"><Icon Name="chevron-down" /></Button>
+            </Render>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent Align="Align.End" Class="w-44">
+            <DropdownMenuGroup>
+                <DropdownMenuItem>
+                    <Icon Name="volume-off" />
+                    Mute Conversation
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Icon Name="check" />
+                    Mark as Read
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Icon Name="alert-triangle" />
+                    Report Conversation
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Icon Name="user-round-x" />
+                    Block User
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Icon Name="share" />
+                    Share Conversation
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <Icon Name="copy" />
+                    Copy Conversation
+                </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+                <DropdownMenuItem Destructive="true">
+                    <Icon Name="trash" />
+                    Delete Conversation
+                </DropdownMenuItem>
+            </DropdownMenuGroup>
+        </DropdownMenuContent>
+    </DropdownMenu>
+</ButtonGroup>

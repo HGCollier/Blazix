@@ -1,0 +1,28 @@
+@inject ToastManager Toasts
+
+<Questionnaire Class="mx-auto max-w-md" Items="@Items" Shortcuts="QuestionnaireShortcuts.Letters" OnSubmit="@HandleSubmit">
+    <QuestionnaireItem Name="approach" Required>
+        <QuestionnaireTitle>How should the agent approach this refactor?</QuestionnaireTitle>
+        <QuestionnaireDescription>Choose a strategy or write a more specific instruction.</QuestionnaireDescription>
+        <QuestionnaireChoices>
+            <QuestionnaireChoice Value="incremental">Make the smallest safe change</QuestionnaireChoice>
+            <QuestionnaireChoice Value="module">Refactor one module at a time</QuestionnaireChoice>
+            <QuestionnaireChoice Value="rewrite">Replace the implementation completely</QuestionnaireChoice>
+            <QuestionnaireInput aria-label="Another refactoring approach" placeholder="Describe another approach…" />
+        </QuestionnaireChoices>
+        <QuestionnaireError />
+    </QuestionnaireItem>
+    <QuestionnaireActions>
+        <QuestionnaireSubmit>Use this approach</QuestionnaireSubmit>
+    </QuestionnaireActions>
+</Questionnaire>
+
+@code {
+    private static readonly QuestionnaireItemDefinition[] Items =
+    [
+        new("approach", Required: true, Choices: [new("incremental"), new("module"), new("rewrite")]),
+    ];
+
+    private void HandleSubmit(QuestionnaireAnswers answers) =>
+        Toasts.Add(new ToastOptions { Title = "Approach selected", Description = $"Approach: {answers.Get("approach") ?? "None"}" });
+}

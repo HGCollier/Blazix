@@ -1,0 +1,27 @@
+@page "/docs/components/toggle"
+
+<DocsPage Title="Toggle" Description="A two-state button that can be either on or off.">
+    <ComponentPreview Name="toggle-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="toggle" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Outline" />
+    <p>Use <code>variant="outline"</code> for an outline style.</p>
+    <ComponentPreview Name="toggle-outline" />
+    <DocsHeading Title="With Text" />
+    <ComponentPreview Name="toggle-text" />
+    <DocsHeading Title="Size" />
+    <p>Use the <code>Size</code> parameter to change the size of the toggle.</p>
+    <ComponentPreview Name="toggle-sizes" />
+    <DocsHeading Title="Disabled" />
+    <ComponentPreview Name="toggle-disabled" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="toggle" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Toggle>Toggle</Toggle>
+        """;
+}

@@ -1,0 +1,15 @@
+<Combobox Items="Frameworks" Value="@Frameworks[0]">
+    <ComboboxInput Placeholder="Select a framework" ShowClear="true" />
+    <ComboboxContent>
+        <ComboboxEmpty>No items found.</ComboboxEmpty>
+        <ComboboxList>
+            <Template Context="item">
+                <ComboboxItem Value="@item">@item</ComboboxItem>
+            </Template>
+        </ComboboxList>
+    </ComboboxContent>
+</Combobox>
+
+@code {
+    private static readonly string[] Frameworks = ["Next.js", "SvelteKit", "Nuxt.js", "Remix", "Astro"];
+}

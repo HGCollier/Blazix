@@ -1,0 +1,8 @@
+<div class="@Cn("typeset-scroll scroll-fade-x no-scrollbar *:[table]:w-full", Class)">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

@@ -1,0 +1,17 @@
+<div class="flex flex-wrap gap-2">
+    @foreach (var side in Sides)
+    {
+        <Tooltip @key="side">
+            <TooltipTrigger Class="@ButtonVariants.Get(ButtonVariant.Outline, ButtonSize.Default, "w-fit capitalize")">
+                @side.ToString().ToLowerInvariant()
+            </TooltipTrigger>
+            <TooltipContent Side="@side">
+                <p>Add to library</p>
+            </TooltipContent>
+        </Tooltip>
+    }
+</div>
+
+@code {
+    private static readonly Side[] Sides = [Side.Left, Side.Top, Side.Bottom, Side.Right];
+}

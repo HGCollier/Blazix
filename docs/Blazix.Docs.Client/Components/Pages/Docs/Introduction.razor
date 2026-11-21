@@ -1,0 +1,92 @@
+@page "/docs"
+
+<DocsPage Title="Introduction"
+          Description="Blazix is a set of beautifully-designed, accessible Blazor components and a code distribution platform. Built with .NET tooling only. Open Source. Open Code.">
+    <p><strong>This is not a component library. It is how you build your component library.</strong></p>
+    <p>
+        You know how most traditional component libraries work: you install a package from NuGet, use its components, and
+        style them through whatever options it gives you.
+    </p>
+    <p>
+        This approach works well until you need to customize a component to fit your design system or require one that isn't
+        included in the library. <strong>Often, you end up wrapping library components, writing workarounds to override styles,
+        or mixing components from different libraries with incompatible APIs.</strong>
+    </p>
+    <p>This is what Blazix aims to solve. It is built around the following principles:</p>
+    <ul>
+        <li><strong>Open Code:</strong> The top layer of your component code is open for modification.</li>
+        <li><strong>Composition:</strong> Every component uses a common, composable interface, making them predictable.</li>
+        <li><strong>Distribution:</strong> A flat-file registry and a .NET tool make it easy to distribute components.</li>
+        <li><strong>Beautiful Defaults:</strong> Carefully chosen default styles, so you get great design out-of-the-box.</li>
+        <li><strong>AI-Ready:</strong> Open code for LLMs to read, understand, and improve.</li>
+    </ul>
+
+    <DocsHeading Title="Open Code" />
+    <p>
+        Blazix hands you the actual component code: <code>.razor</code> files in your project. You have full control to
+        customize and extend the components to your needs. This means:
+    </p>
+    <ul>
+        <li><strong>Full Transparency:</strong> You see exactly how each component is built.</li>
+        <li><strong>Easy Customization:</strong> Modify any part of a component to fit your design and functionality requirements.</li>
+        <li><strong>AI Integration:</strong> Access to the code makes it straightforward for LLMs to read, understand, and even improve your components.</li>
+    </ul>
+    <p>
+        <em>In a typical library, if you need to change a button's behavior, you have to override styles or wrap the component.
+        With Blazix, you simply edit the button code directly.</em>
+    </p>
+    <Accordion Class="mt-6">
+        <AccordionItem Value="faq-1" Class="border-none">
+            <AccordionTrigger>How do I pull upstream updates in an Open Code approach?</AccordionTrigger>
+            <AccordionContent Class="flex flex-col gap-4">
+                <p>
+                    Blazix follows a headless component architecture. The behavior and accessibility live in
+                    <code>Blazix.Primitives</code>, a NuGet package, so the core of your app receives fixes when you update it.
+                </p>
+                <p>
+                    The topmost layer, i.e., the one closest to your design system, is not coupled with the implementation of the
+                    library. It stays open for modification. Run <code>add &lt;component&gt; --overwrite</code> to take a newer
+                    version, and review the diff.
+                </p>
+            </AccordionContent>
+        </AccordionItem>
+    </Accordion>
+
+    <DocsHeading Title="Composition" />
+    <p>
+        Every component in Blazix shares a common, composable interface. <strong>If a component does not exist, we bring it in,
+        make it composable, and adjust its style to match and work with the rest of the design system.</strong>
+    </p>
+    <p>
+        <em>A shared, composable interface means it's predictable for both your team and LLMs. You are not learning different
+        APIs for every new component.</em>
+    </p>
+
+    <DocsHeading Title="Distribution" />
+    <p>Blazix is also a code distribution system. It defines a registry of components and a CLI to distribute them.</p>
+    <ul>
+        <li><strong>Registry:</strong> A flat-file structure that defines the components, their files and their dependencies.</li>
+        <li><strong>CLI:</strong> A .NET tool that copies components into your project, with everything they depend on. No Node.js needed.</li>
+    </ul>
+
+    <DocsHeading Title="Beautiful Defaults" />
+    <p>
+        Blazix comes with a large collection of components that have carefully chosen default styles.
+        They are designed to look good on their own and to work well together as a consistent system:
+    </p>
+    <ul>
+        <li><strong>Good Out-of-the-Box:</strong> Your UI has a clean and minimal look without extra work.</li>
+        <li><strong>Unified Design:</strong> Components naturally fit with one another. Each component is built to match the others, keeping your UI consistent.</li>
+        <li><strong>Easily Customizable:</strong> If you want to change something, it's simple to override and extend the defaults.</li>
+    </ul>
+
+    <DocsHeading Title="AI-Ready" />
+    <p>
+        The design of Blazix makes it easy for AI tools to work with your code. Its open code and consistent API allow AI
+        models to read, understand, and even generate new components.
+    </p>
+    <p>
+        <em>An AI model can learn how your components work and suggest improvements or even create new components that integrate
+        with your existing design.</em>
+    </p>
+</DocsPage>

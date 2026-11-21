@@ -1,0 +1,28 @@
+<Card Class="w-full max-w-sm">
+    <CardHeader>
+        <CardTitle>Subscription & Billing</CardTitle>
+        <CardDescription>Common questions about your account, plans, payments and cancellations.</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <Accordion Value="@(["plans"])">
+            @foreach (var item in Items)
+            {
+                <AccordionItem Value="@item.Value">
+                    <AccordionTrigger>@item.Trigger</AccordionTrigger>
+                    <AccordionContent>@item.Content</AccordionContent>
+                </AccordionItem>
+            }
+        </Accordion>
+    </CardContent>
+</Card>
+
+@code {
+    private sealed record ItemEntry(string? Value, string? Trigger, string? Content);
+
+    private static readonly ItemEntry[] Items =
+    [
+        new("plans", "What subscription plans do you offer?", "We offer three subscription tiers: Starter ($9/month), Professional ($29/month), and Enterprise ($99/month). Each plan includes increasing storage limits, API access, priority support, and team collaboration features."),
+        new("billing", "How does billing work?", "Billing occurs automatically at the start of each billing cycle. We accept all major credit cards, PayPal, and ACH transfers for enterprise customers. You'll receive an invoice via email after each payment."),
+        new("cancel", "How do I cancel my subscription?", "You can cancel your subscription anytime from your account settings. There are no cancellation fees or penalties. Your access will continue until the end of your current billing period."),
+    ];
+}

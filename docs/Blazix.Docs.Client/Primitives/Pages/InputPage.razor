@@ -1,0 +1,35 @@
+@page "/docs/primitives/input"
+
+<DocsPage Title="Input" Description="A native input element that automatically works with Field.">
+    <ComponentPreview Name="primitives/input-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li>
+            <strong>Form controls must have an accessible name:</strong> give it one with a <code>&lt;label&gt;</code> element
+            or the <a href="/docs/primitives/field">Field</a> parts.
+        </li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and use the part:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(InputRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the input is disabled.</StyleHook>
+            <StyleHook Name="data-valid">Present when the input is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the input is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the input's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the input has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the input is filled (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the input is focused (when wrapped in FieldRoot).</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <InputRoot />
+        """;
+}

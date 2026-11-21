@@ -1,0 +1,19 @@
+<ButtonRoot Disabled="_loading" FocusableWhenDisabled="true" aria-labelledby="@_labelId" @onclick="SubmitAsync" class="button">
+    <span id="@_labelId">@(_loading ? "Submitting" : "Submit")</span>
+</ButtonRoot>
+
+@code {
+    private readonly string _labelId = $"submit-label-{Guid.NewGuid():N}";
+    private bool _loading;
+
+    private async Task SubmitAsync()
+    {
+        if (_loading)
+        {
+            return;
+        }
+        _loading = true;
+        await Task.Delay(4000);
+        _loading = false;
+    }
+}

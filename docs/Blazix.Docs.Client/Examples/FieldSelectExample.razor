@@ -1,0 +1,31 @@
+<Field Class="w-full max-w-xs">
+    <FieldLabel for="department">Department</FieldLabel>
+    <Select Items="Items">
+        <SelectTrigger id="department">
+            <SelectValue Placeholder="Choose department" />
+        </SelectTrigger>
+        <SelectContent>
+            <SelectGroup>
+                @foreach (var item in Items)
+                {
+                    <SelectItem Value="@item.Value">@item.Label</SelectItem>
+                }
+            </SelectGroup>
+        </SelectContent>
+    </Select>
+    <FieldDescription>Select your department or area of work.</FieldDescription>
+</Field>
+
+@code {
+    private static readonly SelectOption[] Items =
+    [
+        new("engineering", "Engineering"),
+        new("design", "Design"),
+        new("marketing", "Marketing"),
+        new("sales", "Sales"),
+        new("support", "Customer Support"),
+        new("hr", "Human Resources"),
+        new("finance", "Finance"),
+        new("operations", "Operations"),
+    ];
+}

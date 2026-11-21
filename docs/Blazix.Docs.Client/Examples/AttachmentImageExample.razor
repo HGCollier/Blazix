@@ -1,0 +1,37 @@
+<div class="mx-auto w-full max-w-sm py-12">
+    <AttachmentGroup Class="w-full">
+        @foreach (var image in Images)
+        {
+            <Attachment @key="image.Name" Orientation="Orientation.Vertical">
+                <AttachmentMedia Variant="AttachmentMediaVariant.Image">
+                    <img src="@image.Src" alt="@image.Alt" />
+                </AttachmentMedia>
+                <AttachmentContent>
+                    <AttachmentTitle>@image.Name</AttachmentTitle>
+                    <AttachmentDescription>@image.Meta</AttachmentDescription>
+                </AttachmentContent>
+                <AttachmentActions>
+                    <AttachmentAction aria-label="@($"Remove {image.Name}")">
+                        <Icon Name="x" />
+                    </AttachmentAction>
+                </AttachmentActions>
+                <AttachmentTrigger>
+                    <Render Context="trigger">
+                        <a @attributes="trigger.Attributes" href="@image.Src" target="_blank" rel="noreferrer" aria-label="@($"Open {image.Name}")"></a>
+                    </Render>
+                </AttachmentTrigger>
+            </Attachment>
+        }
+    </AttachmentGroup>
+</div>
+
+@code {
+    private sealed record ImageItem(string Name, string Meta, string Src, string Alt);
+
+    private static readonly ImageItem[] Images =
+    [
+        new("workspace.png", "PNG · 820 KB", "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80", "Workspace"),
+        new("desk-reference.jpg", "JPG · 1.1 MB", "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&auto=format&fit=crop&q=80", "Desk"),
+        new("office-reference.jpg", "JPG · 940 KB", "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80", "Office"),
+    ];
+}

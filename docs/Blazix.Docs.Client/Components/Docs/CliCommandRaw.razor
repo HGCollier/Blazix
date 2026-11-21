@@ -1,0 +1,9 @@
+<figure data-code-figure data-not-typeset class="@Cn("relative -mx-1 mt-6 overflow-hidden rounded-2xl bg-(--code) text-sm text-(--code-foreground)", Class)">
+    <CopyButton Value="@Command" Class="top-2" />
+    <CodeView Code="@Command" Language="text" />
+</figure>
+
+@code {
+    [Parameter, EditorRequired] public string Command { get; set; } = "";
+    [Parameter] public string? Class { get; set; }
+}

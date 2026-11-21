@@ -1,0 +1,18 @@
+<Trace Class="max-w-sm">
+    <TraceLine>
+        <TraceIcon><Icon Name="circle-check" /></TraceIcon>
+        <TraceTitle>Ran pnpm install</TraceTitle>
+    </TraceLine>
+    <TraceLine Status="TraceLineStatus.Error">
+        <TraceIcon><Icon Name="circle-alert" /></TraceIcon>
+        <TraceTitle>Failed to run pnpm lint</TraceTitle>
+    </TraceLine>
+    <TraceLine Status="TraceLineStatus.Running">
+        <TraceIcon><Icon Name="loader-circle" class="animate-spin" /></TraceIcon>
+        <TraceTitle>Running pnpm build</TraceTitle>
+    </TraceLine>
+    <TraceLine Status="TraceLineStatus.Pending">
+        <TraceIcon><Icon Name="circle" /></TraceIcon>
+        <TraceTitle>Run pnpm test</TraceTitle>
+    </TraceLine>
+</Trace>

@@ -1,0 +1,25 @@
+<div class="w-full max-w-md">
+    <CodeBlock>
+        <CodeBlockHeader>
+            <CodeBlockTitle>getWeather output</CodeBlockTitle>
+        </CodeBlockHeader>
+        <CodeBlockContent>
+            @foreach (var line in Code.Split('\n'))
+            {
+                <CodeBlockLine>@line</CodeBlockLine>
+            }
+        </CodeBlockContent>
+    </CodeBlock>
+</div>
+
+@code {
+    private const string Code =
+        """
+        {
+          "location": "San Francisco",
+          "temperature": 18,
+          "unit": "celsius",
+          "conditions": ["fog", "wind"]
+        }
+        """;
+}

@@ -1,0 +1,23 @@
+<div class="otp-field-field">
+    <label for="@_id" class="otp-field-label">
+        Verification code
+    </label>
+    <OtpFieldRoot Length="OtpLength" aria-describedby="@DescriptionId" class="otp-field-root">
+        <OtpFieldInput id="@_id" class="otp-field-input" />
+        @for (var i = 1; i < OtpLength; i++)
+        {
+            <OtpFieldInput class="otp-field-input" />
+        }
+    </OtpFieldRoot>
+    <p id="@DescriptionId" class="otp-field-description">
+        Enter the 6-character code we sent to your device.
+    </p>
+</div>
+
+@code {
+    private const int OtpLength = 6;
+
+    private readonly string _id = $"verification-code-{Guid.NewGuid():N}";
+
+    private string DescriptionId => $"{_id}-description";
+}

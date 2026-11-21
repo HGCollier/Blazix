@@ -1,0 +1,29 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<ScrollAreaRoot data-slot="scroll-area" @attributes="AdditionalAttributes" Render="@Render" class="@Cn("relative", Class)">
+    <ScrollAreaViewport data-slot="scroll-area-viewport"
+                        class="size-full rounded-[inherit] transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1">
+        @ChildContent
+    </ScrollAreaViewport>
+    <ScrollBar />
+    @if (Horizontal)
+    {
+        <ScrollBar Orientation="Orientation.Horizontal" />
+    }
+    <ScrollAreaCorner />
+</ScrollAreaRoot>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<ScrollAreaRenderProps>? Render { get; set; }
+
+    /// <summary>Add a horizontal scrollbar too.</summary>
+    [Parameter] public bool Horizontal { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

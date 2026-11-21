@@ -1,0 +1,23 @@
+<DrawerRoot SwipeDirection="DrawerSwipeDirection.Right">
+    <DrawerTrigger class="drawer-button">
+        Open drawer
+    </DrawerTrigger>
+    <DrawerPortal>
+        <DrawerBackdrop class="drawer-backdrop" />
+        <DrawerViewport class="drawer-viewport">
+            <DrawerPopup class="drawer-popup">
+                <DrawerContent class="drawer-content">
+                    <DrawerTitle class="drawer-title">Drawer</DrawerTitle>
+                    <DrawerDescription class="drawer-description">
+                        This is a drawer that slides in from the side. You can swipe to dismiss it.
+                    </DrawerDescription>
+                    <div class="drawer-actions">
+                        <DrawerClose class="drawer-button">
+                            Close
+                        </DrawerClose>
+                    </div>
+                </DrawerContent>
+            </DrawerPopup>
+        </DrawerViewport>
+    </DrawerPortal>
+</DrawerRoot>

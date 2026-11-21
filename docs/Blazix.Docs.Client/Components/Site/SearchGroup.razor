@@ -1,0 +1,33 @@
+<div data-search-group role="group" aria-label="@Heading" class="overflow-hidden text-foreground">
+    <div class="scroll-mt-16 px-3 pt-3 pb-1 text-xs font-medium text-muted-foreground" aria-hidden="true">@Heading</div>
+    @foreach (var link in Pages)
+    {
+        <a href="@link.Href" id="@($"search-{Slug(Prefix)}-{Slug(link.Title)}")" role="option" tabindex="-1" aria-selected="false" data-selected="false"
+           data-search-item data-value="@($"{Prefix} {link.Title}")" data-keywords="@(Components ? "component" : null)"
+           data-copy="@(Components ? $"dnx Blazix.Cli add {link.Href[(link.Href.LastIndexOf('/') + 1)..]}" : null)"
+           class="@("relative flex h-9 cursor-default items-center gap-2 rounded-md border border-transparent px-3 text-sm font-medium outline-hidden select-none data-[selected=true]:border-input data-[selected=true]:bg-input/10 dark:data-[selected=true]:bg-input/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4")">
+            @if (Components)
+            {
+                <div class="aspect-square size-4 rounded-full border border-dashed border-muted-foreground"></div>
+            }
+            else
+            {
+                <Icon Name="arrow-right" />
+            }
+            @link.Title
+        </a>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Heading { get; set; } = "";
+    [Parameter, EditorRequired] public IReadOnlyList<DocsLink> Pages { get; set; } = [];
+
+    /// <summary>What filtering matches besides the title ("Components Button").</summary>
+    [Parameter] public string Prefix { get; set; } = "";
+
+    /// <summary>Component pages: a dashed circle instead of an arrow, and ⌘C copies the install command.</summary>
+    [Parameter] public bool Components { get; set; }
+
+    private static string Slug(string value) => value.ToLowerInvariant().Replace(' ', '-').Replace(".", "");
+}

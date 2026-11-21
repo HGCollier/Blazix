@@ -1,0 +1,71 @@
+<Card Class="mx-auto w-full max-w-[16rem] gap-2" Size="CardSize.Sm">
+    <CardHeader>
+        <Tabs Value="explorer">
+            <TabsList Class="w-full">
+                <TabsTrigger Value="explorer">Explorer</TabsTrigger>
+                <TabsTrigger Value="settings">Outline</TabsTrigger>
+            </TabsList>
+        </Tabs>
+    </CardHeader>
+    <CardContent>
+        <div class="flex flex-col gap-1">
+            @foreach (var item in FileTree)
+            {
+                @RenderItem(item)
+            }
+        </div>
+    </CardContent>
+</Card>
+
+@code {
+    private sealed record FileTreeItem(string Name, FileTreeItem[]? Items = null);
+
+    private static readonly FileTreeItem[] FileTree =
+    [
+        new("components",
+        [
+            new("ui", [new("button.tsx"), new("card.tsx"), new("dialog.tsx"), new("input.tsx"), new("select.tsx"), new("table.tsx")]),
+            new("login-form.tsx"),
+            new("register-form.tsx"),
+        ]),
+        new("lib", [new("utils.ts"), new("cn.ts"), new("api.ts")]),
+        new("hooks", [new("use-media-query.ts"), new("use-debounce.ts"), new("use-local-storage.ts")]),
+        new("types", [new("index.d.ts"), new("api.d.ts")]),
+        new("public", [new("favicon.ico"), new("logo.svg"), new("images")]),
+        new("app.tsx"),
+        new("layout.tsx"),
+        new("globals.css"),
+        new("package.json"),
+        new("tsconfig.json"),
+        new("README.md"),
+        new(".gitignore"),
+    ];
+
+    private static RenderFragment RenderItem(FileTreeItem fileItem) => @<text>
+        @if (fileItem.Items is { } items)
+        {
+            <Collapsible>
+                <CollapsibleTrigger Class="@ButtonVariants.Get(ButtonVariant.Ghost, ButtonSize.Sm, "group w-full justify-start transition-none hover:bg-accent hover:text-accent-foreground")">
+                    <Icon Name="chevron-right" class="transition-transform group-data-panel-open:rotate-90" />
+                    <Icon Name="folder" />
+                    @fileItem.Name
+                </CollapsibleTrigger>
+                <CollapsibleContent Class="mt-1 ml-5">
+                    <div class="flex flex-col gap-1">
+                        @foreach (var child in items)
+                        {
+                            @RenderItem(child)
+                        }
+                    </div>
+                </CollapsibleContent>
+            </Collapsible>
+        }
+        else
+        {
+            <Button Variant="ButtonVariant.Link" Size="ButtonSize.Sm" Class="w-full justify-start gap-2 text-foreground">
+                <Icon Name="file" />
+                <span>@fileItem.Name</span>
+            </Button>
+        }
+    </text>;
+}

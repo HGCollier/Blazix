@@ -1,0 +1,20 @@
+<Drawer Modal="false" DisablePointerDismissal="true" SwipeDirection="DrawerSwipeDirection.Right">
+    <DrawerTrigger>
+        <Render>
+            <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">Non Modal</Button>
+        </Render>
+    </DrawerTrigger>
+    <DrawerContent>
+        <DrawerHeader><DrawerTitle>Non Modal Drawer</DrawerTitle></DrawerHeader>
+        <div class="flex-1 p-4">
+            <div class="rounded-2xl bg-muted group-data-[swipe-axis=x]/drawer-popup:size-full group-data-[swipe-axis=y]/drawer-popup:h-80 group-data-[swipe-axis=y]/drawer-popup:w-full"></div>
+        </div>
+        <DrawerFooter>
+            <DrawerClose>
+                <Render>
+                    <Button @attributes="context.Attributes">Close</Button>
+                </Render>
+            </DrawerClose>
+        </DrawerFooter>
+    </DrawerContent>
+</Drawer>

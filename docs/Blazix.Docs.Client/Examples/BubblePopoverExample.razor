@@ -1,0 +1,25 @@
+<div class="flex w-full max-w-sm flex-col gap-4 py-12">
+    <Bubble Align="BubbleAlign.End"><BubbleContent>Run the build script.</BubbleContent></Bubble>
+    <Bubble Variant="BubbleVariant.Destructive">
+        <BubbleContent>Failed to run the command.</BubbleContent>
+        <BubbleReactions>
+            <Popover>
+                <PopoverTrigger>
+                    <Render>
+                        <Button @attributes="context.Attributes" Variant="ButtonVariant.Ghost" Size="ButtonSize.IconXs" aria-label="Show error details" Class="aria-expanded:text-destructive">
+                            <Icon Name="info" />
+                        </Button>
+                    </Render>
+                </PopoverTrigger>
+                <PopoverContent>
+                    <PopoverHeader>
+                        <PopoverTitle Class="text-sm">Command failed with exit code 1</PopoverTitle>
+                        <PopoverDescription Class="text-sm">
+                            ENOENT: no such file or directory, open pnpm-lock.yaml
+                        </PopoverDescription>
+                    </PopoverHeader>
+                </PopoverContent>
+            </Popover>
+        </BubbleReactions>
+    </Bubble>
+</div>

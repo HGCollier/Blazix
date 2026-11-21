@@ -1,0 +1,67 @@
+@page "/docs/primitives/tabs"
+
+<DocsPage Title="Tabs" Description="A component for toggling between related panels on the same page.">
+    <ComponentPreview Name="primitives/tabs-hero" />
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(TabsRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the tabs.</StyleHook>
+            <StyleHook Name="data-activation-direction" Type="'left' | 'right' | 'up' | 'down' | 'none'">Indicates the direction of the activation (based on the previous active tab).</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(TabsList)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the tabs.</StyleHook>
+            <StyleHook Name="data-activation-direction" Type="'left' | 'right' | 'up' | 'down' | 'none'">Indicates the direction of the activation (based on the previous active tab).</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(TabsPanel)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the tabs.</StyleHook>
+            <StyleHook Name="data-activation-direction" Type="'left' | 'right' | 'up' | 'down' | 'none'">Indicates the direction of the activation (based on the previous active tab).</StyleHook>
+            <StyleHook Name="data-hidden">Present when the panel is hidden.</StyleHook>
+            <StyleHook Name="data-index">Indicates the index of the tab panel.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the panel begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the panel is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(TabsIndicator)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the tabs.</StyleHook>
+            <StyleHook Name="data-activation-direction" Type="'left' | 'right' | 'up' | 'down' | 'none'">Indicates the direction of the activation (based on the previous active tab).</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--active-tab-bottom" Type="number">Indicates the distance on the bottom side from the parent's container if the tab is active.</StyleHook>
+            <StyleHook Name="--active-tab-height" Type="number">Indicates the height of the tab if it is active.</StyleHook>
+            <StyleHook Name="--active-tab-left" Type="number">Indicates the distance on the left side from the parent's container if the tab is active.</StyleHook>
+            <StyleHook Name="--active-tab-right" Type="number">Indicates the distance on the right side from the parent's container if the tab is active.</StyleHook>
+            <StyleHook Name="--active-tab-top" Type="number">Indicates the distance on the top side from the parent's container if the tab is active.</StyleHook>
+            <StyleHook Name="--active-tab-width" Type="number">Indicates the width of the tab if it is active.</StyleHook>
+        </CssVariables>
+    </PartReference>
+    <PartReference Type="typeof(TabsTab)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the tabs.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the tab is disabled.</StyleHook>
+            <StyleHook Name="data-activation-direction" Type="'left' | 'right' | 'up' | 'down' | 'none'">Indicates the direction of the activation (based on the previous active tab).</StyleHook>
+            <StyleHook Name="data-active">Present when the tab is active.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <TabsRoot>
+            <TabsList>
+                <TabsTab />
+                <TabsIndicator />
+            </TabsList>
+            <TabsPanel />
+        </TabsRoot>
+        """;
+}

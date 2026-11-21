@@ -1,0 +1,26 @@
+<Field data-invalid="true" Class="w-full max-w-48">
+    <FieldLabel for="fruit-invalid">Fruit</FieldLabel>
+    <Select Items="Items">
+        <SelectTrigger id="fruit-invalid" aria-invalid="true">
+            <SelectValue Placeholder="Select a fruit" />
+        </SelectTrigger>
+        <SelectContent>
+            <SelectGroup>
+                @foreach (var item in Items)
+                {
+                    <SelectItem Value="@item.Value">@item.Label</SelectItem>
+                }
+            </SelectGroup>
+        </SelectContent>
+    </Select>
+    <FieldError>Please select a fruit.</FieldError>
+</Field>
+
+@code {
+    private static readonly SelectOption[] Items =
+    [
+        new("apple", "Apple"),
+        new("banana", "Banana"),
+        new("blueberry", "Blueberry"),
+    ];
+}

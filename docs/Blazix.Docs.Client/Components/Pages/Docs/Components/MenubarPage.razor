@@ -1,0 +1,85 @@
+@page "/docs/components/menubar"
+
+<DocsPage Title="Menubar" Description="A visually persistent menu common in desktop applications that provides quick access to a consistent set of commands.">
+    <ComponentPreview Name="menubar-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="menubar" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>Menubar</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Checkbox" />
+    <p>Use <code>MenubarCheckboxItem</code> for toggleable options.</p>
+    <ComponentPreview Name="menubar-checkbox" />
+    <DocsHeading Title="Radio" />
+    <p>Use <code>MenubarRadioGroup</code> and <code>MenubarRadioItem</code> for single-select options.</p>
+    <ComponentPreview Name="menubar-radio" />
+    <DocsHeading Title="Submenu" />
+    <p>Use <code>MenubarSub</code>, <code>MenubarSubTrigger</code>, and <code>MenubarSubContent</code> for nested menus.</p>
+    <ComponentPreview Name="menubar-submenu" />
+    <DocsHeading Title="With Icons" />
+    <ComponentPreview Name="menubar-icons" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="menubar" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Menubar>
+            <MenubarMenu>
+                <MenubarTrigger>File</MenubarTrigger>
+                <MenubarContent>
+                    <MenubarGroup>
+                        <MenubarItem>
+                            New Tab
+                            <MenubarShortcut>⌘T</MenubarShortcut>
+                        </MenubarItem>
+                        <MenubarItem>New Window</MenubarItem>
+                    </MenubarGroup>
+                    <MenubarSeparator />
+                    <MenubarGroup>
+                        <MenubarItem>Share</MenubarItem>
+                        <MenubarItem>Print</MenubarItem>
+                    </MenubarGroup>
+                </MenubarContent>
+            </MenubarMenu>
+        </Menubar>
+        """;
+
+    private const string CompositionCode = """
+        Menubar
+        ├── MenubarMenu
+        │   ├── MenubarTrigger
+        │   └── MenubarContent
+        │       ├── MenubarGroup
+        │       │   ├── MenubarLabel
+        │       │   ├── MenubarItem
+        │       │   └── MenubarItem
+        │       ├── MenubarSeparator
+        │       ├── MenubarGroup
+        │       │   ├── MenubarLabel
+        │       │   ├── MenubarCheckboxItem
+        │       │   └── MenubarCheckboxItem
+        │       ├── MenubarSeparator
+        │       ├── MenubarGroup
+        │       │   ├── MenubarLabel
+        │       │   └── MenubarRadioGroup
+        │       │       ├── MenubarRadioItem
+        │       │       └── MenubarRadioItem
+        │       └── MenubarSub
+        │           ├── MenubarSubTrigger
+        │           └── MenubarSubContent
+        │               └── MenubarGroup
+        │                   ├── MenubarLabel
+        │                   ├── MenubarItem
+        │                   └── MenubarItem
+        └── MenubarMenu
+            ├── MenubarTrigger
+            └── MenubarContent
+                └── MenubarGroup
+                    ├── MenubarLabel
+                    ├── MenubarItem
+                    └── MenubarItem
+        """;
+}

@@ -1,0 +1,52 @@
+@page "/docs/components/dialog"
+
+<DocsPage Title="Dialog" Description="A window overlaid on either the primary window or another dialog window, rendering the content underneath inert.">
+    <ComponentPreview Name="dialog-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="dialog" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>Dialog</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Custom Close Button" />
+    <p>Replace the default close control with your own button.</p>
+    <ComponentPreview Name="dialog-close-button" />
+    <DocsHeading Title="No Close Button" />
+    <p>Use <code>ShowCloseButton="false"</code> to hide the close button.</p>
+    <ComponentPreview Name="dialog-no-close-button" />
+    <DocsHeading Title="Sticky Footer" />
+    <p>Keep actions visible while the content scrolls.</p>
+    <ComponentPreview Name="dialog-sticky-footer" />
+    <DocsHeading Title="Scrollable Content" />
+    <p>Long content can scroll while the header stays in view.</p>
+    <ComponentPreview Name="dialog-scrollable-content" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="dialog" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Dialog>
+            <DialogTrigger>Open</DialogTrigger>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                    <DialogDescription>
+                        This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+                    </DialogDescription>
+                </DialogHeader>
+            </DialogContent>
+        </Dialog>
+        """;
+
+    private const string CompositionCode = """
+        Dialog
+        ├── DialogTrigger
+        └── DialogContent
+            ├── DialogHeader
+            │   ├── DialogTitle
+            │   └── DialogDescription
+            └── DialogFooter
+        """;
+}

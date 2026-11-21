@@ -1,0 +1,27 @@
+<div class="w-full max-w-md">
+    <CodeBlock>
+        <CodeBlockContent LineNumbers="true">
+            @foreach (var (line, index) in Code.Split('\n').Select((l, i) => (l, i)))
+            {
+                <CodeBlockLine Variant="@(Highlighted.Contains(index) ? CodeBlockLineVariant.Highlighted : CodeBlockLineVariant.Default)">@line</CodeBlockLine>
+            }
+        </CodeBlockContent>
+    </CodeBlock>
+</div>
+
+@code {
+    private const string Code =
+        """
+        export default {
+          experimental: {
+            reactCompiler: true,
+            viewTransition: true,
+          },
+          images: {
+            remotePatterns: [{ hostname: "avatars.githubusercontent.com" }],
+          },
+        }
+        """;
+
+    private static readonly int[] Highlighted = [2, 3];
+}

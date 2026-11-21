@@ -1,0 +1,21 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.SelectValue data-slot="select-value" @attributes="AdditionalAttributes" Render="@Render" Placeholder="@Placeholder" Template="@Template"
+                             class="@Cn("flex flex-1 text-left", Class)" />
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<SelectRenderProps>? Render { get; set; }
+
+    /// <summary>Shown while nothing is selected.</summary>
+    [Parameter] public string? Placeholder { get; set; }
+
+    /// <summary>Renders the selected values your own way.</summary>
+    [Parameter] public RenderFragment<IReadOnlyList<string>>? Template { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

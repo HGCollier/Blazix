@@ -1,0 +1,81 @@
+@implements IDisposable
+@inject DocsConfig Config
+@inject IJSRuntime JsRuntime
+
+<figure data-code-figure data-not-typeset class="@Cn("relative -mx-1 mt-6 overflow-hidden rounded-2xl bg-(--code) text-sm text-(--code-foreground)", Class)">
+    <div class="overflow-x-auto">
+        <Tabs Value="@Config.Runner" ValueChanged="Config.SetRunner" Class="gap-0">
+            <div class="flex items-center gap-2 border-b border-border/50 px-3 py-1">
+                <div class="flex size-4 items-center justify-center rounded-[1px] bg-foreground opacity-70">
+                    <Icon Name="terminal" class="size-3 text-(--code)" />
+                </div>
+                <TabsList Class="rounded-none bg-transparent p-0">
+                    @foreach (var runner in Runners)
+                    {
+                        <TabsTrigger Value="@runner"
+                                     Class="h-7 border border-transparent pt-0.5 font-mono shadow-none! data-active:border-input data-active:bg-background! dark:data-active:border-input">
+                            @runner
+                        </TabsTrigger>
+                    }
+                </TabsList>
+            </div>
+            <div class="no-scrollbar overflow-x-auto">
+                @foreach (var runner in Runners)
+                {
+                    <TabsContent Value="@runner" Class="mt-0 px-4 py-3.5">
+                        <pre><code class="relative font-mono text-sm leading-none text-[#3B3B3B] dark:text-[#CCCCCC]" data-language="bash">@DocsConfig.Command(runner, Args)</code></pre>
+                    </TabsContent>
+                }
+            </div>
+        </Tabs>
+        <button type="button" data-slot="copy-button" @onclick="CopyAsync"
+                class="@SiteButton.Get(SiteButton.Ghost, SiteButton.SizeIcon, "absolute top-2 right-2 z-10 size-7 opacity-70 hover:opacity-100 focus-visible:opacity-100")">
+            <span class="sr-only">Copy</span>
+            <Icon Name="@(_copied ? "check" : "copy")" />
+        </button>
+        <span aria-live="polite" class="sr-only">@(_copied ? "Copied" : "")</span>
+    </div>
+</figure>
+
+@code {
+    private static readonly string[] Runners = ["dnx", "dotnet"];
+    private bool _copied;
+    private CancellationTokenSource? _reset;
+
+    /// <summary>What follows the tool's name, e.g. "add button".</summary>
+    [Parameter, EditorRequired] public string Args { get; set; } = "";
+
+    [Parameter] public string? Class { get; set; }
+
+    protected override void OnInitialized() => Config.Changed += OnChanged;
+
+    private void OnChanged() => InvokeAsync(StateHasChanged);
+
+    private async Task CopyAsync()
+    {
+        if (!await BrowserClipboard.CopyAsync(JsRuntime, DocsConfig.Command(Config.Runner, Args)))
+        {
+            return;
+        }
+        _copied = true;
+        if (_reset is not null)
+        {
+            await _reset.CancelAsync();
+            _reset.Dispose();
+        }
+        _reset = new CancellationTokenSource();
+        var token = _reset.Token;
+        _ = Task.Delay(TimeSpan.FromSeconds(2), token).ContinueWith(_ => InvokeAsync(() =>
+        {
+            _copied = false;
+            StateHasChanged();
+        }), token, TaskContinuationOptions.OnlyOnRanToCompletion, TaskScheduler.Default);
+    }
+
+    public void Dispose()
+    {
+        Config.Changed -= OnChanged;
+        _reset?.Cancel();
+        _reset?.Dispose();
+    }
+}

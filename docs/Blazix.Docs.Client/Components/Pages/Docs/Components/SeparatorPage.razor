@@ -1,0 +1,26 @@
+@page "/docs/components/separator"
+
+<DocsPage Title="Separator" Description="Visually or semantically separates content.">
+    <ComponentPreview Name="separator-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="separator" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Vertical" />
+    <p>Use <code>orientation="vertical"</code> for a vertical separator.</p>
+    <ComponentPreview Name="separator-vertical" />
+    <DocsHeading Title="Menu" />
+    <p>Vertical separators between menu items with descriptions.</p>
+    <ComponentPreview Name="separator-menu" />
+    <DocsHeading Title="List" />
+    <p>Horizontal separators between list items.</p>
+    <ComponentPreview Name="separator-list" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="separator" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Separator />
+        """;
+}

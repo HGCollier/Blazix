@@ -1,0 +1,35 @@
+<FormRoot Errors="_errors" OnFormSubmit="SubmitAsync" class="form">
+    <FieldRoot Name="url" class="form-field">
+        <FieldLabel class="form-label">
+            Homepage
+        </FieldLabel>
+        <FieldControl type="url" required Value="https://example.com" placeholder="https://example.com" pattern="https?://.*" class="form-input" />
+        <FieldError class="form-error" />
+    </FieldRoot>
+    <ButtonRoot Disabled="_loading" FocusableWhenDisabled="true" type="submit" class="form-button">
+        Submit
+    </ButtonRoot>
+</FormRoot>
+
+@code {
+    private IReadOnlyDictionary<string, IReadOnlyList<string>>? _errors;
+    private bool _loading;
+
+    private async Task SubmitAsync(IReadOnlyDictionary<string, object?> values)
+    {
+        _loading = true;
+        var error = await SubmitFormAsync(values["url"] as string ?? "");
+        _errors = error is null ? null : new Dictionary<string, IReadOnlyList<string>> { ["url"] = [error] };
+        _loading = false;
+    }
+
+    private static async Task<string?> SubmitFormAsync(string value)
+    {
+        await Task.Delay(1000);
+        if (!Uri.TryCreate(value, UriKind.Absolute, out var url))
+        {
+            return "This is not a valid URL";
+        }
+        return url.Host.EndsWith("example.com", StringComparison.Ordinal) ? "The example domain is not allowed" : null;
+    }
+}

@@ -1,0 +1,56 @@
+@foreach (var component in ApiReader.For(Name))
+{
+    <DocsHeading Level="3" Title="@component.Name" NoToc="true" />
+    @if (component.Parameters.Count == 0)
+    {
+        <p class="mt-4 leading-relaxed text-muted-foreground">No parameters of its own.</p>
+    }
+    else
+    {
+        <DocsTable>
+            <table>
+                <thead>
+                    <tr><th>Parameter</th><th>Type</th><th>Default</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var parameter in component.Parameters)
+                    {
+                        <tr>
+                            <td class="align-top whitespace-normal!">
+                                <code>@parameter.Name</code>
+                                @if (parameter.Required)
+                                {
+                                    <span class="ml-1 text-xs text-muted-foreground">required</span>
+                                }
+                                @if (parameter.Summary is not null)
+                                {
+                                    <p class="mt-1.5 max-w-xs text-[0.8rem] leading-normal text-muted-foreground">@((MarkupString)parameter.Summary)</p>
+                                }
+                            </td>
+                            <td class="align-top whitespace-normal! [overflow-wrap:anywhere]"><code>@parameter.Type</code></td>
+                            <td class="align-top">
+                                @if (parameter.Default is not null)
+                                {
+                                    <code>@parameter.Default</code>
+                                }
+                                else
+                                {
+                                    <span class="text-muted-foreground">-</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </DocsTable>
+    }
+    @if (component.PassesAttributes)
+    {
+        <p class="mt-4 text-sm leading-relaxed text-muted-foreground">Other attributes are passed to the element it renders.</p>
+    }
+}
+
+@code {
+    /// <summary>The registry item, e.g. "button".</summary>
+    [Parameter, EditorRequired] public string Name { get; set; } = "";
+}

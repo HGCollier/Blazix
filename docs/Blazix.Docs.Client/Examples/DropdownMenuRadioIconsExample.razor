@@ -1,0 +1,26 @@
+<DropdownMenu>
+    <DropdownMenuTrigger>Payment Method</DropdownMenuTrigger>
+    <DropdownMenuContent Class="min-w-56">
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>Select Payment Method</DropdownMenuLabel>
+            <DropdownMenuRadioGroup @bind-Value="_paymentMethod">
+                <DropdownMenuRadioItem Value="card">
+                    <Icon Name="credit-card" />
+                    Credit Card
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="paypal">
+                    <Icon Name="wallet" />
+                    PayPal
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="bank">
+                    <Icon Name="building-2" />
+                    Bank Transfer
+                </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+        </DropdownMenuGroup>
+    </DropdownMenuContent>
+</DropdownMenu>
+
+@code {
+    private string? _paymentMethod = "card";
+}

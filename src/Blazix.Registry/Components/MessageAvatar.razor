@@ -1,0 +1,17 @@
+@using static Blazix.Registry.ClassNames
+
+<div data-slot="message-avatar" @attributes="AdditionalAttributes"
+     class="@Cn(
+         "flex w-fit min-w-8 shrink-0 items-center justify-center self-end overflow-hidden rounded-full bg-muted " +
+         "group-has-data-[slot=message-footer]/message:-translate-y-8",
+         Class)">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

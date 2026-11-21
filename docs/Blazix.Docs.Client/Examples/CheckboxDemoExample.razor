@@ -1,0 +1,26 @@
+<FieldGroup Class="max-w-sm">
+    <Field Orientation="FieldOrientation.Horizontal">
+        <Checkbox id="terms-checkbox" Name="terms-checkbox" />
+        <Label for="terms-checkbox">Accept terms and conditions</Label>
+    </Field>
+    <Field Orientation="FieldOrientation.Horizontal">
+        <Checkbox id="terms-checkbox-2" Name="terms-checkbox-2" Checked="true" />
+        <FieldContent>
+            <FieldLabel for="terms-checkbox-2">Accept terms and conditions</FieldLabel>
+            <FieldDescription>By clicking this checkbox, you agree to the terms.</FieldDescription>
+        </FieldContent>
+    </Field>
+    <Field Orientation="FieldOrientation.Horizontal" data-disabled>
+        <Checkbox id="toggle-checkbox" Name="toggle-checkbox" Disabled="true" />
+        <FieldLabel for="toggle-checkbox">Enable notifications</FieldLabel>
+    </Field>
+    <FieldLabel>
+        <Field Orientation="FieldOrientation.Horizontal">
+            <Checkbox id="toggle-checkbox-2" Name="toggle-checkbox-2" />
+            <FieldContent>
+                <FieldTitle>Enable notifications</FieldTitle>
+                <FieldDescription>You can enable or disable notifications at any time.</FieldDescription>
+            </FieldContent>
+        </Field>
+    </FieldLabel>
+</FieldGroup>

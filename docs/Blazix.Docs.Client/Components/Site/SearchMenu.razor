@@ -1,0 +1,208 @@
+@implements IAsyncDisposable
+@inject NavigationManager Navigation
+@inject SiteScript Site
+
+@* site.js filters the list as you type and moves the selection with the arrow keys, so typing never waits on the server. *@
+<Dialog @bind-Open="_open" @bind-Open:after="ClearIfClosed">
+    <DialogTrigger Class="@ButtonVariants.Get(ButtonVariant.Outline, ButtonSize.Default,
+                              "relative h-8 w-full justify-start rounded-lg border-none bg-muted pl-3 font-normal text-foreground shadow-none transition-colors hover:bg-muted/50 md:w-48 lg:w-40 xl:w-64 dark:bg-card")">
+        <span class="hidden xl:inline-flex">Search documentation...</span>
+        <span class="inline-flex xl:hidden">Search...</span>
+    </DialogTrigger>
+    <Blazix.Primitives.DialogPopup data-slot="dialog-content"
+                                 class="fixed top-[15%] left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 gap-4 rounded-xl border-none bg-popover bg-clip-padding p-2 pb-11 text-sm text-popover-foreground shadow-2xl ring-4 ring-neutral-200/80 outline-none duration-100 sm:max-w-lg dark:bg-neutral-900 dark:ring-neutral-800 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95">
+        <DialogHeader Class="sr-only">
+            <DialogTitle>Search documentation</DialogTitle>
+            <DialogDescription>Type to filter the pages, move through them with the arrow keys, and press Enter to open one.</DialogDescription>
+        </DialogHeader>
+        <div class="flex flex-col">
+        <div class="flex h-9 items-center gap-2 rounded-md border border-input bg-input/10 px-3 has-[input:focus-visible]:border-ring has-[input:focus-visible]:ring-3 has-[input:focus-visible]:ring-ring/50 dark:bg-input/20">
+            <Icon Name="search" class="size-4 shrink-0 opacity-50" />
+            <input @ref="_input" id="docs-search-input" type="text" role="combobox" aria-label="Search documentation" aria-expanded="true" aria-controls="docs-search-list"
+                   aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="Search documentation..."
+                   class="flex h-9 w-full bg-transparent py-0 text-sm outline-hidden placeholder:text-muted-foreground" @oninput="OnQuery" />
+        </div>
+        @* site.js says how many pages match, a moment after typing stops. *@
+        <div data-search-status role="status" class="sr-only"></div>
+        <div class="no-scrollbar max-h-[300px] min-h-80 scroll-pt-2 scroll-pb-1.5 overflow-x-hidden overflow-y-auto">
+        @* Outside the listbox, which holds only options. *@
+        <div data-search-empty hidden class="py-12 text-center text-sm text-muted-foreground">No results found.</div>
+        <div @ref="_list" id="docs-search-list" role="listbox" aria-label="Pages">
+            <SearchGroup Heading="Pages" Pages="DocsNav.MainNav" Prefix="Navigation" />
+            @foreach (var group in DocsNav.AllGroups)
+            {
+                <SearchGroup Heading="@group.SearchHeading" Pages="group.Pages" Prefix="@group.SearchHeading" Components="@ReferenceEquals(group.Pages, DocsNav.Components)" />
+            }
+            @if (_results.Count > 0)
+            {
+                @* site.js leaves these out of its filtering. *@
+                <div data-search-group role="group" aria-label="Search Results" class="overflow-hidden text-foreground">
+                    <div class="scroll-mt-16 px-3 pt-3 pb-1 text-xs font-medium text-muted-foreground" aria-hidden="true">Search Results</div>
+                    @foreach (var (result, index) in _results.Select((r, i) => (r, i)))
+                    {
+                        <a href="@result.Href" id="@($"search-result-{index}")" role="option" tabindex="-1" aria-selected="false" data-selected="false"
+                           data-search-item data-search-keep title="@result.Page"
+                           class="relative flex min-h-9 cursor-default items-center gap-2 rounded-md border border-transparent px-3 py-1.5 text-sm font-medium outline-hidden select-none data-[selected=true]:border-input data-[selected=true]:bg-input/10 dark:data-[selected=true]:bg-input/20">
+                            <span class="line-clamp-1">@result.Text</span>
+                        </a>
+                    }
+                </div>
+            }
+        </div>
+        </div>
+        </div>
+        <div @ref="_footer"
+             class="absolute inset-x-0 bottom-0 z-20 flex h-10 items-center gap-2 rounded-b-xl border-t border-t-neutral-100 bg-neutral-50 px-4 text-xs font-medium text-muted-foreground dark:border-t-neutral-700 dark:bg-neutral-800">
+            <div class="flex items-center gap-2">
+                <SearchKbd><Icon Name="corner-down-left" /></SearchKbd>
+                <span data-search-action>Go to Page</span>
+            </div>
+            <Separator Orientation="Orientation.Vertical" Class="h-4!" data-search-copy hidden />
+            <div class="flex items-center gap-1" data-search-copy hidden>
+                <SearchKbd>⌘</SearchKbd>
+                <SearchKbd>C</SearchKbd>
+                <span data-search-copy-text></span>
+            </div>
+        </div>
+    </Blazix.Primitives.DialogPopup>
+</Dialog>
+
+@code {
+    private bool _open;
+    private bool _wired;
+    private ElementReference _input;
+    private ElementReference _list;
+    private ElementReference _footer;
+    private IJSObjectReference? _keys;
+    private IJSObjectReference? _search;
+    private DotNetObjectReference<SearchMenu>? _self;
+    private IReadOnlyList<SearchResult> _results = [];
+    private CancellationTokenSource? _debounce;
+
+    protected override void OnInitialized() => Navigation.LocationChanged += OnLocationChanged;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var module = await Site.GetAsync(Assets["site.js"]);
+        if (firstRender)
+        {
+            _self = DotNetObjectReference.Create(this);
+            _keys = await module.InvokeAsync<IJSObjectReference>("watchSearchKeys", _self);
+        }
+        if (_open && !_wired)
+        {
+            _wired = true;
+            var search = await module.InvokeAsync<IJSObjectReference>("searchList", _input, _list, _footer);
+            if (_wired)
+            {
+                _search = search;
+            }
+            else
+            {
+                // Closed while the call was on its way: that list is gone.
+                await search.InvokeVoidAsync("dispose");
+                await search.DisposeAsync();
+            }
+        }
+        else if (!_open && _wired)
+        {
+            _wired = false;
+            await DisposeSearchAsync();
+        }
+    }
+
+    /// <summary>Full-text results, a moment after typing stops.</summary>
+    private async Task OnQuery(ChangeEventArgs e)
+    {
+        var query = e.Value as string ?? "";
+        if (_debounce is not null)
+        {
+            await _debounce.CancelAsync();
+            _debounce.Dispose();
+        }
+        _debounce = new CancellationTokenSource();
+        try
+        {
+            await Task.Delay(250, _debounce.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+        if (_open)
+        {
+            _results = SearchIndex.Find(query);
+        }
+    }
+
+    private void ClearIfClosed()
+    {
+        if (!_open)
+        {
+            ClearResults();
+        }
+    }
+
+    /// <summary>Drops the results, and any query still waiting out its debounce.</summary>
+    private void ClearResults()
+    {
+        _debounce?.Cancel();
+        _results = [];
+    }
+
+    /// <summary>⌘K or Ctrl+K, from site.js.</summary>
+    [JSInvokable]
+    public Task Toggle()
+    {
+        _open = !_open;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        if (_open)
+        {
+            _open = false;
+            ClearResults();
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task DisposeSearchAsync()
+    {
+        if (_search is not null)
+        {
+            try
+            {
+                await _search.InvokeVoidAsync("dispose");
+                await _search.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+                // The page is gone.
+            }
+            _search = null;
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        Navigation.LocationChanged -= OnLocationChanged;
+        _debounce?.Dispose();
+        await DisposeSearchAsync();
+        if (_keys is not null)
+        {
+            try
+            {
+                await _keys.InvokeVoidAsync("dispose");
+                await _keys.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+                // The page is gone.
+            }
+        }
+        _self?.Dispose();
+    }
+}

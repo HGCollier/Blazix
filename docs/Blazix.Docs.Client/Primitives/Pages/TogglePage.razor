@@ -1,0 +1,27 @@
+@page "/docs/primitives/toggle"
+
+<DocsPage Title="Toggle" Description="A two-state button that can be on or off.">
+    <ComponentPreview Name="primitives/toggle-hero" />
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and use the part:</p>
+    <CodeFigure Code="@Anatomy" />
+    <p>
+        Use it on its own, or in a <a href="/docs/primitives/toggle-group">Toggle Group</a>, which shares one state between a
+        series of toggles.
+    </p>
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(ToggleRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-pressed">Present when the toggle button is pressed.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the toggle button is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <ToggleRoot />
+        """;
+}

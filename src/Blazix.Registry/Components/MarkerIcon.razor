@@ -1,0 +1,14 @@
+@using static Blazix.Registry.ClassNames
+
+<span data-slot="marker-icon" aria-hidden="true" @attributes="AdditionalAttributes"
+      class="@Cn("size-4 shrink-0 [&_svg:not([class*='size-'])]:size-4", Class)">
+    @ChildContent
+</span>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

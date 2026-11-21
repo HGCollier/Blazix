@@ -1,0 +1,15 @@
+<div class="mx-auto w-full max-w-xs overflow-hidden rounded-2xl border">
+    <div tabindex="0" role="region" aria-label="Scrolling row" class="scroll-fade-x no-scrollbar overflow-x-auto">
+        <div class="flex w-max gap-1.5 p-1.5">
+            @foreach (var tag in Tags)
+            {
+                <div class="shrink-0 rounded-lg bg-muted px-3 py-2.5 text-sm">@tag</div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private static readonly string[] Tags =
+        ["Design", "Engineering", "Marketing", "Product", "Research", "Sales", "Support", "Operations", "Finance", "Legal", "People", "Security"];
+}

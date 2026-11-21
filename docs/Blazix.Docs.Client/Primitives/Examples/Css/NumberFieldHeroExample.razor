@@ -1,0 +1,39 @@
+<NumberFieldRoot Value="100" class="number-field-field">
+    <NumberFieldScrubArea class="number-field-scrub-area">
+        <label for="@_id" class="number-field-label">
+            Amount
+        </label>
+        <NumberFieldScrubAreaCursor class="number-field-scrub-area-cursor">
+            @CursorGrowIcon
+        </NumberFieldScrubAreaCursor>
+    </NumberFieldScrubArea>
+
+    <NumberFieldGroup class="number-field-group">
+        <NumberFieldDecrement class="number-field-decrement">
+            @MinusIcon
+        </NumberFieldDecrement>
+        <NumberFieldInput id="@_id" class="number-field-input" />
+        <NumberFieldIncrement class="number-field-increment">
+            @PlusIcon
+        </NumberFieldIncrement>
+    </NumberFieldGroup>
+</NumberFieldRoot>
+
+@code {
+    private static readonly RenderFragment CursorGrowIcon =
+        @<svg style="display: block" width="26" height="14" viewBox="0 0 24 14" fill="black" stroke="white">
+            <path d="M19.5 5.5L6.49737 5.51844V2L1 6.9999L6.5 12L6.49737 8.5L19.5 8.5V12L25 6.9999L19.5 2V5.5Z" />
+        </svg>;
+
+    private static readonly RenderFragment PlusIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round">
+            <path d="M1.5 8h13M8 14.5v-13" />
+        </svg>;
+
+    private static readonly RenderFragment MinusIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round">
+            <path d="M1.5 8h13" />
+        </svg>;
+
+    private readonly string _id = $"amount-{Guid.NewGuid():N}";
+}

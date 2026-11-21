@@ -1,0 +1,151 @@
+@page "/docs/components/field"
+
+<DocsPage Title="Field" Description="Combine labels, controls, and help text to compose accessible form fields and grouped inputs.">
+    <ComponentPreview Name="field-demo" PreviewClass="h-[800px] p-6 md:h-[850px]" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="field" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <DocsHeading Level="3" Title="Field" />
+    <p>A single control with label, helper text, and validation.</p>
+    <CodeFigure Code="@FieldCode" Language="text" />
+    <DocsHeading Level="3" Title="FieldGroup" />
+    <p>Related fields in one group. Use <code>FieldSeparator</code> between sections when needed.</p>
+    <CodeFigure Code="@FieldGroupCode" Language="text" />
+    <DocsHeading Level="3" Title="FieldSet" />
+    <p>Semantic grouping with a legend and description, usually containing a <code>FieldGroup</code>.</p>
+    <CodeFigure Code="@FieldSetCode" Language="text" />
+    <DocsHeading Title="Anatomy" />
+    <p>The <code>Field</code> family is designed for composing accessible forms. A typical field is structured as follows, with its control (an <code>Input</code>, <code>Select</code>, <code>Switch</code> and so on) after the label:</p>
+    <CodeFigure Code="@AnatomyCode" LineNumbers="true" />
+    <ul>
+        <li><code>Field</code> is the core wrapper for a single field.</li>
+        <li><code>FieldContent</code> is a flex column that groups label and description. Not required if you have no description.</li>
+        <li>Wrap related fields with <code>FieldGroup</code>, and use <code>FieldSet</code> with <code>FieldLegend</code> for semantic grouping.</li>
+    </ul>
+    <DocsHeading Title="Form" />
+    <p>Use it inside an <code>EditForm</code> or a plain <code>&lt;form&gt;</code>: <code>Field</code> only lays out and labels the controls.</p>
+    <DocsHeading Title="Input" />
+    <ComponentPreview Name="field-input" />
+    <DocsHeading Title="Textarea" />
+    <ComponentPreview Name="field-textarea" />
+    <DocsHeading Title="Select" />
+    <ComponentPreview Name="field-select" />
+    <DocsHeading Title="Slider" />
+    <ComponentPreview Name="field-slider" />
+    <DocsHeading Title="Fieldset" />
+    <ComponentPreview Name="field-fieldset" />
+    <DocsHeading Title="Checkbox" />
+    <ComponentPreview Name="field-checkbox" PreviewClass="h-[32rem]" />
+    <DocsHeading Title="Radio" />
+    <ComponentPreview Name="field-radio" />
+    <DocsHeading Title="Switch" />
+    <ComponentPreview Name="field-switch" />
+    <DocsHeading Title="Choice Card" />
+    <p>Wrap <code>Field</code> components inside <code>FieldLabel</code> to create selectable field groups. This works with <code>RadioItem</code>, <code>Checkbox</code> and <code>Switch</code> components.</p>
+    <ComponentPreview Name="field-choice-card" />
+    <DocsHeading Title="Field Group" />
+    <p>Stack <code>Field</code> components with <code>FieldGroup</code>. Add <code>FieldSeparator</code> to divide them.</p>
+    <ComponentPreview Name="field-group" PreviewClass="h-96" />
+    <DocsHeading Title="Responsive Layout" />
+    <ul>
+        <li><strong>Vertical fields:</strong> Default orientation stacks label, control, and helper text—ideal for mobile-first layouts.</li>
+        <li><strong>Horizontal fields:</strong> Set <code>orientation="horizontal"</code> on <code>Field</code> to align the label and control side-by-side. Pair with <code>FieldContent</code> to keep descriptions aligned.</li>
+        <li><strong>Responsive fields:</strong> Set <code>orientation="responsive"</code> for automatic column layouts inside container-aware parents. Apply <code>@@container/field-group</code> classes on <code>FieldGroup</code> to switch orientations at specific breakpoints.</li>
+    </ul>
+    <ComponentPreview Name="field-responsive" PreviewClass="h-[650px] p-6 md:h-[500px] md:p-10" />
+    <DocsHeading Title="Validation and Errors" />
+    <ul>
+        <li>Add <code>data-invalid</code> to <code>Field</code> to switch the entire block into an error state.</li>
+        <li>Add <code>aria-invalid</code> on the input itself for assistive technologies.</li>
+        <li>Render <code>FieldError</code> immediately after the control or inside <code>FieldContent</code> to keep error messages aligned with the field.</li>
+    </ul>
+    <CodeFigure Code="@ValidationAndErrorsCode" LineNumbers="true" />
+    <DocsHeading Title="Accessibility" />
+    <ul>
+        <li><code>FieldSet</code> and <code>FieldLegend</code> keep related controls grouped for keyboard and assistive tech users.</li>
+        <li><code>Field</code> outputs <code>role="group"</code> so nested controls inherit labeling from <code>FieldLabel</code> and <code>FieldLegend</code> when combined.</li>
+        <li>Apply <code>FieldSeparator</code> sparingly to ensure screen readers encounter clear section boundaries.</li>
+    </ul>
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="field" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <FieldSet>
+            <FieldLegend>Profile</FieldLegend>
+            <FieldDescription>This appears on invoices and emails.</FieldDescription>
+            <FieldGroup>
+                <Field>
+                    <FieldLabel for="name">Full name</FieldLabel>
+                    <Input id="name" autocomplete="off" placeholder="Evil Rabbit" />
+                    <FieldDescription>This appears on invoices and emails.</FieldDescription>
+                </Field>
+                <Field>
+                    <FieldLabel for="username">Username</FieldLabel>
+                    <Input id="username" autocomplete="off" aria-invalid />
+                    <FieldError>Choose another username.</FieldError>
+                </Field>
+                <Field Orientation="FieldOrientation.Horizontal">
+                    <Switch id="newsletter" />
+                    <FieldLabel for="newsletter">Subscribe to the newsletter</FieldLabel>
+                </Field>
+            </FieldGroup>
+        </FieldSet>
+        """;
+
+    private const string FieldCode = """
+        Field
+        ├── FieldLabel
+        ├── Input / Textarea / Switch / Select
+        ├── FieldDescription
+        └── FieldError
+        """;
+
+    private const string FieldGroupCode = """
+        FieldGroup
+        ├── Field
+        │   ├── FieldLabel
+        │   ├── Input / Textarea / Switch / Select
+        │   ├── FieldDescription
+        │   └── FieldError
+        ├── FieldSeparator
+        └── Field
+            ├── FieldLabel
+            └── Input / Textarea / Switch / Select
+        """;
+
+    private const string FieldSetCode = """
+        FieldSet
+        ├── FieldLegend
+        ├── FieldDescription
+        └── FieldGroup
+            ├── Field
+            │   ├── FieldLabel
+            │   ├── Input / Textarea / Switch / Select
+            │   ├── FieldDescription
+            │   └── FieldError
+            └── Field
+                ├── FieldLabel
+                └── Input / Textarea / Switch / Select
+        """;
+
+    private const string AnatomyCode = """
+        <Field>
+            <FieldLabel for="input-id">Label</FieldLabel>
+            <Input id="input-id" />
+            <FieldDescription>Optional helper text.</FieldDescription>
+            <FieldError>Validation message.</FieldError>
+        </Field>
+        """;
+
+    private const string ValidationAndErrorsCode = """
+        <Field data-invalid>
+            <FieldLabel for="email">Email</FieldLabel>
+            <Input id="email" Type="email" aria-invalid />
+            <FieldError>Enter a valid email address.</FieldError>
+        </Field>
+        """;
+}

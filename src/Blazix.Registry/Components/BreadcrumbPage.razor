@@ -1,0 +1,14 @@
+@using static Blazix.Registry.ClassNames
+
+<span data-slot="breadcrumb-page" role="link" aria-disabled="true" aria-current="page" @attributes="AdditionalAttributes"
+      class="@Cn("font-normal text-foreground", Class)">
+    @ChildContent
+</span>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

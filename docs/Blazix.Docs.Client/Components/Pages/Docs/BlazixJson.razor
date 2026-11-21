@@ -1,0 +1,60 @@
+@page "/docs/blazix-json"
+
+<DocsPage Title="blazix.json" Description="Configuration for your project.">
+    <p>The <code>blazix.json</code> file holds the configuration for your project.</p>
+    <p>The CLI uses it to know where to put components, which namespace to give them, and what you&apos;ve installed.</p>
+    <p><code>init</code> writes it, and <code>add</code> updates it. You can edit it by hand.</p>
+    <CodeFigure Code="@ExampleCode" Language="json" Title="blazix.json" LineNumbers="true" />
+
+    <DocsHeading Title="namespace" />
+    <p>The namespace of your components. The registry&apos;s components are in <code>Blazix.Registry</code>, and <code>add</code> rewrites it to this one in every file it copies.</p>
+    <p><code>init</code> makes it from your project&apos;s root namespace and the components folder.</p>
+    <CodeFigure Code="@NamespaceCode" Language="json" Title="blazix.json" />
+
+    <DocsHeading Title="componentsDir" />
+    <p>Where <code>add</code> puts components, relative to the project. Set it with <code>init --dir</code>. Defaults to <code>Components/UI</code>.</p>
+    <CodeFigure Code="@DirCode" Language="json" Title="blazix.json" />
+
+    <DocsHeading Title="version" />
+    <p>The CLI version that set up the project. The components it copies are written against the <code>Blazix.Primitives</code> package of the same version.</p>
+
+    <DocsHeading Title="installed" />
+    <p>What you&apos;ve added, with the version each came from. <code>list</code> marks these. To pick up a newer version of a component, run <code>add &lt;name&gt; --overwrite</code> and review the diff.</p>
+    <CodeFigure Code="@InstalledCode" Language="json" Title="blazix.json" />
+</DocsPage>
+
+@code {
+    private const string ExampleCode = """
+        {
+          "namespace": "MyApp.Components.UI",
+          "componentsDir": "Components/UI",
+          "version": "0.1.0",
+          "installed": {
+            "utils": "0.1.0",
+            "button": "0.1.0"
+          }
+        }
+        """;
+
+    private const string NamespaceCode = """
+        {
+          "namespace": "MyApp.Components.UI"
+        }
+        """;
+
+    private const string DirCode = """
+        {
+          "componentsDir": "Components/UI"
+        }
+        """;
+
+    private const string InstalledCode = """
+        {
+          "installed": {
+            "utils": "0.1.0",
+            "button": "0.1.0",
+            "dropdown-menu": "0.1.0"
+          }
+        }
+        """;
+}

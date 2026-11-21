@@ -1,0 +1,41 @@
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.QuestionnaireRoot data-slot="questionnaire" @attributes="AdditionalAttributes" Render="@Render"
+                                   Items="@Items" DefaultItem="@DefaultItem" Item="@Item" ItemChanged="@ItemChanged"
+                                   Shortcuts="@Shortcuts" NoValidate="@NoValidate" OnSubmit="@OnSubmit" OnReset="@OnReset"
+                                   class="@Cn("flex w-full min-w-0 flex-col gap-4", Class)">
+    @ChildContent
+</Blazix.Primitives.QuestionnaireRoot>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<QuestionnaireRenderProps>? Render { get; set; }
+
+    /// <summary>The items, in order. Optional, but progress and actions are right from the first render with it.</summary>
+    [Parameter] public IReadOnlyList<QuestionnaireItemDefinition>? Items { get; set; }
+
+    /// <summary>The item shown first, and after a reset.</summary>
+    [Parameter] public string? DefaultItem { get; set; }
+
+    /// <summary>The active item's name. Use <c>@bind-Item</c> to store it.</summary>
+    [Parameter] public string? Item { get; set; }
+
+    [Parameter] public EventCallback<string> ItemChanged { get; set; }
+
+    /// <summary>Select answers with A–Z or 1–9.</summary>
+    [Parameter] public QuestionnaireShortcuts? Shortcuts { get; set; }
+
+    /// <summary>Skip the browser's constraint validation. Defaults to true.</summary>
+    [Parameter] public bool NoValidate { get; set; } = true;
+
+    /// <summary>Runs with the answers once every item is valid.</summary>
+    [Parameter] public EventCallback<QuestionnaireAnswers> OnSubmit { get; set; }
+
+    [Parameter] public EventCallback OnReset { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

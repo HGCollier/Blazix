@@ -1,0 +1,28 @@
+<div class="mx-auto w-full max-w-sm py-12">
+    <Dialog>
+        <Attachment Class="w-full">
+            <AttachmentMedia><Icon Name="file-search" /></AttachmentMedia>
+            <AttachmentContent>
+                <AttachmentTitle>research-summary.pdf</AttachmentTitle>
+                <AttachmentDescription>Open preview dialog</AttachmentDescription>
+            </AttachmentContent>
+            <AttachmentActions>
+                <AttachmentAction aria-label="Copy link"><Icon Name="copy" /></AttachmentAction>
+                <AttachmentAction aria-label="Remove research-summary.pdf"><Icon Name="x" /></AttachmentAction>
+            </AttachmentActions>
+            <DialogTrigger>
+                <Render>
+                    <AttachmentTrigger @attributes="context.Attributes" aria-label="Preview research-summary.pdf" />
+                </Render>
+            </DialogTrigger>
+        </Attachment>
+        <DialogContent Class="sm:max-w-md">
+            <DialogHeader>
+                <DialogTitle>research-summary.pdf</DialogTitle>
+                <DialogDescription>
+                    The attachment trigger fills the card and opens the dialog, while the actions stay independently clickable above it.
+                </DialogDescription>
+            </DialogHeader>
+        </DialogContent>
+    </Dialog>
+</div>

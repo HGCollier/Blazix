@@ -1,0 +1,41 @@
+<Tabs Value="route" Class="w-full max-w-md">
+    <TabsList>
+        @foreach (var file in Files)
+        {
+            <TabsTrigger @key="file.Id" Value="@file.Id">@file.Title.Split('/')[^1]</TabsTrigger>
+        }
+    </TabsList>
+    @foreach (var file in Files)
+    {
+        <TabsContent @key="file.Id" Value="@file.Id">
+            <CodeBlock>
+                <CodeBlockHeader>
+                    <CodeBlockTitle>@file.Title</CodeBlockTitle>
+                    <CodeBlockActions>
+                        <CodeBlockCopyButton Value="@file.Code" />
+                    </CodeBlockActions>
+                </CodeBlockHeader>
+                <CodeBlockContent LineNumbers="true" Code="@file.Code" />
+            </CodeBlock>
+        </TabsContent>
+    }
+</Tabs>
+
+@code {
+    private sealed record FileTab(string Id, string Title, string Code);
+
+    private static readonly FileTab[] Files =
+    [
+        new("route", "app/api/chat/route.ts", ChatSnippet.ShortRoute),
+        new("chat", "components/chat.tsx",
+            """
+            "use client"
+
+            export function Chat() {
+              const { messages } = useChat()
+              return <MessageList messages={messages} />
+            }
+            """),
+        new("env", ".env.local", "AI_GATEWAY_API_KEY=your-api-key"),
+    ];
+}

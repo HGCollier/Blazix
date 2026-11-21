@@ -1,0 +1,57 @@
+@page "/docs/components/card"
+
+<DocsPage Title="Card" Description="Displays a card with header, content, and footer.">
+    <ComponentPreview Name="card-demo" PreviewClass="h-[30rem]" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="card" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>Card</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Size" />
+    <p>Use the <code>size="sm"</code> parameter to set the size of the card to small. The small size variant uses smaller spacing.</p>
+    <ComponentPreview Name="card-small" PreviewClass="h-96" />
+    <DocsHeading Title="Spacing" />
+    <p>In addition to the <code>Size</code> parameter, you can use the <code>--card-spacing</code> CSS variable to control the spacing between sections and the inset of card parts.</p>
+    <ComponentPreview Name="card-spacing" PreviewClass="h-[34rem]" />
+    <p>Use negative margins with <code>-mx-(--card-spacing)</code> to make content go edge to edge while keeping it aligned with the card inset. When the edge-to-edge content sits above a footer, use <code>-mb-(--card-spacing)</code> on <code>CardContent</code> to remove the section gap.</p>
+    <ComponentPreview Name="card-edge-to-edge" PreviewClass="h-[24rem]" />
+    <DocsHeading Title="Image" />
+    <p>Add an image before the card header to create a card with an image.</p>
+    <ComponentPreview Name="card-image" PreviewClass="h-[32rem]" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="card" />
+    <DocsHeading Title="Changelog" />
+    <DocsHeading Level="3" Title="Spacing Variable" />
+    <p>The card&apos;s padding and gaps come from the <code>--card-spacing</code> variable. Customize them by setting <code>--card-spacing</code> on the <code>Card</code> with an arbitrary property class:</p>
+    <CodeFigure Code="@SpacingVariableCode5" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Card>
+            <CardHeader>
+                <CardTitle>Card Title</CardTitle>
+                <CardDescription>Card Description</CardDescription>
+                <CardAction>Card Action</CardAction>
+            </CardHeader>
+            <CardContent><p>Card Content</p></CardContent>
+            <CardFooter><p>Card Footer</p></CardFooter>
+        </Card>
+        """;
+
+    private const string CompositionCode = """
+        Card
+        ├── CardHeader
+        │   ├── CardTitle
+        │   ├── CardDescription
+        │   └── CardAction
+        ├── CardContent
+        └── CardFooter
+        """;
+
+    private const string SpacingVariableCode5 = """
+        <Card Class="[--card-spacing:--spacing(6)]">...</Card>
+        """;
+}

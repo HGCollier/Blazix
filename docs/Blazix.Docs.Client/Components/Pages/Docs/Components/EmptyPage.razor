@@ -1,0 +1,55 @@
+@page "/docs/components/empty"
+
+<DocsPage Title="Empty" Description="Use the Empty component to display an empty state.">
+    <ComponentPreview Name="empty-demo" PreviewClass="h-96 p-0" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="empty" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build an <code>Empty</code> state:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Outline" />
+    <p>Use the <code>border</code> utility class to create an outline empty state.</p>
+    <ComponentPreview Name="empty-outline" PreviewClass="h-96 p-6 md:p-10" />
+    <DocsHeading Title="Background" />
+    <p>Use the <code>bg-*</code> and <code>bg-gradient-*</code> utilities to add a background to the empty state.</p>
+    <ComponentPreview Name="empty-background" PreviewClass="h-96 p-0" />
+    <DocsHeading Title="Avatar" />
+    <p>Use the <code>EmptyMedia</code> component to display an avatar in the empty state.</p>
+    <ComponentPreview Name="empty-avatar" PreviewClass="h-96 p-0" />
+    <DocsHeading Title="Avatar Group" />
+    <p>Use the <code>EmptyMedia</code> component to display an avatar group in the empty state.</p>
+    <ComponentPreview Name="empty-avatar-group" PreviewClass="h-96 p-0" />
+    <DocsHeading Title="InputGroup" />
+    <p>You can add an <code>InputGroup</code> component to the <code>EmptyContent</code> component.</p>
+    <ComponentPreview Name="empty-input-group" PreviewClass="h-96 p-0" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="empty" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Empty>
+            <EmptyHeader>
+                <EmptyMedia Variant="EmptyMediaVariant.Icon">
+                    <Icon Name="folder" />
+                </EmptyMedia>
+                <EmptyTitle>No data</EmptyTitle>
+                <EmptyDescription>No data found</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+                <Button>Add data</Button>
+            </EmptyContent>
+        </Empty>
+        """;
+
+    private const string CompositionCode = """
+        Empty
+        ├── EmptyHeader
+        │   ├── EmptyMedia
+        │   ├── EmptyTitle
+        │   └── EmptyDescription
+        └── EmptyContent
+        """;
+}

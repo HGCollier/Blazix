@@ -1,0 +1,169 @@
+@page "/docs/primitives/styling"
+
+<DocsPage Title="Styling" Description="Learn how to style the primitives with the styling approach you prefer.">
+    <p>
+        The primitives are unstyled and don't ship any CSS. They work with Tailwind, CSS isolation, a plain stylesheet or any
+        other way of styling, so you keep total control of your styling layer.
+    </p>
+
+    <DocsHeading Title="Style hooks" />
+    <DocsHeading Level="3" Title="CSS classes" />
+    <p>Parts that render an HTML element pass a <code>class</code> attribute on to it:</p>
+    <CodeFigure Code="@ClassCode" Title="Switch.razor" />
+    <p>
+        To pick classes from a part's state, style its data attributes (below), or render the element yourself with
+        <a href="/docs/primitives/composition"><code>Render</code></a>, whose props carry the state:
+    </p>
+    <CodeFigure Code="@StateClassCode" Title="Switch.razor" />
+
+    <DocsHeading Level="3" Title="Data attributes" />
+    <p>
+        Parts render data attributes for their states. For example, <a href="/docs/primitives/switch">Switch</a> can be styled
+        with its <code>[data-checked]</code> and <code>[data-unchecked]</code> attributes, among others:
+    </p>
+    <CodeFigure Code="@DataCode" Title="app.css" Language="css" />
+
+    <DocsHeading Level="3" Title="CSS variables" />
+    <p>
+        Parts set CSS variables to help with styling, often with numbers for sizes and transforms. For example, the popups of
+        <a href="/docs/primitives/popover">Popover</a> can use <code>--available-height</code> and <code>--anchor-width</code>:
+    </p>
+    <CodeFigure Code="@VariablesCode" Title="app.css" Language="css" />
+    <p>Each primitive's API Reference lists the data attributes and CSS variables of every part.</p>
+
+    <DocsHeading Level="3" Title="Style attribute" />
+    <p>
+        Parts that render an HTML element pass a <code>style</code> attribute on to it as well. A part that sets styles of its
+        own puts yours after them, so your declarations win:
+    </p>
+    <CodeFigure Code="@StyleCode" Title="Switch.razor" />
+
+    <DocsHeading Title="Tailwind CSS" />
+    <p>
+        Put Tailwind classes on each part. Tailwind's <code>data-*</code> variants match the parts' data attributes, as in
+        <code>data-highlighted:bg-neutral-950</code>, and its arbitrary values read their CSS variables, as in
+        <code>origin-(--transform-origin)</code>. The styled components are a complete example.
+    </p>
+    <CodeFigure Code="@TailwindCode" Title="SongMenu.razor" />
+
+    <DocsHeading Title="CSS" />
+    <p>
+        Put a class on each part and style it in a stylesheet your app loads, such as <code>app.css</code>. Give the
+        classes names that won't clash with other components' classes:
+    </p>
+    <CodeFigure Code="@CssCode" Title="SongMenu.razor" />
+    <CodeFigure Code="@CssStyles" Title="app.css" Language="css" />
+    <p>
+        Every example in these docs comes styled both ways: switch between CSS and Tailwind with the styling method select
+        under the example.
+    </p>
+
+    <DocsHeading Title="CSS isolation" />
+    <p>
+        A component's scoped styles only reach the elements it renders itself, and a part renders its element in its own
+        component. Put <code>::deep</code> in front of selectors for parts, under an element of your own:
+    </p>
+    <CodeFigure Code="@IsolationCode" Title="SongMenu.razor" />
+    <CodeFigure Code="@IsolationCss" Title="SongMenu.razor.css" Language="css" />
+    <p>
+        Popups stay where you wrote them in the DOM (they're shown in the browser's top layer rather than moved into a
+        portal), so <code>::deep</code> reaches them too.
+    </p>
+</DocsPage>
+
+@code {
+    private const string ClassCode = """
+        <SwitchThumb class="switch-thumb" />
+        """;
+
+    private const string StateClassCode = """
+        <SwitchThumb>
+            <Render Context="thumb">
+                <span @attributes="thumb.Attributes" class="@(thumb.Checked ? "checked" : "unchecked")"></span>
+            </Render>
+        </SwitchThumb>
+        """;
+
+    private const string DataCode = """
+        .switch-thumb[data-checked] {
+          background-color: green;
+        }
+        """;
+
+    private const string VariablesCode = """
+        .popover-popup {
+          max-height: var(--available-height);
+          min-width: var(--anchor-width);
+        }
+        """;
+
+    private const string StyleCode = """
+        <SwitchThumb style="height: 100px" />
+        """;
+
+    private const string TailwindCode = """
+        <MenuRoot>
+            <MenuTrigger class="flex h-8 items-center justify-center rounded-md border border-neutral-950 bg-white px-3 text-sm text-neutral-950 select-none hover:bg-neutral-100 active:bg-neutral-200 data-popup-open:bg-neutral-100 focus-visible:outline-2 focus-visible:-outline-offset-1 focus-visible:outline-neutral-950 dark:border-white dark:bg-neutral-950 dark:text-white dark:hover:bg-neutral-800 dark:active:bg-neutral-700 dark:data-popup-open:bg-neutral-800 dark:focus-visible:outline-white">
+                Song
+            </MenuTrigger>
+            <MenuPortal>
+                <MenuPositioner class="outline-hidden" SideOffset="8">
+                    <MenuPopup class="origin-(--transform-origin) border border-neutral-950 bg-white py-1 text-neutral-950 outline-hidden transition data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0 dark:border-white dark:bg-neutral-950 dark:text-white">
+                        <MenuItem class="flex cursor-default py-2 pr-8 pl-4 text-sm leading-4 outline-hidden select-none data-highlighted:bg-neutral-950 data-highlighted:text-white dark:data-highlighted:bg-white dark:data-highlighted:text-neutral-950">
+                            Add to Library
+                        </MenuItem>
+                        <MenuItem class="flex cursor-default py-2 pr-8 pl-4 text-sm leading-4 outline-hidden select-none data-highlighted:bg-neutral-950 data-highlighted:text-white dark:data-highlighted:bg-white dark:data-highlighted:text-neutral-950">
+                            Add to Playlist
+                        </MenuItem>
+                    </MenuPopup>
+                </MenuPositioner>
+            </MenuPortal>
+        </MenuRoot>
+        """;
+
+    private const string CssCode = """
+        <MenuRoot>
+            <MenuTrigger class="song-menu-trigger">Song</MenuTrigger>
+            <MenuPopup class="song-menu-popup" SideOffset="8">
+                <MenuItem class="song-menu-item">Add to Library</MenuItem>
+                <MenuItem class="song-menu-item">Add to Playlist</MenuItem>
+            </MenuPopup>
+        </MenuRoot>
+        """;
+
+    private const string CssStyles = """
+        .song-menu-popup {
+          border: 1px solid currentColor;
+          transform-origin: var(--transform-origin);
+        }
+
+        .song-menu-item[data-highlighted] {
+          background-color: black;
+          color: white;
+        }
+        """;
+
+    private const string IsolationCode = """
+        <div class="song-menu">
+            <MenuRoot>
+                <MenuTrigger class="trigger">Song</MenuTrigger>
+                <MenuPopup class="popup" SideOffset="8">
+                    <MenuItem class="item">Add to Library</MenuItem>
+                    <MenuItem class="item">Add to Playlist</MenuItem>
+                </MenuPopup>
+            </MenuRoot>
+        </div>
+        """;
+
+    private const string IsolationCss = """
+        .song-menu ::deep .popup {
+          border: 1px solid currentColor;
+          transform-origin: var(--transform-origin);
+        }
+
+        .song-menu ::deep .item[data-highlighted] {
+          background-color: black;
+          color: white;
+        }
+        """;
+}

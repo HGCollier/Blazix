@@ -1,0 +1,140 @@
+@page "/docs/theming"
+
+<DocsPage Title="Theming" Description="Using CSS variables and theme tokens.">
+    <p>We use and recommend CSS variables for theming.</p>
+    <p>
+        This gives you semantic theme tokens like <code>background</code>, <code>foreground</code>, and <code>primary</code> that
+        components use by default. Override those tokens in your CSS to change the look of your app without rewriting component classes.
+    </p>
+    <CodeFigure Code="@TokensCode" />
+    <p><code>init</code> puts them in <code>Styles/theme.css</code>, which is yours to edit. Tailwind maps these tokens into utilities like <code>bg-background</code>, <code>text-foreground</code>, <code>border-border</code>, and <code>ring-ring</code>.</p>
+    <p>Dark mode works by overriding the same tokens inside a <code>.dark</code> selector. See the <a href="/docs/dark-mode">dark mode docs</a> for toggling the <code>.dark</code> class.</p>
+
+    <DocsHeading Title="Token Convention" />
+    <p>We use semantic background and foreground pairs. The base token controls the surface color and the <code>-foreground</code> token controls the text and icon color that sits on that surface.</p>
+    <Callout Class="mt-4">The background suffix is omitted for the surface token. For example, <code>primary</code> pairs with <code>primary-foreground</code>.</Callout>
+    <p>Given the following CSS variables:</p>
+    <CodeFigure Code="@PrimaryCode" Language="css" />
+    <p>The <code>background</code> color of the following component will be <code>var(--primary)</code> and the <code>foreground</code> color will be <code>var(--primary-foreground)</code>.</p>
+    <CodeFigure Code="@PrimaryUsageCode" />
+
+    <DocsHeading Title="Theme Tokens" />
+    <p>These tokens live in <code>Styles/theme.css</code> under <code>:root</code> and <code>.dark</code>.</p>
+    <DocsTable>
+        <table>
+            <thead><tr><th>Token</th><th>What it controls</th><th>Used by</th></tr></thead>
+            <tbody>
+                @foreach (var (token, controls, usedBy) in Tokens)
+                {
+                    <tr><th scope="row">@((MarkupString)token)</th><td>@controls</td><td>@((MarkupString)usedBy)</td></tr>
+                }
+            </tbody>
+        </table>
+    </DocsTable>
+
+    <DocsHeading Title="Radius Scale" />
+    <p><code>--radius</code> is the base radius token for your theme.</p>
+    <p>We derive a small radius scale from it so components can use consistent corner sizes while still sharing a single source of truth.</p>
+    <CodeFigure Code="@RadiusCode" Language="css" Title="Styles/theme.css" LineNumbers="true" />
+    <p>This means:</p>
+    <ul>
+        <li><code>radius-lg</code> is the base value.</li>
+        <li>Smaller radii scale down from <code>--radius</code>.</li>
+        <li>Larger radii scale up from <code>--radius</code>.</li>
+        <li>Changing <code>--radius</code> updates the entire radius scale.</li>
+    </ul>
+
+    <DocsHeading Title="Adding New Tokens" />
+    <p>To add a new token, define it under <code>:root</code> and <code>.dark</code>, then expose it to Tailwind with <code>@@theme inline</code>.</p>
+    <CodeFigure Code="@NewTokenCode" Language="css" Title="Styles/theme.css" LineNumbers="true" />
+    <p>You can now use <code>bg-warning</code> and <code>text-warning-foreground</code> in your components.</p>
+    <CodeFigure Code="@WarningUsageCode" />
+
+    <DocsHeading Title="Contrast" />
+    <p>
+        The tokens in <code>Styles/theme.css</code> meet the contrast <a href="https://www.w3.org/TR/WCAG22/">WCAG 2.2</a> AA asks for, in
+        both modes. When you change them, keep these pairs at these ratios:
+    </p>
+    <ul>
+        <li><code>--muted-foreground</code> and <code>--destructive</code>, as text: 4.5:1 against <code>--background</code>, <code>--card</code>, <code>--popover</code> and <code>--muted</code>, and <code>--destructive</code> against its own tints too.</li>
+        <li><code>--input</code>, the border of inputs, checkboxes and radios and the track of switches, sliders and progress bars: 3:1 against what it sits on.</li>
+        <li><code>--ring</code>, which draws focus as a halo at 50% opacity: 3:1 against the background once blended.</li>
+    </ul>
+
+    <DocsHeading Title="Other Themes" />
+    <p>
+        <code>Styles/theme.css</code> starts with the <code>neutral</code> theme. The variables of any theme that uses the same token
+        names paste straight into <code>:root</code> and <code>.dark</code>. Check a pasted theme against the ratios above: many
+        use lighter muted text, input borders and rings.
+    </p>
+</DocsPage>
+
+@code {
+    private static readonly (string Token, string Controls, string UsedBy)[] Tokens =
+    [
+        ("<code>background</code> / <code>foreground</code>", "The default app background and text color.", "The page shell, page sections, and default text."),
+        ("<code>card</code> / <code>card-foreground</code>", "Elevated surfaces and the content inside them.", "<code>Card</code>, dashboard panels, settings panels."),
+        ("<code>popover</code> / <code>popover-foreground</code>", "Floating surfaces and the content inside them.", "<code>Popover</code>, <code>DropdownMenu</code>, <code>ContextMenu</code>, and other overlays."),
+        ("<code>primary</code> / <code>primary-foreground</code>", "High-emphasis actions and brand surfaces.", "Default <code>Button</code>, selected states, badges, and active accents."),
+        ("<code>secondary</code> / <code>secondary-foreground</code>", "Lower-emphasis filled actions and supporting surfaces.", "Secondary buttons, secondary badges, and supporting UI."),
+        ("<code>muted</code> / <code>muted-foreground</code>", "Subtle surfaces and lower-emphasis content.", "Descriptions, placeholders, empty states, helper text, and subdued surfaces."),
+        ("<code>accent</code> / <code>accent-foreground</code>", "Interactive hover, focus, and active surfaces.", "Ghost buttons, menu highlight states, hovered rows, and selected items."),
+        ("<code>destructive</code>", "Destructive actions and error emphasis.", "Destructive buttons, invalid states, and destructive menu items."),
+        ("<code>border</code>", "Default borders and separators.", "Cards, menus, tables, separators, and layout dividers."),
+        ("<code>input</code>", "Form control borders and input surface treatment.", "<code>Input</code>, <code>Textarea</code>, <code>Select</code>, and outline-style controls."),
+        ("<code>ring</code>", "Focus rings and outlines.", "Buttons, inputs, checkboxes, menus, and other focusable controls."),
+        ("<code>chart-1</code> ... <code>chart-5</code>", "A palette for charts.", "Charts you build on the theme."),
+        ("<code>sidebar</code> / <code>sidebar-foreground</code>", "The base sidebar surface and default sidebar text.", "The <code>Sidebar</code> container and its default content."),
+        ("<code>sidebar-primary</code> / <code>sidebar-primary-foreground</code>", "High-emphasis actions inside the sidebar.", "Active items, icon tiles, badges, and sidebar CTAs."),
+        ("<code>sidebar-accent</code> / <code>sidebar-accent-foreground</code>", "Hover and selected states inside the sidebar.", "Sidebar menu hover states, open items, and interactive rows."),
+        ("<code>sidebar-border</code>", "Sidebar-specific borders and separators.", "Sidebar headers, groups, and internal dividers."),
+        ("<code>sidebar-ring</code>", "Sidebar-specific focus rings.", "Focused controls inside the sidebar."),
+        ("<code>radius</code>", "The base corner radius scale.", "Cards, inputs, buttons, popovers, and the derived <code>radius-*</code> tokens."),
+    ];
+
+    private const string TokensCode = """
+        <div class="bg-background text-foreground"></div>
+        """;
+
+    private const string PrimaryCode = """
+        --primary: oklch(0.205 0 0);
+        --primary-foreground: oklch(0.985 0 0);
+        """;
+
+    private const string PrimaryUsageCode = """
+        <div class="bg-primary text-primary-foreground">Hello</div>
+        """;
+
+    private const string RadiusCode = """
+        @theme inline {
+          --radius-sm: calc(var(--radius) * 0.6);
+          --radius-md: calc(var(--radius) * 0.8);
+          --radius-lg: var(--radius);
+          --radius-xl: calc(var(--radius) * 1.4);
+          --radius-2xl: calc(var(--radius) * 1.8);
+          --radius-3xl: calc(var(--radius) * 2.2);
+          --radius-4xl: calc(var(--radius) * 2.6);
+        }
+        """;
+
+    private const string NewTokenCode = """
+        :root {
+          --warning: oklch(0.84 0.16 84);
+          --warning-foreground: oklch(0.28 0.07 46);
+        }
+
+        .dark {
+          --warning: oklch(0.41 0.11 46);
+          --warning-foreground: oklch(0.99 0.02 95);
+        }
+
+        @theme inline {
+          --color-warning: var(--warning);
+          --color-warning-foreground: var(--warning-foreground);
+        }
+        """;
+
+    private const string WarningUsageCode = """
+        <div class="bg-warning text-warning-foreground"></div>
+        """;
+}

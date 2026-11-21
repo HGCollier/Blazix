@@ -1,0 +1,38 @@
+<div class="flex w-full max-w-sm flex-col gap-8 py-12">
+    <Message Align="MessageAlign.End">
+        <MessageContent>
+            <Attachment Orientation="Orientation.Vertical">
+                <AttachmentMedia Variant="AttachmentMediaVariant.Image">
+                    <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80" alt="Workspace" />
+                </AttachmentMedia>
+            </Attachment>
+            <Bubble>
+                <BubbleContent>Here&apos;s the image. Can you add it to the PDF? Use it for the cover page.</BubbleContent>
+            </Bubble>
+        </MessageContent>
+    </Message>
+    <Message>
+        <MessageContent>
+            <Bubble Variant="BubbleVariant.Muted">
+                <BubbleContent>Done. Here&apos;s the PDF with the image added as the cover page.</BubbleContent>
+            </Bubble>
+            <Attachment>
+                <AttachmentMedia><Icon Name="file-text" /></AttachmentMedia>
+                <AttachmentContent>
+                    <AttachmentTitle>sales-dashboard.pdf</AttachmentTitle>
+                    <AttachmentDescription>PDF · 2.4 MB</AttachmentDescription>
+                </AttachmentContent>
+                <AttachmentActions>
+                    <AttachmentAction type="button" title="Download" aria-label="Download" Size="ButtonSize.IconSm" Variant="ButtonVariant.Secondary">
+                        <Icon Name="download" />
+                    </AttachmentAction>
+                </AttachmentActions>
+            </Attachment>
+        </MessageContent>
+    </Message>
+    <Message Align="MessageAlign.End">
+        <MessageContent>
+            <Bubble><BubbleContent>Thanks. Looks good.</BubbleContent></Bubble>
+        </MessageContent>
+    </Message>
+</div>

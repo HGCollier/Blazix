@@ -1,0 +1,161 @@
+.message-scroller-container {
+    display: flex;
+    height: 18rem;
+    width: 20rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: oklch(14.5% 0 0deg);
+}
+
+.message-scroller-container:where(.dark *) {
+    color: white;
+}
+
+.message-scroller-root {
+    position: relative;
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid oklch(14.5% 0 0deg);
+}
+
+.message-scroller-root:where(.dark *) {
+    border-color: white;
+}
+
+.message-scroller-viewport {
+    min-height: 0;
+    flex: 1;
+    overflow-y: auto;
+    outline: none;
+}
+
+.message-scroller-viewport:focus-visible {
+    outline: 2px solid oklch(14.5% 0 0deg);
+    outline-offset: -2px;
+}
+
+.message-scroller-viewport:focus-visible:where(.dark *) {
+    outline-color: white;
+}
+
+.message-scroller-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+}
+
+.message-scroller-message {
+    max-width: 80%;
+    align-self: flex-start;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid oklch(14.5% 0 0deg);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.message-scroller-message:where(.dark *) {
+    border-color: white;
+}
+
+.message-scroller-message[data-mine] {
+    align-self: flex-end;
+    border: none;
+    background-color: oklch(14.5% 0 0deg);
+    color: white;
+}
+
+.message-scroller-message[data-mine]:where(.dark *) {
+    background-color: white;
+    color: oklch(14.5% 0 0deg);
+}
+
+.message-scroller-scroll-button {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 50%;
+    display: flex;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid oklch(14.5% 0 0deg);
+    background-color: white;
+    color: inherit;
+    transform: translateX(-50%);
+    transition: opacity 200ms;
+}
+
+.message-scroller-scroll-button:where(.dark *) {
+    border-color: white;
+    background-color: oklch(14.5% 0 0deg);
+}
+
+@media (hover: hover) {
+    .message-scroller-scroll-button:hover {
+        background-color: oklch(97% 0 0deg);
+    }
+
+    .message-scroller-scroll-button:hover:where(.dark *) {
+        background-color: oklch(26.9% 0 0deg);
+    }
+}
+
+.message-scroller-scroll-button[data-active='false'] {
+    pointer-events: none;
+    opacity: 0;
+}
+
+.message-scroller-button {
+    display: flex;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.75rem;
+    margin: 0;
+    border: 1px solid oklch(14.5% 0 0deg);
+    background-color: white;
+    color: oklch(14.5% 0 0deg);
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 400;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.message-scroller-button:where(.dark *) {
+    border-color: white;
+    background-color: oklch(14.5% 0 0deg);
+    color: white;
+}
+
+@media (hover: hover) {
+    .message-scroller-button:hover {
+        background-color: oklch(97% 0 0deg);
+    }
+
+    .message-scroller-button:hover:where(.dark *) {
+        background-color: oklch(26.9% 0 0deg);
+    }
+}
+
+.message-scroller-button:active {
+    background-color: oklch(92.2% 0 0deg);
+}
+
+.message-scroller-button:active:where(.dark *) {
+    background-color: oklch(37.1% 0 0deg);
+}
+
+.message-scroller-button:focus-visible {
+    outline: 2px solid oklch(14.5% 0 0deg);
+    outline-offset: -1px;
+}
+
+.message-scroller-button:focus-visible:where(.dark *) {
+    outline-color: white;
+}

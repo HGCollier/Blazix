@@ -1,0 +1,32 @@
+@implements IDisposable
+
+<Progress Value="_progress" aria-label="Loading" Class="w-[60%]" />
+
+@code {
+    private readonly CancellationTokenSource _cancel = new();
+    private double _progress = 13;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+        try
+        {
+            await Task.Delay(500, _cancel.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+        _progress = 66;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        _cancel.Cancel();
+        _cancel.Dispose();
+    }
+}

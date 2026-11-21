@@ -1,0 +1,128 @@
+@page "/docs/primitives/number-field"
+
+<DocsPage Title="Number Field" Description="A numeric input element with increment and decrement buttons, and a scrub area.">
+    <ComponentPreview Name="primitives/number-field-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li><strong>Form controls must have an accessible name:</strong> Give it one with a <code>&lt;label&gt;</code> element or the <a href="/docs/primitives/field">Field</a> parts.</li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(NumberFieldRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the number field is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the number field is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the number field is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the number field is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the number field is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the number field's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the number field has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the number field is filled (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the number field is focused (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-scrubbing">Present while scrubbing.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(NumberFieldInput)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the number field is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the number field is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the number field is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the number field is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the number field is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the number field's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the number field has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the number field is filled (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the number field is focused (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-scrubbing">Present while scrubbing.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(NumberFieldGroup)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the number field is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the number field is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the number field is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the number field is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the number field is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the number field's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the number field has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the number field is filled (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the number field is focused (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-scrubbing">Present while scrubbing.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(NumberFieldScrubArea)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the number field is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the number field is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the number field is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the number field is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the number field is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the number field's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the number field has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the number field is filled (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the number field is focused (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-scrubbing">Present while scrubbing.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(NumberFieldScrubAreaCursor)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the number field is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the number field is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the number field is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the number field is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the number field is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the number field's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the number field has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the number field is filled (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the number field is focused (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-scrubbing">Present while scrubbing.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(NumberFieldDecrement)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the number field is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the number field is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the number field is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the number field is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the number field is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the number field's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the number field has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the number field is filled (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the number field is focused (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-scrubbing">Present while scrubbing.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(NumberFieldIncrement)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the number field is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the number field is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the number field is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the number field is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the number field is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the number field's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the number field has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the number field is filled (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the number field is focused (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-scrubbing">Present while scrubbing.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <NumberFieldRoot>
+            <NumberFieldScrubArea>
+                <NumberFieldScrubAreaCursor />
+            </NumberFieldScrubArea>
+            <NumberFieldGroup>
+                <NumberFieldDecrement />
+                <NumberFieldInput />
+                <NumberFieldIncrement />
+            </NumberFieldGroup>
+        </NumberFieldRoot>
+        """;
+}

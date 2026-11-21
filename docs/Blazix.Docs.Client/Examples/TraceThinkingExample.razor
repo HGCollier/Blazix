@@ -1,0 +1,84 @@
+@implements IDisposable
+
+<div class="flex min-h-72 w-full max-w-sm flex-col gap-4 py-6 text-sm">
+    @if (_step >= 1)
+    {
+        <Message Align="MessageAlign.End">
+            <MessageContent>
+                <Bubble Align="BubbleAlign.End" Variant="BubbleVariant.Muted">
+                    <BubbleContent>Why is the checkout deploy so slow?</BubbleContent>
+                </Bubble>
+            </MessageContent>
+        </Message>
+    }
+    @if (_step >= 2)
+    {
+        var running = _step == 2;
+        <Message>
+            <MessageContent Class="gap-4">
+                <Trace>
+                    <TraceCollapsible Open="@(_open ?? running)" OpenChanged="@(open => _open = open)">
+                        <TraceCollapsibleTrigger>
+                            <TraceLine Status="@(running ? TraceLineStatus.Running : TraceLineStatus.None)">
+                                <TraceIcon><Icon Name="brain" /></TraceIcon>
+                                <TraceTitle>@(running ? "Thinking" : "Thought")</TraceTitle>
+                            </TraceLine>
+                        </TraceCollapsibleTrigger>
+                        <TraceCollapsibleContent Class="whitespace-pre-wrap">@Reasoning</TraceCollapsibleContent>
+                    </TraceCollapsible>
+                </Trace>
+                @if (_step >= 3)
+                {
+                    <p>Image optimization is the bottleneck. Key its cache on the lockfile and the image directory instead of the commit hash.</p>
+                }
+            </MessageContent>
+        </Message>
+    }
+    @if (_step is 0 or 3)
+    {
+        <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" Class="mt-auto self-start" @onclick="NextAsync">
+            @(_step == 0 ? "Send message" : "Reset")
+        </Button>
+    }
+</div>
+
+@code {
+    private const string Reasoning =
+        "The build log shows install and compile finish in under a minute. Image optimization takes almost four, " +
+        "and it reruns on every deploy because the cache key includes the commit hash.";
+
+    private readonly CancellationTokenSource _cancel = new();
+
+    private int _step;
+    private bool? _open;
+
+    private async Task NextAsync()
+    {
+        if (_step == 3)
+        {
+            _step = 0;
+            _open = null;
+            return;
+        }
+        try
+        {
+            _step = 1;
+            StateHasChanged();
+            await Task.Delay(300, _cancel.Token);
+            _step = 2;
+            StateHasChanged();
+            await Task.Delay(Reasoning.Length * 20, _cancel.Token);
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+        _step = 3;
+    }
+
+    public void Dispose()
+    {
+        _cancel.Cancel();
+        _cancel.Dispose();
+    }
+}

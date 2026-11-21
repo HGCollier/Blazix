@@ -1,0 +1,21 @@
+@page "/docs/primitives/keyboard-shortcut"
+
+<DocsPage Title="Keyboard Shortcut" Description="Runs an action when a key is pressed with Ctrl or ⌘ anywhere on the page.">
+    <ComponentPreview Name="primitives/keyboard-shortcut-hero" />
+    <p>
+        <code>KeyboardShortcut</code> is the sidebar's <kbd>Ctrl</kbd>+<kbd>B</kbd> shortcut on its own. It listens on the whole page, stops the browser's own handling of the
+        keys by default, and renders nothing.
+    </p>
+    <DocsHeading Title="Anatomy" />
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(KeyboardShortcut)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <KeyboardShortcut Key="b" OnPressed="ToggleSidebar" />
+        """;
+}

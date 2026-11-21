@@ -1,0 +1,79 @@
+@page "/docs/components/avatar"
+
+<DocsPage Title="Avatar" Description="An image element with a fallback for representing the user.">
+    <ComponentPreview Name="avatar-demo" PreviewClass="h-72" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="avatar" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build an <code>Avatar</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <p>Use the following composition to build an <code>AvatarGroup</code>:</p>
+    <CodeFigure Code="@CompositionCode2" Language="text" />
+    <DocsHeading Title="Basic" />
+    <p>A basic avatar component with an image and a fallback.</p>
+    <ComponentPreview Name="avatar-basic" />
+    <DocsHeading Title="Badge" />
+    <p>Use the <code>AvatarBadge</code> component to add a badge to the avatar. The badge is positioned at the bottom right of the avatar.</p>
+    <ComponentPreview Name="avatar-badge" />
+    <p>Use the <code>Class</code> parameter to add custom styles to the badge such as custom colors, sizes, etc.</p>
+    <CodeFigure Code="@BadgeCode" LineNumbers="true" />
+    <DocsHeading Title="Badge with Icon" />
+    <p>You can also use an icon inside <code>&lt;AvatarBadge&gt;</code>.</p>
+    <ComponentPreview Name="avatar-badge-icon" />
+    <DocsHeading Title="Avatar Group" />
+    <p>Use the <code>AvatarGroup</code> component to add a group of avatars.</p>
+    <ComponentPreview Name="avatar-group" />
+    <DocsHeading Title="Avatar Group Count" />
+    <p>Use <code>&lt;AvatarGroupCount&gt;</code> to add a count to the group.</p>
+    <ComponentPreview Name="avatar-group-count" />
+    <DocsHeading Title="Avatar Group with Icon" />
+    <p>You can also use an icon inside <code>&lt;AvatarGroupCount&gt;</code>.</p>
+    <ComponentPreview Name="avatar-group-count-icon" />
+    <DocsHeading Title="Sizes" />
+    <p>Use the <code>Size</code> parameter to change the size of the avatar.</p>
+    <ComponentPreview Name="avatar-size" />
+    <DocsHeading Title="Dropdown" />
+    <p>You can use the <code>Avatar</code> component as a trigger for a dropdown menu.</p>
+    <ComponentPreview Name="avatar-dropdown" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="avatar" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Avatar>
+            <AvatarImage Src="https://avatar.vercel.sh/blazix" />
+            <AvatarFallback>BX</AvatarFallback>
+        </Avatar>
+        """;
+
+    private const string CompositionCode = """
+        Avatar
+        ├── AvatarImage
+        ├── AvatarFallback
+        └── AvatarBadge
+        """;
+
+    private const string CompositionCode2 = """
+        AvatarGroup
+        ├── Avatar
+        │   ├── AvatarImage
+        │   ├── AvatarFallback
+        │   └── AvatarBadge
+        ├── Avatar
+        │   ├── AvatarImage
+        │   ├── AvatarFallback
+        │   └── AvatarBadge
+        └── AvatarGroupCount
+        """;
+
+    private const string BadgeCode = """
+        <Avatar>
+            <AvatarImage Src="https://avatar.vercel.sh/blazix" alt="@("@blazix")" />
+            <AvatarFallback>BX</AvatarFallback>
+            <AvatarBadge Class="bg-green-600 dark:bg-green-800" />
+        </Avatar>
+        """;
+}

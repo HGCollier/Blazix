@@ -1,0 +1,40 @@
+<div class="mx-auto flex max-w-xs min-w-0 flex-col gap-6">
+    @foreach (var edge in new[] { "scroll-fade-t", "scroll-fade-b" })
+    {
+        <div class="flex flex-col gap-3">
+            <div class="overflow-hidden rounded-2xl border">
+                <div tabindex="0" role="region" aria-label="@edge" class="@($"h-36 {edge} no-scrollbar overflow-y-auto")">
+                    <div class="flex flex-col gap-1.5 p-1.5">
+                        @foreach (var item in Items)
+                        {
+                            <div class="rounded-lg bg-muted px-3 py-2.5 text-sm">@item</div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <p class="text-center font-mono text-xs text-muted-foreground">@edge</p>
+        </div>
+    }
+    @foreach (var edge in new[] { "scroll-fade-s", "scroll-fade-e" })
+    {
+        <div class="flex flex-col gap-3">
+            <div class="overflow-hidden rounded-2xl border">
+                <div tabindex="0" role="region" aria-label="@edge" class="@($"{edge} no-scrollbar overflow-x-auto")">
+                    <div class="flex w-max gap-1.5 p-1.5">
+                        @foreach (var tag in Tags)
+                        {
+                            <div class="shrink-0 rounded-lg bg-muted px-3 py-2.5 text-sm">@tag</div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <p class="text-center font-mono text-xs text-muted-foreground">@edge</p>
+        </div>
+    }
+</div>
+
+@code {
+    private static readonly string[] Items = ["Inbox triage", "Design review", "API contract", "QA pass", "Launch notes", "Metrics follow-up"];
+
+    private static readonly string[] Tags = ["Design", "Engineering", "Marketing", "Product", "Research", "Sales", "Support", "Operations"];
+}

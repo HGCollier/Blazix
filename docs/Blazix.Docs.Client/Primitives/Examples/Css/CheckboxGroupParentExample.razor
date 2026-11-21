@@ -1,0 +1,58 @@
+<CheckboxGroupRoot aria-labelledby="@_id" @bind-Value="_value" AllValues="Fruits" class="checkbox-group-parent" style="margin-left: 1rem">
+    <label class="checkbox-group-parent-item" id="@_id" style="margin-left: -1rem">
+        <CheckboxRoot Parent="true" class="checkbox-group-parent-checkbox">
+            <CheckboxIndicator class="checkbox-group-parent-indicator">
+                <Render Context="indicator">
+                    <span @attributes="indicator.Attributes">
+                        @(indicator.Indeterminate ? HorizontalRuleIcon : CheckIcon)
+                    </span>
+                </Render>
+            </CheckboxIndicator>
+        </CheckboxRoot>
+        Apples
+    </label>
+
+    <label class="checkbox-group-parent-item">
+        <CheckboxRoot Value="fuji-apple" class="checkbox-group-parent-checkbox">
+            <CheckboxIndicator class="checkbox-group-parent-indicator">
+                @CheckIcon
+            </CheckboxIndicator>
+        </CheckboxRoot>
+        Fuji
+    </label>
+
+    <label class="checkbox-group-parent-item">
+        <CheckboxRoot Value="gala-apple" class="checkbox-group-parent-checkbox">
+            <CheckboxIndicator class="checkbox-group-parent-indicator">
+                @CheckIcon
+            </CheckboxIndicator>
+        </CheckboxRoot>
+        Gala
+    </label>
+
+    <label class="checkbox-group-parent-item">
+        <CheckboxRoot Value="granny-smith-apple" class="checkbox-group-parent-checkbox">
+            <CheckboxIndicator class="checkbox-group-parent-indicator">
+                @CheckIcon
+            </CheckboxIndicator>
+        </CheckboxRoot>
+        Granny Smith
+    </label>
+</CheckboxGroupRoot>
+
+@code {
+    private static readonly IReadOnlyList<string> Fruits = ["fuji-apple", "gala-apple", "granny-smith-apple"];
+
+    private static readonly RenderFragment CheckIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+            <path d="m2.5 8.5 4 4 7-9" />
+        </svg>;
+
+    private static readonly RenderFragment HorizontalRuleIcon =
+        @<svg style="display: block" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke-width="1">
+            <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" vector-effect="non-scaling-stroke" />
+        </svg>;
+
+    private readonly string _id = $"apples-{Guid.NewGuid():N}";
+    private IReadOnlyList<string> _value = [];
+}

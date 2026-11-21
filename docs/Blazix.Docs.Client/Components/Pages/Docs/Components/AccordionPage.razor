@@ -1,0 +1,50 @@
+@page "/docs/components/accordion"
+
+<DocsPage Title="Accordion" Description="A vertically stacked set of interactive headings that each reveal a section of content.">
+    <ComponentPreview Name="accordion-demo" Align="start" PreviewClass="*:data-[slot=accordion]:max-w-sm h-[300px]" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="accordion" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build an <code>Accordion</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Basic" />
+    <p>A basic accordion that shows one item at a time. The first item is open by default.</p>
+    <ComponentPreview Name="accordion-basic" Align="start" PreviewClass="*:data-[slot=accordion]:max-w-sm h-[300px]" />
+    <DocsHeading Title="Multiple" />
+    <p>Use the <code>Multiple</code> parameter to allow multiple items to be open at the same time.</p>
+    <ComponentPreview Name="accordion-multiple" Align="start" PreviewClass="*:data-[slot=accordion]:max-w-sm h-[450px]" />
+    <DocsHeading Title="Disabled" />
+    <p>Use the <code>Disabled</code> parameter on <code>AccordionItem</code> to disable individual items.</p>
+    <ComponentPreview Name="accordion-disabled" Align="start" PreviewClass="*:data-[slot=accordion]:max-w-sm h-[300px]" />
+    <DocsHeading Title="Borders" />
+    <p>Add <code>border</code> to the <code>Accordion</code> and <code>border-b last:border-b-0</code> to the <code>AccordionItem</code> to add borders to the items.</p>
+    <ComponentPreview Name="accordion-borders" Align="start" PreviewClass="*:data-[slot=accordion]:max-w-sm h-[300px]" />
+    <DocsHeading Title="Card" />
+    <p>Wrap the <code>Accordion</code> in a <code>Card</code> component.</p>
+    <ComponentPreview Name="accordion-card" Align="start" PreviewClass="*:data-[slot=accordion]:max-w-sm h-[435px]" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="accordion" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Accordion Value="@(["item-1"])">
+            <AccordionItem Value="item-1">
+                <AccordionTrigger>Is it accessible?</AccordionTrigger>
+                <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
+            </AccordionItem>
+        </Accordion>
+        """;
+
+    private const string CompositionCode = """
+        Accordion
+        ├── AccordionItem
+        │   ├── AccordionTrigger
+        │   └── AccordionContent
+        └── AccordionItem
+            ├── AccordionTrigger
+            └── AccordionContent
+        """;
+}

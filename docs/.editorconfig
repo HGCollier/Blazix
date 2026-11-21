@@ -1,0 +1,6 @@
+# The docs link to Blazor routes (href="/docs/components/button") and to headings DocsHeading renders at run time
+# (href="#usage"). Rider/ReSharper resolves hrefs against wwwroot files and ids written in the markup, so it would
+# flag every one of these links; static files are referenced through @Assets[...] instead.
+[*.razor]
+resharper_html_path_error_highlighting = none
+resharper_html_id_not_resolved_highlighting = none

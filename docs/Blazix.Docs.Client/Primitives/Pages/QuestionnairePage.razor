@@ -1,0 +1,125 @@
+@page "/docs/primitives/questionnaire"
+
+<DocsPage Title="Questionnaire" Description="A multi-step form that asks one question at a time, with single-choice, multiple-choice, freeform and skippable questions.">
+    <ComponentPreview Name="primitives/questionnaire-hero" PreviewClass="h-96" />
+    <p>
+        These are the headless parts of Questionnaire, which the styled
+        <a href="/docs/components/questionnaire">Questionnaire</a> is built on. Only the active item is shown. Previous, Skip,
+        Next and Submit move through the items, validating the active one first.
+    </p>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="Keyboard" />
+    <ul>
+        <li><kbd>Ctrl</kbd>+<kbd>Enter</kbd> (<kbd>Cmd</kbd>+<kbd>Enter</kbd> on macOS) confirms the active item.</li>
+        <li><kbd>↑</kbd> and <kbd>↓</kbd> move between the item's answers, and <kbd>←</kbd> and <kbd>→</kbd> between items.</li>
+        <li><kbd>Enter</kbd> on a filled answer confirms it.</li>
+        <li>With <code>Shortcuts</code> set, letters (A–Z) or numbers (1–9) select answers.</li>
+    </ul>
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(QuestionnaireRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-current" Type="number">The number of the active item, counting from 1.</StyleHook>
+            <StyleHook Name="data-total" Type="number">How many items there are.</StyleHook>
+            <StyleHook Name="data-first">Present when the first item is active.</StyleHook>
+            <StyleHook Name="data-last">Present when the last item is active.</StyleHook>
+            <StyleHook Name="data-shortcuts" Type="'letters' | 'numbers'">Which keys select answers, when shortcuts are on.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(QuestionnaireProgress)">
+        <DataAttributes>
+            <StyleHook Name="data-current" Type="number">The number of the active item, counting from 1.</StyleHook>
+            <StyleHook Name="data-total" Type="number">How many items there are.</StyleHook>
+            <StyleHook Name="data-first">Present when the first item is active.</StyleHook>
+            <StyleHook Name="data-last">Present when the last item is active.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(QuestionnaireItem)">
+        <DataAttributes>
+            <StyleHook Name="data-active">Present while the item is the one shown.</StyleHook>
+            <StyleHook Name="data-status" Type="'unanswered' | 'answered' | 'skipped'">Whether the item has been answered or skipped.</StyleHook>
+            <StyleHook Name="data-multiple">Present when the item takes several answers.</StyleHook>
+            <StyleHook Name="data-required">Present when the item must be answered.</StyleHook>
+            <StyleHook Name="data-invalid">Present when the item failed validation.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the item is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(QuestionnaireTitle)" />
+    <PartReference Type="typeof(QuestionnaireDescription)" />
+    <PartReference Type="typeof(QuestionnaireChoices)">
+        <DataAttributes>
+            <StyleHook Name="data-shortcuts" Type="'letters' | 'numbers'">Which keys select answers, when shortcuts are on.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(QuestionnaireChoice)">
+        <DataAttributes>
+            <StyleHook Name="data-checked">Present when the choice is selected.</StyleHook>
+            <StyleHook Name="data-unchecked">Present when the choice isn't selected.</StyleHook>
+            <StyleHook Name="data-type" Type="'radio' | 'checkbox'">Whether the item takes one answer or several.</StyleHook>
+            <StyleHook Name="data-shortcut" Type="string">The choice's shortcut key, when shortcuts are on.</StyleHook>
+            <StyleHook Name="data-invalid">Present when the item failed validation.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the choice is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(QuestionnaireChoiceInput)" />
+    <PartReference Type="typeof(QuestionnaireChoiceLabel)" />
+    <PartReference Type="typeof(QuestionnaireChoiceShortcut)">
+        <DataAttributes>
+            <StyleHook Name="data-shortcut" Type="string">The shortcut key.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(QuestionnaireInput)">
+        <DataAttributes>
+            <StyleHook Name="data-filled">Present when the input holds more than whitespace.</StyleHook>
+            <StyleHook Name="data-empty">Present when the input is empty.</StyleHook>
+            <StyleHook Name="data-invalid">Present when the item failed validation.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the input is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(QuestionnaireError)">
+        <DataAttributes>
+            <StyleHook Name="data-invalid">Present while the item is invalid and the error shows.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(QuestionnairePrevious)">
+        <DataAttributes>
+            <StyleHook Name="data-visible">Present when the button applies to the active item.</StyleHook>
+            <StyleHook Name="data-hidden">Present when it doesn't, e.g. Previous on the first item.</StyleHook>
+            <StyleHook Name="data-status" Type="'unanswered' | 'answered' | 'skipped'">The active item's status.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the button is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(QuestionnaireSkip)" />
+    <PartReference Type="typeof(QuestionnaireNext)" />
+    <PartReference Type="typeof(QuestionnaireSubmit)">
+        <p class="text-sm text-muted-foreground">Skip, Next and Submit render the same data attributes as Previous.</p>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <QuestionnaireRoot>
+            <QuestionnaireProgress />
+            <QuestionnaireItem>
+                <QuestionnaireTitle />
+                <QuestionnaireDescription />
+                <QuestionnaireChoices>
+                    <QuestionnaireChoice>
+                        <QuestionnaireChoiceInput />
+                        <QuestionnaireChoiceLabel />
+                        <QuestionnaireChoiceShortcut />
+                    </QuestionnaireChoice>
+                    <QuestionnaireInput />
+                </QuestionnaireChoices>
+                <QuestionnaireError />
+            </QuestionnaireItem>
+            <QuestionnairePrevious />
+            <QuestionnaireSkip />
+            <QuestionnaireNext />
+            <QuestionnaireSubmit />
+        </QuestionnaireRoot>
+        """;
+}

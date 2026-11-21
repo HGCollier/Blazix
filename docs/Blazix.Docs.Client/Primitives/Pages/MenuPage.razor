@@ -1,0 +1,202 @@
+@page "/docs/primitives/menu"
+
+<DocsPage Title="Menu" Description="A list of actions in a dropdown, enhanced with keyboard navigation.">
+    <ComponentPreview Name="primitives/menu-hero" />
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(MenuRoot)" />
+    <PartReference Type="typeof(MenuTrigger)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding menu is open.</StyleHook>
+            <StyleHook Name="data-pressed">Present when the trigger is pressed.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the trigger is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MenuInput)">
+        <DataAttributes>
+            <StyleHook Name="data-highlighted">Present while the input shows its focus ring. Cleared when keyboard navigation highlights an item.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MenuClear)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the button is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MenuList)" />
+    <PartReference Type="typeof(MenuPortal)" />
+    <PartReference Type="typeof(MenuBackdrop)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the menu is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the menu is closed.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the menu begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the menu is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MenuPositioner)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the menu popup is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the menu popup is closed.</StyleHook>
+            <StyleHook Name="data-anchor-hidden">Present when the anchor is hidden.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to the specified side.</StyleHook>
+            <StyleHook Name="data-side" Type="'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the anchor.</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--anchor-height" Type="number">The anchor's height.</StyleHook>
+            <StyleHook Name="--anchor-width" Type="number">The anchor's width.</StyleHook>
+            <StyleHook Name="--available-height" Type="number">The available height between the anchor and the edge of the viewport.</StyleHook>
+            <StyleHook Name="--available-width" Type="number">The available width between the anchor and the edge of the viewport.</StyleHook>
+            <StyleHook Name="--positioner-height" Type="number">The height of the menu's positioner. It is important to set <code>height</code> to this value when using CSS to animate size changes.</StyleHook>
+            <StyleHook Name="--positioner-width" Type="number">The width of the menu's positioner. It is important to set <code>width</code> to this value when using CSS to animate size changes.</StyleHook>
+            <StyleHook Name="--transform-origin" Type="string">The coordinates that this element is anchored to. Used for animations and transitions.</StyleHook>
+        </CssVariables>
+    </PartReference>
+    <PartReference Type="typeof(MenuPopup)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the menu is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the menu is closed.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to specified side.</StyleHook>
+            <StyleHook Name="data-instant" Type="'click' | 'dismiss' | 'group' | 'trigger-change'">Present if animations should be instant.</StyleHook>
+            <StyleHook Name="data-side" Type="'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the anchor.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the menu begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the menu is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MenuArrow)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the menu popup is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the menu popup is closed.</StyleHook>
+            <StyleHook Name="data-uncentered">Present when the menu arrow is uncentered.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to specified side.</StyleHook>
+            <StyleHook Name="data-side" Type="'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the anchor.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MenuItem)">
+        <DataAttributes>
+            <StyleHook Name="data-highlighted">Present when the menu item is highlighted.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the menu item is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MenuViewport)">
+        <DataAttributes>
+            <StyleHook Name="data-activation-direction" Type="`${'left' | 'right' | ''} ${'down' | 'up' | ''}`">Indicates the direction from which the popup was activated. This can be used to create directional animations based on how the popup was triggered. Contains space-separated values for both horizontal and vertical axes.</StyleHook>
+            <StyleHook Name="data-current">Applied to the direct child of the viewport when no transitions are present or the new content when it's entering.</StyleHook>
+            <StyleHook Name="data-instant" Type="'click' | 'dismiss' | 'group' | 'trigger-change'">Present if animations should be instant.</StyleHook>
+            <StyleHook Name="data-previous">Applied to the direct child of the viewport that contains the exiting content when transitions are present.</StyleHook>
+            <StyleHook Name="data-transitioning">Indicates that the viewport is currently transitioning between old and new content.</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--popup-height" Type="\`\`">The height of the parent popup. This variable is placed on the 'previous' container and stores the height of the popup when the previous content was rendered. It can be used to freeze the dimensions of the popup when animating between different content.</StyleHook>
+            <StyleHook Name="--popup-width" Type="\`\`">The width of the parent popup. This variable is placed on the 'previous' container and stores the width of the popup when the previous content was rendered. It can be used to freeze the dimensions of the popup when animating between different content.</StyleHook>
+        </CssVariables>
+    </PartReference>
+    <PartReference Type="typeof(MenuGroup)" />
+    <PartReference Type="typeof(MenuGroupLabel)" />
+    <PartReference Type="typeof(MenuSeparator)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the separator.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MenuEmpty)" />
+    <PartReference Type="typeof(MenuSubmenuRoot)" />
+    <PartReference Type="typeof(MenuSubmenuTrigger)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding submenu is open.</StyleHook>
+            <StyleHook Name="data-highlighted">Present when the submenu trigger is highlighted.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the submenu trigger is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MenuRadioGroup)" />
+    <PartReference Type="typeof(MenuRadioItem)">
+        <DataAttributes>
+            <StyleHook Name="data-checked">Present when the menu radio item is selected.</StyleHook>
+            <StyleHook Name="data-unchecked">Present when the menu radio item is not selected.</StyleHook>
+            <StyleHook Name="data-highlighted">Present when the menu radio item is highlighted.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the menu radio item is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MenuRadioItemIndicator)">
+        <DataAttributes>
+            <StyleHook Name="data-checked">Present when the menu radio item is selected.</StyleHook>
+            <StyleHook Name="data-unchecked">Present when the menu radio item is not selected.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the menu radio item is disabled.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the radio indicator begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the radio indicator is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MenuCheckboxItem)">
+        <DataAttributes>
+            <StyleHook Name="data-checked">Present when the menu checkbox item is checked.</StyleHook>
+            <StyleHook Name="data-unchecked">Present when the menu checkbox item is not checked.</StyleHook>
+            <StyleHook Name="data-highlighted">Present when the menu checkbox item is highlighted.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the menu checkbox item is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MenuCheckboxItemIndicator)">
+        <DataAttributes>
+            <StyleHook Name="data-checked">Present when the menu checkbox item is checked.</StyleHook>
+            <StyleHook Name="data-unchecked">Present when the menu checkbox item is not checked.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the menu checkbox item is disabled.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the indicator begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the indicator is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(MenuFilterProvider)" />
+    <PartReference Type="typeof(MenuHandle)" />
+    <PartReference Type="typeof(MenuLinkItem)">
+        <DataAttributes>
+            <StyleHook Name="data-highlighted">Present when the link is highlighted.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <MenuFilterProvider>
+            <MenuRoot>
+                <MenuTrigger />
+                <MenuPortal>
+                    <MenuBackdrop />
+                    <MenuPositioner>
+                        <MenuPopup>
+                            <MenuArrow />
+                            <MenuInput />
+                            <MenuClear />
+                            <MenuEmpty />
+
+                            <MenuList>
+                                <MenuItem />
+                                <MenuLinkItem />
+                                <MenuSeparator />
+
+                                <MenuSubmenuRoot>
+                                    <MenuSubmenuTrigger />
+                                </MenuSubmenuRoot>
+
+                                <MenuGroup>
+                                    <MenuGroupLabel />
+                                </MenuGroup>
+
+                                <MenuRadioGroup>
+                                    <MenuGroupLabel />
+                                    <MenuRadioItem>
+                                        <MenuRadioItemIndicator />
+                                    </MenuRadioItem>
+                                </MenuRadioGroup>
+
+                                <MenuCheckboxItem>
+                                    <MenuCheckboxItemIndicator />
+                                </MenuCheckboxItem>
+                            </MenuList>
+
+                            <MenuViewport />
+                        </MenuPopup>
+                    </MenuPositioner>
+                </MenuPortal>
+            </MenuRoot>
+        </MenuFilterProvider>
+        """;
+}

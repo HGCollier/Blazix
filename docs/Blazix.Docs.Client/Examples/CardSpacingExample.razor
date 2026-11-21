@@ -1,0 +1,60 @@
+<div class="mx-auto grid w-full max-w-sm gap-4">
+    <ToggleGroup Value="@([_spacing])" ValueChanged="SetSpacing" Variant="ToggleVariant.Outline" Size="ToggleSize.Sm" Class="justify-center">
+        @foreach (var option in SpacingOptions)
+        {
+            <ToggleGroupItem @key="option.Value" Value="@option.Value">@option.Label</ToggleGroupItem>
+        }
+    </ToggleGroup>
+    <Card Class="@SpacingOptions.First(o => o.Value == _spacing).Class">
+        <CardHeader>
+            <CardTitle>Login to your account</CardTitle>
+            <CardDescription>Enter your email below to login to your account</CardDescription>
+            <CardAction>
+                <Button Variant="ButtonVariant.Link">Sign Up</Button>
+            </CardAction>
+        </CardHeader>
+        <CardContent>
+            <form>
+                <div class="flex flex-col gap-6">
+                    <div class="grid gap-2">
+                        <Label for="email-spacing">Email</Label>
+                        <Input id="email-spacing" Type="email" placeholder="m@example.com" required />
+                    </div>
+                    <div class="grid gap-2">
+                        <div class="flex items-center">
+                            <Label for="password-spacing">Password</Label>
+                            <a href="#" class="ml-auto inline-block text-sm underline-offset-4 hover:underline">Forgot your password?</a>
+                        </div>
+                        <Input id="password-spacing" Type="password" required />
+                    </div>
+                </div>
+            </form>
+        </CardContent>
+        <CardFooter Class="flex-col gap-2">
+            <Button Type="submit" Class="w-full">Login</Button>
+            <Button Variant="ButtonVariant.Outline" Class="w-full">Login with Google</Button>
+        </CardFooter>
+    </Card>
+</div>
+
+@code {
+    private sealed record SpacingOption(string Class, string Label, string Value);
+
+    private static readonly SpacingOption[] SpacingOptions =
+    [
+        new("[--card-spacing:--spacing(4)]", "16px", "4"),
+        new("[--card-spacing:--spacing(5)]", "20px", "5"),
+        new("[--card-spacing:--spacing(6)]", "24px", "6"),
+        new("[--card-spacing:--spacing(8)]", "32px", "8"),
+    ];
+
+    private string _spacing = "4";
+
+    private void SetSpacing(IReadOnlyList<string>? value)
+    {
+        if (value is [var spacing, ..])
+        {
+            _spacing = spacing;
+        }
+    }
+}

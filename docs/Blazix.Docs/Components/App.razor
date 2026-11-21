@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+@* The page shell. The site tokens below are on <body> as Tailwind arbitrary properties:
+   the site uses no stylesheet of its own, only the one Tailwind compiles from Styles/app.css (and the CSS
+   isolation bundle, which only the primitives' examples use). *@
+<html lang="en" class="@HtmlClasses">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <base href="/" />
+    <link rel="icon" type="image/svg+xml" href="@Assets["favicon.svg"]" />
+    @* Before anything paints: the saved theme, or the system's. *@
+    <script>
+        try {
+            const dark = localStorage.theme === 'dark' || ((!('theme' in localStorage) || localStorage.theme === 'system') && matchMedia('(prefers-color-scheme: dark)').matches);
+            document.documentElement.classList.toggle('dark', dark);
+            document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+            if (dark) document.querySelector('meta[name="theme-color"]').setAttribute('content', '#09090b');
+        } catch (_) {}
+    </script>
+    <ResourcePreloader />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Geist+Mono&display=swap" />
+    <link rel="stylesheet" href="@Assets["app.css"]" />
+    <ImportMap />
+    <script type="module" src="@Assets["site.js"]"></script>
+    <HeadOutlet @rendermode="PageRenderMode" />
+</head>
+
+<body class="group/body relative overscroll-none font-sans antialiased [font-synthesis-weight:none] [text-rendering:optimizeLegibility]
+             [--font-sans:'Geist',ui-sans-serif,system-ui,sans-serif] [--font-heading:var(--font-sans)] [--font-mono:'Geist_Mono',ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace]
+             [--footer-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)]
+             [--surface:oklch(0.98_0_0)] [--surface-foreground:var(--foreground)] [--code:var(--surface)] [--code-foreground:var(--surface-foreground)]
+             [--code-highlight:oklch(0.96_0_0)] [--code-number:oklch(0.5_0_0)]
+             dark:[--surface:oklch(0.2_0_0)] dark:[--surface-foreground:oklch(0.708_0_0)] dark:[--code-highlight:oklch(0.27_0_0)] dark:[--code-number:oklch(0.72_0_0)]
+             @SiteTheme
+             selection:bg-foreground selection:text-background">
+    <Routes @rendermode="PageRenderMode" />
+    <script src="@Assets["_framework/blazor.web.js"]"></script>
+</body>
+
+</html>
+
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = null!;
+
+    // The pages run on WebAssembly, prerendered here; the error page (excluded from interactive routing) stays static.
+    private IComponentRenderMode? PageRenderMode => HttpContext.AcceptsInteractiveRouting() ? InteractiveWebAssembly : null;
+
+    // The header height, and no transitions while site.js switches the theme (next-themes' disableTransitionOnChange).
+    private const string HtmlClasses =
+        "[--header-height:calc(var(--spacing)*14)] lg:[--header-height:calc(var(--spacing)*16)] scroll-pt-(--header-height) overscroll-y-none " +
+        "[&[data-theme-switching]_*]:transition-none! [&[data-theme-switching]_*::before]:transition-none! [&[data-theme-switching]_*::after]:transition-none!";
+
+    // The site's colors on top of the neutral theme: black text and primary in
+    // light mode, a lighter accent in dark mode, and blue charts. The home page's cards go back to neutral (CardsDemo).
+    private const string SiteTheme =
+        "[--foreground:oklch(0_0_0)] [--card-foreground:oklch(0_0_0)] [--popover-foreground:oklch(0_0_0)] [--primary:oklch(0_0_0)] " +
+        "[--sidebar-foreground:oklch(0_0_0)] dark:[--foreground:oklch(0.985_0_0)] dark:[--card-foreground:oklch(0.985_0_0)] " +
+        "dark:[--popover-foreground:oklch(0.985_0_0)] dark:[--primary:oklch(0.922_0_0)] dark:[--sidebar-foreground:oklch(0.985_0_0)] " +
+        "dark:[--accent:oklch(0.371_0_0)] " +
+        "[--chart-1:var(--color-blue-300)] [--chart-2:var(--color-blue-500)] [--chart-3:var(--color-blue-600)] " +
+        "[--chart-4:var(--color-blue-700)] [--chart-5:var(--color-blue-800)]";
+}

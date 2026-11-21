@@ -1,0 +1,43 @@
+<Card>
+    <CardHeader>
+        <CardTitle>Account Access</CardTitle>
+        <CardDescription>Update your credentials or re-authenticate.</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <FieldGroup>
+            <Field>
+                <FieldLabel for="email-address">Email Address</FieldLabel>
+                <Input id="email-address" Type="email" placeholder="artist@studio.inc" />
+            </Field>
+            <Field>
+                <div class="flex items-center justify-between">
+                    <FieldLabel for="current-password">Current Password</FieldLabel>
+                    <a href="#" class="text-xs font-medium tracking-wider text-muted-foreground uppercase hover:text-foreground">
+                        Forgot?
+                    </a>
+                </div>
+                <Input id="current-password" Type="password" placeholder="••••••••••••••••••••••••" />
+            </Field>
+        </FieldGroup>
+    </CardContent>
+    <CardFooter Class="flex-col gap-4">
+        <Button Class="w-full">
+            <Icon Name="lock" />
+            Update Security
+        </Button>
+        <Item Variant="ItemVariant.Muted">
+            <Render>
+                <a @attributes="context.Attributes" href="#">
+                    <ItemMedia Variant="ItemMediaVariant.Icon">
+                        <Icon Name="circle-alert" class="text-destructive" />
+                    </ItemMedia>
+                    <ItemContent>
+                        <ItemTitle>Danger Zone</ItemTitle>
+                        <ItemDescription Class="line-clamp-1">Archive account and remove catalog</ItemDescription>
+                    </ItemContent>
+                    <Icon Name="chevron-right" class="size-4" />
+                </a>
+            </Render>
+        </Item>
+    </CardFooter>
+</Card>

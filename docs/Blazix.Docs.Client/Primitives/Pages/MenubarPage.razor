@@ -1,0 +1,59 @@
+@page "/docs/primitives/menubar"
+
+<DocsPage Title="Menubar" Description="A menu bar providing commands and options for your application.">
+    <ComponentPreview Name="primitives/menubar-hero" />
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(MenubarRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Determines the orientation of the menubar.</StyleHook>
+            <StyleHook Name="data-has-submenu-open">Present when any submenu within the menubar is open.</StyleHook>
+            <StyleHook Name="data-modal">Present when the corresponding menubar is modal.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <MenubarRoot>
+            <MenuRoot>
+                <MenuTrigger />
+                <MenuPortal>
+                    <MenuBackdrop />
+                    <MenuPositioner>
+                        <MenuPopup>
+                            <MenuArrow />
+                            <MenuItem />
+                            <MenuLinkItem />
+                            <MenuSeparator />
+
+                            <MenuSubmenuRoot>
+                                <MenuSubmenuTrigger />
+                            </MenuSubmenuRoot>
+
+                            <MenuGroup>
+                                <MenuGroupLabel />
+                            </MenuGroup>
+
+                            <MenuRadioGroup>
+                                <MenuRadioItem>
+                                    <MenuRadioItemIndicator />
+                                </MenuRadioItem>
+                            </MenuRadioGroup>
+
+                            <MenuCheckboxItem>
+                                <MenuCheckboxItemIndicator />
+                            </MenuCheckboxItem>
+
+                            <MenuViewport />
+                        </MenuPopup>
+                    </MenuPositioner>
+                </MenuPortal>
+            </MenuRoot>
+        </MenubarRoot>
+        """;
+}

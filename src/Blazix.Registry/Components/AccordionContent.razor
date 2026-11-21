@@ -1,0 +1,28 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+@* accordion-down/accordion-up (Styles/vendor/variants.css) animate between 0 and --accordion-panel-height. *@
+<AccordionPanel data-slot="accordion-content" @attributes="AdditionalAttributes"
+                KeepMounted="@KeepMounted" HiddenUntilFound="@HiddenUntilFound"
+                class="overflow-hidden text-sm data-open:animate-accordion-down data-closed:animate-accordion-up">
+    <div class="@Cn(
+             "h-(--accordion-panel-height) pt-0 pb-2.5 data-ending-style:h-0 data-starting-style:h-0 " +
+             "[&_a]:underline [&_a]:underline-offset-3 [&_a]:hover:text-foreground [&_p:not(:last-child)]:mb-4",
+             Class)">
+        @ChildContent
+    </div>
+</AccordionPanel>
+
+@code {
+    /// <summary>Keep the content in the DOM (hidden) while closed.</summary>
+    [Parameter] public bool KeepMounted { get; set; }
+
+    /// <summary>Keep the closed content findable with find in page; it opens when a match is found.</summary>
+    [Parameter] public bool? HiddenUntilFound { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

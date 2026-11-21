@@ -1,0 +1,26 @@
+@using Blazix.Primitives
+
+<MenuRadioGroup data-slot="dropdown-menu-radio-group" @attributes="AdditionalAttributes" Render="@Render"
+                Value="@Value" ValueChanged="@ValueChanged" OnValueChange="@OnValueChange" Disabled="@Disabled" class="@Class">
+    @ChildContent
+</MenuRadioGroup>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<MenuGroupRenderProps>? Render { get; set; }
+
+    /// <summary>The checked item's value. Supports <c>@bind-Value</c>.</summary>
+    [Parameter] public string? Value { get; set; }
+
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+
+    /// <summary>Runs before the value changes; call <c>Cancel()</c> to keep it.</summary>
+    [Parameter] public EventCallback<ValueChangeEventArgs<string?>> OnValueChange { get; set; }
+
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,22 @@
+@page "/docs/primitives/separator"
+
+<DocsPage Title="Separator" Description="A separator element accessible to screen readers.">
+    <ComponentPreview Name="primitives/separator-hero" />
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and use the part:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(SeparatorRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the separator.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <SeparatorRoot />
+        """;
+}

@@ -1,0 +1,86 @@
+<ComboboxRoot Items="Fruits.Keys" ItemToLabel="@(value => Fruits[value])">
+    <div class="combobox-label">
+        <label for="@_id">Choose a fruit</label>
+        <ComboboxInputGroup class="combobox-input-group">
+            <ComboboxInput Placeholder="e.g. Apple" id="@_id" class="combobox-input" />
+            <div class="combobox-action-buttons">
+                <ComboboxClear class="combobox-clear" aria-label="Clear selection">
+                    @XIcon
+                </ComboboxClear>
+                <ComboboxTrigger class="combobox-trigger" aria-label="Open popup">
+                    @CaretDownIcon
+                </ComboboxTrigger>
+            </div>
+        </ComboboxInputGroup>
+    </div>
+
+    <ComboboxPortal>
+        <ComboboxPositioner class="combobox-positioner" SideOffset="4">
+            <ComboboxPopup class="combobox-popup">
+                <ComboboxEmpty>
+                    <div class="combobox-empty">
+                        No fruits found.
+                    </div>
+                </ComboboxEmpty>
+                <ComboboxList class="combobox-list">
+                    <Template Context="item">
+                        <ComboboxItem Value="@item" class="combobox-item">
+                            <ComboboxItemIndicator class="combobox-item-indicator">
+                                @CheckIcon
+                            </ComboboxItemIndicator>
+                            <span class="combobox-item-text">@Fruits[item]</span>
+                        </ComboboxItem>
+                    </Template>
+                </ComboboxList>
+            </ComboboxPopup>
+        </ComboboxPositioner>
+    </ComboboxPortal>
+</ComboboxRoot>
+
+@code {
+    private static readonly Dictionary<string, string> Fruits = new()
+    {
+        ["apple"] = "Apple",
+        ["banana"] = "Banana",
+        ["orange"] = "Orange",
+        ["pineapple"] = "Pineapple",
+        ["grape"] = "Grape",
+        ["mango"] = "Mango",
+        ["strawberry"] = "Strawberry",
+        ["blueberry"] = "Blueberry",
+        ["raspberry"] = "Raspberry",
+        ["blackberry"] = "Blackberry",
+        ["cherry"] = "Cherry",
+        ["peach"] = "Peach",
+        ["pear"] = "Pear",
+        ["plum"] = "Plum",
+        ["kiwi"] = "Kiwi",
+        ["watermelon"] = "Watermelon",
+        ["cantaloupe"] = "Cantaloupe",
+        ["honeydew"] = "Honeydew",
+        ["papaya"] = "Papaya",
+        ["guava"] = "Guava",
+        ["lychee"] = "Lychee",
+        ["pomegranate"] = "Pomegranate",
+        ["apricot"] = "Apricot",
+        ["grapefruit"] = "Grapefruit",
+        ["passionfruit"] = "Passionfruit",
+    };
+
+    private readonly string _id = $"fruit-{Guid.NewGuid():N}";
+    private static readonly RenderFragment CheckIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+            <path d="m2.5 8.5 4 4 7-9" />
+        </svg>;
+
+    private static readonly RenderFragment XIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round">
+            <path d="m4.5 4.5 7 7m-7 0 7-7" />
+        </svg>;
+
+    private static readonly RenderFragment CaretDownIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M12 6H4l4 4.5z" />
+        </svg>;
+
+}

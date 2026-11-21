@@ -1,0 +1,22 @@
+<div class="grid w-full max-w-md gap-4">
+    <InputGroup>
+        <InputGroupTextarea id="textarea-code-32" placeholder="console.log('Hello, world!');" Class="min-h-[200px]" />
+        <InputGroupAddon Align="InputGroupAddonAlign.BlockEnd" Class="border-t">
+            <InputGroupText>Line 1, Column 1</InputGroupText>
+            <InputGroupButton Size="InputGroupButtonSize.Sm" Class="ml-auto" Variant="ButtonVariant.Default">
+                Run
+                <Icon Name="corner-down-left" />
+            </InputGroupButton>
+        </InputGroupAddon>
+        <InputGroupAddon Align="InputGroupAddonAlign.BlockStart" Class="border-b">
+            <InputGroupText Class="font-mono font-medium">
+                <Icon Name="file-code" />
+                script.js
+            </InputGroupText>
+            <InputGroupButton Class="ml-auto" Size="InputGroupButtonSize.IconXs" aria-label="Refresh"><Icon Name="refresh-cw" /></InputGroupButton>
+            <InputGroupButton Variant="ButtonVariant.Ghost" Size="InputGroupButtonSize.IconXs" aria-label="Copy">
+                <Icon Name="copy" />
+            </InputGroupButton>
+        </InputGroupAddon>
+    </InputGroup>
+</div>

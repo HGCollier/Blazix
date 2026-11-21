@@ -1,0 +1,92 @@
+<NavigationMenuRoot class="navigation-menu-root">
+    <NavigationMenuList class="navigation-menu-list">
+        <NavigationMenuItem>
+            <NavigationMenuTrigger class="navigation-menu-trigger">
+                Overview
+                <NavigationMenuIcon class="navigation-menu-icon">
+                    @CaretDownIcon
+                </NavigationMenuIcon>
+            </NavigationMenuTrigger>
+
+            <NavigationMenuContent class="navigation-menu-content">
+                <ul class="navigation-menu-grid-link-list">
+                    @foreach (var item in OverviewLinks)
+                    {
+                        <li>
+                            <NavigationMenuLink href="@item.Href" class="navigation-menu-link-card">
+                                <h3 class="navigation-menu-link-title">@item.Title</h3>
+                                <p class="navigation-menu-link-description">
+                                    @item.Description
+                                </p>
+                            </NavigationMenuLink>
+                        </li>
+                    }
+                </ul>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+            <NavigationMenuTrigger class="navigation-menu-trigger">
+                Handbook
+                <NavigationMenuIcon class="navigation-menu-icon">
+                    @CaretDownIcon
+                </NavigationMenuIcon>
+            </NavigationMenuTrigger>
+
+            <NavigationMenuContent class="navigation-menu-content">
+                <ul class="navigation-menu-flex-link-list">
+                    @foreach (var item in HandbookLinks)
+                    {
+                        <li>
+                            <NavigationMenuLink href="@item.Href" class="navigation-menu-link-card">
+                                <h3 class="navigation-menu-link-title">@item.Title</h3>
+                                <p class="navigation-menu-link-description">
+                                    @item.Description
+                                </p>
+                            </NavigationMenuLink>
+                        </li>
+                    }
+                </ul>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+            <NavigationMenuLink class="navigation-menu-trigger" href="https://github.com/HGCollier/Blazix">
+                GitHub
+            </NavigationMenuLink>
+        </NavigationMenuItem>
+    </NavigationMenuList>
+
+    <NavigationMenuPortal>
+        <NavigationMenuPositioner SideOffset="10" CollisionPadding="20" style="--duration: 0.35s; --easing: cubic-bezier(0.22, 1, 0.36, 1)" class="navigation-menu-positioner">
+            <NavigationMenuPopup class="navigation-menu-popup">
+                <NavigationMenuArrow class="navigation-menu-arrow" />
+                <NavigationMenuViewport class="navigation-menu-viewport" />
+            </NavigationMenuPopup>
+        </NavigationMenuPositioner>
+    </NavigationMenuPortal>
+</NavigationMenuRoot>
+
+@code {
+    private sealed record NavLink(string Href, string Title, string Description);
+
+    private static readonly NavLink[] OverviewLinks =
+    [
+        new("/docs/primitives/installation", "Installation", "Install the library and set up your app."),
+        new("/docs/primitives/accessibility", "Accessibility", "Learn how we build accessible components."),
+        new("/docs/cli", "CLI", "Copy styled components into your project."),
+        new("/docs", "About", "Learn more about Blazix and its principles."),
+    ];
+
+    private static readonly NavLink[] HandbookLinks =
+    [
+        new("/docs/primitives/styling", "Styling", "The primitives can be styled with Tailwind CSS, plain CSS or CSS isolation."),
+        new("/docs/primitives/animation", "Animation", "The primitives can be animated with CSS transitions or CSS animations."),
+        new("/docs/primitives/composition", "Composition", "The primitives can be replaced and composed with your own existing components."),
+    ];
+
+    private static readonly RenderFragment CaretDownIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M12 6H4l4 4.5z" />
+        </svg>;
+}

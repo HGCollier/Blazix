@@ -1,0 +1,251 @@
+<Blazix.Primitives.MediaQuery Query="(max-width: 767px)" MatchesChanged="@(matches => _isMobile = matches)" />
+<SidebarProvider>
+    <Sidebar Collapsible="SidebarCollapsible.Icon">
+        <SidebarHeader>
+            <SidebarMenu>
+                <SidebarMenuItem>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <Render Context="trigger">
+                                <SidebarMenuButton @attributes="trigger.Attributes" Size="SidebarMenuButtonSize.Lg"
+                                                   Class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+                                    <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                                        <Icon Name="@_activeTeam.Logo" class="size-4" />
+                                    </div>
+                                    <div class="grid flex-1 text-left text-sm leading-tight">
+                                        <span class="truncate font-medium">@_activeTeam.Name</span>
+                                        <span class="truncate text-xs">@_activeTeam.Plan</span>
+                                    </div>
+                                    <Icon Name="chevrons-up-down" class="ml-auto" />
+                                </SidebarMenuButton>
+                            </Render>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent Class="w-(--anchor-width) min-w-56 rounded-lg" Align="Align.Start" Side="@SideForMenus" SideOffset="4">
+                            <DropdownMenuGroup>
+                                <DropdownMenuLabel Class="text-xs text-muted-foreground">Teams</DropdownMenuLabel>
+                                @foreach (var (team, index) in Teams.Select((t, i) => (t, i)))
+                                {
+                                    <DropdownMenuItem @key="team.Name" OnClick="@(() => _activeTeam = team)" Class="gap-2 p-2">
+                                        <div class="flex size-6 items-center justify-center rounded-md border">
+                                            <Icon Name="@team.Logo" class="size-3.5 shrink-0" />
+                                        </div>
+                                        @team.Name
+                                        <DropdownMenuShortcut>⌘@(index + 1)</DropdownMenuShortcut>
+                                    </DropdownMenuItem>
+                                }
+                            </DropdownMenuGroup>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuGroup>
+                                <DropdownMenuItem Class="gap-2 p-2">
+                                    <div class="flex size-6 items-center justify-center rounded-md border bg-transparent">
+                                        <Icon Name="plus" class="size-4" />
+                                    </div>
+                                    <div class="font-medium text-muted-foreground">Add team</div>
+                                </DropdownMenuItem>
+                            </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </SidebarMenuItem>
+            </SidebarMenu>
+        </SidebarHeader>
+        <SidebarContent>
+            <SidebarGroup>
+                <SidebarGroupLabel>Platform</SidebarGroupLabel>
+                <SidebarMenu>
+                    @foreach (var item in NavMain)
+                    {
+                        <Collapsible @key="item.Title" Open="item.IsActive" Class="group/collapsible">
+                            @* The collapsible is the list item: a <div> around it would break the list. *@
+                            <Render Context="collapsible">
+                                <SidebarMenuItem @attributes="collapsible.Attributes">
+                                    <CollapsibleTrigger>
+                                        <Render Context="trigger">
+                                            <SidebarMenuButton @attributes="trigger.Attributes">
+                                                <Tooltip>@item.Title</Tooltip>
+                                                <ChildContent>
+                                                    <Icon Name="@item.Icon" />
+                                                    <span>@item.Title</span>
+                                                    <Icon Name="chevron-right" class="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
+                                                </ChildContent>
+                                            </SidebarMenuButton>
+                                        </Render>
+                                    </CollapsibleTrigger>
+                                    <CollapsibleContent>
+                                        <SidebarMenuSub>
+                                            @foreach (var subItem in item.Items)
+                                            {
+                                                <SidebarMenuSubItem @key="subItem">
+                                                    <SidebarMenuSubButton>
+                                                        <Render Context="link">
+                                                            <a @attributes="link.Attributes" href="#"><span>@subItem</span></a>
+                                                        </Render>
+                                                    </SidebarMenuSubButton>
+                                                </SidebarMenuSubItem>
+                                            }
+                                        </SidebarMenuSub>
+                                    </CollapsibleContent>
+                                </SidebarMenuItem>
+                            </Render>
+                        </Collapsible>
+                    }
+                </SidebarMenu>
+            </SidebarGroup>
+            <SidebarGroup Class="group-data-[collapsible=icon]:hidden">
+                <SidebarGroupLabel>Projects</SidebarGroupLabel>
+                <SidebarMenu>
+                    @foreach (var project in Projects)
+                    {
+                        <SidebarMenuItem @key="project.Name">
+                            <SidebarMenuButton>
+                                <Render Context="link">
+                                    <a @attributes="link.Attributes" href="#">
+                                        <Icon Name="@project.Icon" />
+                                        <span>@project.Name</span>
+                                    </a>
+                                </Render>
+                            </SidebarMenuButton>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger>
+                                    <Render Context="trigger">
+                                        <SidebarMenuAction @attributes="trigger.Attributes" ShowOnHover="true">
+                                            <Icon Name="ellipsis" />
+                                            <span class="sr-only">More</span>
+                                        </SidebarMenuAction>
+                                    </Render>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent Class="w-48 rounded-lg" Side="@SideForMenus" Align="@(_isMobile ? Align.End : Align.Start)">
+                                    <DropdownMenuItem>
+                                        <Icon Name="folder" class="text-muted-foreground" />
+                                        <span>View Project</span>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <Icon Name="forward" class="text-muted-foreground" />
+                                        <span>Share Project</span>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem>
+                                        <Icon Name="trash-2" class="text-muted-foreground" />
+                                        <span>Delete Project</span>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </SidebarMenuItem>
+                    }
+                    <SidebarMenuItem>
+                        <SidebarMenuButton Class="text-sidebar-foreground/70">
+                            <Icon Name="ellipsis" class="text-sidebar-foreground/70" />
+                            <span>More</span>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarGroup>
+        </SidebarContent>
+        <SidebarFooter>
+            <SidebarMenu>
+                <SidebarMenuItem>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <Render Context="trigger">
+                                <SidebarMenuButton @attributes="trigger.Attributes" Size="SidebarMenuButtonSize.Lg"
+                                                   Class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+                                    @UserSummary
+                                    <Icon Name="chevrons-up-down" class="ml-auto size-4" />
+                                </SidebarMenuButton>
+                            </Render>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent Class="w-(--anchor-width) min-w-56 rounded-lg" Side="@SideForMenus" Align="Align.End" SideOffset="4">
+                            <DropdownMenuGroup>
+                                <DropdownMenuLabel Class="p-0 font-normal">
+                                    <div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">@UserSummary</div>
+                                </DropdownMenuLabel>
+                            </DropdownMenuGroup>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuGroup>
+                                <DropdownMenuItem>
+                                    <Icon Name="sparkles" />
+                                    Upgrade to Pro
+                                </DropdownMenuItem>
+                            </DropdownMenuGroup>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuGroup>
+                                <DropdownMenuItem>
+                                    <Icon Name="badge-check" />
+                                    Account
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Icon Name="credit-card" />
+                                    Billing
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Icon Name="bell" />
+                                    Notifications
+                                </DropdownMenuItem>
+                            </DropdownMenuGroup>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuGroup>
+                                <DropdownMenuItem>
+                                    <Icon Name="log-out" />
+                                    Log out
+                                </DropdownMenuItem>
+                            </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </SidebarMenuItem>
+            </SidebarMenu>
+        </SidebarFooter>
+        <SidebarRail />
+    </Sidebar>
+    <SidebarInset>
+        <header class="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+            <div class="flex items-center gap-2 px-4">
+                <SidebarTrigger Class="-ml-1" />
+            </div>
+        </header>
+    </SidebarInset>
+</SidebarProvider>
+
+@code {
+    private sealed record Team(string Name, string Logo, string Plan);
+
+    private sealed record NavItem(string Title, string Icon, string[] Items, bool IsActive = false);
+
+    private sealed record Project(string Name, string Icon);
+
+    private static readonly Team[] Teams =
+    [
+        new("Blazix Inc", "gallery-vertical-end", "Enterprise"),
+        new("Blazix Corp.", "audio-waveform", "Startup"),
+        new("Evil Corp.", "command", "Free"),
+    ];
+
+    private static readonly NavItem[] NavMain =
+    [
+        new("Playground", "square-terminal", ["History", "Starred", "Settings"], IsActive: true),
+        new("Models", "bot", ["Genesis", "Explorer", "Quantum"]),
+        new("Documentation", "book-open", ["Introduction", "Get Started", "Tutorials", "Changelog"]),
+        new("Settings", "settings-2", ["General", "Team", "Billing", "Limits"]),
+    ];
+
+    private static readonly Project[] Projects =
+    [
+        new("Design Engineering", "frame"),
+        new("Sales & Marketing", "chart-pie"),
+        new("Travel", "map"),
+    ];
+
+    private static readonly RenderFragment UserSummary = @<text>
+        <Avatar Class="h-8 w-8 rounded-lg">
+            <AvatarImage Src="https://avatar.vercel.sh/blazix" alt="" />
+            <AvatarFallback Class="rounded-lg">BX</AvatarFallback>
+        </Avatar>
+        <div class="grid flex-1 text-left text-sm leading-tight">
+            <span class="truncate font-medium">blazix</span>
+            <span class="truncate text-xs">m@example.com</span>
+        </div>
+    </text>;
+
+    private Team _activeTeam = Teams[0];
+    private bool _isMobile;
+
+    private Side SideForMenus => _isMobile ? Side.Bottom : Side.Right;
+}

@@ -1,0 +1,96 @@
+@page "/docs/primitives/accessibility"
+
+<DocsPage Title="Accessibility" Description="Learn how to make the most of the primitives' accessibility features and guidelines.">
+    <p>
+        The primitives handle many of the complex details of accessibility: roles and ARIA attributes, pointer interactions,
+        keyboard navigation and focus management. They aim for an accessible experience out of the box, with parameters to
+        configure it. This page covers what they do, and what's still up to you.
+    </p>
+
+    <DocsHeading Title="Keyboard navigation" />
+    <p>
+        Each primitive follows its <a href="https://www.w3.org/WAI/ARIA/apg/">WAI-ARIA Authoring Practices</a> pattern and
+        its keyboard behaviour. That matters most to people who can't use a pointer, and to everyone who prefers the
+        keyboard. Many primitives use the arrow keys, letters for typeahead, <kbd>Home</kbd>, <kbd>End</kbd>,
+        <kbd>Enter</kbd> and <kbd>Esc</kbd>.
+    </p>
+
+    <DocsHeading Title="Focus management" />
+    <p>
+        The primitives move focus for you after an interaction: into a popup when it opens, around a group with the arrow
+        keys, and back to the trigger when the popup closes. Popups take <code>InitialFocus</code> and
+        <code>FinalFocus</code> parameters to choose where focus goes instead.
+    </p>
+    <p>
+        Focus also follows what Blazor renders. If Blazor removes the focused item, focus moves to the item now in its place
+        rather than to the page, and closing or disabling a part from code returns focus to its trigger.
+    </p>
+    <p>
+        It's up to you to show where focus is, usually by styling <code>:focus-visible</code>, and the highlighted item of
+        a menu or list (<code>data-highlighted</code>). For WCAG AA, the indicator needs a contrast of at least 3:1 with what
+        it sits on (<a href="https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast">non-text contrast</a>), as do
+        the borders that show where a control is and the marks that show its state, such as a checked box or a pressed
+        toggle. WCAG also has <a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance">guidelines on focus
+        appearance</a>. An outline stays visible in Windows' high contrast mode (forced colors), where box shadows and
+        backgrounds can disappear.
+    </p>
+
+    <DocsHeading Title="Color contrast" />
+    <p>
+        When you style the parts, meet the minimum contrast between each foreground and its background. Unless your app has
+        strict requirements to comply with current standards, consider <a href="https://apcacontrast.com/">APCA</a>.
+    </p>
+
+    <DocsHeading Title="Accessible labels" />
+    <p>
+        <a href="/docs/primitives/form">Form</a>, <a href="/docs/primitives/field">Field</a>,
+        <a href="/docs/primitives/fieldset">Fieldset</a> and <a href="/docs/primitives/input">Input</a> associate labels,
+        descriptions and errors with their controls for you, and a native <code>&lt;label&gt;</code> works as well.
+    </p>
+    <p>
+        A plain <code>&lt;label&gt;</code> works too, wherever it can't reach the element that takes focus by itself:
+    </p>
+    <ul>
+        <li>
+            <a href="/docs/primitives/checkbox">Checkbox</a>, <a href="/docs/primitives/switch">Switch</a> and
+            <a href="/docs/primitives/radio-group">Radio</a> render a <code>&lt;span&gt;</code>, which no label can name. A
+            <code>&lt;label for&gt;</code> at the <code>id</code> you give the control, or a <code>&lt;label&gt;</code> around
+            it, names it through <code>aria-labelledby</code>, set once the page is interactive.
+        </li>
+        <li>
+            A <a href="/docs/primitives/slider">Slider</a>'s thumbs take a <code>&lt;label for&gt;</code> at the root's
+            <code>id</code>, or an <code>aria-label</code> or <code>aria-labelledby</code> on the root. Name the thumbs of a
+            range one by one with <code>aria-label</code> on each <code>SliderThumb</code>.
+        </li>
+        <li>
+            The list of options of a <a href="/docs/primitives/select">Select</a> or
+            <a href="/docs/primitives/combobox">Combobox</a> is named after the label of its trigger or input.
+        </li>
+    </ul>
+    <p>
+        An <code>aria-label</code> or <code>aria-labelledby</code> you pass always wins over the one a part would set.
+    </p>
+    <p>
+        Most apps also have controls whose accessible name has to come from markup, such as <code>alt</code>,
+        <code>aria-label</code> or <code>aria-labelledby</code>: a button with only an icon, or a select with no visible
+        label. A trigger with <code>role="combobox"</code> isn't named by its text, which is its value. WAI-ARIA has
+        guidelines on <a href="https://www.w3.org/TR/wai-aria-1.2/#namecalculation">providing accessible names</a> to
+        custom controls.
+    </p>
+
+    <DocsHeading Title="Dragging" />
+    <p>
+        Anything that changes by dragging needs a way to do the same with a single click or tap
+        (<a href="https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements">WCAG 2.5.7</a>). A slider's track and a
+        scroll area's track jump where you press them, a carousel has previous and next buttons, and a drawer closes from
+        its close button, its backdrop or <kbd>Esc</kbd>. Where you build something else that drags, add the alternative
+        yourself.
+    </p>
+
+    <DocsHeading Title="Server rendering" />
+    <p>
+        Every role and ARIA state is rendered by Blazor, not added later by JavaScript, so it's in the HTML from the first
+        render, prerendered or not. The JavaScript only does what has to happen inside a browser event, such as moving focus
+        and positioning popups, and reports back to Blazor, which keeps the state.
+    </p>
+</DocsPage>

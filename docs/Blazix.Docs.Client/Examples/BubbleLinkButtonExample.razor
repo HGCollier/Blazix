@@ -1,0 +1,28 @@
+@inject ToastManager Toasts
+
+<div class="flex w-full max-w-sm flex-col gap-8 py-12">
+    <Bubble Variant="BubbleVariant.Muted">
+        <BubbleContent>How can I help you today?</BubbleContent>
+    </Bubble>
+    <BubbleGroup>
+        @foreach (var (label, message) in Options)
+        {
+            <Bubble Variant="BubbleVariant.Tinted" Align="BubbleAlign.End">
+                <BubbleContent>
+                    <Render Context="content">
+                        <button @attributes="content.Attributes" type="button" @onclick="@(() => Toasts.Add(new ToastOptions { Title = message }))">@label</button>
+                    </Render>
+                </BubbleContent>
+            </Bubble>
+        }
+    </BubbleGroup>
+</div>
+
+@code {
+    private static readonly (string Label, string Message)[] Options =
+    [
+        ("I forgot my password", "You clicked forgot password"),
+        ("I need help with my subscription", "You clicked help with subscription"),
+        ("Something else. Talk to a human.", "You clicked something else. Talk to a human."),
+    ];
+}

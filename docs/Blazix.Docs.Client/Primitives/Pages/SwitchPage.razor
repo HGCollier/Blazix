@@ -1,0 +1,82 @@
+@page "/docs/primitives/switch"
+
+<DocsPage Title="Switch" Description="A control that indicates whether a setting is on or off.">
+    <ComponentPreview Name="primitives/switch-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li>
+            <strong>Form controls must have an accessible name:</strong> give it one with a <code>&lt;label&gt;</code> element
+            or the <a href="/docs/primitives/field">Field</a> parts. See <a href="#labeling-a-switch">Labeling a switch</a>.
+        </li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="Examples" />
+    <DocsHeading Level="3" Title="Labeling a switch" />
+    <p>An enclosing <code>&lt;label&gt;</code> is the simplest labeling pattern:</p>
+    <CodeFigure Code="@WrappingLabelCode" Title="Wrapping a label around a switch" />
+    <p>
+        <code>SwitchRoot</code> renders a <code>&lt;span&gt;</code> with a hidden native <code>&lt;input&gt;</code> beside it.
+        To label it with a sibling <code>&lt;label&gt;</code>, point the label's <code>for</code> at the hidden input's id,
+        set with <code>InputId</code>:
+    </p>
+    <CodeFigure Code="@SiblingLabelCode" Title="Sibling label" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(SwitchRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-checked">Present when the switch is checked.</StyleHook>
+            <StyleHook Name="data-unchecked">Present when the switch is not checked.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the switch is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the switch is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the switch is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the switch is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the switch is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the switch's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the switch has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the switch is active (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the switch is focused (when wrapped in FieldRoot).</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SwitchThumb)">
+        <DataAttributes>
+            <StyleHook Name="data-checked">Present when the switch is checked.</StyleHook>
+            <StyleHook Name="data-unchecked">Present when the switch is not checked.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the switch is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the switch is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the switch is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the switch is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the switch is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the switch's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the switch has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the switch is active (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the switch is focused (when wrapped in FieldRoot).</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <SwitchRoot>
+            <SwitchThumb />
+        </SwitchRoot>
+        """;
+
+    private const string WrappingLabelCode = """
+        <label>
+            <SwitchRoot />
+            Notifications
+        </label>
+        """;
+
+    private const string SiblingLabelCode = """
+        <div>
+            <label for="notifications-switch">Notifications</label>
+            <SwitchRoot InputId="notifications-switch">
+                <SwitchThumb />
+            </SwitchRoot>
+        </div>
+        """;
+}

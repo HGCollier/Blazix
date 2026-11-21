@@ -1,0 +1,50 @@
+@page "/docs/components/radio-group"
+
+<DocsPage Title="Radio Group" Description="A set of checkable buttons—known as radio buttons—where no more than one of the buttons can be checked at a time.">
+    <ComponentPreview Name="radio-group-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="radio-group" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>RadioGroup</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Description" />
+    <p>Radio group items with a description using the <code>Field</code> component.</p>
+    <ComponentPreview Name="radio-group-description" />
+    <DocsHeading Title="Choice Card" />
+    <p>Use <code>FieldLabel</code> to wrap the entire <code>Field</code> for a clickable card-style selection.</p>
+    <ComponentPreview Name="radio-group-choice-card" />
+    <DocsHeading Title="Fieldset" />
+    <p>Use <code>FieldSet</code> and <code>FieldLegend</code> to group radio items with a label and description.</p>
+    <ComponentPreview Name="radio-group-fieldset" />
+    <DocsHeading Title="Disabled" />
+    <p>Use the <code>Disabled</code> parameter on <code>RadioGroup</code> to disable all items.</p>
+    <ComponentPreview Name="radio-group-disabled" />
+    <DocsHeading Title="Invalid" />
+    <p>Use <code>aria-invalid</code> on <code>RadioGroupItem</code> and <code>data-invalid</code> on <code>Field</code> to show validation errors.</p>
+    <ComponentPreview Name="radio-group-invalid" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="radio-group" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <RadioGroup Value="option-one">
+            <div class="flex items-center gap-3">
+                <RadioGroupItem Value="option-one" id="option-one" />
+                <Label for="option-one">Option One</Label>
+            </div>
+            <div class="flex items-center gap-3">
+                <RadioGroupItem Value="option-two" id="option-two" />
+                <Label for="option-two">Option Two</Label>
+            </div>
+        </RadioGroup>
+        """;
+
+    private const string CompositionCode = """
+        RadioGroup
+        ├── RadioGroupItem
+        └── RadioGroupItem
+        """;
+}

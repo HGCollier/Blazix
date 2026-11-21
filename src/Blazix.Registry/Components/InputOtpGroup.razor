@@ -1,0 +1,16 @@
+@using static Blazix.Registry.ClassNames
+
+<div data-slot="input-otp-group" @attributes="AdditionalAttributes"
+     class="@Cn(
+         "flex items-center rounded-lg has-aria-invalid:border-destructive has-aria-invalid:ring-3 " +
+         "has-aria-invalid:ring-destructive/20 dark:has-aria-invalid:ring-destructive/40",
+         Class)">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,79 @@
+@inject ToastManager Toasts
+
+<Questionnaire Class="mx-auto max-w-md" DefaultItem="direction" Items="@_items"
+               Shortcuts="QuestionnaireShortcuts.Letters" OnSubmit="@HandleSubmit">
+    <QuestionnaireProgress />
+    @foreach (var question in Questions)
+    {
+        <QuestionnaireItem @key="question.Name" Name="@question.Name" Multiple="@question.Multiple" Required="@question.Required">
+            <QuestionnaireTitle>@question.Title</QuestionnaireTitle>
+            <QuestionnaireDescription>@question.Description</QuestionnaireDescription>
+            <QuestionnaireChoices>
+                @foreach (var choice in question.Choices)
+                {
+                    <QuestionnaireChoice @key="choice.Value" Value="@choice.Value">
+                        <span class="font-medium">@choice.Label</span>
+                        @if (choice.Description is not null)
+                        {
+                            <span class="text-muted-foreground">@choice.Description</span>
+                        }
+                    </QuestionnaireChoice>
+                }
+                @if (question.Input is { } input)
+                {
+                    <QuestionnaireInput aria-label="@input.Label" placeholder="@input.Placeholder" />
+                }
+            </QuestionnaireChoices>
+            <QuestionnaireError />
+        </QuestionnaireItem>
+    }
+    <QuestionnaireActions>
+        <QuestionnairePrevious />
+        <QuestionnaireSkip />
+        <QuestionnaireNext>Next</QuestionnaireNext>
+        <QuestionnaireSubmit>Save plan</QuestionnaireSubmit>
+    </QuestionnaireActions>
+</Questionnaire>
+
+@code {
+    private sealed record Choice(string Value, string Label, string? Description = null);
+
+    private sealed record FreeformInput(string Label, string Placeholder);
+
+    private sealed record Question(string Name, string Title, string Description, bool Required, Choice[] Choices,
+                                   bool Multiple = false, FreeformInput? Input = null);
+
+    private static readonly Question[] Questions =
+    [
+        new("direction", "What should the agent build next?", "Choose a direction or describe another task.", true,
+            [
+                new("tool-calls", "Tool call timeline", "Show what the agent ran and what came back."),
+                new("approvals", "Approval checkpoints", "Ask before sensitive or destructive actions."),
+                new("handoffs", "Sub-agent handoffs", "Make delegated work and results easier to follow."),
+            ],
+            Input: new("Another agent feature", "Describe another feature…")),
+        new("signals", "What should every progress update include?", "Select all that apply, or skip this question.", false,
+            [new("progress", "Progress"), new("decisions", "Decisions"), new("risks", "Risks"), new("next-step", "Next step")],
+            Multiple: true),
+        new("timing", "When should work begin?", "Choose when the agent should begin the work.", true,
+            [new("now", "Start now"), new("next-cycle", "Next development cycle"), new("backlog", "Add it to the backlog")]),
+    ];
+
+    private readonly QuestionnaireItemDefinition[] _items = Questions
+        .Select(question => new QuestionnaireItemDefinition(
+            question.Name, question.Required,
+            Choices: question.Choices.Select(choice => new QuestionnaireChoiceDefinition(choice.Value)).ToArray()))
+        .ToArray();
+
+    private void HandleSubmit(QuestionnaireAnswers answers)
+    {
+        var signals = answers.GetAll("signals");
+        Toasts.Add(new ToastOptions
+        {
+            Title = "Agent plan saved",
+            Description = $"Direction: {answers.Get("direction") ?? "None"} · " +
+                          $"Progress signals: {(signals.Count > 0 ? string.Join(", ", signals) : "None")} · " +
+                          $"Timing: {answers.Get("timing") ?? "None"}",
+        });
+    }
+}

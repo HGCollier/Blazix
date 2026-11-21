@@ -1,0 +1,206 @@
+@page "/docs/primitives/combobox"
+
+<DocsPage Title="Combobox" Description="An input combined with a list of predefined items to select.">
+    <ComponentPreview Name="primitives/combobox-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li><strong>Combobox is a filterable Select:</strong> Use Combobox when the input is restricted to a set of predefined items, like <a href="/docs/primitives/select">Select</a>, but whose items can be filtered by typing. Prefer it over Select when there are enough items to warrant filtering.</li>
+        <li><strong>Avoid for simple search widgets:</strong> Combobox doesn't allow free-form text. For search widgets, consider <a href="/docs/primitives/autocomplete">Autocomplete</a>.</li>
+        <li><strong>Avoid when not rendering an input:</strong> Use <a href="/docs/primitives/select">Select</a> instead if no input is rendered: it includes accessibility features specific to a listbox without an input.</li>
+        <li><strong>Form controls must have an accessible name:</strong> If <code>ComboboxInput</code> is the form control, label it with a native <code>&lt;label&gt;</code> or <code>FieldLabel</code>, or give it an <code>aria-label</code> when no visible label is rendered. <code>ComboboxLabel</code> labels <code>ComboboxTrigger</code>, for the pattern where the input is inside the popup and the trigger is the form control.</li>
+        <li><strong>Closing animations:</strong> The popup stays rendered until its closing animation finishes. See <a href="/docs/primitives/animation">Animation</a>.</li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(ComboboxRoot)" />
+    <PartReference Type="typeof(ComboboxTrigger)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding popup is open.</StyleHook>
+            <StyleHook Name="data-list-empty">Present when the corresponding items list is empty.</StyleHook>
+            <StyleHook Name="data-pressed">Present when the trigger is pressed.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the component is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the component is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the component is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the component is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the component is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the component's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the component has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the component has a value (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the trigger is focused (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-placeholder">Present when the combobox doesn't have a value.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ComboboxValue)" />
+    <PartReference Type="typeof(ComboboxInput)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding popup is open.</StyleHook>
+            <StyleHook Name="data-list-empty">Present when the corresponding items list is empty.</StyleHook>
+            <StyleHook Name="data-pressed">Present when the input is pressed.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the component is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the component is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the component is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the component is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the component is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the component's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the component has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the component has a value (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the input is focused (when wrapped in FieldRoot).</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ComboboxIcon)" />
+    <PartReference Type="typeof(ComboboxClear)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding popup is open.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the button is disabled.</StyleHook>
+            <StyleHook Name="data-visible">Present when the clear button is visible.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the button begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the button is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ComboboxList)" />
+    <PartReference Type="typeof(ComboboxPortal)" />
+    <PartReference Type="typeof(ComboboxBackdrop)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the popup is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the popup is closed.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the popup begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the popup is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ComboboxPositioner)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the popup is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the popup is closed.</StyleHook>
+            <StyleHook Name="data-anchor-hidden">Present when the anchor is hidden.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to specified side.</StyleHook>
+            <StyleHook Name="data-empty">Present when the items list is empty.</StyleHook>
+            <StyleHook Name="data-side" Type="'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the trigger.</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--anchor-height" Type="number">The anchor's height.</StyleHook>
+            <StyleHook Name="--anchor-width" Type="number">The anchor's width.</StyleHook>
+            <StyleHook Name="--available-height" Type="number">The available height between the trigger and the edge of the viewport.</StyleHook>
+            <StyleHook Name="--available-width" Type="number">The available width between the trigger and the edge of the viewport.</StyleHook>
+            <StyleHook Name="--transform-origin" Type="string">The coordinates that this element is anchored to. Used for animations and transitions.</StyleHook>
+        </CssVariables>
+    </PartReference>
+    <PartReference Type="typeof(ComboboxPopup)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the popup is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the popup is closed.</StyleHook>
+            <StyleHook Name="data-anchor-hidden">Present when the anchor is hidden.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to specified side.</StyleHook>
+            <StyleHook Name="data-empty">Present when the items list is empty.</StyleHook>
+            <StyleHook Name="data-side" Type="'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the trigger.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the popup begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the popup is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ComboboxArrow)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the popup is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the popup is closed.</StyleHook>
+            <StyleHook Name="data-uncentered">Present when the arrow is uncentered.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to specified side.</StyleHook>
+            <StyleHook Name="data-side" Type="'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the trigger.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ComboboxItem)">
+        <DataAttributes>
+            <StyleHook Name="data-selected">Present when the item is selected.</StyleHook>
+            <StyleHook Name="data-highlighted">Present when the item is highlighted.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the item is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ComboboxGroup)" />
+    <PartReference Type="typeof(ComboboxGroupLabel)" />
+    <PartReference Type="typeof(ComboboxSeparator)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the separator.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ComboboxLabel)" />
+    <PartReference Type="typeof(ComboboxStatus)" />
+    <PartReference Type="typeof(ComboboxEmpty)" />
+    <PartReference Type="typeof(ComboboxCollection)" />
+    <PartReference Type="typeof(ComboboxRow)" />
+    <PartReference Type="typeof(ComboboxChips)" />
+    <PartReference Type="typeof(ComboboxChip)" />
+    <PartReference Type="typeof(ComboboxChipRemove)" />
+    <PartReference Type="typeof(ComboboxItemIndicator)">
+        <DataAttributes>
+            <StyleHook Name="data-starting-style">Present when the indicator begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the indicator is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ComboboxInputGroup)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding popup is open.</StyleHook>
+            <StyleHook Name="data-list-empty">Present when the corresponding items list is empty.</StyleHook>
+            <StyleHook Name="data-pressed">Present when the input group is pressed.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the component is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the component is readonly.</StyleHook>
+            <StyleHook Name="data-valid">Present when the component is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the component is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the component's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the component has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the component has a value (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the component is focused (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-placeholder">Present when the combobox doesn't have a value.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <ComboboxRoot>
+            <ComboboxLabel />
+
+            <ComboboxInputGroup>
+                <ComboboxInput />
+                <ComboboxTrigger />
+                <ComboboxIcon />
+                <ComboboxClear />
+                <ComboboxValue />
+
+                <ComboboxChips>
+                    <ComboboxChip>
+                        <ComboboxChipRemove />
+                    </ComboboxChip>
+                </ComboboxChips>
+            </ComboboxInputGroup>
+
+            <ComboboxPortal>
+                <ComboboxBackdrop />
+                <ComboboxPositioner>
+                    <ComboboxPopup>
+                        <ComboboxArrow />
+
+                        <ComboboxStatus />
+                        <ComboboxEmpty />
+
+                        <ComboboxList>
+                            <ComboboxRow>
+                                <ComboboxItem>
+                                    <ComboboxItemIndicator />
+                                </ComboboxItem>
+                            </ComboboxRow>
+
+                            <ComboboxSeparator />
+
+                            <ComboboxGroup>
+                                <ComboboxGroupLabel />
+                            </ComboboxGroup>
+
+                            <ComboboxCollection />
+                        </ComboboxList>
+                    </ComboboxPopup>
+                </ComboboxPositioner>
+            </ComboboxPortal>
+        </ComboboxRoot>
+        """;
+}

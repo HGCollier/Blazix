@@ -1,0 +1,25 @@
+<div class="w-full max-w-md">
+    <CodeBlock>
+        <CodeBlockHeader>
+            <CodeBlockTitle>components/chat.tsx</CodeBlockTitle>
+            <CodeBlockActions>
+                <CodeBlockCopyButton Value="@ChatSnippet.Component" />
+            </CodeBlockActions>
+        </CodeBlockHeader>
+        <CodeBlockContent id="code-block-show-more" LineNumbers="true" Code="@ChatSnippet.Component"
+                          Class="@(_expanded ? null : "max-h-64 scroll-fade-y overflow-y-hidden")" />
+        <CodeBlockFooter Class="justify-center">
+            <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Xs" aria-expanded="@(_expanded ? "true" : "false")"
+                    aria-controls="code-block-show-more" @onclick="Toggle">
+                <Icon Name="chevron-down" class="transition-transform in-aria-expanded:rotate-180" />
+                @(_expanded ? "Show less" : "Show more")
+            </Button>
+        </CodeBlockFooter>
+    </CodeBlock>
+</div>
+
+@code {
+    private bool _expanded;
+
+    private void Toggle() => _expanded = !_expanded;
+}

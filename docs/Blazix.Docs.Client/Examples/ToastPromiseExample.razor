@@ -1,0 +1,18 @@
+@inject ToastManager Toasts
+
+<Button Variant="ButtonVariant.Outline" @onclick="ShowToastAsync">Create Event</Button>
+
+@code {
+    private Task ShowToastAsync() =>
+        Toasts.Promise(
+            CreateEventAsync(),
+            loading: new ToastOptions { Description = "Creating event…" },
+            success: name => new ToastOptions { Description = $"{name} created." },
+            error: _ => new ToastOptions { Description = "Could not create event." });
+
+    private static async Task<string> CreateEventAsync()
+    {
+        await Task.Delay(2000);
+        return "Event";
+    }
+}

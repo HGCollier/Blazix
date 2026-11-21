@@ -1,0 +1,14 @@
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.ToastTitle data-slot="toast-title" @attributes="AdditionalAttributes"
+                            class="@Cn("text-sm font-medium", Class)"
+                            ChildContent="@ChildContent" />
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    /// <summary>Overrides the toast's own text. Passed as a parameter, so leaving it out shows the toast's.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

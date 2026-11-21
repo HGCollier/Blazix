@@ -1,0 +1,51 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<SwitchRoot data-slot="switch" @attributes="FieldDescriptions.Merge(Descriptions, AdditionalAttributes)" Render="@Render"
+            Checked="@Checked" CheckedChanged="@CheckedChanged" OnCheckedChange="@OnCheckedChange"
+            Disabled="@Disabled" ReadOnly="@ReadOnly" Required="@Required"
+            Name="@Name" Value="@Value" UncheckedValue="@UncheckedValue" InputId="@InputId"
+            data-size="@(Size == SwitchSize.Sm ? "sm" : "default")"
+            class="@Cn(
+                "peer group/switch relative inline-flex shrink-0 items-center rounded-full border border-transparent transition-all outline-none " +
+                "group-has-[:focus-visible]/field-label:border-transparent group-has-[:focus-visible]/field-label:ring-0 " +
+                "after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 " +
+                "aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 " +
+                "data-[size=default]:h-[18.4px] data-[size=default]:w-[32px] data-[size=sm]:h-[14px] data-[size=sm]:w-[24px] " +
+                "dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 aria-invalid:focus-visible:ring-destructive/60 dark:aria-invalid:focus-visible:ring-destructive/60 " +
+                "data-checked:bg-primary data-unchecked:bg-input data-disabled:cursor-not-allowed data-disabled:opacity-50",
+                Class)">
+    <SwitchThumb data-slot="switch-thumb"
+                 class="pointer-events-none block rounded-full bg-background ring-0 transition-transform group-data-[size=default]/switch:size-4 group-data-[size=sm]/switch:size-3 group-data-[size=default]/switch:data-checked:translate-x-[calc(100%-2px)] group-data-[size=sm]/switch:data-checked:translate-x-[calc(100%-2px)] dark:data-checked:bg-primary-foreground group-data-[size=default]/switch:data-unchecked:translate-x-0 group-data-[size=sm]/switch:data-unchecked:translate-x-0 dark:data-unchecked:bg-foreground" />
+</SwitchRoot>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<SwitchRenderProps>? Render { get; set; }
+
+    /// <summary>Supports <c>@bind-Checked</c>; set it once for an uncontrolled switch.</summary>
+    [Parameter] public bool Checked { get; set; }
+
+    [Parameter] public EventCallback<bool> CheckedChanged { get; set; }
+
+    /// <summary>Runs before the checked state changes; call <c>Cancel()</c> to keep it.</summary>
+    [Parameter] public EventCallback<ValueChangeEventArgs<bool>> OnCheckedChange { get; set; }
+
+    [Parameter] public SwitchSize Size { get; set; } = SwitchSize.Default;
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool ReadOnly { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public string? Name { get; set; }
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public string? UncheckedValue { get; set; }
+
+    /// <summary>The id of the hidden native input, for a &lt;label for="..."&gt;.</summary>
+    [Parameter] public string? InputId { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    [CascadingParameter] private FieldDescriptions? Descriptions { get; set; }
+}

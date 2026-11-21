@@ -1,0 +1,14 @@
+@using static Blazix.Registry.ClassNames
+
+<span data-slot="context-menu-shortcut" @attributes="AdditionalAttributes"
+      class="@Cn("ml-auto text-xs tracking-widest text-muted-foreground group-focus/context-menu-item:text-accent-foreground", Class)">
+    @ChildContent
+</span>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

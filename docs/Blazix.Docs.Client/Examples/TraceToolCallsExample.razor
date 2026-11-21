@@ -1,0 +1,106 @@
+@implements IDisposable
+
+<div class="flex min-h-72 w-full max-w-sm flex-col gap-4 py-6 text-sm">
+    @if (_step >= 1)
+    {
+        <Message Align="MessageAlign.End">
+            <MessageContent>
+                <Bubble Align="BubbleAlign.End" Variant="BubbleVariant.Muted">
+                    <BubbleContent>Which package managers are installed?</BubbleContent>
+                </Bubble>
+            </MessageContent>
+        </Message>
+    }
+    @if (_step >= 2)
+    {
+        <Message>
+            <MessageContent Class="gap-4">
+                <Trace>
+                    @foreach (var (tool, index) in Tools.Select((t, i) => (t, i)).Where(t => _step >= 2 + t.i))
+                    {
+                        if (_step == 2 + index)
+                        {
+                            <TraceLine Status="TraceLineStatus.Running">
+                                <TraceIcon><Icon Name="terminal" /></TraceIcon>
+                                <TraceTitle>Running @tool.Command</TraceTitle>
+                            </TraceLine>
+                        }
+                        else
+                        {
+                            <TraceCollapsible @key="tool.Command">
+                                <TraceCollapsibleTrigger>
+                                    <TraceLine Status="@(tool.Failed ? TraceLineStatus.Error : TraceLineStatus.None)">
+                                        <TraceIcon><Icon Name="terminal" /></TraceIcon>
+                                        <TraceTitle>@(tool.Failed ? "Failed to run" : "Ran") @tool.Command</TraceTitle>
+                                    </TraceLine>
+                                </TraceCollapsibleTrigger>
+                                <TraceCollapsibleContent>
+                                    <CodeBlock Size="CodeBlockSize.Sm">
+                                        <CodeBlockContent Wrap="true" Class="max-h-64" Code="@tool.Output" />
+                                    </CodeBlock>
+                                </TraceCollapsibleContent>
+                            </TraceCollapsible>
+                        }
+                    }
+                </Trace>
+                @if (_step >= 5)
+                {
+                    <p>Node 24 and npm 11 are installed. pnpm is not.</p>
+                }
+            </MessageContent>
+        </Message>
+    }
+    @if (_step is 0 or 5)
+    {
+        <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" Class="mt-auto self-start" @onclick="NextAsync">
+            @(_step == 0 ? "Send message" : "Reset")
+        </Button>
+    }
+</div>
+
+@code {
+    private sealed record Tool(string Command, string Output, bool Failed);
+
+    private static readonly Tool[] Tools =
+    [
+        new("node --version", "v24.18.0", false),
+        new("npm --version", "11.6.2", false),
+        new("pnpm --version", "command not found: pnpm", true),
+    ];
+
+    private readonly CancellationTokenSource _cancel = new();
+
+    private int _step;
+
+    private async Task NextAsync()
+    {
+        if (_step == 5)
+        {
+            _step = 0;
+            return;
+        }
+        try
+        {
+            _step = 1;
+            StateHasChanged();
+            await Task.Delay(300, _cancel.Token);
+            for (var i = 0; i < Tools.Length; i++)
+            {
+                _step = 2 + i;
+                StateHasChanged();
+                await Task.Delay(900, _cancel.Token);
+            }
+        }
+        catch (TaskCanceledException)
+        {
+            return;
+        }
+        _step = 5;
+    }
+
+    public void Dispose()
+    {
+        _cancel.Cancel();
+        _cancel.Dispose();
+    }
+}

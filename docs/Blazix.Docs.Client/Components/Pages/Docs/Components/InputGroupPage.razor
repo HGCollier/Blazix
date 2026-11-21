@@ -1,0 +1,64 @@
+@page "/docs/components/input-group"
+
+<DocsPage Title="Input Group" Description="Add addons, buttons, and helper content to inputs.">
+    <ComponentPreview Name="input-group-demo" PreviewClass="h-[26rem]" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="input-group" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build an <code>InputGroup</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Align" />
+    <p>Use the <code>Align</code> parameter on <code>InputGroupAddon</code> to position the addon relative to the input.</p>
+    <Callout>For proper focus management, <code>InputGroupAddon</code> should always be placed after <code>InputGroupInput</code> or <code>InputGroupTextarea</code> in the DOM. Use the <code>Align</code> parameter to visually position the addon.</Callout>
+    <DocsHeading Level="3" Title="inline-start" />
+    <p>Use <code>align="inline-start"</code> to position the addon at the start of the input. This is the default.</p>
+    <ComponentPreview Name="input-group-inline-start" PreviewClass="h-48" />
+    <DocsHeading Level="3" Title="inline-end" />
+    <p>Use <code>align="inline-end"</code> to position the addon at the end of the input.</p>
+    <ComponentPreview Name="input-group-inline-end" PreviewClass="h-48" />
+    <DocsHeading Level="3" Title="block-start" />
+    <p>Use <code>align="block-start"</code> to position the addon above the input.</p>
+    <ComponentPreview Name="input-group-block-start" PreviewClass="h-96" />
+    <DocsHeading Level="3" Title="block-end" />
+    <p>Use <code>align="block-end"</code> to position the addon below the input.</p>
+    <ComponentPreview Name="input-group-block-end" PreviewClass="h-[26rem]" />
+    <DocsHeading Title="Icon" />
+    <ComponentPreview Name="input-group-icon" PreviewClass="h-80" />
+    <DocsHeading Title="Text" />
+    <ComponentPreview Name="input-group-text" PreviewClass="h-80" />
+    <DocsHeading Title="Button" />
+    <ComponentPreview Name="input-group-button" PreviewClass="h-72" />
+    <DocsHeading Title="Kbd" />
+    <ComponentPreview Name="input-group-kbd" PreviewClass="h-40" />
+    <DocsHeading Title="Dropdown" />
+    <ComponentPreview Name="input-group-dropdown" PreviewClass="h-56" />
+    <DocsHeading Title="Spinner" />
+    <ComponentPreview Name="input-group-spinner" PreviewClass="h-80" />
+    <DocsHeading Title="Textarea" />
+    <ComponentPreview Name="input-group-textarea" PreviewClass="h-96" />
+    <DocsHeading Title="Custom Input" />
+    <p>Add the <code>data-slot="input-group-control"</code> attribute to your custom input for automatic focus state handling.</p>
+    <p>Here's an example of a custom resizable textarea from a third-party library.</p>
+    <ComponentPreview Name="input-group-custom" PreviewClass="h-56" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="input-group" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <InputGroup>
+            <InputGroupInput placeholder="Search..." />
+            <InputGroupAddon><Icon Name="search" /></InputGroupAddon>
+        </InputGroup>
+        """;
+
+    private const string CompositionCode = """
+        InputGroup
+        ├── InputGroupInput or InputGroupTextarea
+        ├── InputGroupAddon
+        ├── InputGroupButton
+        └── InputGroupText
+        """;
+}

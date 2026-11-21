@@ -1,0 +1,26 @@
+<ButtonGroup>
+    <Button Variant="ButtonVariant.Outline">
+        <Icon Name="bot" />
+        Copilot
+    </Button>
+    <Popover>
+        <PopoverTrigger>
+            <Render>
+                <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="Open Popover">
+                    <Icon Name="chevron-down" />
+                </Button>
+            </Render>
+        </PopoverTrigger>
+        <PopoverContent Align="Align.End" Class="rounded-xl text-sm">
+            <PopoverHeader>
+                <PopoverTitle>Start a new task with Copilot</PopoverTitle>
+                <PopoverDescription>Describe your task in natural language.</PopoverDescription>
+            </PopoverHeader>
+            <Field>
+                <FieldLabel for="task" Class="sr-only">Task Description</FieldLabel>
+                <Textarea id="task" placeholder="I need to..." Class="resize-none" />
+                <FieldDescription>Copilot will open a pull request for review.</FieldDescription>
+            </Field>
+        </PopoverContent>
+    </Popover>
+</ButtonGroup>

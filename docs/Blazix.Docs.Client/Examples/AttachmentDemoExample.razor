@@ -1,0 +1,47 @@
+<div class="mx-auto flex w-full max-w-sm flex-col gap-3 py-12">
+    <AttachmentGroup>
+        @foreach (var image in Images)
+        {
+            <Attachment Orientation="Orientation.Vertical">
+                <AttachmentMedia Variant="AttachmentMediaVariant.Image">
+                    <img src="@image.Src" alt="@image.Alt" />
+                </AttachmentMedia>
+                <AttachmentContent>
+                    <AttachmentTitle>@image.Name</AttachmentTitle>
+                    <AttachmentDescription>@image.Meta</AttachmentDescription>
+                </AttachmentContent>
+            </Attachment>
+        }
+    </AttachmentGroup>
+    <Attachment State="AttachmentState.Uploading" Class="w-full">
+        <AttachmentMedia><Spinner /></AttachmentMedia>
+        <AttachmentContent>
+            <AttachmentTitle>sales-dashboard.pdf</AttachmentTitle>
+            <AttachmentDescription>Uploading · 64%</AttachmentDescription>
+        </AttachmentContent>
+        <AttachmentActions>
+            <AttachmentAction aria-label="Cancel upload"><Icon Name="x" /></AttachmentAction>
+        </AttachmentActions>
+    </Attachment>
+    <Attachment Class="w-full">
+        <AttachmentMedia><Icon Name="file-code" /></AttachmentMedia>
+        <AttachmentContent>
+            <AttachmentTitle>message-renderer.tsx</AttachmentTitle>
+            <AttachmentDescription>TypeScript · 12 KB</AttachmentDescription>
+        </AttachmentContent>
+        <AttachmentActions>
+            <AttachmentAction aria-label="Remove message-renderer.tsx"><Icon Name="x" /></AttachmentAction>
+        </AttachmentActions>
+    </Attachment>
+</div>
+
+@code {
+    private sealed record ImageEntry(string? Name, string? Meta, string? Src, string? Alt);
+
+    private static readonly ImageEntry[] Images =
+    [
+        new("workspace.png", "PNG · 820 KB", "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80", "Workspace"),
+        new("desk-reference.jpg", "JPG · 1.1 MB", "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&auto=format&fit=crop&q=80", "Desk"),
+        new("office-reference.jpg", "JPG · 940 KB", "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80", "Office"),
+    ];
+}

@@ -1,0 +1,27 @@
+@using static Blazix.Registry.ClassNames
+
+<textarea data-slot="textarea" @attributes="FieldDescriptions.Merge(Descriptions, AdditionalAttributes)" value="@Value" @onchange="OnChangeAsync"
+          class="@Cn(
+                 "flex field-sizing-content min-h-16 w-full rounded-lg border border-input bg-transparent px-2.5 py-2 text-base " +
+                 "transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 " +
+                 "focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:bg-input/10 disabled:opacity-50 " +
+                 "aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:bg-input/15 " +
+                 "dark:disabled:bg-input/35 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 aria-invalid:focus-visible:ring-destructive/60 dark:aria-invalid:focus-visible:ring-destructive/60",
+                 Class)"></textarea>
+
+@code {
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    [CascadingParameter] private FieldDescriptions? Descriptions { get; set; }
+
+    private async Task OnChangeAsync(ChangeEventArgs e)
+    {
+        Value = e.Value?.ToString();
+        await ValueChanged.InvokeAsync(Value);
+    }
+}

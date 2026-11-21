@@ -1,0 +1,26 @@
+﻿<div class="space-y-2">
+    <InputOtp aria-label="One-time password" MaxLength="6" @bind-Value="_value">
+        <InputOtpGroup>
+            <InputOtpSlot Index="0" />
+            <InputOtpSlot Index="1" />
+            <InputOtpSlot Index="2" />
+            <InputOtpSlot Index="3" />
+            <InputOtpSlot Index="4" />
+            <InputOtpSlot Index="5" />
+        </InputOtpGroup>
+    </InputOtp>
+    <div class="text-center text-sm">
+        @if (_value == "")
+        {
+            <text>Enter your one-time password.</text>
+        }
+        else
+        {
+            <text>You entered: @_value</text>
+        }
+    </div>
+</div>
+
+@code {
+    private string _value = "";
+}

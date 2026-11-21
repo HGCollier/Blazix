@@ -1,0 +1,44 @@
+@using System.Globalization
+<FieldGroup Class="mx-auto max-w-xs flex-row">
+    <Field>
+        <FieldLabel for="date-picker-optional">Date</FieldLabel>
+        <Popover @bind-Open="_open">
+            <PopoverTrigger id="date-picker-optional">
+                <Render>
+                    <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline" Class="w-32 justify-between font-normal">
+                        @(_date is { } date ? Format(date) : "Select date")
+                        <Icon Name="chevron-down" data-icon="inline-end" />
+                    </Button>
+                </Render>
+            </PopoverTrigger>
+            <PopoverContent Class="w-auto overflow-hidden p-0" Align="Align.Start">
+                <Calendar Mode="CalendarMode.Single" Selected="_date" CaptionLayout="CalendarCaptionLayout.Dropdown" DefaultMonth="_date" SelectedChanged="Select" />
+            </PopoverContent>
+        </Popover>
+    </Field>
+    <Field Class="w-32">
+        <FieldLabel for="time-picker-optional">Time</FieldLabel>
+        <Input Type="time" id="time-picker-optional" step="1" Value="10:30:00"
+               Class="appearance-none bg-background [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none" />
+    </Field>
+</FieldGroup>
+
+@code {
+    private bool _open;
+    private DateOnly? _date;
+
+    private void Select(DateOnly? date)
+    {
+        _date = date;
+        _open = false;
+    }
+
+    private static string Format(DateOnly date) =>
+        date.ToString("MMMM ", CultureInfo.InvariantCulture) + date.Day + (date.Day switch
+        {
+            1 or 21 or 31 => "st",
+            2 or 22 => "nd",
+            3 or 23 => "rd",
+            _ => "th",
+        }) + ", " + date.Year;
+}

@@ -1,0 +1,63 @@
+@page "/docs/components/button"
+
+<DocsPage Title="Button" Description="Displays a button or a component that looks like a button.">
+    <ComponentPreview Name="button-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="button" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Cursor" />
+    <p>Tailwind v4 <a href="https://tailwindcss.com/docs/upgrade-guide#buttons-use-the-default-cursor" target="_blank" rel="noreferrer">switched</a> from <code>cursor: pointer</code> to <code>cursor: default</code> for the button component.</p>
+    <p>If you want to keep the <code>cursor: pointer</code> behavior, add the following code to your CSS file:</p>
+    <CodeFigure Code="@CursorCode" Language="css" Title="Styles/theme.css" LineNumbers="true" />
+    <DocsHeading Title="Size" />
+    <p>Use the <code>Size</code> parameter to change the size of the button.</p>
+    <ComponentPreview Name="button-size" />
+    <DocsHeading Title="Default" />
+    <ComponentPreview Name="button-default" />
+    <DocsHeading Title="Outline" />
+    <ComponentPreview Name="button-outline" />
+    <DocsHeading Title="Secondary" />
+    <ComponentPreview Name="button-secondary" />
+    <DocsHeading Title="Ghost" />
+    <ComponentPreview Name="button-ghost" />
+    <DocsHeading Title="Destructive" />
+    <ComponentPreview Name="button-destructive" />
+    <DocsHeading Title="Link" />
+    <ComponentPreview Name="button-link" />
+    <DocsHeading Title="Icon" />
+    <ComponentPreview Name="button-icon" />
+    <DocsHeading Title="With Icon" />
+    <p>Remember to add the <code>data-icon="inline-start"</code> or <code>data-icon="inline-end"</code> attribute to the icon for the correct spacing.</p>
+    <ComponentPreview Name="button-with-icon" />
+    <DocsHeading Title="Rounded" />
+    <p>Use the <code>rounded-full</code> class to make the button rounded.</p>
+    <ComponentPreview Name="button-rounded" />
+    <DocsHeading Title="Spinner" />
+    <p>Render a <code>&lt;Spinner /&gt;</code> component inside the button to show a loading state. Remember to add the <code>data-icon="inline-start"</code> or <code>data-icon="inline-end"</code> attribute to the spinner for the correct spacing.</p>
+    <ComponentPreview Name="button-spinner" />
+    <DocsHeading Title="Button Group" />
+    <p>To create a button group, use the <code>ButtonGroup</code> component. See the <a href="/docs/components/button-group">Button Group</a> documentation for more details.</p>
+    <ComponentPreview Name="button-group-demo" />
+    <DocsHeading Title="As Link" />
+    <p>You can use the <code>ButtonVariants.Get</code> helper to make a link look like a button.</p>
+    <p><strong>Do not render a <code>Button</code> as an <code>&lt;a&gt;</code> for links.</strong> A <code>Button</code> that renders anything but a <code>&lt;button&gt;</code> gets <code>role="button"</code>, which overrides the link role of <code>&lt;a&gt;</code>. Use <code>ButtonVariants.Get</code> on a plain <code>&lt;a&gt;</code> tag instead.</p>
+    <ComponentPreview Name="button-render" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="button" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Button Variant="ButtonVariant.Outline">Button</Button>
+        """;
+
+    private const string CursorCode = """
+        @layer base {
+          button:not(:disabled),
+          [role="button"]:not(:disabled) {
+            cursor: pointer;
+          }
+        }
+        """;
+}

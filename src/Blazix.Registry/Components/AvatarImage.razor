@@ -1,0 +1,22 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.AvatarImage data-slot="avatar-image" @attributes="AdditionalAttributes" Render="@Render" Src="@Src"
+                             OnLoadingStatusChange="@OnLoadingStatusChange" KeepMounted="@KeepMounted"
+                             class="@Cn("aspect-square size-full rounded-full object-cover", Class)" />
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<AvatarRenderProps>? Render { get; set; }
+
+    [Parameter] public string? Src { get; set; }
+    [Parameter] public EventCallback<ImageLoadingStatus> OnLoadingStatusChange { get; set; }
+
+    /// <summary>Keep the &lt;img&gt; in the DOM (hidden) while it loads.</summary>
+    [Parameter] public bool KeepMounted { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

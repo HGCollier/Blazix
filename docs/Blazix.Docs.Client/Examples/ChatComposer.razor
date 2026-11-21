@@ -1,0 +1,56 @@
+<form class="w-full" @onsubmit="Send">
+    <InputGroup>
+        <div class="h-14 w-full px-3 py-2.5">
+            <span class="line-clamp-2 opacity-60 data-[status=ready]:opacity-100" data-status="@Session.Status">
+                @if (Session.NextMessage is { } next)
+                {
+                    @next.Text
+                }
+                else
+                {
+                    <span class="text-muted-foreground">@EmptyText</span>
+                }
+            </span>
+        </div>
+        <InputGroupAddon Align="InputGroupAddonAlign.BlockEnd" Class="pt-1">
+            <DropdownMenu>
+                <DropdownMenuTrigger>
+                    <Render>
+                        <InputGroupButton @attributes="context.Attributes" aria-label="Add files" Size="InputGroupButtonSize.IconSm"
+                                          Variant="ButtonVariant.Outline">
+                            <Icon Name="plus" />
+                        </InputGroupButton>
+                    </Render>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent Align="Align.Start" Side="Side.Top" Class="w-44">
+                    <DropdownMenuItem><Icon Name="paperclip" /> Add Photos &amp; Files</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem><Icon Name="image" /> Create Image</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Name="telescope" /> Deep Research</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Name="globe" /> Web Search</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+            @ChildContent
+            <InputGroupButton Type="submit" Variant="ButtonVariant.Default" Size="InputGroupButtonSize.IconSm"
+                              Disabled="@(Session.NextMessage is null || Session.IsBusy)" Class="ml-auto">
+                <Icon Name="arrow-up" />
+                <span class="sr-only">Send</span>
+            </InputGroupButton>
+        </InputGroupAddon>
+    </InputGroup>
+</form>
+
+@code {
+    [Parameter, EditorRequired] public ChatSession Session { get; set; } = null!;
+
+    /// <summary>Shown when the script has no more user messages.</summary>
+    [Parameter, EditorRequired] public string EmptyText { get; set; } = "";
+
+    /// <summary>Called after each step of sending and streaming.</summary>
+    [Parameter] public EventCallback OnChange { get; set; }
+
+    /// <summary>Extra controls between the menu and send.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private Task Send() => Session.SendAsync(OnChange.InvokeAsync);
+}

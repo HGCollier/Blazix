@@ -1,0 +1,59 @@
+@page "/docs/primitives/progress"
+
+<DocsPage Title="Progress" Description="Displays the status of a task that takes a long time.">
+    <ComponentPreview Name="primitives/progress-hero" />
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <p>Leave <code>Value</code> null while the task's progress is unknown, and the parts render as indeterminate.</p>
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(ProgressRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-complete">Present when the progress has completed.</StyleHook>
+            <StyleHook Name="data-indeterminate">Present when the progress is in indeterminate state.</StyleHook>
+            <StyleHook Name="data-progressing">Present while the progress is progressing.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ProgressLabel)">
+        <DataAttributes>
+            <StyleHook Name="data-complete">Present when the progress has completed.</StyleHook>
+            <StyleHook Name="data-indeterminate">Present when the progress is in indeterminate state.</StyleHook>
+            <StyleHook Name="data-progressing">Present while the progress is progressing.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ProgressValue)">
+        <DataAttributes>
+            <StyleHook Name="data-complete">Present when the progress has completed.</StyleHook>
+            <StyleHook Name="data-indeterminate">Present when the progress is in indeterminate state.</StyleHook>
+            <StyleHook Name="data-progressing">Present while the progress is progressing.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ProgressTrack)">
+        <DataAttributes>
+            <StyleHook Name="data-complete">Present when the progress has completed.</StyleHook>
+            <StyleHook Name="data-indeterminate">Present when the progress is in indeterminate state.</StyleHook>
+            <StyleHook Name="data-progressing">Present while the progress is progressing.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ProgressIndicator)">
+        <DataAttributes>
+            <StyleHook Name="data-complete">Present when the progress has completed.</StyleHook>
+            <StyleHook Name="data-indeterminate">Present when the progress is in indeterminate state.</StyleHook>
+            <StyleHook Name="data-progressing">Present while the progress is progressing.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <ProgressRoot>
+            <ProgressLabel />
+            <ProgressTrack>
+                <ProgressIndicator />
+            </ProgressTrack>
+            <ProgressValue />
+        </ProgressRoot>
+        """;
+}

@@ -1,0 +1,26 @@
+<div class="flex w-full max-w-80 flex-col items-start gap-1">
+    <label for="@_id" class="text-sm font-bold text-neutral-950 dark:text-white">
+        Verification code
+    </label>
+    <OtpFieldRoot Length="OtpLength" aria-describedby="@DescriptionId" class="flex w-full gap-2">
+        <OtpFieldInput id="@_id" class="@InputClass" />
+        @for (var i = 1; i < OtpLength; i++)
+        {
+            <OtpFieldInput class="@InputClass" />
+        }
+    </OtpFieldRoot>
+    <p id="@DescriptionId" class="m-0 text-sm text-neutral-600 dark:text-neutral-400">
+        Enter the 6-character code we sent to your device.
+    </p>
+</div>
+
+@code {
+    private const int OtpLength = 6;
+
+    private const string InputClass =
+        "m-0 h-10 w-10 rounded-none border border-neutral-950 bg-white dark:bg-neutral-950 text-center font-inherit text-base font-normal text-neutral-950 focus:outline-2 focus:-outline-offset-1 focus:outline-neutral-950 dark:focus:outline-white dark:border-white dark:text-white";
+
+    private readonly string _id = $"verification-code-{Guid.NewGuid():N}";
+
+    private string DescriptionId => $"{_id}-description";
+}

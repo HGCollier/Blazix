@@ -1,0 +1,10 @@
+# Blazix.Primitives is a library: apps and the registry use its public types and members, which
+# inspections of this solution can't all see. Rider/ReSharper's "never used" family stays quiet here;
+# everything else (including "can be made private") still applies.
+[*.cs]
+resharper_unused_type_global_highlighting = none
+resharper_unused_member_global_highlighting = none
+resharper_unused_auto_property_accessor_global_highlighting = none
+resharper_class_never_instantiated_global_highlighting = none
+resharper_unused_method_return_value_global_highlighting = none
+resharper_virtual_member_never_overridden_global_highlighting = none

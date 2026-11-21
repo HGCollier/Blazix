@@ -1,0 +1,23 @@
+@using Blazix.Primitives
+
+@* Styled as an outline Button by default. *@
+<MenuTrigger data-slot="dropdown-menu-trigger" @attributes="AdditionalAttributes" Render="@Render" NativeButton="@NativeButton"
+             class="@ButtonVariants.Get(Variant, Size, Class)">
+    @ChildContent
+</MenuTrigger>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<MenuTriggerRenderProps>? Render { get; set; }
+
+    /// <summary>Leave unset: whether Render produced a real &lt;button&gt; is detected. Set it to skip the check.</summary>
+    [Parameter] public bool? NativeButton { get; set; }
+
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Outline;
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Default;
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

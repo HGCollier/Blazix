@@ -1,0 +1,87 @@
+<Trace Class="max-w-sm">
+    <TraceCollapsible Open="true">
+        <TraceCollapsibleTrigger>
+            <TraceLine>
+                <TraceIcon><Icon Name="git-commit-horizontal" /></TraceIcon>
+                <TraceTitle>Committed a1b2c3: Fix the login redirect</TraceTitle>
+            </TraceLine>
+        </TraceCollapsibleTrigger>
+        <TraceCollapsibleContent>
+            <Trace>
+                @foreach (var file in Files)
+                {
+                    <Sheet @key="file.Path">
+                        <SheetTrigger>
+                            <TraceLine>
+                                <TraceIcon><Icon Name="@(file.Added ? "file-plus" : "file-pen")" /></TraceIcon>
+                                <TraceTitle>@(file.Added ? "Added" : "Edited") @file.Path</TraceTitle>
+                                <TraceDescription Class="font-mono">+@file.Additions −@file.Deletions</TraceDescription>
+                                <TraceIcon><Icon Name="chevron-right" /></TraceIcon>
+                            </TraceLine>
+                        </SheetTrigger>
+                        <SheetContent>
+                            <SheetHeader>
+                                <SheetTitle Class="font-mono">@file.Path</SheetTitle>
+                                <SheetDescription>@file.Additions additions, @file.Deletions deletions</SheetDescription>
+                            </SheetHeader>
+                            <CodeBlock Class="mx-6 mb-6 w-auto">
+                                <CodeBlockContent>
+                                    @foreach (var line in file.Diff.Split('\n'))
+                                    {
+                                        if (line.StartsWith("@@", StringComparison.Ordinal))
+                                        {
+                                            <CodeBlockLine Class="text-muted-foreground">@line</CodeBlockLine>
+                                        }
+                                        else
+                                        {
+                                            <CodeBlockLine Variant="@VariantOf(line)">@line[1..]</CodeBlockLine>
+                                        }
+                                    }
+                                </CodeBlockContent>
+                            </CodeBlock>
+                        </SheetContent>
+                    </Sheet>
+                }
+            </Trace>
+        </TraceCollapsibleContent>
+    </TraceCollapsible>
+</Trace>
+
+@code {
+    private sealed record ChangedFile(string Path, bool Added, int Additions, int Deletions, string Diff);
+
+    private static readonly ChangedFile[] Files =
+    [
+        new("app/login/page.tsx", false, 2, 2,
+            """
+            @@ -14,7 +14,7 @@ export default async function LoginPage({
+               searchParams,
+             }) {
+               const { next } = await searchParams
+            -  const redirectTo =
+            -    next && next.startsWith("/") ? next : "/"
+            +  const redirectTo = safeRedirect(next)
+            +
+               return <LoginForm redirectTo={redirectTo} />
+             }
+            """),
+        new("lib/auth/redirect.ts", true, 7, 0,
+            """
+            @@ -0,0 +1,7 @@
+            +export function safeRedirect(next: string | undefined) {
+            +  if (!next || !next.startsWith("/") || next.startsWith("//")) {
+            +    return "/"
+            +  }
+            +
+            +  return next
+            +}
+            """),
+    ];
+
+    private static CodeBlockLineVariant VariantOf(string line) => line[0] switch
+    {
+        '+' => CodeBlockLineVariant.Added,
+        '-' => CodeBlockLineVariant.Removed,
+        _ => CodeBlockLineVariant.Default,
+    };
+}

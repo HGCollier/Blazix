@@ -1,0 +1,32 @@
+<ButtonGroup Class="[--radius:9999rem]">
+    <ButtonGroup>
+        <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="Add">
+            <Icon Name="plus" />
+        </Button>
+    </ButtonGroup>
+    <ButtonGroup>
+        <InputGroup>
+            <InputGroupInput placeholder="@(_voiceEnabled ? "Record and send audio..." : "Send a message...")" Disabled="_voiceEnabled" />
+            <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
+                <Tooltip>
+                    <TooltipTrigger>
+                        <Render Context="trigger">
+                            <InputGroupButton @attributes="trigger.Attributes" @onclick="ToggleVoice" Size="InputGroupButtonSize.IconXs" aria-label="Voice mode"
+                                              data-active="@(_voiceEnabled ? "true" : "false")" aria-pressed="@(_voiceEnabled ? "true" : "false")"
+                                              Class="data-[active=true]:bg-orange-100 data-[active=true]:text-orange-700 dark:data-[active=true]:bg-orange-800 dark:data-[active=true]:text-orange-100">
+                                <Icon Name="audio-lines" />
+                            </InputGroupButton>
+                        </Render>
+                    </TooltipTrigger>
+                    <TooltipContent>Voice Mode</TooltipContent>
+                </Tooltip>
+            </InputGroupAddon>
+        </InputGroup>
+    </ButtonGroup>
+</ButtonGroup>
+
+@code {
+    private bool _voiceEnabled;
+
+    private void ToggleVoice() => _voiceEnabled = !_voiceEnabled;
+}

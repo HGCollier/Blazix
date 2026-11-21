@@ -1,0 +1,136 @@
+<div class="flex flex-col gap-4">
+    <Button Variant="ButtonVariant.Outline" Class="w-fit" @onclick="() => _open = true">Open Menu</Button>
+    <CommandDialog @bind-Open="_open">
+        <Command>
+            <CommandInput placeholder="Type a command or search..." />
+            <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup Heading="Navigation">
+                    <CommandItem>
+                        <Icon Name="house" />
+                        <span>Home</span>
+                        <CommandShortcut>⌘H</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="inbox" />
+                        <span>Inbox</span>
+                        <CommandShortcut>⌘I</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="file-text" />
+                        <span>Documents</span>
+                        <CommandShortcut>⌘D</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="folder" />
+                        <span>Folders</span>
+                        <CommandShortcut>⌘F</CommandShortcut>
+                    </CommandItem>
+                </CommandGroup>
+                <CommandSeparator />
+                <CommandGroup Heading="Actions">
+                    <CommandItem>
+                        <Icon Name="plus" />
+                        <span>New File</span>
+                        <CommandShortcut>⌘N</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 10v6" /><path d="M9 13h6" /><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" /></svg>
+                        <span>New Folder</span>
+                        <CommandShortcut>⇧⌘N</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="copy" />
+                        <span>Copy</span>
+                        <CommandShortcut>⌘C</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="scissors" />
+                        <span>Cut</span>
+                        <CommandShortcut>⌘X</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="clipboard-paste" />
+                        <span>Paste</span>
+                        <CommandShortcut>⌘V</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="trash" />
+                        <span>Delete</span>
+                        <CommandShortcut>⌫</CommandShortcut>
+                    </CommandItem>
+                </CommandGroup>
+                <CommandSeparator />
+                <CommandGroup Heading="View">
+                    <CommandItem>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1" /><rect width="7" height="7" x="14" y="3" rx="1" /><rect width="7" height="7" x="14" y="14" rx="1" /><rect width="7" height="7" x="3" y="14" rx="1" /></svg>
+                        <span>Grid View</span>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="list" />
+                        <span>List View</span>
+                    </CommandItem>
+                    <CommandItem>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8" /><line x1="21" x2="16.65" y1="21" y2="16.65" /><line x1="11" x2="11" y1="8" y2="14" /><line x1="8" x2="14" y1="11" y2="11" /></svg>
+                        <span>Zoom In</span>
+                        <CommandShortcut>⌘+</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8" /><line x1="21" x2="16.65" y1="21" y2="16.65" /><line x1="8" x2="14" y1="11" y2="11" /></svg>
+                        <span>Zoom Out</span>
+                        <CommandShortcut>⌘-</CommandShortcut>
+                    </CommandItem>
+                </CommandGroup>
+                <CommandSeparator />
+                <CommandGroup Heading="Account">
+                    <CommandItem>
+                        <Icon Name="user" />
+                        <span>Profile</span>
+                        <CommandShortcut>⌘P</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="credit-card" />
+                        <span>Billing</span>
+                        <CommandShortcut>⌘B</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="settings" />
+                        <span>Settings</span>
+                        <CommandShortcut>⌘S</CommandShortcut>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="bell" />
+                        <span>Notifications</span>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="circle-help" />
+                        <span>Help &amp; Support</span>
+                    </CommandItem>
+                </CommandGroup>
+                <CommandSeparator />
+                <CommandGroup Heading="Tools">
+                    <CommandItem>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2" /><line x1="8" x2="16" y1="6" y2="6" /><line x1="16" x2="16" y1="14" y2="18" /><path d="M16 10h.01" /><path d="M12 10h.01" /><path d="M8 10h.01" /><path d="M12 14h.01" /><path d="M8 14h.01" /><path d="M12 18h.01" /><path d="M8 18h.01" /></svg>
+                        <span>Calculator</span>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="calendar" />
+                        <span>Calendar</span>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="image" />
+                        <span>Image Editor</span>
+                    </CommandItem>
+                    <CommandItem>
+                        <Icon Name="code" />
+                        <span>Code Editor</span>
+                    </CommandItem>
+                </CommandGroup>
+            </CommandList>
+        </Command>
+    </CommandDialog>
+</div>
+
+@code {
+    private bool _open;
+}

@@ -1,0 +1,26 @@
+<FieldGroup Class="w-full max-w-xs">
+    <FieldSet>
+        <FieldLegend Variant="FieldLegendVariant.Label">Compute Environment</FieldLegend>
+        <FieldDescription>Select the compute environment for your cluster.</FieldDescription>
+        <RadioGroup Value="kubernetes">
+            <FieldLabel for="kubernetes-r2h">
+                <Field Orientation="FieldOrientation.Horizontal">
+                    <FieldContent>
+                        <FieldTitle>Kubernetes</FieldTitle>
+                        <FieldDescription>Run GPU workloads on a K8s cluster.</FieldDescription>
+                    </FieldContent>
+                    <RadioGroupItem Value="kubernetes" id="kubernetes-r2h" />
+                </Field>
+            </FieldLabel>
+            <FieldLabel for="vm-z4k">
+                <Field Orientation="FieldOrientation.Horizontal">
+                    <FieldContent>
+                        <FieldTitle>Virtual Machine</FieldTitle>
+                        <FieldDescription>Access a cluster to run GPU workloads.</FieldDescription>
+                    </FieldContent>
+                    <RadioGroupItem Value="vm" id="vm-z4k" />
+                </Field>
+            </FieldLabel>
+        </RadioGroup>
+    </FieldSet>
+</FieldGroup>

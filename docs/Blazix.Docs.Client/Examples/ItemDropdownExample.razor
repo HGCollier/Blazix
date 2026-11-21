@@ -1,0 +1,37 @@
+<DropdownMenu>
+    <DropdownMenuTrigger>
+        Select <Icon Name="chevron-down" />
+    </DropdownMenuTrigger>
+    <DropdownMenuContent Class="w-48" Align="Align.End">
+        <DropdownMenuGroup>
+            @foreach (var person in People)
+            {
+                <DropdownMenuItem @key="person.Username">
+                    <Item Size="ItemSize.Xs" Class="w-full p-2">
+                        <ItemMedia>
+                            <Avatar Class="size-[--spacing(6.5)]">
+                                <AvatarImage Src="@person.Avatar" alt="" Class="grayscale" />
+                                <AvatarFallback>@person.Username[0]</AvatarFallback>
+                            </Avatar>
+                        </ItemMedia>
+                        <ItemContent Class="gap-0">
+                            <ItemTitle>@person.Username</ItemTitle>
+                            <ItemDescription Class="leading-none">@person.Email</ItemDescription>
+                        </ItemContent>
+                    </Item>
+                </DropdownMenuItem>
+            }
+        </DropdownMenuGroup>
+    </DropdownMenuContent>
+</DropdownMenu>
+
+@code {
+    private sealed record Person(string Username, string Avatar, string Email);
+
+    private static readonly Person[] People =
+    [
+        new("blazix", "https://avatar.vercel.sh/blazix", "blazix@example.com"),
+        new("maxleiter", "https://github.com/maxleiter.png", "maxleiter@vercel.com"),
+        new("evilrabbit", "https://github.com/evilrabbit.png", "evilrabbit@vercel.com"),
+    ];
+}

@@ -1,0 +1,60 @@
+<Card Class="mx-auto h-140 w-full max-w-sm gap-0">
+    <CardHeader Class="gap-1 border-b">
+        <CardTitle>New Chat</CardTitle>
+        <CardDescription>How can I help you today?</CardDescription>
+        <CardAction>
+            <Tooltip>
+                <TooltipTrigger>
+                    <Render Context="trigger">
+                        <Button @attributes="trigger.Attributes" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="Reset conversation">
+                            <Icon Name="rotate-cw" />
+                        </Button>
+                    </Render>
+                </TooltipTrigger>
+                <TooltipContent><p>Reset</p></TooltipContent>
+            </Tooltip>
+        </CardAction>
+    </CardHeader>
+    <CardContent Class="flex-1 overflow-hidden p-0">
+        <Empty Class="h-full">
+            <EmptyHeader>
+                <EmptyMedia Variant="EmptyMediaVariant.Icon"><Icon Name="message-circle-dashed" /></EmptyMedia>
+                <EmptyTitle>Good morning!</EmptyTitle>
+                <EmptyDescription>What are we working on today? Press send to start a new conversation</EmptyDescription>
+            </EmptyHeader>
+        </Empty>
+    </CardContent>
+    <CardFooter Class="flex-col gap-2">
+        <div class="w-full">
+            <InputGroup>
+                <div class="h-14 w-full px-3 py-2.5">
+                    <span class="line-clamp-2 opacity-60 data-[status=ready]:opacity-100" data-status="ready">
+                        I&apos;m building a chat for our app and the scroll behavior is driving me nuts. Every time the AI streams a reply, the whole thread jumps around.
+                    </span>
+                </div>
+                <InputGroupAddon Align="InputGroupAddonAlign.BlockEnd" Class="pt-1">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <Render Context="trigger">
+                                <InputGroupButton @attributes="trigger.Attributes" aria-label="Add files" Size="InputGroupButtonSize.IconSm" Variant="ButtonVariant.Outline">
+                                    <Icon Name="plus" />
+                                </InputGroupButton>
+                            </Render>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent Align="Align.Start" Side="Side.Top" Class="w-44">
+                            <DropdownMenuItem><Icon Name="paperclip" />Add Photos &amp; Files</DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem><Icon Name="image" />Create Image</DropdownMenuItem>
+                            <DropdownMenuItem><Icon Name="telescope" />Deep Research</DropdownMenuItem>
+                            <DropdownMenuItem><Icon Name="globe" />Web Search</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    <InputGroupButton Variant="ButtonVariant.Default" Size="InputGroupButtonSize.IconSm" Class="ml-auto">
+                        <Icon Name="arrow-up" />
+                        <span class="sr-only">Send</span>
+                    </InputGroupButton>
+                </InputGroupAddon>
+            </InputGroup>
+        </div>
+    </CardFooter>
+</Card>

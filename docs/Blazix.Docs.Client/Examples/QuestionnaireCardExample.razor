@@ -1,0 +1,79 @@
+@inject ToastManager Toasts
+
+<Questionnaire Class="mx-auto max-w-md" DefaultItem="task" Items="@Items"
+               Shortcuts="QuestionnaireShortcuts.Numbers" OnSubmit="@HandleSubmit">
+    <Card>
+        <QuestionnaireItem aria-labelledby="questionnaire-card-task-title" Name="task" Required>
+            <CardHeader>
+                <QuestionnaireTitle id="questionnaire-card-task-title">
+                    <Render>
+                        <CardTitle @attributes="context.Attributes">What should the agent work on?</CardTitle>
+                    </Render>
+                </QuestionnaireTitle>
+                <QuestionnaireDescription>
+                    <Render>
+                        <CardDescription @attributes="context.Attributes">Choose the task that should be handled next.</CardDescription>
+                    </Render>
+                </QuestionnaireDescription>
+                <CardAction>
+                    <QuestionnaireProgress />
+                </CardAction>
+            </CardHeader>
+            <CardContent>
+                <QuestionnaireChoices>
+                    <QuestionnaireChoice Value="fix">Fix the failing tests</QuestionnaireChoice>
+                    <QuestionnaireChoice Value="refactor">Refactor the data layer</QuestionnaireChoice>
+                    <QuestionnaireChoice Value="docs">Update the integration guide</QuestionnaireChoice>
+                </QuestionnaireChoices>
+                <QuestionnaireError />
+            </CardContent>
+        </QuestionnaireItem>
+        <QuestionnaireItem aria-labelledby="questionnaire-card-output-title" Name="output" Required>
+            <CardHeader>
+                <QuestionnaireTitle id="questionnaire-card-output-title">
+                    <Render>
+                        <CardTitle @attributes="context.Attributes">What should the final handoff include?</CardTitle>
+                    </Render>
+                </QuestionnaireTitle>
+                <QuestionnaireDescription>
+                    <Render>
+                        <CardDescription @attributes="context.Attributes">Pick the level of detail needed for review.</CardDescription>
+                    </Render>
+                </QuestionnaireDescription>
+                <CardAction>
+                    <QuestionnaireProgress />
+                </CardAction>
+            </CardHeader>
+            <CardContent>
+                <QuestionnaireChoices>
+                    <QuestionnaireChoice Value="summary">Summary only</QuestionnaireChoice>
+                    <QuestionnaireChoice Value="files">Summary and changed files</QuestionnaireChoice>
+                    <QuestionnaireChoice Value="review">Full review handoff</QuestionnaireChoice>
+                </QuestionnaireChoices>
+                <QuestionnaireError />
+            </CardContent>
+        </QuestionnaireItem>
+        <CardFooter>
+            <QuestionnaireActions Class="w-full">
+                <QuestionnairePrevious />
+                <QuestionnaireNext>Next</QuestionnaireNext>
+                <QuestionnaireSubmit>Create task</QuestionnaireSubmit>
+            </QuestionnaireActions>
+        </CardFooter>
+    </Card>
+</Questionnaire>
+
+@code {
+    private static readonly QuestionnaireItemDefinition[] Items =
+    [
+        new("task", Required: true, Choices: [new("fix"), new("refactor"), new("docs")]),
+        new("output", Required: true, Choices: [new("summary"), new("files"), new("review")]),
+    ];
+
+    private void HandleSubmit(QuestionnaireAnswers answers) =>
+        Toasts.Add(new ToastOptions
+        {
+            Title = "Agent task created",
+            Description = $"Task: {answers.Get("task") ?? "None"} · Handoff: {answers.Get("output") ?? "None"}",
+        });
+}

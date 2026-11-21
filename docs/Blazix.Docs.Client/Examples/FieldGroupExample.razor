@@ -1,0 +1,33 @@
+<FieldGroup Class="w-full max-w-xs">
+    <FieldSet>
+        <FieldLabel>Responses</FieldLabel>
+        <FieldDescription>
+            Get notified when ChatGPT responds to requests that take time, like research or image generation.
+        </FieldDescription>
+        <FieldGroup data-slot="checkbox-group">
+            <Field Orientation="FieldOrientation.Horizontal">
+                <Checkbox id="push" Checked="true" Disabled="true" />
+                <FieldLabel for="push" Class="font-normal">Push notifications</FieldLabel>
+            </Field>
+        </FieldGroup>
+    </FieldSet>
+    <FieldSeparator />
+    <FieldSet>
+        <FieldLabel>Tasks</FieldLabel>
+        <FieldDescription>
+            Get notified when tasks you&apos;ve created have updates.
+            @(" ")
+            <a href="#">Manage tasks</a>
+        </FieldDescription>
+        <FieldGroup data-slot="checkbox-group">
+            <Field Orientation="FieldOrientation.Horizontal">
+                <Checkbox id="push-tasks" />
+                <FieldLabel for="push-tasks" Class="font-normal">Push notifications</FieldLabel>
+            </Field>
+            <Field Orientation="FieldOrientation.Horizontal">
+                <Checkbox id="email-tasks" />
+                <FieldLabel for="email-tasks" Class="font-normal">Email notifications</FieldLabel>
+            </Field>
+        </FieldGroup>
+    </FieldSet>
+</FieldGroup>

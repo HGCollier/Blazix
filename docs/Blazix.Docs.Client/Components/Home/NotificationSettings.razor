@@ -1,0 +1,35 @@
+<Card>
+    <CardHeader>
+        <CardTitle>Notifications</CardTitle>
+        <CardDescription>Choose which email and push alerts you want to receive.</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <FieldGroup>
+            @foreach (var notification in Notifications)
+            {
+                <Field @key="notification.Id" Orientation="FieldOrientation.Horizontal">
+                    <Checkbox id="@($"notify-{notification.Id}")" Checked="@notification.DefaultChecked" />
+                    <FieldContent>
+                        <FieldLabel for="@($"notify-{notification.Id}")">@notification.Label</FieldLabel>
+                        <FieldDescription>@notification.Description</FieldDescription>
+                    </FieldContent>
+                </Field>
+            }
+        </FieldGroup>
+    </CardContent>
+    <CardFooter>
+        <Button Class="w-full">Save Preferences</Button>
+    </CardFooter>
+</Card>
+
+@code {
+    private sealed record Notification(string Id, string Label, string Description, bool DefaultChecked);
+
+    private static readonly Notification[] Notifications =
+    [
+        new("transactions", "Transaction alerts", "Deposits, withdrawals, and transfers.", true),
+        new("security", "Security alerts", "Login attempts and account changes.", true),
+        new("goals", "Goal milestones", "Updates at 25%, 50%, 75%, and 100%.", false),
+        new("market", "Market updates", "Daily portfolio summary and price alerts.", false),
+    ];
+}

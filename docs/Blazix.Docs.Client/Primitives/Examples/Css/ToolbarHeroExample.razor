@@ -1,0 +1,74 @@
+<ToolbarRoot class="toolbar">
+    <ToggleGroupRoot class="toolbar-group" aria-label="Alignment">
+        <ToolbarButton aria-label="Align left" class="toolbar-button">
+            <Render Context="button">
+                <ToggleRoot @attributes="button.Attributes" Value="align-left">
+                    Align Left
+                </ToggleRoot>
+            </Render>
+        </ToolbarButton>
+        <ToolbarButton aria-label="Align right" class="toolbar-button">
+            <Render Context="button">
+                <ToggleRoot @attributes="button.Attributes" Value="align-right">
+                    Align Right
+                </ToggleRoot>
+            </Render>
+        </ToolbarButton>
+    </ToggleGroupRoot>
+    <ToolbarSeparator class="toolbar-separator" />
+    <ToolbarGroup class="toolbar-group" aria-label="Numerical format">
+        <ToolbarButton class="toolbar-button" aria-label="Format as currency">
+            $
+        </ToolbarButton>
+        <ToolbarButton class="toolbar-button" aria-label="Format as percent">
+            %
+        </ToolbarButton>
+    </ToolbarGroup>
+    <ToolbarSeparator class="toolbar-separator" />
+    <SelectRoot Value="Helvetica">
+        <ToolbarButton class="toolbar-button">
+            <Render Context="button">
+                <SelectTrigger @attributes="button.Attributes" aria-label="Font">
+                    <SelectValue />
+                    <SelectIcon>
+                        @CaretUpDownIcon
+                    </SelectIcon>
+                </SelectTrigger>
+            </Render>
+        </ToolbarButton>
+        <SelectPortal>
+            <SelectPositioner class="toolbar-positioner" SideOffset="4">
+                <SelectPopup class="toolbar-popup">
+                    <SelectItem Value="Helvetica" class="toolbar-item">
+                        <SelectItemIndicator class="toolbar-item-indicator">
+                            @CheckIcon
+                        </SelectItemIndicator>
+                        <SelectItemText class="toolbar-item-text">Helvetica</SelectItemText>
+                    </SelectItem>
+                    <SelectItem Value="Arial" class="toolbar-item">
+                        <SelectItemIndicator class="toolbar-item-indicator">
+                            @CheckIcon
+                        </SelectItemIndicator>
+                        <SelectItemText class="toolbar-item-text">Arial</SelectItemText>
+                    </SelectItem>
+                </SelectPopup>
+            </SelectPositioner>
+        </SelectPortal>
+    </SelectRoot>
+    <ToolbarSeparator class="toolbar-separator" />
+    <ToolbarLink class="toolbar-link" href="#">
+        Edited 51m ago
+    </ToolbarLink>
+</ToolbarRoot>
+
+@code {
+    private static readonly RenderFragment CaretUpDownIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M11 10H5l3 3.5zm0-4H5l3-3.5z" />
+        </svg>;
+
+    private static readonly RenderFragment CheckIcon =
+        @<svg style="display: block" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+            <path d="m2.5 8.5 4 4 7-9" />
+        </svg>;
+}

@@ -1,0 +1,23 @@
+@inject ToastManager Toasts
+
+<div class="flex flex-wrap gap-2">
+    <Button Variant="ButtonVariant.Outline" @onclick="@(() => Toasts.Add(new ToastOptions { Description = "Event has been created." }))">
+        Default
+    </Button>
+    <Button Variant="ButtonVariant.Outline"
+            @onclick="@(() => Toasts.Add(new ToastOptions { Type = "success", Description = "Event has been created." }))">
+        Success
+    </Button>
+    <Button Variant="ButtonVariant.Outline"
+            @onclick="@(() => Toasts.Add(new ToastOptions { Type = "info", Description = "Arrive 10 minutes before the event." }))">
+        Info
+    </Button>
+    <Button Variant="ButtonVariant.Outline"
+            @onclick="@(() => Toasts.Add(new ToastOptions { Type = "warning", Description = "The event cannot start before 8:00 AM." }))">
+        Warning
+    </Button>
+    <Button Variant="ButtonVariant.Outline"
+            @onclick="@(() => Toasts.Add(new ToastOptions { Type = "error", Description = "The event could not be created.", Priority = ToastPriority.High }))">
+        Error
+    </Button>
+</div>

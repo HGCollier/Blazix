@@ -1,0 +1,29 @@
+<ContextMenu>
+    <ContextMenuTrigger Class="flex aspect-video w-full max-w-xs items-center justify-center rounded-xl border border-dashed text-sm">
+        <span class="hidden pointer-fine:inline-block">Right click here</span>
+        <span class="hidden pointer-coarse:inline-block">Long press here</span>
+    </ContextMenuTrigger>
+    <ContextMenuContent>
+        <ContextMenuGroup>
+            <ContextMenuItem>
+                <Icon Name="copy" />
+                Copy
+            </ContextMenuItem>
+            <ContextMenuItem>
+                <Icon Name="scissors" />
+                Cut
+            </ContextMenuItem>
+            <ContextMenuItem>
+                <Icon Name="clipboard-paste" />
+                Paste
+            </ContextMenuItem>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
+        <ContextMenuGroup>
+            <ContextMenuItem Destructive="true">
+                <Icon Name="trash" />
+                Delete
+            </ContextMenuItem>
+        </ContextMenuGroup>
+    </ContextMenuContent>
+</ContextMenu>

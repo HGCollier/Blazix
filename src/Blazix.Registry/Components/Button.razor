@@ -1,0 +1,33 @@
+@using Blazix.Primitives
+
+@* data-slot comes first so a component that renders a Button (AlertDialogAction...) can replace it. *@
+<ButtonRoot data-slot="button" @attributes="AdditionalAttributes" Render="@Render" NativeButton="@NativeButton"
+            type="@Type" Disabled="@Disabled" FocusableWhenDisabled="@FocusableWhenDisabled"
+            class="@ButtonVariants.Get(Variant, Size, Class)">
+    @ChildContent
+</ButtonRoot>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<ButtonRenderProps>? Render { get; set; }
+
+    /// <summary>Leave unset: whether Render produced a real &lt;button&gt; is detected. Set it to skip the check.</summary>
+    [Parameter] public bool? NativeButton { get; set; }
+
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Default;
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Default;
+
+    /// <summary>The &lt;button&gt;'s type. Defaults to "button".</summary>
+    [Parameter] public string? Type { get; set; }
+
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>Keep the button focusable while disabled (aria-disabled instead of disabled), e.g. while loading.</summary>
+    [Parameter] public bool FocusableWhenDisabled { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

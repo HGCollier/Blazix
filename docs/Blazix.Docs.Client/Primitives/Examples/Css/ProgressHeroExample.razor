@@ -1,0 +1,32 @@
+@implements IDisposable
+
+<ProgressRoot class="progress" Value="_value">
+    <ProgressLabel class="progress-label">
+        Export data
+    </ProgressLabel>
+    <ProgressValue class="progress-value" />
+    <ProgressTrack class="progress-track">
+        <ProgressIndicator class="progress-indicator" />
+    </ProgressTrack>
+</ProgressRoot>
+
+@code {
+    private Timer? _timer;
+    private double _value = 20;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _timer = new Timer(_ => InvokeAsync(Advance), null, 1000, 1000);
+        }
+    }
+
+    private void Advance()
+    {
+        _value = Math.Min(100, Math.Round(_value + Random.Shared.NextDouble() * 25));
+        StateHasChanged();
+    }
+
+    public void Dispose() => _timer?.Dispose();
+}

@@ -1,0 +1,40 @@
+<Card>
+    <CardHeader>
+        <CardTitle>Power Usage</CardTitle>
+        <CardDescription>Whole Home</CardDescription>
+    </CardHeader>
+    <CardContent Class="flex flex-col gap-4">
+        <div class="flex h-[140px] w-full items-end gap-2" role="img" aria-label="Power usage by hour">
+            @foreach (var (hour, usage) in ChartData)
+            {
+                <div class="flex h-full flex-1 flex-col justify-end gap-1.5">
+                    <div class="min-h-2 rounded-t bg-chart-2" style="@($"height: {Percent(usage, MaxUsage)}%")"></div>
+                    <span class="text-center text-xs text-muted-foreground">@hour</span>
+                </div>
+            }
+        </div>
+        <Separator />
+        <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-0.5">
+                <span class="text-sm text-muted-foreground">Currently Using</span>
+                <span class="text-lg font-semibold tabular-nums">3.4 kW</span>
+            </div>
+            <div class="flex flex-col gap-0.5">
+                <span class="text-sm text-muted-foreground">Solar Gen</span>
+                <span class="text-lg font-semibold tabular-nums">+1.2 kW</span>
+            </div>
+        </div>
+    </CardContent>
+</Card>
+
+@code {
+    private static readonly (string Hour, double Usage)[] ChartData =
+    [
+        ("6a", 1.2), ("8a", 2.8), ("10a", 3.1), ("12p", 2.4), ("2p", 3.4), ("4p", 2.9), ("6p", 3.8), ("8p", 3.2),
+    ];
+
+    private static readonly double MaxUsage = ChartData.Max(item => item.Usage);
+
+    private static string Percent(double value, double max) =>
+        (value / max * 100).ToString(System.Globalization.CultureInfo.InvariantCulture);
+}

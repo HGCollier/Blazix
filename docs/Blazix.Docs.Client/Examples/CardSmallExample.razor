@@ -1,0 +1,30 @@
+<Card Size="CardSize.Sm" Class="mx-auto w-full max-w-xs">
+    <CardHeader>
+        <CardTitle>@FeatureName</CardTitle>
+        <CardDescription>Weekly snapshots. No more manual exports.</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <ul class="grid gap-2 py-2 text-sm">
+            <li class="flex gap-2">
+                <Icon Name="chevron-right" class="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+                <span>Choose a schedule (daily, or weekly).</span>
+            </li>
+            <li class="flex gap-2">
+                <Icon Name="chevron-right" class="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+                <span>Send to channels or specific teammates.</span>
+            </li>
+            <li class="flex gap-2">
+                <Icon Name="chevron-right" class="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+                <span>Include charts, tables, and key metrics.</span>
+            </li>
+        </ul>
+    </CardContent>
+    <CardFooter Class="flex-col gap-2">
+        <Button Size="ButtonSize.Sm" Class="w-full">Set up scheduled reports</Button>
+        <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm" Class="w-full">See what&apos;s new</Button>
+    </CardFooter>
+</Card>
+
+@code {
+    private const string FeatureName = "Scheduled reports";
+}

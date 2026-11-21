@@ -1,0 +1,61 @@
+<CheckboxGroupRoot aria-labelledby="@_id" @bind-Value="_value" AllValues="Fruits" class="ml-4 flex flex-col items-start gap-1 text-neutral-950 dark:text-white">
+    <label class="-ml-4 flex items-center gap-2 text-sm font-normal" id="@_id">
+        <CheckboxRoot Parent="true" class="@CheckboxClass">
+            <CheckboxIndicator class="flex data-unchecked:hidden">
+                <Render Context="indicator">
+                    <span @attributes="indicator.Attributes">
+                        @(indicator.Indeterminate ? HorizontalRuleIcon : CheckIcon)
+                    </span>
+                </Render>
+            </CheckboxIndicator>
+        </CheckboxRoot>
+        Apples
+    </label>
+
+    <label class="flex items-center gap-2 text-sm font-normal">
+        <CheckboxRoot Value="fuji-apple" class="@CheckboxClass">
+            <CheckboxIndicator class="flex data-unchecked:hidden">
+                @CheckIcon
+            </CheckboxIndicator>
+        </CheckboxRoot>
+        Fuji
+    </label>
+
+    <label class="flex items-center gap-2 text-sm font-normal">
+        <CheckboxRoot Value="gala-apple" class="@CheckboxClass">
+            <CheckboxIndicator class="flex data-unchecked:hidden">
+                @CheckIcon
+            </CheckboxIndicator>
+        </CheckboxRoot>
+        Gala
+    </label>
+
+    <label class="flex items-center gap-2 text-sm font-normal">
+        <CheckboxRoot Value="granny-smith-apple" class="@CheckboxClass">
+            <CheckboxIndicator class="flex data-unchecked:hidden">
+                @CheckIcon
+            </CheckboxIndicator>
+        </CheckboxRoot>
+        Granny Smith
+    </label>
+</CheckboxGroupRoot>
+
+@code {
+    private static readonly IReadOnlyList<string> Fruits = ["fuji-apple", "gala-apple", "granny-smith-apple"];
+
+    private const string CheckboxClass =
+        "flex size-4 shrink-0 items-center justify-center border rounded-none p-0 border-neutral-950 bg-white text-white dark:border-white dark:bg-neutral-950 dark:text-neutral-950 data-checked:bg-neutral-950 data-checked:text-white data-indeterminate:bg-neutral-950 data-indeterminate:text-white dark:data-checked:bg-white dark:data-checked:text-neutral-950 dark:data-indeterminate:bg-white dark:data-indeterminate:text-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-950 dark:focus-visible:outline-white";
+
+    private static readonly RenderFragment CheckIcon =
+        @<svg class="block" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+            <path d="m2.5 8.5 4 4 7-9" />
+        </svg>;
+
+    private static readonly RenderFragment HorizontalRuleIcon =
+        @<svg class="block" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke-width="1">
+            <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" vector-effect="non-scaling-stroke" />
+        </svg>;
+
+    private readonly string _id = $"apples-{Guid.NewGuid():N}";
+    private IReadOnlyList<string> _value = [];
+}

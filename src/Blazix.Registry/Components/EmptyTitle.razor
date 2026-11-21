@@ -1,0 +1,14 @@
+@using static Blazix.Registry.ClassNames
+
+<div data-slot="empty-title" @attributes="AdditionalAttributes"
+     class="@Cn("text-sm font-medium tracking-tight", Class)">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

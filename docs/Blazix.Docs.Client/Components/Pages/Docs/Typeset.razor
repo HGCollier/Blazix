@@ -1,0 +1,248 @@
+@page "/docs/typeset"
+
+<DocsPage Title="Typeset" Description="A styling system for HTML and rendered markdown, from blog posts to streaming chat. One CSS file you own.">
+    <p>You render markdown and get back plain unstyled HTML: headings, paragraphs, lists, and tables. So you style the elements one by one: font sizes, line heights, spacing.</p>
+    <p>You do it for your blog. Then you do it again for the docs. Then again for the chat app. Every time you&apos;re fighting the same thing: sizing and spacing.</p>
+    <p>
+        To fix this, there&apos;s <strong>typeset</strong>. It&apos;s one CSS file that styles everything inside a <code>typeset</code> container.
+        The file lives in your project, so you can change it directly when you need to. These docs are styled with it.
+    </p>
+    <p>A typeset is just a small preset class. You can have multiple typesets in your app, for different contexts.</p>
+    <CodeFigure Code="@PresetCode" Language="css" />
+
+    <hr />
+
+    <DocsHeading Title="Principles" />
+    <p>
+        Good type depends on a lot: scale ratios, tracking, kerning, optical sizing, measure, leading, the space above and below every element. Exposing
+        all of it was too much. Nobody wants to set a dozen variables to make markdown look right.
+    </p>
+    <p>
+        So it&apos;s condensed into three controls: size, leading, and flow. Everything else, heading sizes, list indents, the gap under a heading, the
+        space around a rule, derives from them. Three controls, called rhythm.
+    </p>
+
+    <hr />
+
+    <DocsHeading Title="Features" />
+    <ul>
+        <li><strong>It fits its container.</strong> Put it in a chat bubble and it follows the smaller type around it. Put it in an article and it scales up with the page. On smaller screens, it gets a small bump for readability.</li>
+        <li><strong>It uses your theme.</strong> Colors, fonts, and radius come from your app. Dark mode follows the same tokens.</li>
+        <li><strong>It&apos;s easy to tune.</strong> Three values control the base size, line height, and space between blocks. Change them in a preset and the whole document follows.</li>
+        <li><strong>It works well with streaming.</strong> When a new block arrives, Typeset doesn&apos;t make earlier blocks switch margins, borders, or styles.</li>
+    </ul>
+
+    <hr />
+
+    <DocsHeading Title="Installation" />
+    <p>Copy <code>typeset.css</code> next to <code>Styles/app.css</code>:</p>
+    <ComponentSource Setup="typeset.css" />
+    <p>Import it in <code>Styles/app.css</code>, after Tailwind and your theme:</p>
+    <CodeFigure Code="@ImportCode" Language="css" Title="Styles/app.css" />
+    <p>Then wrap your rendered markdown with <code>typeset</code> and your preset class:</p>
+    <CodeFigure Code="@WrapperCode" />
+    <p><code>typeset</code> turns the styles on. <code>typeset-docs</code> is a preset of your own, like the one above.</p>
+
+    <hr />
+
+    <DocsHeading Title="Custom Typesets" />
+    <p>The file includes defaults, so you can use <code>typeset</code> by itself. Most of the reading rhythm comes from three values: the body font size (<code>--typeset-size</code>), the line height (<code>--typeset-leading</code>) and the space between blocks (<code>--typeset-flow</code>).</p>
+    <CodeFigure Code="@DefaultsCode" Language="css" />
+    <ul>
+        <li><strong><code>--typeset-size</code></strong> sets the base text size. <code>1em</code> follows the surrounding layout. On smaller screens, Typeset bumps it up a little.</li>
+        <li><strong><code>--typeset-leading</code></strong> sets the space between lines.</li>
+        <li><strong><code>--typeset-flow</code></strong> sets the space between blocks. Headings and other elements derive their spacing from it.</li>
+    </ul>
+    <p>The font variables tell Typeset which families to use. Leave them alone and it follows your app. Colors and radius come from your theme too.</p>
+    <p>Typeset doesn&apos;t set a maximum width. Your layout owns that, so put a <code>max-width</code> on the wrapper.</p>
+    <p>You can keep more than one preset in the same app. Here is a tighter one for chat and a roomier one for docs:</p>
+    <CodeFigure Code="@PresetsCode" Language="css" />
+    <CodeFigure Code="@PresetsUsageCode" />
+    <p>For a one-off change, skip the preset and set a value on the container:</p>
+    <CodeFigure Code="@OneOffCode" />
+
+    <hr />
+
+    <DocsHeading Title="Custom Themes" />
+    <p>A preset can change the whole feel of the content, not just the spacing. You can give readers a serif reading mode, a compact UI mode, or any other style that fits your product. Here <code>typeset-reading</code> sets serif, larger type with a roomy rhythm, and <code>typeset-compact</code> sets sans, smaller type with a tighter rhythm.</p>
+    <CodeFigure Code="@ThemesCode" Language="css" />
+
+    <hr />
+
+    <DocsHeading Title="Accessibility and Dark Mode" />
+    <p>For readers who prefer larger type and more space, create a roomier typeset and expose it as a setting:</p>
+    <CodeFigure Code="@LargeCode" Language="css" />
+    <p>Dark mode already follows your theme colors. If the text feels a little tight on a dark surface, you can loosen the leading there:</p>
+    <CodeFigure Code="@DarkCode" Language="css" />
+
+    <hr />
+
+    <DocsHeading Title="Responsive Table" />
+    <p>Tables stay real tables and wrap to fit. To scroll a wide one horizontally instead, wrap it in <code>typeset-scroll</code>:</p>
+    <CodeFigure Code="@ScrollCode" />
+    <p>Do this where you render tables, for example in a <code>MarkupString</code> post-processor or a component of your own. It works for any wide block, not just tables.</p>
+
+    <hr />
+
+    <DocsHeading Title="Overrides" />
+    <p>Typeset lives in the <code>components</code> layer and uses <code>:where()</code> for its element selectors. Tailwind utilities on an element win without <code>!important</code>:</p>
+    <CodeFigure Code="@OverrideCode" />
+    <p>Plain CSS can override Typeset with a normal selector too.</p>
+
+    <hr />
+
+    <DocsHeading Title="Opting Out" />
+    <p>To keep a component out of Typeset, add <code>not-typeset</code> or <code>data-not-typeset</code>:</p>
+    <CodeFigure Code="@OptOutCode" />
+    <p>
+        Both options cover the component and everything inside it. Another <code>typeset</code> container inside that subtree stays opted out too.
+        Components with a <code>data-slot</code>, which every component here has, already keep their own styles.
+    </p>
+
+    <hr />
+
+    <DocsHeading Title="Streaming" />
+    <p>Typeset is written so that adding a new block does not change the styles of the blocks already on screen.</p>
+    <ul>
+        <li>No forward-looking selectors. <code>:last-child</code>, <code>:has()</code>, and <code>:empty</code> are left out of layout rules because their matches can change as content is added.</li>
+        <li>Spacing flows in one direction, using <code>margin-block-start</code> only. A new block adds its own space.</li>
+        <li>Table separators live on the cells being added, so a new row does not restyle the row above it.</li>
+    </ul>
+    <p>Text that is still streaming can grow and wrap normally. Typeset just avoids restyling the blocks that came before it.</p>
+
+    <hr />
+
+    <DocsHeading Title="Prior Art" />
+    <p>
+        The <code>prose</code> class from <code>@@tailwindcss/typography</code> is excellent at what it was built for: adding beautiful typographic
+        defaults to plain HTML, including content rendered from Markdown or a CMS.
+    </p>
+    <p>Typeset takes a different approach with container-aware sizing, app theme tokens, presets for different contexts, and streaming stability. Here&apos;s where they differ:</p>
+    <DocsTable>
+        <table>
+            <thead>
+                <tr><td></td><th scope="col">@@tailwindcss/typography</th><th scope="col">Typeset</th></tr>
+            </thead>
+            <tbody>
+                <tr><th scope="row">Sizing</th><td>Fixed <code>rem</code> scale, <code>prose-sm</code> to <code>prose-2xl</code></td><td>Relative to the container, any size</td></tr>
+                <tr><th scope="row">Dark mode</th><td><code>prose-invert</code>, a second palette</td><td>Your tokens flip, nothing to add</td></tr>
+                <tr><th scope="row">Theming</th><td>Prose color variables; scale baked in</td><td>Your theme tokens, plus font and rhythm controls</td></tr>
+                <tr><th scope="row">Overrides</th><td><code>prose-a:</code>, <code>prose-headings:</code> modifier API</td><td>Plain utilities and CSS win</td></tr>
+                <tr><th scope="row">Streaming</th><td>No append-stability contract</td><td>Designed for stable appends</td></tr>
+                <tr><th scope="row">Distribution</th><td>npm plugin, generated CSS</td><td>One CSS file you own</td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <p>Typeset borrows the two best ideas from the plugin: the zero-specificity <code>:where()</code> guard pattern, and the escape-hatch class (<code>not-typeset</code>, in the spirit of <code>not-prose</code>).</p>
+</DocsPage>
+
+@code {
+    private const string PresetCode = """
+        .typeset-docs {
+          --typeset-font-body: var(--font-sans);
+          --typeset-font-heading: var(--font-sans);
+          --typeset-font-mono: var(--font-mono);
+          --typeset-size: 15px;
+          --typeset-leading: 1.75;
+          --typeset-flow: 1.25em;
+        }
+        """;
+
+    private const string ImportCode = """
+        @import "tailwindcss";
+        @import "./Vendor/tw-animate.css";
+        @import "./Vendor/variants.css";
+        @import "./theme.css";
+        @import "./typeset.css";
+        """;
+
+    private const string WrapperCode = """
+        <div class="typeset typeset-docs">
+            @((MarkupString)html)
+        </div>
+        """;
+
+    private const string DefaultsCode = """
+        .typeset {
+          --typeset-font-body: inherit;
+          --typeset-font-heading: var(--font-heading);
+          --typeset-font-mono: var(--font-mono);
+
+          --typeset-size: 1em;
+          --typeset-leading: 1.75;
+          --typeset-flow: 1.25em;
+        }
+        """;
+
+    private const string PresetsCode = """
+        .typeset-chat {
+          --typeset-flow: 1em;
+          --typeset-leading: 1.6;
+        }
+
+        .typeset-docs {
+          --typeset-size: 15px;
+          --typeset-flow: 1.5em;
+        }
+        """;
+
+    private const string PresetsUsageCode = """
+        <div class="typeset typeset-chat">@message</div>
+        <article class="typeset typeset-docs">@page</article>
+        """;
+
+    private const string OneOffCode = """
+        <article class="typeset [--typeset-flow:1.75em]">...</article>
+        """;
+
+    private const string ThemesCode = """
+        .typeset-reading {
+          --typeset-font-body: var(--font-serif);
+          --typeset-font-heading: var(--font-serif);
+          --typeset-size: 18px;
+          --typeset-leading: 1.9;
+          --typeset-flow: 2em;
+        }
+
+        .typeset-compact {
+          --typeset-font-body: var(--font-sans);
+          --typeset-font-heading: var(--font-sans);
+          --typeset-size: 14px;
+          --typeset-leading: 1.6;
+          --typeset-flow: 1em;
+        }
+        """;
+
+    private const string LargeCode = """
+        .typeset-large {
+          --typeset-size: 16px;
+          --typeset-leading: 2;
+          --typeset-flow: 2em;
+        }
+        """;
+
+    private const string DarkCode = """
+        .dark .typeset {
+          --typeset-leading: 1.9;
+        }
+        """;
+
+    private const string ScrollCode = """
+        <div class="typeset-scroll">
+            <table>...</table>
+        </div>
+        """;
+
+    private const string OverrideCode = """
+        <div class="typeset typeset-docs">
+            <p class="text-lg">...</p>
+        </div>
+        """;
+
+    private const string OptOutCode = """
+        <div class="typeset">
+            <p>Styled prose.</p>
+            <div class="not-typeset">Untouched markup.</div>
+        </div>
+        """;
+}

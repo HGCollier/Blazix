@@ -1,0 +1,101 @@
+@page "/docs/primitives/field"
+
+<DocsPage Title="Field" Description="A component that provides labeling and validation for form controls.">
+    <ComponentPreview Name="primitives/field-hero" />
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <p>
+        A field labels and describes its control, and validates it: with the browser's constraint validation (attributes such
+        as <code>required</code> and <code>pattern</code>), a <code>Validate</code> function, or both.
+        <code>ValidationMode</code> chooses when it validates: on submit, on blur, or on every change. It defaults to the
+        <a href="/docs/primitives/form">form</a>'s mode, or to on submit.
+        <code>FieldError</code> shows its message while the field is invalid, or only for the constraint its
+        <code>Match</code> names.
+    </p>
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(FieldRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the field is disabled.</StyleHook>
+            <StyleHook Name="data-valid">Present when the field is valid.</StyleHook>
+            <StyleHook Name="data-invalid">Present when the field is invalid.</StyleHook>
+            <StyleHook Name="data-dirty">Present when the field's value has changed.</StyleHook>
+            <StyleHook Name="data-touched">Present when the field has been touched.</StyleHook>
+            <StyleHook Name="data-filled">Present when the field is filled.</StyleHook>
+            <StyleHook Name="data-focused">Present when the field control is focused.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(FieldLabel)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the field is disabled.</StyleHook>
+            <StyleHook Name="data-valid">Present when the field is in a valid state.</StyleHook>
+            <StyleHook Name="data-invalid">Present when the field is in an invalid state.</StyleHook>
+            <StyleHook Name="data-dirty">Present when the field's value has changed.</StyleHook>
+            <StyleHook Name="data-touched">Present when the field has been touched.</StyleHook>
+            <StyleHook Name="data-filled">Present when the field is filled.</StyleHook>
+            <StyleHook Name="data-focused">Present when the field control is focused.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(FieldControl)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the field is disabled.</StyleHook>
+            <StyleHook Name="data-valid">Present when the field is in a valid state.</StyleHook>
+            <StyleHook Name="data-invalid">Present when the field is in an invalid state.</StyleHook>
+            <StyleHook Name="data-dirty">Present when the field's value has changed.</StyleHook>
+            <StyleHook Name="data-touched">Present when the field has been touched.</StyleHook>
+            <StyleHook Name="data-filled">Present when the field is filled.</StyleHook>
+            <StyleHook Name="data-focused">Present when the field control is focused.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(FieldDescription)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the field is disabled.</StyleHook>
+            <StyleHook Name="data-valid">Present when the field is in a valid state.</StyleHook>
+            <StyleHook Name="data-invalid">Present when the field is in an invalid state.</StyleHook>
+            <StyleHook Name="data-dirty">Present when the field's value has changed.</StyleHook>
+            <StyleHook Name="data-touched">Present when the field has been touched.</StyleHook>
+            <StyleHook Name="data-filled">Present when the field is filled.</StyleHook>
+            <StyleHook Name="data-focused">Present when the field control is focused.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(FieldItem)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the field is disabled.</StyleHook>
+            <StyleHook Name="data-valid">Present when the field is in a valid state.</StyleHook>
+            <StyleHook Name="data-invalid">Present when the field is in an invalid state.</StyleHook>
+            <StyleHook Name="data-dirty">Present when the field's value has changed.</StyleHook>
+            <StyleHook Name="data-touched">Present when the field has been touched.</StyleHook>
+            <StyleHook Name="data-filled">Present when the field is filled.</StyleHook>
+            <StyleHook Name="data-focused">Present when the field control is focused.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(FieldError)">
+        <DataAttributes>
+            <StyleHook Name="data-disabled">Present when the field is disabled.</StyleHook>
+            <StyleHook Name="data-valid">Present when the field is in a valid state.</StyleHook>
+            <StyleHook Name="data-invalid">Present when the field is in an invalid state.</StyleHook>
+            <StyleHook Name="data-dirty">Present when the field's value has changed.</StyleHook>
+            <StyleHook Name="data-touched">Present when the field has been touched.</StyleHook>
+            <StyleHook Name="data-filled">Present when the field is filled.</StyleHook>
+            <StyleHook Name="data-focused">Present when the field control is focused.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the error message begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the error message is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(FieldValidity)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <FieldRoot>
+            <FieldLabel />
+            <FieldControl />
+            <FieldDescription />
+            <FieldItem />
+            <FieldError />
+            <FieldValidity />
+        </FieldRoot>
+        """;
+}

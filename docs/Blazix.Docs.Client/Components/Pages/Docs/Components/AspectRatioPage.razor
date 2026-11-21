@@ -1,0 +1,23 @@
+@page "/docs/components/aspect-ratio"
+
+<DocsPage Title="Aspect Ratio" Description="Displays content within a desired ratio.">
+    <ComponentPreview Name="aspect-ratio-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="aspect-ratio" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Square" />
+    <p>A square aspect ratio component using the <code>ratio={1 / 1}</code> parameter. This is useful for displaying images in a square format.</p>
+    <ComponentPreview Name="aspect-ratio-square" />
+    <DocsHeading Title="Portrait" />
+    <p>A portrait aspect ratio component using the <code>ratio={9 / 16}</code> parameter. This is useful for displaying images in a portrait format.</p>
+    <ComponentPreview Name="aspect-ratio-portrait" PreviewClass="h-96" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="aspect-ratio" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <AspectRatio Ratio="@(16.0 / 9)"><img src="..." alt="Image" class="rounded-md object-cover" /></AspectRatio>
+        """;
+}

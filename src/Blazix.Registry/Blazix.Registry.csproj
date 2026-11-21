@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <!--
+      The registry: the source of truth for what `blazix init` and `blazix add` copy into apps.
+      Never packed. It's a project so the components compile against
+      Blazix.Primitives and docs/ can use them with hot reload; Blazix.Cli embeds these files at build time.
+  
+        registry.json   the items: files, dependencies
+        Components/     the styled components (namespace Blazix.Registry, rewritten to the app's on copy)
+        Setup/          what `init` copies: Tailwind build, theme tokens, vendored CSS
+    -->
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <RootNamespace>Blazix.Registry</RootNamespace>
+        <!-- Apps copy these components, so they get the same trim and AOT analysis as Blazix.Primitives. -->
+        <IsAotCompatible>true</IsAotCompatible>
+        <!-- The docs' API Reference sections read the parameters' summaries from this file. Not every member has one. -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);CS1591</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web"/>
+        <ProjectReference Include="..\Blazix.Primitives\Blazix.Primitives.csproj"/>
+        <!-- As `blazix init` sets up apps: the primitives' types work everywhere, while Razor matches tags only against @using. -->
+        <Using Include="Blazix.Primitives"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- TailwindWatcher.cs belongs to the app that runs it (it reads that app's assembly metadata), so docs/ compiles it. -->
+        <Compile Remove="Setup\**"/>
+    </ItemGroup>
+
+</Project>

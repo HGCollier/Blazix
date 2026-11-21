@@ -1,0 +1,46 @@
+@page "/docs/components/tabs"
+
+<DocsPage Title="Tabs" Description="A set of layered sections of content—known as tab panels—that are displayed one at a time.">
+    <ComponentPreview Name="tabs-demo" PreviewClass="h-96" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="tabs" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build <code>Tabs</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Line" />
+    <p>Use the <code>variant="line"</code> parameter on <code>TabsList</code> for a line style.</p>
+    <ComponentPreview Name="tabs-line" />
+    <DocsHeading Title="Vertical" />
+    <p>Use <code>orientation="vertical"</code> for vertical tabs.</p>
+    <ComponentPreview Name="tabs-vertical" />
+    <DocsHeading Title="Disabled" />
+    <ComponentPreview Name="tabs-disabled" />
+    <DocsHeading Title="Icons" />
+    <ComponentPreview Name="tabs-icons" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="tabs" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Tabs Value="account" Class="w-[400px]">
+            <TabsList>
+                <TabsTrigger Value="account">Account</TabsTrigger>
+                <TabsTrigger Value="password">Password</TabsTrigger>
+            </TabsList>
+            <TabsContent Value="account">Make changes to your account here.</TabsContent>
+            <TabsContent Value="password">Change your password here.</TabsContent>
+        </Tabs>
+        """;
+
+    private const string CompositionCode = """
+        Tabs
+        ├── TabsList
+        │   ├── TabsTrigger
+        │   └── TabsTrigger
+        ├── TabsContent
+        └── TabsContent
+        """;
+}

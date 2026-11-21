@@ -1,0 +1,24 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.ComboboxList data-slot="combobox-list" @attributes="AdditionalAttributes" Render="@Render" Template="@Template"
+                              class="@Cn(
+                                  "no-scrollbar max-h-[min(calc(--spacing(72)---spacing(9)),calc(var(--available-height)---spacing(9)))] scroll-py-1 " +
+                                  "overflow-y-auto overscroll-contain p-1 data-empty:p-0",
+                                  Class)">
+    @ChildContent
+</Blazix.Primitives.ComboboxList>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<ComboboxRenderProps>? Render { get; set; }
+
+    /// <summary>Renders each item of the combobox's filtered Items.</summary>
+    [Parameter] public RenderFragment<string>? Template { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

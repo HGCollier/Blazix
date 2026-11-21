@@ -1,0 +1,29 @@
+<ButtonGroup>
+    <ButtonGroup>
+        <Select Items="Currencies" @bind-Value="_currency">
+            <SelectTrigger Class="font-mono" aria-label="Currency">@_currency</SelectTrigger>
+            <SelectContent AlignItemWithTrigger="false" Align="Align.Start">
+                <SelectGroup>
+                    @foreach (var item in Currencies)
+                    {
+                        <SelectItem Value="@item.Value">
+                            @item.Value <span class="text-muted-foreground">@item.Label</span>
+                        </SelectItem>
+                    }
+                </SelectGroup>
+            </SelectContent>
+        </Select>
+        <Input placeholder="10.00" pattern="[0-9]*" aria-label="Amount" />
+    </ButtonGroup>
+    <ButtonGroup>
+        <Button aria-label="Send" Size="ButtonSize.Icon" Variant="ButtonVariant.Outline">
+            <Icon Name="arrow-right" />
+        </Button>
+    </ButtonGroup>
+</ButtonGroup>
+
+@code {
+    private static readonly SelectOption[] Currencies = [new("$", "US Dollar"), new("€", "Euro"), new("£", "British Pound")];
+
+    private string? _currency = "$";
+}

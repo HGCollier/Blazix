@@ -1,0 +1,75 @@
+@using Blazix.Primitives
+@using Microsoft.JSInterop
+@using static Blazix.Registry.ClassNames
+@implements IDisposable
+
+<Button data-slot="code-block-copy-button" data-copied="@_copied" Variant="@Variant" Size="@Size" aria-label="@(_copied ? "Copied" : "Copy")"
+        @attributes="AdditionalAttributes" Class="@Cn(Class)" @onclick="CopyAsync">
+    @if (_copied)
+    {
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" />
+        </svg>
+    }
+    else
+    {
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+        </svg>
+    }
+</Button>
+<span aria-live="polite" class="sr-only">@(_copied ? "Copied" : "")</span>
+
+@code {
+    private bool _copied;
+    private CancellationTokenSource? _reset;
+
+    [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
+
+    /// <summary>The text to copy.</summary>
+    [Parameter, EditorRequired] public string Value { get; set; } = "";
+
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Ghost;
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.IconXs;
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private async Task CopyAsync(MouseEventArgs e)
+    {
+        await OnClick.InvokeAsync(e);
+        if (!await BrowserClipboard.CopyAsync(JsRuntime, Value))
+        {
+            return;
+        }
+        _copied = true;
+        if (_reset is not null)
+        {
+            await _reset.CancelAsync();
+            _reset.Dispose();
+        }
+        _reset = new CancellationTokenSource();
+        var token = _reset.Token;
+        try
+        {
+            await Task.Delay(2000, token);
+            _copied = false;
+            StateHasChanged();
+        }
+        catch (TaskCanceledException)
+        {
+            // Copied again: the newer press resets it.
+        }
+    }
+
+    public void Dispose()
+    {
+        _reset?.Cancel();
+        _reset?.Dispose();
+    }
+}

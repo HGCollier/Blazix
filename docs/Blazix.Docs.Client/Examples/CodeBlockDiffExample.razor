@@ -1,0 +1,35 @@
+<div class="w-full max-w-md">
+    <CodeBlock>
+        <CodeBlockHeader>
+            <CodeBlockTitle>components/greeting.tsx</CodeBlockTitle>
+            <CodeBlockActions>
+                <CodeBlockCopyButton Value="@Patch" />
+            </CodeBlockActions>
+        </CodeBlockHeader>
+        <CodeBlockContent>
+            @foreach (var line in Patch.Split('\n'))
+            {
+                <CodeBlockLine Variant="@VariantOf(line)">@line[1..]</CodeBlockLine>
+            }
+        </CodeBlockContent>
+    </CodeBlock>
+</div>
+
+@code {
+    private const string Patch =
+        """
+         export function Greeting({ name }: { name: string }) {
+        -  return <p>Hello, {name}</p>
+        +  return <p className="text-sm text-muted-foreground">
+        +    Hello, {name}!
+        +  </p>
+         }
+        """;
+
+    private static CodeBlockLineVariant VariantOf(string line) => line[0] switch
+    {
+        '+' => CodeBlockLineVariant.Added,
+        '-' => CodeBlockLineVariant.Removed,
+        _ => CodeBlockLineVariant.Default,
+    };
+}

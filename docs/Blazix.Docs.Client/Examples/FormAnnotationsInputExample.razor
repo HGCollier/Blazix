@@ -1,0 +1,80 @@
+@using System.ComponentModel.DataAnnotations
+@using System.Linq.Expressions
+@using System.Text.Json
+@inject ToastManager Toasts
+
+<Card Class="w-full sm:max-w-md">
+    <CardHeader>
+        <CardTitle>Profile Settings</CardTitle>
+        <CardDescription>Update your profile information below.</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <EditForm @key="_editContext" id="form-annotations-input" EditContext="_editContext" OnSubmit="Submit">
+            <DataAnnotationsValidator />
+            <FieldGroup>
+                <Field data-invalid="@Invalid(() => _model.Username)">
+                    <FieldLabel for="form-annotations-input-username">Username</FieldLabel>
+                    <Input id="form-annotations-input-username" Value="@_model.Username" ValueChanged="@(value => Change(() => _model.Username = value ?? ""))"
+                           aria-invalid="@Invalid(() => _model.Username)" placeholder="blazix" autocomplete="username" />
+                    <FieldDescription>
+                        This is your public display name. Must be between 3 and 10 characters. Must only contain letters, numbers, and underscores.
+                    </FieldDescription>
+                    <FieldError Errors="@Errors(() => _model.Username)" />
+                </Field>
+            </FieldGroup>
+        </EditForm>
+    </CardContent>
+    <CardFooter>
+        <Field Orientation="FieldOrientation.Horizontal">
+            <Button Type="button" Variant="ButtonVariant.Outline" @onclick="Reset">Reset</Button>
+            <Button Type="submit" form="form-annotations-input">Save</Button>
+        </Field>
+    </CardFooter>
+</Card>
+
+@code {
+    private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
+
+    private Profile _model = new();
+    private EditContext _editContext = null!;
+    private bool _submitted;
+
+    protected override void OnInitialized() => _editContext = new EditContext(_model);
+
+    private void Submit()
+    {
+        _submitted = true;
+        if (_editContext.Validate())
+        {
+            Toasts.Add(new ToastOptions { Title = "You submitted the following values:", Description = JsonSerializer.Serialize(_model, Json) });
+        }
+    }
+
+    private void Change(Action update)
+    {
+        update();
+        if (_submitted)
+        {
+            _editContext.Validate();
+        }
+    }
+
+    private void Reset()
+    {
+        _model = new Profile();
+        _editContext = new EditContext(_model);
+        _submitted = false;
+    }
+
+    private IEnumerable<string> Errors(Expression<Func<object>> field) => _editContext.GetValidationMessages(field).Take(1);
+
+    private string Invalid(Expression<Func<object>> field) => Errors(field).Any() ? "true" : "false";
+
+    private sealed class Profile
+    {
+        [MinLength(3, ErrorMessage = "Username must be at least 3 characters.")]
+        [MaxLength(10, ErrorMessage = "Username must be at most 10 characters.")]
+        [RegularExpression("^[a-zA-Z0-9_]+$", ErrorMessage = "Username can only contain letters, numbers, and underscores.")]
+        public string Username { get; set; } = "";
+    }
+}

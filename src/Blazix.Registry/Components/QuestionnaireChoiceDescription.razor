@@ -1,0 +1,11 @@
+@using static Blazix.Registry.ClassNames
+
+<span data-slot="questionnaire-choice-description" @attributes="AdditionalAttributes" class="@Cn("text-muted-foreground", Class)">@ChildContent</span>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

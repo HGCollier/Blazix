@@ -1,0 +1,167 @@
+@page "/docs/primitives/context-menu"
+
+<DocsPage Title="Context Menu" Description="A menu that appears at the pointer on right click or long press.">
+    <ComponentPreview Name="primitives/context-menu-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li><strong>Use context menus as an enhancement:</strong> Don't make a context menu the only way to perform actions. People may not discover or be able to open one, especially on touch devices or with assistive technology. Always provide visible controls for the actions the context menu offers.</li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(ContextMenuRoot)" />
+    <PartReference Type="typeof(ContextMenuTrigger)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding context menu is open.</StyleHook>
+            <StyleHook Name="data-pressed">Present when the corresponding context menu is open.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ContextMenuPortal)" />
+    <PartReference Type="typeof(ContextMenuBackdrop)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the menu is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the menu is closed.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the menu begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the menu is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ContextMenuPositioner)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the menu popup is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the menu popup is closed.</StyleHook>
+            <StyleHook Name="data-anchor-hidden">Present when the anchor is hidden.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to the specified side.</StyleHook>
+            <StyleHook Name="data-side" Type="'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the anchor.</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--anchor-height" Type="number">The anchor's height.</StyleHook>
+            <StyleHook Name="--anchor-width" Type="number">The anchor's width.</StyleHook>
+            <StyleHook Name="--available-height" Type="number">The available height between the anchor and the edge of the viewport.</StyleHook>
+            <StyleHook Name="--available-width" Type="number">The available width between the anchor and the edge of the viewport.</StyleHook>
+            <StyleHook Name="--positioner-height" Type="number">The height of the menu's positioner. It is important to set <code>height</code> to this value when using CSS to animate size changes.</StyleHook>
+            <StyleHook Name="--positioner-width" Type="number">The width of the menu's positioner. It is important to set <code>width</code> to this value when using CSS to animate size changes.</StyleHook>
+            <StyleHook Name="--transform-origin" Type="string">The coordinates that this element is anchored to. Used for animations and transitions.</StyleHook>
+        </CssVariables>
+    </PartReference>
+    <PartReference Type="typeof(ContextMenuPopup)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the menu is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the menu is closed.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to specified side.</StyleHook>
+            <StyleHook Name="data-instant" Type="'click' | 'dismiss' | 'group' | 'trigger-change'">Present if animations should be instant.</StyleHook>
+            <StyleHook Name="data-side" Type="'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the anchor.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the menu begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the menu is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ContextMenuArrow)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the menu popup is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the menu popup is closed.</StyleHook>
+            <StyleHook Name="data-uncentered">Present when the menu arrow is uncentered.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to specified side.</StyleHook>
+            <StyleHook Name="data-side" Type="'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the anchor.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ContextMenuItem)">
+        <DataAttributes>
+            <StyleHook Name="data-highlighted">Present when the menu item is highlighted.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the menu item is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ContextMenuGroup)" />
+    <PartReference Type="typeof(ContextMenuGroupLabel)" />
+    <PartReference Type="typeof(ContextMenuSeparator)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the separator.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ContextMenuSubmenuRoot)" />
+    <PartReference Type="typeof(ContextMenuSubmenuTrigger)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding submenu is open.</StyleHook>
+            <StyleHook Name="data-highlighted">Present when the submenu trigger is highlighted.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the submenu trigger is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ContextMenuRadioGroup)" />
+    <PartReference Type="typeof(ContextMenuRadioItem)">
+        <DataAttributes>
+            <StyleHook Name="data-checked">Present when the menu radio item is selected.</StyleHook>
+            <StyleHook Name="data-unchecked">Present when the menu radio item is not selected.</StyleHook>
+            <StyleHook Name="data-highlighted">Present when the menu radio item is highlighted.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the menu radio item is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ContextMenuRadioItemIndicator)">
+        <DataAttributes>
+            <StyleHook Name="data-checked">Present when the menu radio item is selected.</StyleHook>
+            <StyleHook Name="data-unchecked">Present when the menu radio item is not selected.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the menu radio item is disabled.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the radio indicator begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the radio indicator is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ContextMenuCheckboxItem)">
+        <DataAttributes>
+            <StyleHook Name="data-checked">Present when the menu checkbox item is checked.</StyleHook>
+            <StyleHook Name="data-unchecked">Present when the menu checkbox item is not checked.</StyleHook>
+            <StyleHook Name="data-highlighted">Present when the menu checkbox item is highlighted.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the menu checkbox item is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ContextMenuCheckboxItemIndicator)">
+        <DataAttributes>
+            <StyleHook Name="data-checked">Present when the menu checkbox item is checked.</StyleHook>
+            <StyleHook Name="data-unchecked">Present when the menu checkbox item is not checked.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the menu checkbox item is disabled.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the indicator begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the indicator is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ContextMenuLinkItem)">
+        <DataAttributes>
+            <StyleHook Name="data-highlighted">Present when the link is highlighted.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <ContextMenuRoot>
+            <ContextMenuTrigger />
+            <ContextMenuPortal>
+                <ContextMenuBackdrop />
+                <ContextMenuPositioner>
+                    <ContextMenuPopup>
+                        <ContextMenuArrow />
+                        <ContextMenuItem />
+                        <ContextMenuLinkItem />
+                        <ContextMenuSeparator />
+
+                        <ContextMenuSubmenuRoot>
+                            <ContextMenuSubmenuTrigger />
+                        </ContextMenuSubmenuRoot>
+
+                        <ContextMenuGroup>
+                            <ContextMenuGroupLabel />
+                        </ContextMenuGroup>
+
+                        <ContextMenuRadioGroup>
+                            <ContextMenuRadioItem>
+                                <ContextMenuRadioItemIndicator />
+                            </ContextMenuRadioItem>
+                        </ContextMenuRadioGroup>
+
+                        <ContextMenuCheckboxItem>
+                            <ContextMenuCheckboxItemIndicator />
+                        </ContextMenuCheckboxItem>
+                    </ContextMenuPopup>
+                </ContextMenuPositioner>
+            </ContextMenuPortal>
+        </ContextMenuRoot>
+        """;
+}

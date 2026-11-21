@@ -1,0 +1,27 @@
+@page "/docs/primitives/direction-provider"
+
+<DocsPage Title="Direction Provider" Description="Enables right-to-left behavior for the primitives.">
+    <ComponentPreview Name="primitives/direction-provider-hero" />
+    <p>
+        <code>DirectionProvider</code> tells the components inside it the reading direction, for arrow-key navigation and
+        logical placement (<code>InlineStart</code>, <code>InlineEnd</code>). It renders no element and sets no
+        <code>dir</code> attribute, so set <code>dir="rtl"</code> on an element yourself for the layout. Without a provider,
+        components read the computed CSS <code>direction</code>.
+    </p>
+    <DocsHeading Title="Anatomy" />
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(DirectionProvider)" />
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <div dir="rtl">
+            <DirectionProvider Direction="TextDirection.Rtl">
+                ...
+            </DirectionProvider>
+        </div>
+        """;
+}

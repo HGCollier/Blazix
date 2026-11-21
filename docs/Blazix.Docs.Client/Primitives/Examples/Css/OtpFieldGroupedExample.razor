@@ -1,0 +1,24 @@
+<div class="otp-field-grouped-field">
+    <label for="@_id" class="otp-field-grouped-label">
+        Verification code
+    </label>
+    <OtpFieldRoot Length="OtpLength" class="otp-field-grouped-root">
+        <div class="otp-field-grouped-group">
+            <OtpFieldInput id="@_id" class="otp-field-grouped-input" />
+            <OtpFieldInput class="otp-field-grouped-input" />
+            <OtpFieldInput class="otp-field-grouped-input" />
+        </div>
+        <SeparatorRoot class="otp-field-grouped-separator" />
+        <div class="otp-field-grouped-group">
+            <OtpFieldInput class="otp-field-grouped-input" />
+            <OtpFieldInput class="otp-field-grouped-input" />
+            <OtpFieldInput class="otp-field-grouped-input" />
+        </div>
+    </OtpFieldRoot>
+</div>
+
+@code {
+    private const int OtpLength = 6;
+
+    private readonly string _id = $"verification-code-{Guid.NewGuid():N}";
+}

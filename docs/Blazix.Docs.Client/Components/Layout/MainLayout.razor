@@ -1,0 +1,23 @@
+@inherits LayoutComponentBase
+
+<TooltipProvider Delay="0">
+    <div data-slot="layout" class="group/layout relative z-10 flex min-h-svh flex-col overscroll-none bg-background">
+        @* First in the tab order: past the header to the page itself (#main-content, the <main> of each layout). *@
+        <a href="#main-content"
+           class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-foreground focus:shadow-md focus:ring-3 focus:ring-ring/50 focus:outline-none">
+            Skip to content
+        </a>
+        <SiteHeader />
+        @* Each layout or page renders its own <main id="main-content">, so the docs sidebar stays out of it. *@
+        <div class="flex min-h-0 flex-1 flex-col">@Body</div>
+        <SiteFooter />
+        <Toaster />
+    </div>
+
+    <div id="blazor-error-ui" data-nosnippet
+         class="fixed inset-x-0 bottom-0 z-1000 hidden items-center gap-3 border-t bg-background px-5 py-3 text-sm text-destructive shadow-lg">
+        An unhandled error has occurred.
+        <a href="." class="reload font-medium underline underline-offset-4">Reload</a>
+        <button type="button" class="dismiss ml-auto text-muted-foreground hover:text-foreground" aria-label="Dismiss">✕</button>
+    </div>
+</TooltipProvider>

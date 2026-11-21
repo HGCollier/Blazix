@@ -1,0 +1,17 @@
+<div class="@("w-full max-w-md text-sm leading-relaxed [&_code]:rounded-md [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_code]:font-mono [&>*+*]:mt-4")">
+    <h3 class="text-base font-semibold">Stream a response</h3>
+    <p>Create a route handler that calls <code>streamText</code> and returns the stream to the client.</p>
+    <CodeBlock>
+        <CodeBlockHeader>
+            <CodeBlockTitle>
+                <Icon Name="file-code" />
+                app/api/chat/route.ts
+            </CodeBlockTitle>
+            <CodeBlockActions>
+                <CodeBlockCopyButton Value="@ChatSnippet.ShortRoute" />
+            </CodeBlockActions>
+        </CodeBlockHeader>
+        <CodeBlockContent LineNumbers="true" Code="@ChatSnippet.ShortRoute" />
+    </CodeBlock>
+    <p>The <code>useChat</code> hook reads the stream on the client and renders the answer while it is written.</p>
+</div>

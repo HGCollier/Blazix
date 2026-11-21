@@ -1,0 +1,100 @@
+.accordion {
+    box-sizing: border-box;
+    display: flex;
+    max-width: 20rem;
+    width: 100%;
+    flex-direction: column;
+    border: 1px solid oklch(14.5% 0 0deg);
+    color: oklch(14.5% 0 0deg);
+}
+
+.accordion:where(.dark *) {
+    border: 1px solid white;
+    color: white;
+}
+
+.accordion-item + .accordion-item {
+    border-top: 1px solid oklch(14.5% 0 0deg);
+}
+
+.accordion-item + .accordion-item:where(.dark *) {
+    border-top: 1px solid white;
+}
+
+.accordion-header {
+    margin: 0;
+}
+
+.accordion-trigger {
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0.75rem;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    color: oklch(14.5% 0 0deg);
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+    text-align: left;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.accordion-trigger:where(.dark *) {
+    color: white;
+}
+
+@media (hover: hover) {
+    .accordion-trigger:hover:not([data-disabled]) {
+        background-color: oklch(97% 0 0deg);
+    }
+}
+
+@media (hover: hover) {
+    .accordion-trigger:hover:not([data-disabled]):where(.dark *) {
+        background-color: oklch(26.9% 0 0deg);
+    }
+}
+
+.accordion-trigger:focus-visible {
+    position: relative;
+    outline: 2px solid oklch(14.5% 0 0deg);
+    z-index: 1;
+}
+
+.accordion-trigger:focus-visible:where(.dark *) {
+    outline-color: white;
+}
+
+.accordion-icon {
+    transition: transform 100ms ease-out;
+}
+
+[data-panel-open] > .accordion-icon {
+    transform: rotate(45deg);
+}
+
+.accordion-panel {
+    box-sizing: border-box;
+    height: var(--accordion-panel-height);
+    overflow: hidden;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    transition: height 150ms ease-out;
+}
+
+.accordion-panel[data-starting-style],
+.accordion-panel[data-ending-style] {
+    height: 0;
+}
+
+.accordion-content {
+    padding: 0.5rem 0.75rem;
+}

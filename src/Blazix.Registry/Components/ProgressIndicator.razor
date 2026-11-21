@@ -1,0 +1,15 @@
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.ProgressIndicator data-slot="progress-indicator" @attributes="AdditionalAttributes" Render="@Render"
+                                   class="@Cn("h-full bg-primary transition-all", Class)" />
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<ProgressRenderProps>? Render { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

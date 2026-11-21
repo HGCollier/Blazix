@@ -1,0 +1,38 @@
+<Card>
+    <CardHeader Class="gap-2">
+        <Skeleton Class="h-5 w-44 rounded-md" />
+        <Skeleton Class="h-4 w-52 rounded-md" />
+    </CardHeader>
+    <CardContent>
+        <div class="flex h-[200px] w-full items-end gap-3">
+            @foreach (var height in Bars)
+            {
+                <div class="flex h-full flex-1 flex-col justify-end gap-2">
+                    <Skeleton Class="w-full rounded-t-md rounded-b-none" style="@($"height: {height}%")" />
+                    <Skeleton Class="mx-auto h-3 w-6 rounded-md" />
+                </div>
+            }
+        </div>
+    </CardContent>
+    <CardContent>
+        <div class="grid w-full grid-cols-1 gap-3 xl:grid-cols-2">
+            <div class="flex flex-col gap-2 rounded-xl bg-muted p-4">
+                <Skeleton Class="h-3 w-20 rounded-md bg-muted-foreground/15" />
+                <Skeleton Class="h-5 w-28 rounded-md bg-muted-foreground/15" />
+                <Skeleton Class="h-3 w-24 rounded-md bg-muted-foreground/15" />
+            </div>
+            <div class="hidden flex-col gap-2 rounded-xl bg-muted p-4 xl:flex">
+                <Skeleton Class="h-3 w-24 rounded-md bg-muted-foreground/15" />
+                <Skeleton Class="h-5 w-32 rounded-md bg-muted-foreground/15" />
+                <Skeleton Class="h-3 w-28 rounded-md bg-muted-foreground/15" />
+            </div>
+        </div>
+    </CardContent>
+    <CardFooter>
+        <Skeleton Class="h-9 w-full rounded-lg" />
+    </CardFooter>
+</Card>
+
+@code {
+    private static readonly int[] Bars = [60, 80, 65, 95, 50, 100];
+}

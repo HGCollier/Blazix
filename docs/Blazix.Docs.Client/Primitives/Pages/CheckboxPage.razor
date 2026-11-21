@@ -1,0 +1,87 @@
+@page "/docs/primitives/checkbox"
+
+<DocsPage Title="Checkbox" Description="An easily stylable checkbox component.">
+    <ComponentPreview Name="primitives/checkbox-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li>
+            <strong>Form controls must have an accessible name:</strong> give it one with a <code>&lt;label&gt;</code> element
+            or the <a href="/docs/primitives/field">Field</a> parts. See <a href="#labeling-a-checkbox">Labeling a checkbox</a>.
+        </li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="Examples" />
+    <DocsHeading Level="3" Title="Labeling a checkbox" />
+    <p>An enclosing <code>&lt;label&gt;</code> is the simplest labeling pattern:</p>
+    <CodeFigure Code="@WrappingLabelCode" Title="Wrapping a label around a checkbox" />
+    <p>
+        <code>CheckboxRoot</code> renders a <code>&lt;span&gt;</code> with a hidden native <code>&lt;input&gt;</code> beside
+        it, which carries the name, value and validity so the checkbox submits with forms. To label it with a sibling
+        <code>&lt;label&gt;</code>, point the label's <code>for</code> at the hidden input's id, set with
+        <code>InputId</code>:
+    </p>
+    <CodeFigure Code="@SiblingLabelCode" Title="Sibling label" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(CheckboxRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-checked">Present when the checkbox is checked.</StyleHook>
+            <StyleHook Name="data-unchecked">Present when the checkbox is not checked.</StyleHook>
+            <StyleHook Name="data-indeterminate">Present when the checkbox is in an indeterminate state.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the checkbox is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the checkbox is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the checkbox is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the checkbox is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the checkbox is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the checkbox's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the checkbox has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the checkbox is checked (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the checkbox is focused (when wrapped in FieldRoot).</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(CheckboxIndicator)">
+        <DataAttributes>
+            <StyleHook Name="data-checked">Present when the checkbox is checked.</StyleHook>
+            <StyleHook Name="data-unchecked">Present when the checkbox is not checked.</StyleHook>
+            <StyleHook Name="data-indeterminate">Present when the checkbox is in an indeterminate state.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the checkbox is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the checkbox is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the checkbox is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the checkbox is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the checkbox is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the checkbox's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the checkbox has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the checkbox is checked (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the checkbox is focused (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the checkbox indicator begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the checkbox indicator is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <CheckboxRoot>
+            <CheckboxIndicator />
+        </CheckboxRoot>
+        """;
+
+    private const string WrappingLabelCode = """
+        <label>
+            <CheckboxRoot />
+            Accept terms and conditions
+        </label>
+        """;
+
+    private const string SiblingLabelCode = """
+        <div>
+            <label for="notifications-checkbox">Enable notifications</label>
+            <CheckboxRoot InputId="notifications-checkbox">
+                <CheckboxIndicator />
+            </CheckboxRoot>
+        </div>
+        """;
+}

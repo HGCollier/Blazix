@@ -1,0 +1,10 @@
+@inherits LayoutComponentBase
+@layout MainLayout
+
+<div class="mx-auto flex w-full flex-1 flex-col px-2">
+    <SidebarProvider Class="min-h-min flex-1 items-start px-0 [--top-spacing:0] lg:grid lg:grid-cols-[var(--sidebar-width)_minmax(0,1fr)] lg:[--top-spacing:calc(var(--spacing)*4)]"
+                     Style="--sidebar-width: calc(var(--spacing) * 72)">
+        <DocsSidebar />
+        <main id="main-content" tabindex="-1" class="h-full w-full outline-none">@Body</main>
+    </SidebarProvider>
+</div>

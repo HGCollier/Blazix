@@ -1,0 +1,30 @@
+@page "/docs/primitives/toggle-group"
+
+<DocsPage Title="Toggle Group" Description="Provides a shared state to a series of toggle buttons.">
+    <ComponentPreview Name="primitives/toggle-group-hero" />
+    <DocsHeading Title="Anatomy" />
+    <p>Toggle Group is composed together with <a href="/docs/primitives/toggle">Toggle</a>. Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="Examples" />
+    <DocsHeading Level="3" Title="Multiple" />
+    <p>Add the <code>Multiple</code> parameter to allow pressing more than one toggle at a time.</p>
+    <ComponentPreview Name="primitives/toggle-group-multiple" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(ToggleGroupRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the toggle group.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the toggle group is disabled.</StyleHook>
+            <StyleHook Name="data-multiple">Present when the toggle group allows multiple buttons to be in the pressed state at the same time.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <ToggleGroupRoot>
+            <ToggleRoot />
+        </ToggleGroupRoot>
+        """;
+}

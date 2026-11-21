@@ -1,0 +1,23 @@
+@using static Blazix.Registry.ClassNames
+
+<div data-slot="command-list" @attributes="AdditionalAttributes" cmdk-list="" role="listbox" tabindex="-1"
+     aria-activedescendant="@Root.SelectedItemId" aria-label="@Label" id="@Root.ListId"
+     class="@Cn("no-scrollbar max-h-72 scroll-py-1 overflow-x-hidden overflow-y-auto outline-none", Class)">
+    @* Flex, so the items' CSS order can sort them by how well they match. *@
+    <div cmdk-list-sizer="" style="display:flex;flex-direction:column">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] internal Command Root { get; set; } = null!;
+
+    /// <summary>Accessible label for the list of suggestions.</summary>
+    [Parameter] public string Label { get; set; } = "Suggestions";
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

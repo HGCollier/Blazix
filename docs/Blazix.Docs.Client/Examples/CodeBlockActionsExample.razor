@@ -1,0 +1,40 @@
+<div class="w-full max-w-md">
+    <CodeBlock>
+        <CodeBlockHeader>
+            <CodeBlockTitle>
+                <Icon Name="terminal" />
+                Terminal
+            </CodeBlockTitle>
+            <CodeBlockActions>
+                <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.IconXs" aria-label="Wrap lines" aria-pressed="@(_wrap ? "true" : "false")"
+                        Class="aria-pressed:text-foreground" @onclick="ToggleWrap">
+                    <Icon Name="wrap-text" />
+                </Button>
+                <a href="@DownloadUrl" download="lint.log" aria-label="Download" class="@ButtonVariants.Get(ButtonVariant.Ghost, ButtonSize.IconXs)">
+                    <Icon Name="download" />
+                </a>
+                <CodeBlockCopyButton Value="@Output" />
+            </CodeBlockActions>
+        </CodeBlockHeader>
+        <CodeBlockContent Wrap="_wrap" Code="@Output" />
+    </CodeBlock>
+</div>
+
+@code {
+    private const string Output =
+        """
+        $ pnpm lint
+
+        apps/web/components/message-list.tsx
+          18:22  error  'messages' is possibly 'undefined'. Add a guard before calling map  @typescript-eslint/no-unsafe-call
+          42:7   warning  React Hook React.useEffect has a missing dependency: 'scrollToBottom'  react-hooks/exhaustive-deps
+
+        ✖ 2 problems (1 error, 1 warning)
+        """;
+
+    private static readonly string DownloadUrl = "data:text/plain;charset=utf-8," + Uri.EscapeDataString(Output);
+
+    private bool _wrap = true;
+
+    private void ToggleWrap() => _wrap = !_wrap;
+}

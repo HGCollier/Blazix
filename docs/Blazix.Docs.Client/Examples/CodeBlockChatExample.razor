@@ -1,0 +1,24 @@
+<div class="flex w-full max-w-md flex-col gap-4 text-sm">
+    <Message Align="MessageAlign.End">
+        <MessageContent>
+            <Bubble Variant="BubbleVariant.Muted">
+                <BubbleContent>How do I stream a response?</BubbleContent>
+            </Bubble>
+        </MessageContent>
+    </Message>
+    <Message>
+        <MessageContent Class="gap-3">
+            <p>Create a route handler that returns the stream:</p>
+            <CodeBlock>
+                <CodeBlockHeader>
+                    <CodeBlockTitle>app/api/chat/route.ts</CodeBlockTitle>
+                    <CodeBlockActions>
+                        <CodeBlockCopyButton Value="@ChatSnippet.Route" />
+                    </CodeBlockActions>
+                </CodeBlockHeader>
+                <CodeBlockContent Code="@ChatSnippet.Route" />
+            </CodeBlock>
+            <p>The client reads it with useChat.</p>
+        </MessageContent>
+    </Message>
+</div>

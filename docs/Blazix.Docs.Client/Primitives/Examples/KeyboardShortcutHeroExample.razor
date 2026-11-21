@@ -1,0 +1,11 @@
+<KeyboardShortcut Key="m" OnPressed="() => _count++" />
+<p class="m-0 text-sm text-neutral-950 dark:text-white">
+    Press <kbd class="@KeyClass">Ctrl</kbd>+<kbd class="@KeyClass">M</kbd> (<kbd class="@KeyClass">⌘</kbd><kbd class="@KeyClass">M</kbd> on macOS).
+    Pressed <strong>@_count</strong> times.
+</p>
+
+@code {
+    private const string KeyClass = "border border-neutral-950 px-1 font-mono text-xs dark:border-white";
+
+    private int _count;
+}

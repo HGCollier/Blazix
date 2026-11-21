@@ -1,0 +1,23 @@
+<div class="otp-field-masked-field">
+    <label for="@_id" class="otp-field-masked-label">
+        Access code
+    </label>
+    <OtpFieldRoot Length="OtpLength" Mask="true" aria-describedby="@DescriptionId" class="otp-field-masked-root">
+        <OtpFieldInput id="@_id" class="otp-field-masked-input" />
+        @for (var i = 1; i < OtpLength; i++)
+        {
+            <OtpFieldInput class="otp-field-masked-input" />
+        }
+    </OtpFieldRoot>
+    <p id="@DescriptionId" class="otp-field-masked-description">
+        Use <code class="otp-field-masked-code">Mask</code> to obscure the code on shared screens.
+    </p>
+</div>
+
+@code {
+    private const int OtpLength = 6;
+
+    private readonly string _id = $"access-code-{Guid.NewGuid():N}";
+
+    private string DescriptionId => $"{_id}-description";
+}

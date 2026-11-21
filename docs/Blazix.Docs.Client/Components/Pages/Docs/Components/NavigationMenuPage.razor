@@ -1,0 +1,53 @@
+@page "/docs/components/navigation-menu"
+
+<DocsPage Title="Navigation Menu" Description="A collection of links for navigating websites.">
+    <ComponentPreview Name="navigation-menu-demo" PreviewClass="h-96" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="navigation-menu" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>NavigationMenu</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Link Component" />
+    <p>Use the <code>Render</code> parameter to render the link as your own element or component.</p>
+    <CodeFigure Code="@LinkComponentCode" LineNumbers="true" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="navigation-menu" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <NavigationMenu>
+            <NavigationMenuList>
+                <NavigationMenuItem>
+                    <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
+                    <NavigationMenuContent><NavigationMenuLink>Link</NavigationMenuLink></NavigationMenuContent>
+                </NavigationMenuItem>
+            </NavigationMenuList>
+        </NavigationMenu>
+        """;
+
+    private const string CompositionCode = """
+        NavigationMenu
+        ├── NavigationMenuList
+        │   ├── NavigationMenuItem
+        │   │   ├── NavigationMenuTrigger
+        │   │   └── NavigationMenuContent
+        │   │       ├── NavigationMenuLink
+        │   │       └── NavigationMenuLink
+        │   └── NavigationMenuItem
+        │       └── NavigationMenuLink
+        └── NavigationMenuIndicator
+        """;
+
+    private const string LinkComponentCode = """
+        <NavigationMenuItem>
+            <NavigationMenuLink Class="@NavigationMenuTriggerStyle.Get()">
+                <Render Context="link">
+                    <a @attributes="link.Attributes" href="/docs">Documentation</a>
+                </Render>
+            </NavigationMenuLink>
+        </NavigationMenuItem>
+        """;
+}

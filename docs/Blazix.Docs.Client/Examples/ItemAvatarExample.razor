@@ -1,0 +1,42 @@
+<div class="flex w-full max-w-lg flex-col gap-6">
+    <Item Variant="ItemVariant.Outline">
+        <ItemMedia>
+            <Avatar Class="size-10">
+                <AvatarImage Src="https://github.com/evilrabbit.png" alt="" />
+                <AvatarFallback>ER</AvatarFallback>
+            </Avatar>
+        </ItemMedia>
+        <ItemContent>
+            <ItemTitle>Evil Rabbit</ItemTitle>
+            <ItemDescription>Last seen 5 months ago</ItemDescription>
+        </ItemContent>
+        <ItemActions>
+            <Button Size="ButtonSize.IconSm" Variant="ButtonVariant.Outline" Class="rounded-full" aria-label="Invite">
+                <Icon Name="plus" />
+            </Button>
+        </ItemActions>
+    </Item>
+    <Item Variant="ItemVariant.Outline">
+        <ItemMedia>
+            <div class="flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background *:data-[slot=avatar]:grayscale">
+                <Avatar Class="hidden sm:flex">
+                    <AvatarImage Src="https://avatar.vercel.sh/blazix" alt="@("@blazix")" />
+                    <AvatarFallback>BX</AvatarFallback>
+                </Avatar>
+                <Avatar Class="hidden sm:flex">
+                    <AvatarImage Src="https://github.com/maxleiter.png" alt="@("@maxleiter")" />
+                    <AvatarFallback>LR</AvatarFallback>
+                </Avatar>
+                <Avatar>
+                    <AvatarImage Src="https://github.com/evilrabbit.png" alt="@("@evilrabbit")" />
+                    <AvatarFallback>ER</AvatarFallback>
+                </Avatar>
+            </div>
+        </ItemMedia>
+        <ItemContent>
+            <ItemTitle>No Team Members</ItemTitle>
+            <ItemDescription>Invite your team to collaborate on this project.</ItemDescription>
+        </ItemContent>
+        <ItemActions><Button Size="ButtonSize.Sm" Variant="ButtonVariant.Outline">Invite</Button></ItemActions>
+    </Item>
+</div>

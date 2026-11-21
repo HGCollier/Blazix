@@ -1,0 +1,39 @@
+<div class="flex w-full max-w-md flex-col gap-6">
+    <ItemGroup Class="gap-4">
+        @foreach (var song in Music)
+        {
+            <div @key="song.Title" role="listitem">
+                <Item Variant="ItemVariant.Outline">
+                    <Render Context="item">
+                        <a @attributes="item.Attributes" href="#">
+                            <ItemMedia Variant="ItemMediaVariant.Image">
+                                <img src="@($"https://avatar.vercel.sh/{Uri.EscapeDataString(song.Title)}")" alt="" width="32" height="32"
+                                     class="object-cover grayscale" />
+                            </ItemMedia>
+                            <ItemContent>
+                                <ItemTitle Class="line-clamp-1">
+                                    @song.Title - <span class="text-muted-foreground">@song.Album</span>
+                                </ItemTitle>
+                                <ItemDescription>@song.Artist</ItemDescription>
+                            </ItemContent>
+                            <ItemContent Class="flex-none text-center">
+                                <ItemDescription>@song.Duration</ItemDescription>
+                            </ItemContent>
+                        </a>
+                    </Render>
+                </Item>
+            </div>
+        }
+    </ItemGroup>
+</div>
+
+@code {
+    private sealed record Song(string Title, string Artist, string Album, string Duration);
+
+    private static readonly Song[] Music =
+    [
+        new("Midnight City Lights", "Neon Dreams", "Electric Nights", "3:45"),
+        new("Coffee Shop Conversations", "The Morning Brew", "Urban Stories", "4:05"),
+        new("Digital Rain", "Cyber Symphony", "Binary Beats", "3:30"),
+    ];
+}

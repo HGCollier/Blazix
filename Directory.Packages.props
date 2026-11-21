@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Lowest version we support, so consumers can float to any 10.0.x patch. -->
+    <PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="10.0.0" />
+    <!-- The docs app: its WebAssembly client and host, and the FluentValidation form guide. -->
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.15" />
+    <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.15" />
+    <PackageVersion Include="FluentValidation" Version="12.2.0" />
+    <!-- Analyzers (every project, via Directory.Build.props). -->
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.36.0.15337" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,50 @@
+@page "/docs/primitives/installation"
+
+<DocsPage Title="Installation" Description="Add Blazix.Primitives to your Blazor app and set it up.">
+    <DocsHeading Title="Install the library" />
+    <p>Add the package to your Blazor app:</p>
+    <CodeFigure Code="dotnet add package Blazix.Primitives" Language="bash" />
+    <p>
+        All the primitives are in this one package. You don't add a <code>&lt;script&gt;</code> tag: each primitive's
+        JavaScript module ships inside the package and is imported the first time the primitive is used. If you use the
+        styled components, <code>dnx Blazix.Cli init</code> has already added it.
+    </p>
+
+    <DocsHeading Title="Set up" />
+    <DocsHeading Level="3" Title="Render mode" />
+    <p>The primitives need an interactive render mode. They're tested with Interactive Server, for example set for the whole app:</p>
+    <CodeFigure Code="@RenderModeCode" Title="Components/App.razor" />
+    <DocsHeading Level="3" Title="Imports" />
+    <p>Import the namespace in the files that use the primitives, or once in <code>_Imports.razor</code>:</p>
+    <CodeFigure Code="@ImportsCode" Title="Components/_Imports.razor" />
+    <p>
+        Some parts share a name with a styled component (<code>AccordionItem</code>, <code>DialogTrigger</code>...), and
+        Razor can't tell two components with the same tag apart. If you use both, import <code>Blazix.Primitives</code> only in
+        the folders that use the primitives directly, or write the full name, as in
+        <code>&lt;Blazix.Primitives.DialogPopup&gt;</code>.
+    </p>
+    <DocsHeading Level="3" Title="Popups" />
+    <p>
+        Popups such as Dialog, Menu and Popover render in the browser's top layer, so they appear above the rest of the page
+        whatever its <code>z-index</code> and <code>overflow</code> styles. They aren't moved into a portal: they stay where
+        you wrote them in the DOM, so cascading values, CSS isolation and a <code>.dark</code> class on any wrapper still
+        apply to them.
+    </p>
+
+    <DocsHeading Title="Next steps" />
+    <p>
+        <a href="/docs/primitives">Assemble your first component</a>, then read the handbook on
+        <a href="/docs/primitives/styling">styling</a> the primitives.
+    </p>
+</DocsPage>
+
+
+@code {
+    private const string RenderModeCode = """
+        <Routes @rendermode="InteractiveServer" />
+        """;
+
+    private const string ImportsCode = """
+        @using Blazix.Primitives
+        """;
+}

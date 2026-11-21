@@ -1,0 +1,21 @@
+@inject ToastManager Toasts
+
+<div class="flex w-full max-w-sm flex-col gap-8 py-12">
+    <Marker>
+        <Render Context="marker">
+            <a @attributes="marker.Attributes" href="#links-and-buttons">
+                <MarkerIcon><Icon Name="git-branch" /></MarkerIcon>
+                <MarkerContent>View the pull request</MarkerContent>
+            </a>
+        </Render>
+    </Marker>
+    <Marker>
+        <Render Context="marker">
+            <button @attributes="marker.Attributes" type="button" class="@Cn(marker.Attributes.GetValueOrDefault("class") as string, "transition-colors hover:text-foreground")"
+                    @onclick="@(() => Toasts.Add(new ToastOptions { Title = "You clicked the revert button" }))">
+                <MarkerIcon><Icon Name="rotate-ccw" /></MarkerIcon>
+                <MarkerContent>Revert this change</MarkerContent>
+            </button>
+        </Render>
+    </Marker>
+</div>

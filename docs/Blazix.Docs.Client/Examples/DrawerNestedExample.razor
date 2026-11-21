@@ -1,0 +1,83 @@
+<Blazix.Primitives.MediaQuery Query="(max-width: 767px)" MatchesChanged="@(matches => _isMobile = matches)" />
+<Drawer ShowSwipeHandle="_isMobile" SwipeDirection="Direction">
+    <DrawerTrigger>
+        <Render Context="trigger">
+            <Button @attributes="trigger.Attributes" Variant="ButtonVariant.Secondary">Open Drawer</Button>
+        </Render>
+    </DrawerTrigger>
+    <DrawerContent>
+        <DrawerHeader>
+            <DrawerTitle>Drawer</DrawerTitle>
+            <DrawerDescription>Open another drawer from the same direction.</DrawerDescription>
+        </DrawerHeader>
+        @Placeholder
+        <DrawerFooter>
+            <Drawer ShowSwipeHandle="_isMobile" SwipeDirection="Direction">
+                <DrawerTrigger>
+                    <Render Context="trigger">
+                        <Button @attributes="trigger.Attributes" Variant="ButtonVariant.Outline">Open Nested Drawer</Button>
+                    </Render>
+                </DrawerTrigger>
+                <DrawerContent>
+                    <DrawerHeader>
+                        <DrawerTitle>Nested Drawer</DrawerTitle>
+                        <DrawerDescription>The parent drawer stays mounted behind this one.</DrawerDescription>
+                    </DrawerHeader>
+                    @Placeholder
+                    <DrawerFooter>
+                        <Drawer ShowSwipeHandle="_isMobile" SwipeDirection="Direction">
+                            <DrawerTrigger>
+                                <Render Context="trigger">
+                                    <Button @attributes="trigger.Attributes" Variant="ButtonVariant.Outline">Open Third Drawer</Button>
+                                </Render>
+                            </DrawerTrigger>
+                            <DrawerContent>
+                                <DrawerHeader>
+                                    <DrawerTitle>Third Drawer</DrawerTitle>
+                                    <DrawerDescription>Two drawers are stacked behind this one.</DrawerDescription>
+                                </DrawerHeader>
+                                @Placeholder
+                                <DrawerFooter>
+                                    <Drawer ShowSwipeHandle="_isMobile" SwipeDirection="Direction">
+                                        <DrawerTrigger>
+                                            <Render Context="trigger">
+                                                <Button @attributes="trigger.Attributes" Variant="ButtonVariant.Outline">Open Fourth Drawer</Button>
+                                            </Render>
+                                        </DrawerTrigger>
+                                        <DrawerContent>
+                                            <DrawerHeader>
+                                                <DrawerTitle>Fourth Drawer</DrawerTitle>
+                                                <DrawerDescription>This is the frontmost drawer in the stack.</DrawerDescription>
+                                            </DrawerHeader>
+                                            @Placeholder
+                                            <DrawerFooter>@Close</DrawerFooter>
+                                        </DrawerContent>
+                                    </Drawer>
+                                    @Close
+                                </DrawerFooter>
+                            </DrawerContent>
+                        </Drawer>
+                        @Close
+                    </DrawerFooter>
+                </DrawerContent>
+            </Drawer>
+            @Close
+        </DrawerFooter>
+    </DrawerContent>
+</Drawer>
+
+@code {
+    private bool _isMobile;
+
+    private DrawerSwipeDirection Direction => _isMobile ? DrawerSwipeDirection.Down : DrawerSwipeDirection.Right;
+
+    private static readonly RenderFragment Placeholder = @<div class="flex-1 p-4">
+        <div class="bg-muted group-data-[swipe-axis=x]/drawer-popup:size-full group-data-[swipe-axis=y]/drawer-popup:aspect-video group-data-[swipe-axis=y]/drawer-popup:w-full"></div>
+    </div>;
+
+    private static readonly RenderFragment Close = @<DrawerClose>
+        <Render Context="close">
+            <Button @attributes="close.Attributes" Variant="ButtonVariant.Outline">Close</Button>
+        </Render>
+    </DrawerClose>;
+}

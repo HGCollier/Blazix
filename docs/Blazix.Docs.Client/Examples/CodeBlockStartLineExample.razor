@@ -1,0 +1,25 @@
+<div class="w-full max-w-md">
+    <CodeBlock>
+        <CodeBlockHeader>
+            <CodeBlockTitle>app/dashboard/page.tsx</CodeBlockTitle>
+        </CodeBlockHeader>
+        <CodeBlockContent LineNumbers="true" StartLine="995" Code="@Code" />
+    </CodeBlock>
+</div>
+
+@code {
+    private const string Code =
+        """
+          if (!session) {
+            redirect("/login")
+          }
+
+          const projects = await db.project.findMany({
+            where: { ownerId: session.user.id },
+            orderBy: { updatedAt: "desc" },
+          })
+
+          return <ProjectList projects={projects} />
+        }
+        """;
+}

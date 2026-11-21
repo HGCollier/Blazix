@@ -1,0 +1,31 @@
+<div class="flex w-full max-w-md flex-col gap-4">
+    <CodeBlock>
+        <CodeBlockHeader>
+            <CodeBlockTitle>
+                <Icon Name="terminal" />
+                Terminal
+            </CodeBlockTitle>
+            <CodeBlockActions><CodeBlockCopyButton Value="@Output" /></CodeBlockActions>
+        </CodeBlockHeader>
+        <CodeBlockContent Wrap="true" Code="@Output" />
+    </CodeBlock>
+    <CodeBlock Size="CodeBlockSize.Sm">
+        <CodeBlockHeader>
+            <CodeBlockTitle>
+                <Icon Name="terminal" />
+                Terminal
+            </CodeBlockTitle>
+            <CodeBlockActions><CodeBlockCopyButton Value="@Output" /></CodeBlockActions>
+        </CodeBlockHeader>
+        <CodeBlockContent Wrap="true" Code="@Output" />
+    </CodeBlock>
+</div>
+
+@code {
+    private const string Output =
+        """
+        $ pnpm add ai @ai-sdk/react zod
+        Progress: resolved 412, reused 398, downloaded 14, added 14, done
+        Done in 2.8s using pnpm v10.18.0
+        """;
+}

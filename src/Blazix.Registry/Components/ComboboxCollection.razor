@@ -1,0 +1,6 @@
+
+<Blazix.Primitives.ComboboxCollection Context="item">@ChildContent(item)</Blazix.Primitives.ComboboxCollection>
+
+@code {
+    [Parameter, EditorRequired] public RenderFragment<string> ChildContent { get; set; } = null!;
+}

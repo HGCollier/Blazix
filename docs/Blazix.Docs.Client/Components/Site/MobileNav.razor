@@ -1,0 +1,83 @@
+@implements IDisposable
+@inject NavigationManager Navigation
+
+<Popover @bind-Open="_open">
+    @* The site's button: no background while the menu is open, unlike the registry's button. *@
+    <PopoverTrigger Class="@SiteButton.Get(SiteButton.Ghost, SiteButton.SizeDefault,
+                               Cn("h-8 touch-manipulation items-center justify-start gap-2.5 p-0! hover:bg-transparent focus-visible:bg-transparent active:bg-transparent dark:hover:bg-transparent",
+                                  "pointer-coarse:relative pointer-coarse:after:absolute pointer-coarse:after:-inset-2", Class))">
+        <div aria-hidden="true" class="relative flex h-8 w-4 items-center justify-center">
+            <div class="relative size-4">
+                <span class="@Cn("absolute left-0 block h-0.5 w-4 bg-foreground transition-all duration-100", _open ? "top-[0.4rem] -rotate-45" : "top-1")"></span>
+                <span class="@Cn("absolute left-0 block h-0.5 w-4 bg-foreground transition-all duration-100", _open ? "top-[0.4rem] rotate-45" : "top-2.5")"></span>
+            </div>
+        </div>
+        <span class="flex h-8 items-center text-lg leading-none font-medium">Menu</span>
+    </PopoverTrigger>
+    @* The registry's PopoverContent, but kept below the trigger: with no room there for the whole menu it
+       takes the height that is left, rather than moving to the side. *@
+    <Blazix.Primitives.PopoverPopup data-slot="popover-content" Side="Side.Bottom" Align="Align.Start" AlignOffset="-16" SideOffset="14"
+                                  FallbackAxis="false" CollisionPadding="0" PositionerAttributes="@Positioner" aria-label="Menu" class="@ContentClasses">
+        <nav aria-label="Docs" class="flex flex-col gap-12 overflow-auto px-6 py-6">
+            <div class="flex flex-col gap-4">
+                <div class="text-sm font-medium text-muted-foreground">Menu</div>
+                <div class="flex flex-col gap-3">
+                    @foreach (var item in DocsNav.MainNav)
+                    {
+                        <a href="@item.Href" class="flex items-center gap-2 text-2xl font-medium">@item.Title</a>
+                    }
+                </div>
+            </div>
+            <div class="flex flex-col gap-8">
+                @foreach (var group in DocsNav.SetFor(Path)?.Groups ?? DocsNav.ComponentsSet.Groups)
+                {
+                    <div class="flex flex-col gap-4">
+                        <div class="text-sm font-medium text-muted-foreground">@group.Title</div>
+                        <div class="flex flex-col gap-3">
+                            @foreach (var link in group.Pages)
+                            {
+                                <a href="@link.Href" class="flex items-center gap-2 text-2xl font-medium">
+                                    @link.Title
+                                    @if (link.IsNew)
+                                    {
+                                        <span aria-hidden="true" class="flex size-2 rounded-full bg-blue-500"></span>
+                                        <span class="sr-only">(new)</span>
+                                    }
+                                </a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </nav>
+    </Blazix.Primitives.PopoverPopup>
+</Popover>
+
+@code {
+    private static readonly IReadOnlyDictionary<string, object> Positioner = new Dictionary<string, object> { ["class"] = "isolate z-50" };
+
+    // PopoverContent's classes with the menu's on top: the whole width and the height left below the header.
+    private static readonly string ContentClasses = Cn(
+        "z-50 flex w-72 origin-(--transform-origin) flex-col gap-2.5 rounded-lg bg-popover p-2.5 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden duration-100 " +
+        "data-[side=bottom]:slide-in-from-top-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+        "no-scrollbar h-(--available-height) w-(--available-width) overflow-y-auto rounded-none border-none bg-background/90 p-0 shadow-none ring-0 backdrop-blur duration-100 data-open:animate-none!");
+
+    private bool _open;
+
+    private string Path => DocsNav.CurrentPath(Navigation);
+
+    [Parameter] public string? Class { get; set; }
+
+    protected override void OnInitialized() => Navigation.LocationChanged += OnLocationChanged;
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        if (_open)
+        {
+            _open = false;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    public void Dispose() => Navigation.LocationChanged -= OnLocationChanged;
+}

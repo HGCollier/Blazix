@@ -1,0 +1,66 @@
+@page "/docs/primitives/toolbar"
+
+<DocsPage Title="Toolbar" Description="A container for grouping a set of buttons and controls.">
+    <ComponentPreview Name="primitives/toolbar-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li><strong>Use inputs sparingly:</strong> The left and right arrow keys both move the text cursor in an input and move between the controls of a horizontal toolbar. When a horizontal toolbar has an input, use only one, and make it the last control.</li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(ToolbarRoot)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the toolbar.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the toolbar is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ToolbarInput)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the toolbar.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the input is disabled.</StyleHook>
+            <StyleHook Name="data-focusable">Present when the input remains focusable when disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ToolbarGroup)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the toolbar.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the group is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ToolbarSeparator)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the separator, which is perpendicular to the toolbar.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ToolbarButton)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the toolbar.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the button is disabled.</StyleHook>
+            <StyleHook Name="data-focusable">Present when the button remains focusable when disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(ToolbarLink)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the toolbar.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <ToolbarRoot>
+            <ToolbarButton />
+            <ToolbarLink />
+            <ToolbarSeparator />
+            <ToolbarGroup>
+                <ToolbarButton />
+                <ToolbarButton />
+            </ToolbarGroup>
+            <ToolbarInput />
+        </ToolbarRoot>
+        """;
+}

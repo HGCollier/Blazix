@@ -1,0 +1,20 @@
+﻿<InputOtp aria-label="One-time password" MaxLength="6" @bind-Value="_value">
+    <InputOtpGroup>
+        <InputOtpSlot Index="0" aria-invalid="true" />
+        <InputOtpSlot Index="1" aria-invalid="true" />
+    </InputOtpGroup>
+    <InputOtpSeparator />
+    <InputOtpGroup>
+        <InputOtpSlot Index="2" aria-invalid="true" />
+        <InputOtpSlot Index="3" aria-invalid="true" />
+    </InputOtpGroup>
+    <InputOtpSeparator />
+    <InputOtpGroup>
+        <InputOtpSlot Index="4" aria-invalid="true" />
+        <InputOtpSlot Index="5" aria-invalid="true" />
+    </InputOtpGroup>
+</InputOtp>
+
+@code {
+    private string _value = "000000";
+}

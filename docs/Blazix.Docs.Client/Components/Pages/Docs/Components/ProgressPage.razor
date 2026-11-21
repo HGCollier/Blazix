@@ -1,0 +1,43 @@
+@page "/docs/components/progress"
+
+<DocsPage Title="Progress" Description="Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.">
+    <ComponentPreview Name="progress-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="progress" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <DocsHeading Level="3" Title="With label and value" />
+    <p>Use <code>ProgressLabel</code> and <code>ProgressValue</code> to add a label and value display.</p>
+    <CodeFigure Code="@WithLabelAndValueCode" LineNumbers="true" />
+    <CodeFigure Code="@WithLabelAndValueCode2" Language="text" />
+    <DocsHeading Title="Label" />
+    <p>Use <code>ProgressLabel</code> and <code>ProgressValue</code> to add a label and value display.</p>
+    <ComponentPreview Name="progress-label" />
+    <DocsHeading Title="Controlled" />
+    <p>A progress bar that can be controlled by a slider.</p>
+    <ComponentPreview Name="progress-controlled" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="progress" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Progress Value="33" />
+        """;
+
+    private const string WithLabelAndValueCode = """
+        <Progress Value="56" Class="w-full max-w-sm">
+            <ProgressLabel>Upload progress</ProgressLabel>
+            <ProgressValue />
+        </Progress>
+        """;
+
+    private const string WithLabelAndValueCode2 = """
+        Progress
+        ├── ProgressLabel
+        ├── ProgressValue
+        └── ProgressTrack
+            └── ProgressIndicator
+        """;
+}

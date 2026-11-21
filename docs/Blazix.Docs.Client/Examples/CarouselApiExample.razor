@@ -1,0 +1,38 @@
+﻿<div class="mx-auto max-w-[10rem] sm:max-w-xs">
+    <Carousel SetApi="SetApi" aria-label="Slides with a counter" Class="w-full max-w-xs">
+        <CarouselContent>
+            @foreach (var index in Enumerable.Range(0, 5))
+            {
+                <CarouselItem @key="index">
+                    <Card Class="m-px">
+                        <CardContent Class="flex aspect-square items-center justify-center p-6">
+                            <span class="text-4xl font-semibold">@(index + 1)</span>
+                        </CardContent>
+                    </Card>
+                </CarouselItem>
+            }
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+    </Carousel>
+    <div class="py-2 text-center text-sm text-muted-foreground">
+        Slide @_current of @_count
+    </div>
+</div>
+
+@code {
+    private int _current;
+    private int _count;
+
+    private void SetApi(CarouselApi api)
+    {
+        _count = api.ScrollSnapList.Count;
+        _current = api.SelectedScrollSnap + 1;
+
+        api.On("select", _ =>
+        {
+            _current = api.SelectedScrollSnap + 1;
+            StateHasChanged();
+        });
+    }
+}

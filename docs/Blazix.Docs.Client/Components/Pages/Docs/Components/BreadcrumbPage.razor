@@ -1,0 +1,68 @@
+@page "/docs/components/breadcrumb"
+
+<DocsPage Title="Breadcrumb" Description="Displays the path to the current resource using a hierarchy of links.">
+    <ComponentPreview Name="breadcrumb-demo" PreviewClass="p-2" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="breadcrumb" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>Breadcrumb</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Basic" />
+    <p>A basic breadcrumb with a home link and a components link.</p>
+    <ComponentPreview Name="breadcrumb-basic" />
+    <DocsHeading Title="Custom separator" />
+    <p>Use a custom component as <code>children</code> for <code>&lt;BreadcrumbSeparator /&gt;</code> to create a custom separator.</p>
+    <ComponentPreview Name="breadcrumb-separator" />
+    <DocsHeading Title="Dropdown" />
+    <p>You can compose <code>&lt;BreadcrumbItem /&gt;</code> with a <code>&lt;DropdownMenu /&gt;</code> to create a dropdown in the breadcrumb.</p>
+    <ComponentPreview Name="breadcrumb-dropdown" />
+    <DocsHeading Title="Collapsed" />
+    <p>We provide a <code>&lt;BreadcrumbEllipsis /&gt;</code> component to show a collapsed state when the breadcrumb is too long.</p>
+    <ComponentPreview Name="breadcrumb-ellipsis" PreviewClass="p-2" />
+    <DocsHeading Title="Link component" />
+    <p>To use a custom link component from your routing library, you can use the <code>Render</code> parameter on <code>&lt;BreadcrumbLink /&gt;</code>.</p>
+    <ComponentPreview Name="breadcrumb-link" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="breadcrumb" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Breadcrumb>
+            <BreadcrumbList>
+                <BreadcrumbItem>
+                    <BreadcrumbLink>
+                        <Render>
+                            <a @attributes="context.Attributes" href="/">Home</a>
+                        </Render>
+                    </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                    <BreadcrumbLink>
+                        <Render>
+                            <a @attributes="context.Attributes" href="/docs/components">Components</a>
+                        </Render>
+                    </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem><BreadcrumbPage>Breadcrumb</BreadcrumbPage></BreadcrumbItem>
+            </BreadcrumbList>
+        </Breadcrumb>
+        """;
+
+    private const string CompositionCode = """
+        Breadcrumb
+        └── BreadcrumbList
+            ├── BreadcrumbItem
+            │   └── BreadcrumbLink
+            ├── BreadcrumbSeparator
+            ├── BreadcrumbItem
+            │   └── BreadcrumbLink
+            ├── BreadcrumbSeparator
+            └── BreadcrumbItem
+                └── BreadcrumbPage
+        """;
+}

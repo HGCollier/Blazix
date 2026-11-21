@@ -1,0 +1,46 @@
+@page "/docs/components/pagination"
+
+<DocsPage Title="Pagination" Description="Pagination with page navigation, next and previous links.">
+    <ComponentPreview Name="pagination-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="pagination" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <DocsHeading Title="Composition" />
+    <p>Use the following composition to build a <code>Pagination</code>:</p>
+    <CodeFigure Code="@CompositionCode" Language="text" />
+    <DocsHeading Title="Simple" />
+    <p>A simple pagination with only page numbers.</p>
+    <ComponentPreview Name="pagination-simple" />
+    <DocsHeading Title="Icons Only" />
+    <p>Use just the previous and next buttons without page numbers. This is useful for data tables with a rows per page selector.</p>
+    <ComponentPreview Name="pagination-icons-only" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Pagination>
+            <PaginationContent>
+                <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
+                <PaginationItem><PaginationLink href="#">1</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationLink href="#" IsActive="true">2</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationLink href="#">3</PaginationLink></PaginationItem>
+                <PaginationItem><PaginationEllipsis /></PaginationItem>
+                <PaginationItem><PaginationNext href="#" /></PaginationItem>
+            </PaginationContent>
+        </Pagination>
+        """;
+
+    private const string CompositionCode = """
+        Pagination
+        └── PaginationContent
+            ├── PaginationItem
+            │   └── PaginationPrevious
+            ├── PaginationItem
+            │   └── PaginationLink
+            ├── PaginationItem
+            │   └── PaginationEllipsis
+            └── PaginationItem
+                └── PaginationNext
+        """;
+}

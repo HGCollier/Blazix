@@ -1,0 +1,8 @@
+<div class="flex w-full max-w-sm flex-col gap-4">
+    <Progress Value="_value" aria-label="Progress" Class="w-full" />
+    <Slider @bind-Value="_value" Min="0" Max="100" Step="1" aria-label="Set progress" />
+</div>
+
+@code {
+    private double _value = 50;
+}

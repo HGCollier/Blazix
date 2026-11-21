@@ -1,0 +1,164 @@
+@page "/docs/utils/shimmer"
+
+<DocsPage Title="shimmer" Description="Utilities for adding a shimmer effect to text elements.">
+    <ComponentPreview Name="shimmer-demo" />
+
+    <DocsHeading Title="Installation" />
+    <p>
+        If your project was set up with <code>blazix init</code>, you already have <code>shimmer</code>. It ships in
+        <code>Styles/Vendor/variants.css</code>, which <code>init</code> imports in your
+        <code>Styles/app.css</code>.
+    </p>
+    <p>Otherwise, run <code>init</code>, or copy the file into your project and import it after Tailwind:</p>
+    <CodeFigure Code="@ImportCode" Language="css" Title="Styles/app.css" />
+
+    <DocsHeading Title="Usage" />
+    <DocsTable>
+        <table>
+            <thead>
+                <tr><th>Class</th><th>Styles</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>shimmer</code></td><td><code>background-clip: text;</code><br /><code>animation: tw-shimmer var(--shimmer-duration, 2s) linear infinite;</code></td></tr>
+                <tr><td><code>shimmer-once</code></td><td><code>animation-iteration-count: 1;</code></td></tr>
+                <tr><td><code>shimmer-reverse</code></td><td><code>animation-direction: reverse;</code></td></tr>
+                <tr><td><code>shimmer-none</code></td><td><code>--shimmer-image: none;</code><br /><code>--shimmer-text-fill: currentColor;</code></td></tr>
+                <tr><td><code>shimmer-color-&lt;color&gt;</code></td><td><code>--shimmer-color: &lt;color&gt;;</code></td></tr>
+                <tr><td><code>shimmer-color-[&lt;value&gt;]</code></td><td><code>--shimmer-color: &lt;value&gt;;</code></td></tr>
+                <tr><td><code>shimmer-color-&lt;color&gt;/&lt;pct&gt;</code></td><td><code>--shimmer-color: color-mix(in oklch, &lt;color&gt; &lt;pct&gt;, transparent);</code></td></tr>
+                <tr><td><code>shimmer-duration-&lt;number&gt;</code></td><td><code>--shimmer-duration: calc(&lt;number&gt; * 1ms);</code></td></tr>
+                <tr><td><code>shimmer-spread-&lt;number&gt;</code></td><td><code>--shimmer-spread: calc(var(--spacing) * &lt;number&gt;);</code></td></tr>
+                <tr><td><code>shimmer-spread-[&lt;value&gt;]</code></td><td><code>--shimmer-spread: &lt;value&gt;;</code></td></tr>
+                <tr><td><code>shimmer-angle-&lt;number&gt;</code></td><td><code>--shimmer-angle: calc(&lt;number&gt; * 1deg);</code></td></tr>
+            </tbody>
+        </table>
+    </DocsTable>
+    <p>Add <code>shimmer</code> to a text element.</p>
+    <CodeFigure Code="@UsageCode" />
+    <p>The shimmer is built on <code>currentColor</code>, so it adapts to the element:</p>
+    <ul>
+        <li>The highlight is derived from the text color, with no configuration needed.</li>
+        <li>It works on any color, from <code>text-muted-foreground</code> to brand colors.</li>
+        <li>In dark mode, the highlight automatically brightens to stay visible.</li>
+    </ul>
+    <p>The effect is pure CSS. The text is painted with <code>background-clip: text</code>, and the highlight sweeps across it in a seamless loop.</p>
+
+    <DocsHeading Title="With Marker" />
+    <p>The shimmer composes with any component that renders text. A common pattern is a <a href="/docs/components/marker">Marker</a> showing a live status while the assistant is working:</p>
+    <ComponentPreview Name="shimmer-marker" />
+    <CodeFigure Code="@MarkerCode" />
+
+    <DocsHeading Title="Color" />
+    <p>Use <code>shimmer-color-&lt;color&gt;</code> to set the highlight color explicitly. It accepts theme colors with an optional opacity modifier, or any arbitrary color value.</p>
+    <ComponentPreview Name="shimmer-color" />
+    <CodeFigure Code="@ColorCode" />
+
+    <DocsHeading Title="Duration" />
+    <p>Use <code>shimmer-duration-&lt;number&gt;</code> to set the duration of one sweep in milliseconds. The default is <code>2000</code>, i.e. <code>2s</code>.</p>
+    <ComponentPreview Name="shimmer-duration" />
+    <CodeFigure Code="@DurationCode" />
+
+    <DocsHeading Title="Spread" />
+    <p>
+        Use <code>shimmer-spread-&lt;number&gt;</code> to set the width of the highlight band using the spacing scale. The default is
+        <code>calc(3ch + 40px)</code>: a fixed base plus a <code>3ch</code> term that scales with the font size.
+    </p>
+    <ComponentPreview Name="shimmer-spread" />
+    <CodeFigure Code="@SpreadCode" />
+    <p>For one-off values, use an arbitrary length or percentage:</p>
+    <CodeFigure Code="@ArbitrarySpreadCode" />
+
+    <DocsHeading Title="Angle" />
+    <p>Use <code>shimmer-angle-&lt;number&gt;</code> to set the tilt of the highlight band in degrees. The default is <code>20</code>.</p>
+    <ComponentPreview Name="shimmer-angle" />
+    <CodeFigure Code="@AngleCode" />
+
+    <DocsHeading Title="Reverse" />
+    <p>Use <code>shimmer-reverse</code> to sweep the highlight in the opposite direction. In RTL layouts the sweep already follows the reading direction.</p>
+    <CodeFigure Code="@ReverseCode" />
+
+    <DocsHeading Title="Play Once" />
+    <p>
+        Use <code>shimmer-once</code> to play a single sweep instead of looping, useful as a reveal when streaming completes. Pair it with
+        <code>shimmer-duration-&lt;number&gt;</code> to control how long the sweep takes. To play it again, give the element a new
+        <code>@@key</code>: Blazor replaces the element, and the new one starts the animation from the beginning.
+    </p>
+    <ComponentPreview Name="shimmer-once" />
+    <CodeFigure Code="@OnceCode" />
+
+    <DocsHeading Title="Disabling the Shimmer" />
+    <p>Use <code>shimmer-none</code> to turn the effect off and render the text normally. It works in any class order, so the typical use is responsive or stateful:</p>
+    <ComponentPreview Name="shimmer-none" />
+    <CodeFigure Code="@NoneCode" />
+
+    <DocsHeading Title="Fallback" />
+    <p>
+        The shimmer is built on modern color features,
+        <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors">relative color syntax</a> and <code>color-mix()</code>,
+        which are available in all current browsers. In older browsers without support, the highlight gradient is dropped and the text can render
+        transparent. If you target older browsers, apply <code>shimmer</code> conditionally with a <code>supports-*</code> variant:
+    </p>
+    <CodeFigure Code="@SupportsCode" />
+
+    <DocsHeading Title="Reduced Motion" />
+    <p>When the user prefers reduced motion, the animation is disabled automatically and the text renders normally. There is nothing to configure.</p>
+</DocsPage>
+
+@code {
+    private const string ImportCode = """
+        @import "tailwindcss";
+        @import "./Vendor/variants.css";
+        """;
+
+    private const string UsageCode = """
+        <p class="shimmer text-muted-foreground">Generating response&hellip;</p>
+        """;
+
+    private const string MarkerCode = """
+        <Marker role="status">
+            <MarkerIcon>
+                <Spinner />
+            </MarkerIcon>
+            <MarkerContent Class="shimmer">Thinking&hellip;</MarkerContent>
+        </Marker>
+        """;
+
+    private const string ColorCode = """
+        <p class="shimmer shimmer-color-blue-500/60">Generating response&hellip;</p>
+        <p class="shimmer shimmer-color-[#378ADD]">Generating response&hellip;</p>
+        """;
+
+    private const string DurationCode = """
+        <p class="shimmer shimmer-duration-1000">Generating response&hellip;</p>
+        """;
+
+    private const string SpreadCode = """
+        <p class="shimmer shimmer-spread-24">Generating response&hellip;</p>
+        """;
+
+    private const string ArbitrarySpreadCode = """
+        <p class="shimmer shimmer-spread-[5rem]">Generating response&hellip;</p>
+        """;
+
+    private const string AngleCode = """
+        <p class="shimmer shimmer-angle-45">Generating response&hellip;</p>
+        """;
+
+    private const string ReverseCode = """
+        <p class="shimmer shimmer-reverse">Generating response&hellip;</p>
+        """;
+
+    private const string OnceCode = """
+        <p class="shimmer shimmer-duration-1100 shimmer-once">Response generated.</p>
+        """;
+
+    private const string NoneCode = """
+        <p class="shimmer md:shimmer-none">Generating response&hellip;</p>
+        """;
+
+    private const string SupportsCode = """
+        <p class="supports-[color:oklch(from_white_l_c_h)]:shimmer">
+            Generating response&hellip;
+        </p>
+        """;
+}

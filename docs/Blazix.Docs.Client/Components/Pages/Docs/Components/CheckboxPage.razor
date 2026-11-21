@@ -1,0 +1,45 @@
+@page "/docs/components/checkbox"
+
+<DocsPage Title="Checkbox" Description="A control that allows the user to toggle between checked and not checked.">
+    <ComponentPreview Name="checkbox-demo" PreviewClass="h-80" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="checkbox" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Checked State" />
+    <p>Use <code>Checked</code> for uncontrolled checkboxes, or <code>Checked</code> and <code>CheckedChanged</code> to control the state.</p>
+    <CodeFigure Code="@CheckedStateCode" LineNumbers="true" />
+    <DocsHeading Title="Invalid State" />
+    <p>Set <code>aria-invalid</code> on the checkbox and <code>data-invalid</code> on the field wrapper to show the invalid styles.</p>
+    <ComponentPreview Name="checkbox-invalid" />
+    <DocsHeading Title="Basic" />
+    <p>Pair the checkbox with <code>Field</code> and <code>FieldLabel</code> for proper layout and labeling.</p>
+    <ComponentPreview Name="checkbox-basic" />
+    <DocsHeading Title="Description" />
+    <p>Use <code>FieldContent</code> and <code>FieldDescription</code> for helper text.</p>
+    <ComponentPreview Name="checkbox-description" />
+    <DocsHeading Title="Disabled" />
+    <p>Use the <code>Disabled</code> parameter to prevent interaction and add the <code>data-disabled</code> attribute to the <code>&lt;Field&gt;</code> component for disabled styles.</p>
+    <ComponentPreview Name="checkbox-disabled" />
+    <DocsHeading Title="Group" />
+    <p>Use multiple fields to create a checkbox list.</p>
+    <ComponentPreview Name="checkbox-group" />
+    <DocsHeading Title="Table" />
+    <ComponentPreview Name="checkbox-table" PreviewClass="p-4 md:p-8" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="checkbox" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Checkbox />
+        """;
+
+    private const string CheckedStateCode = """
+        <Checkbox @bind-Checked="_checked" />
+
+        @code {
+            private bool _checked;
+        }
+        """;
+}

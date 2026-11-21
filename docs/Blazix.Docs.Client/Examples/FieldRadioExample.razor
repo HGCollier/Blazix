@@ -1,0 +1,18 @@
+<FieldSet Class="w-full max-w-xs">
+    <FieldLegend Variant="FieldLegendVariant.Label">Subscription Plan</FieldLegend>
+    <FieldDescription>Yearly and lifetime plans offer significant savings.</FieldDescription>
+    <RadioGroup Value="monthly">
+        <Field Orientation="FieldOrientation.Horizontal">
+            <RadioGroupItem Value="monthly" id="plan-monthly" />
+            <FieldLabel for="plan-monthly" Class="font-normal">Monthly ($9.99/month)</FieldLabel>
+        </Field>
+        <Field Orientation="FieldOrientation.Horizontal">
+            <RadioGroupItem Value="yearly" id="plan-yearly" />
+            <FieldLabel for="plan-yearly" Class="font-normal">Yearly ($99.99/year)</FieldLabel>
+        </Field>
+        <Field Orientation="FieldOrientation.Horizontal">
+            <RadioGroupItem Value="lifetime" id="plan-lifetime" />
+            <FieldLabel for="plan-lifetime" Class="font-normal">Lifetime ($299.99)</FieldLabel>
+        </Field>
+    </RadioGroup>
+</FieldSet>

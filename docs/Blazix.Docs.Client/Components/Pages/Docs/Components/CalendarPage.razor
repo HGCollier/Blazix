@@ -1,0 +1,73 @@
+@page "/docs/components/calendar"
+
+<DocsPage Title="Calendar" Description="A calendar component that allows users to select a date or a range of dates.">
+    <ComponentPreview Name="calendar-demo" PreviewClass="h-96" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="calendar" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" LineNumbers="true" />
+    <p>The component is a Razor port of <a href="https://react-day-picker.js.org">React DayPicker</a>. Its documentation covers the markup, styling hooks, and keyboard behavior reproduced here.</p>
+    <DocsHeading Title="About" />
+    <p>The <code>Calendar</code> component reproduces the markup, class names, and keyboard navigation of <a href="https://react-day-picker.js.org">React DayPicker</a>, without a JavaScript dependency.</p>
+    <DocsHeading Title="Date Picker" />
+    <p>You can use the <code>&lt;Calendar&gt;</code> component to build a date picker. See the <a href="/docs/components/date-picker">Date Picker</a> page for more information.</p>
+    <DocsHeading Title="Persian / Hijri / Jalali Calendar" />
+    <p>Not supported. The calendar uses the Gregorian calendar.</p>
+    <DocsHeading Title="Selected Date (With TimeZone)" />
+    <p>The Calendar component accepts a <code>TimeZone</code> parameter (a system time zone id) to decide which day is today. Selected values are <code>DateOnly</code>, so they never shift with the time zone.</p>
+    <CodeFigure Code="@TimeZoneCode" LineNumbers="true" />
+    <DocsHeading Title="Basic" />
+    <p>A basic calendar component. We used <code>Class="rounded-lg border"</code> to style the calendar.</p>
+    <ComponentPreview Name="calendar-basic" PreviewClass="h-96" />
+    <DocsHeading Title="Range Calendar" />
+    <p>Use <code>Mode="CalendarMode.Range"</code> to enable range selection.</p>
+    <ComponentPreview Name="calendar-range" PreviewClass="h-[36rem] md:h-96" />
+    <DocsHeading Title="Month and Year Selector" />
+    <p>Use <code>CaptionLayout="CalendarCaptionLayout.Dropdown"</code> to show month and year dropdowns.</p>
+    <ComponentPreview Name="calendar-caption" PreviewClass="h-96" />
+    <DocsHeading Title="Presets" />
+    <ComponentPreview Name="calendar-presets" PreviewClass="h-[650px]" />
+    <DocsHeading Title="Date and Time Picker" />
+    <ComponentPreview Name="calendar-time" PreviewClass="h-[600px]" />
+    <DocsHeading Title="Booked dates" />
+    <ComponentPreview Name="calendar-booked-dates" PreviewClass="h-96" />
+    <DocsHeading Title="Custom Cell Size" />
+    <ComponentPreview Name="calendar-custom-days" PreviewClass="h-[560px]" />
+    <p>You can customize the size of calendar cells using the <code>--cell-size</code> CSS variable. You can also make it responsive by using breakpoint-specific values:</p>
+    <CodeFigure Code="@CellSizeCode" LineNumbers="true" />
+    <p>Or use fixed values:</p>
+    <CodeFigure Code="@FixedCellSizeCode" LineNumbers="true" />
+    <DocsHeading Title="Week Numbers" />
+    <p>Use <code>ShowWeekNumber</code> to show week numbers.</p>
+    <ComponentPreview Name="calendar-week-numbers" PreviewClass="h-96" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="calendar" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Calendar Mode="CalendarMode.Single" @bind-Selected="_date" Class="rounded-lg border" />
+
+        @code {
+            private DateOnly? _date = DateOnly.FromDateTime(DateTime.Today);
+        }
+        """;
+
+    private const string TimeZoneCode = """
+        <Calendar Mode="CalendarMode.Single" @bind-Selected="_date" TimeZone="America/New_York" />
+
+        @code {
+            private DateOnly? _date;
+        }
+        """;
+
+    private const string CellSizeCode = """
+        <Calendar Mode="CalendarMode.Single" @bind-Selected="_date"
+                  Class="rounded-lg border [--cell-size:--spacing(11)] md:[--cell-size:--spacing(12)]" />
+        """;
+
+    private const string FixedCellSizeCode = """
+        <Calendar Mode="CalendarMode.Single" @bind-Selected="_date"
+                  Class="rounded-lg border [--cell-size:2.75rem] md:[--cell-size:3rem]" />
+        """;
+}

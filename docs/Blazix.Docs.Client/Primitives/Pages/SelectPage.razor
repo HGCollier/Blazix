@@ -1,0 +1,163 @@
+@page "/docs/primitives/select"
+
+<DocsPage Title="Select" Description="A common form component for choosing a predefined value in a dropdown menu.">
+    <ComponentPreview Name="primitives/select-hero" />
+    <DocsHeading Title="Usage guidelines" />
+    <ul>
+        <li><strong>Prefer Combobox for large lists:</strong> Select isn't filterable, apart from keyboard typeahead to find and highlight items. Prefer <a href="/docs/primitives/combobox">Combobox</a> when there are enough items to warrant filtering.</li>
+        <li><strong>Special positioning behavior:</strong> By default the popup overlaps its trigger, so the selected item's text lines up with the trigger's value. Turn it off with <code>AlignItemWithTrigger</code>.</li>
+        <li><strong>Form controls must have an accessible name:</strong> Prefer <code>SelectLabel</code>, or give <code>SelectTrigger</code> an <code>aria-label</code> when no visible label is rendered.</li>
+        <li><strong>Closing animations:</strong> The popup stays rendered until its closing animation finishes. See <a href="/docs/primitives/animation">Animation</a>.</li>
+    </ul>
+    <DocsHeading Title="Anatomy" />
+    <p>Import the primitives and assemble the parts:</p>
+    <CodeFigure Code="@Anatomy" />
+    <DocsHeading Title="API Reference" />
+    <PartReference Type="typeof(SelectRoot)" />
+    <PartReference Type="typeof(SelectTrigger)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding select is open.</StyleHook>
+            <StyleHook Name="data-pressed">Present when the trigger is pressed.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the select is disabled.</StyleHook>
+            <StyleHook Name="data-readonly">Present when the select is readonly.</StyleHook>
+            <StyleHook Name="data-required">Present when the select is required.</StyleHook>
+            <StyleHook Name="data-valid">Present when the select is in a valid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-invalid">Present when the select is in an invalid state (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-dirty">Present when the select's value has changed (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-touched">Present when the select has been touched (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-filled">Present when the select has a value (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-focused">Present when the select trigger is focused (when wrapped in FieldRoot).</StyleHook>
+            <StyleHook Name="data-placeholder">Present when the select doesn't have a value.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SelectValue)">
+        <DataAttributes>
+            <StyleHook Name="data-placeholder">Present when the select doesn't have a value.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SelectIcon)">
+        <DataAttributes>
+            <StyleHook Name="data-popup-open">Present when the corresponding popup is open.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SelectList)" />
+    <PartReference Type="typeof(SelectPortal)" />
+    <PartReference Type="typeof(SelectBackdrop)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the select is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the select is closed.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the select begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the select is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SelectPositioner)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the select popup is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the select popup is closed.</StyleHook>
+            <StyleHook Name="data-anchor-hidden">Present when the anchor is hidden.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to specified side.</StyleHook>
+            <StyleHook Name="data-side" Type="'none' | 'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the trigger.</StyleHook>
+        </DataAttributes>
+        <CssVariables>
+            <StyleHook Name="--anchor-height" Type="number">The anchor's height.</StyleHook>
+            <StyleHook Name="--anchor-width" Type="number">The anchor's width.</StyleHook>
+            <StyleHook Name="--available-height" Type="number">The available height between the trigger and the edge of the viewport.</StyleHook>
+            <StyleHook Name="--available-width" Type="number">The available width between the trigger and the edge of the viewport.</StyleHook>
+            <StyleHook Name="--transform-origin" Type="string">The coordinates that this element is anchored to. Used for animations and transitions.</StyleHook>
+        </CssVariables>
+    </PartReference>
+    <PartReference Type="typeof(SelectPopup)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the select is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the select is closed.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to specified side.</StyleHook>
+            <StyleHook Name="data-side" Type="'none' | 'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the trigger.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the select begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the select is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SelectArrow)">
+        <DataAttributes>
+            <StyleHook Name="data-open">Present when the select popup is open.</StyleHook>
+            <StyleHook Name="data-closed">Present when the select popup is closed.</StyleHook>
+            <StyleHook Name="data-uncentered">Present when the select arrow is uncentered.</StyleHook>
+            <StyleHook Name="data-align" Type="'start' | 'center' | 'end'">Indicates how the popup is aligned relative to specified side.</StyleHook>
+            <StyleHook Name="data-side" Type="'none' | 'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the trigger.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SelectItem)">
+        <DataAttributes>
+            <StyleHook Name="data-selected">Present when the select item is selected.</StyleHook>
+            <StyleHook Name="data-highlighted">Present when the select item is highlighted.</StyleHook>
+            <StyleHook Name="data-disabled">Present when the select item is disabled.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SelectGroup)" />
+    <PartReference Type="typeof(SelectGroupLabel)" />
+    <PartReference Type="typeof(SelectSeparator)">
+        <DataAttributes>
+            <StyleHook Name="data-orientation" Type="'horizontal' | 'vertical'">Indicates the orientation of the separator.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SelectLabel)" />
+    <PartReference Type="typeof(SelectItemText)" />
+    <PartReference Type="typeof(SelectItemIndicator)">
+        <DataAttributes>
+            <StyleHook Name="data-starting-style">Present when the indicator begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the indicator is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SelectScrollUpArrow)">
+        <DataAttributes>
+            <StyleHook Name="data-direction" Type="'up'">Indicates the direction of the scroll arrow.</StyleHook>
+            <StyleHook Name="data-side" Type="'none' | 'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the trigger.</StyleHook>
+            <StyleHook Name="data-visible">Present when the scroll arrow is visible.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the scroll arrow begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the scroll arrow is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+    <PartReference Type="typeof(SelectScrollDownArrow)">
+        <DataAttributes>
+            <StyleHook Name="data-direction" Type="'down'">Indicates the direction of the scroll arrow.</StyleHook>
+            <StyleHook Name="data-side" Type="'none' | 'top' | 'bottom' | 'left' | 'right' | 'inline-end' | 'inline-start'">Indicates which side the popup is positioned relative to the trigger.</StyleHook>
+            <StyleHook Name="data-visible">Present when the scroll arrow is visible.</StyleHook>
+            <StyleHook Name="data-starting-style">Present when the scroll arrow begins animating in.</StyleHook>
+            <StyleHook Name="data-ending-style">Present when the scroll arrow is animating out.</StyleHook>
+        </DataAttributes>
+    </PartReference>
+</DocsPage>
+
+@code {
+    private const string Anatomy = """
+        @using Blazix.Primitives
+
+        <SelectRoot>
+            <SelectLabel />
+            <SelectTrigger>
+                <SelectValue />
+                <SelectIcon />
+            </SelectTrigger>
+
+            <SelectPortal>
+                <SelectBackdrop />
+                <SelectPositioner>
+                    <SelectPopup>
+                        <SelectScrollUpArrow />
+                        <SelectArrow />
+                        <SelectList>
+                            <SelectItem>
+                                <SelectItemText />
+                                <SelectItemIndicator />
+                            </SelectItem>
+                            <SelectSeparator />
+                            <SelectGroup>
+                                <SelectGroupLabel />
+                            </SelectGroup>
+                        </SelectList>
+                        <SelectScrollDownArrow />
+                    </SelectPopup>
+                </SelectPositioner>
+            </SelectPortal>
+        </SelectRoot>
+        """;
+}

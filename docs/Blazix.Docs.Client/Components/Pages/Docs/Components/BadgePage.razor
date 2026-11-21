@@ -1,0 +1,32 @@
+@page "/docs/components/badge"
+
+<DocsPage Title="Badge" Description="Displays a badge or a component that looks like a badge.">
+    <ComponentPreview Name="badge-demo" />
+    <DocsHeading Title="Installation" />
+    <InstallationTabs Name="badge" />
+    <DocsHeading Title="Usage" />
+    <CodeFigure Code="@UsageCode" />
+    <DocsHeading Title="Variants" />
+    <p>Use the <code>Variant</code> parameter to change the variant of the badge.</p>
+    <ComponentPreview Name="badge-variants" />
+    <DocsHeading Title="With Icon" />
+    <p>You can render an icon inside the badge. Use <code>data-icon="inline-start"</code> to render the icon on the left and <code>data-icon="inline-end"</code> to render the icon on the right.</p>
+    <ComponentPreview Name="badge-icon" />
+    <DocsHeading Title="With Spinner" />
+    <p>You can render a spinner inside the badge. Remember to add the <code>data-icon="inline-start"</code> or <code>data-icon="inline-end"</code> parameter to the spinner.</p>
+    <ComponentPreview Name="badge-spinner" />
+    <DocsHeading Title="Link" />
+    <p>Use the <code>Render</code> parameter to render a link as a badge.</p>
+    <ComponentPreview Name="badge-link" />
+    <DocsHeading Title="Custom Colors" />
+    <p>You can customize the colors of a badge by adding custom classes such as <code>bg-green-50 dark:bg-green-800</code> to the <code>Badge</code> component.</p>
+    <ComponentPreview Name="badge-colors" />
+    <DocsHeading Title="API Reference" />
+    <ApiReference Name="badge" />
+</DocsPage>
+
+@code {
+    private const string UsageCode = """
+        <Badge Variant="BadgeVariant.Default">Badge</Badge>
+        """;
+}

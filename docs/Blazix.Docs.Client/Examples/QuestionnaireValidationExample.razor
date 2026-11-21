@@ -1,0 +1,88 @@
+@inject ToastManager Toasts
+
+<Questionnaire Class="mx-auto max-w-md" @bind-Item="_item" Items="@Items" OnSubmit="@HandleSubmit">
+    <Card Class="w-full">
+        <QuestionnaireItem Invalid="@_errors.ContainsKey("detail")" Name="detail" Required>
+            <CardHeader>
+                <QuestionnaireTitle>How much detail should the answer include?</QuestionnaireTitle>
+                <QuestionnaireDescription>Choose the response depth.</QuestionnaireDescription>
+                <CardAction>@ValidationProgress</CardAction>
+            </CardHeader>
+            <CardContent>
+                <QuestionnaireChoices>
+                    <QuestionnaireChoice Value="summary" CheckedChanged="@(() => _errors.Remove("detail"))">Concise summary</QuestionnaireChoice>
+                    <QuestionnaireChoice Value="complete" CheckedChanged="@(() => _errors.Remove("detail"))">Complete answer</QuestionnaireChoice>
+                </QuestionnaireChoices>
+                <QuestionnaireError ChildContent="@ErrorText("detail")" />
+            </CardContent>
+        </QuestionnaireItem>
+        <QuestionnaireItem Invalid="@_errors.ContainsKey("audience")" Name="audience" Required>
+            <CardHeader>
+                <QuestionnaireTitle>Who will read the answer?</QuestionnaireTitle>
+                <QuestionnaireDescription>Public answers require complete context.</QuestionnaireDescription>
+                <CardAction>@ValidationProgress</CardAction>
+            </CardHeader>
+            <CardContent>
+                <QuestionnaireChoices>
+                    <QuestionnaireChoice Value="team" CheckedChanged="@(() => _errors.Remove("audience"))">My team</QuestionnaireChoice>
+                    <QuestionnaireChoice Value="public" CheckedChanged="@(() => _errors.Remove("audience"))">Public audience</QuestionnaireChoice>
+                </QuestionnaireChoices>
+                <QuestionnaireError ChildContent="@ErrorText("audience")" />
+            </CardContent>
+        </QuestionnaireItem>
+        <CardFooter>
+            <QuestionnaireActions>
+                <QuestionnairePrevious />
+                <QuestionnaireNext>Next</QuestionnaireNext>
+                <QuestionnaireSubmit>Validate answers</QuestionnaireSubmit>
+            </QuestionnaireActions>
+        </CardFooter>
+    </Card>
+</Questionnaire>
+
+@code {
+    private static readonly QuestionnaireItemDefinition[] Items =
+    [
+        new("detail", Required: true),
+        new("audience", Required: true),
+    ];
+
+    private static readonly RenderFragment ValidationProgress =
+        @<QuestionnaireProgress Class="min-w-0">
+            <Render>
+                <div @attributes="context.Attributes">@context.Current / @context.Total</div>
+            </Render>
+        </QuestionnaireProgress>;
+
+    private readonly Dictionary<string, string> _errors = [];
+    private string _item = "detail";
+
+    private RenderFragment? ErrorText(string name) => _errors.TryGetValue(name, out var error) ? @<text>@error</text> : null;
+
+    private void HandleSubmit(QuestionnaireAnswers answers)
+    {
+        var detail = answers.Get("detail");
+        var audience = answers.Get("audience");
+        _errors.Clear();
+        if (detail is null)
+        {
+            _errors["detail"] = "Choose a level of detail.";
+        }
+        if (audience is null)
+        {
+            _errors["audience"] = "Choose an audience.";
+        }
+        if (audience == "public" && detail == "summary")
+        {
+            _errors["detail"] = "Public answers need enough context. Choose a complete answer.";
+        }
+
+        if (_errors.Count == 0)
+        {
+            Toasts.Add(new ToastOptions { Title = "Agent response configured", Description = $"Detail: {detail} · Audience: {audience}" });
+            return;
+        }
+
+        _item = _errors.ContainsKey("detail") ? "detail" : "audience";
+    }
+}
