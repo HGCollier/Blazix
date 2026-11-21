@@ -16,7 +16,7 @@
 
     <Authors>Blazix</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/HGCollier/Blazix</PackageProjectUrl>
+    <PackageProjectUrl>https://blazix-ui.com</PackageProjectUrl>
     <RepositoryUrl>https://github.com/HGCollier/Blazix</RepositoryUrl>
     <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts/packages</PackageOutputPath>
 

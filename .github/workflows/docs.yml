@@ -1,0 +1,52 @@
+name: docs
+
+# Builds the docs site as static files and deploys it to GitHub Pages (blazix-ui.com) on every push to main.
+# The docs app is a Blazor Web App whose server only prerenders, so docs/Prerender.cs saves every page as HTML;
+# WebAssembly takes over in the browser as on the real host.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One deployment at a time; a newer push waits rather than cancelling one in progress.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      # The client is compiled ahead of time to WebAssembly when published (RunAOTCompilation), which needs this.
+      - run: dotnet workload install wasm-tools
+
+      - run: dotnet publish docs/Blazix.Docs -c Release -o artifacts/docs/publish
+
+      - name: Prerender every page
+        run: dotnet run docs/Prerender.cs -- artifacts/docs/publish artifacts/docs/site docs
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: artifacts/docs/site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
