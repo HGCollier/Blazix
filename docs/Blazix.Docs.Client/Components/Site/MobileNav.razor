@@ -1,7 +1,9 @@
 @implements IDisposable
 @inject NavigationManager Navigation
 
-<Popover @bind-Open="_open">
+@* Modal: the menu covers the page, so the page behind mustn't scroll. Scrolling it (chained from the menu's end)
+   moved the menu, positioned in the page, a frame behind the sticky header and showed a sliver of page. *@
+<Popover @bind-Open="_open" Modal="PopupModal.True">
     @* The site's button: no background while the menu is open, unlike the registry's button. *@
     <PopoverTrigger Class="@SiteButton.Get(SiteButton.Ghost, SiteButton.SizeDefault,
                                Cn("h-8 touch-manipulation items-center justify-start gap-2.5 p-0! hover:bg-transparent focus-visible:bg-transparent active:bg-transparent dark:hover:bg-transparent",
@@ -16,9 +18,9 @@
     </PopoverTrigger>
     @* The registry's PopoverContent, but kept below the trigger: with no room there for the whole menu it
        takes the height that is left, rather than moving to the side. *@
-    <Blazix.Primitives.PopoverPopup data-slot="popover-content" Side="Side.Bottom" Align="Align.Start" AlignOffset="-16" SideOffset="14"
+    <Blazix.Primitives.PopoverPopup data-slot="popover-content" Side="Side.Bottom" Align="Align.Start" AlignOffset="-16" SideOffset="12"
                                   FallbackAxis="false" CollisionPadding="0" PositionerAttributes="@Positioner" aria-label="Menu" class="@ContentClasses">
-        <nav aria-label="Docs" class="flex flex-col gap-12 overflow-auto px-6 py-6">
+        <nav aria-label="Docs" class="flex flex-col gap-12 px-6 py-6">
             <div class="flex flex-col gap-4">
                 <div class="text-sm font-medium text-muted-foreground">Menu</div>
                 <div class="flex flex-col gap-3">
@@ -60,7 +62,7 @@
     private static readonly string ContentClasses = Cn(
         "z-50 flex w-72 origin-(--transform-origin) flex-col gap-2.5 rounded-lg bg-popover p-2.5 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden duration-100 " +
         "data-[side=bottom]:slide-in-from-top-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
-        "no-scrollbar h-(--available-height) w-(--available-width) overflow-y-auto rounded-none border-none bg-background/90 p-0 shadow-none ring-0 backdrop-blur duration-100 data-open:animate-none!");
+        "no-scrollbar h-(--available-height) w-(--available-width) overflow-y-auto overscroll-contain rounded-none border-none bg-background/90 p-0 shadow-none ring-0 backdrop-blur duration-100 data-open:animate-none!");
 
     private bool _open;
 
