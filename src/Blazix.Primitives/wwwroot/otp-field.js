@@ -5,7 +5,7 @@
 // which types the whole code into the first slot) is spread across the slots from where it lands.
 // Blazor owns the value; this writes the slots at once and reports the new value.
 
-import { byId, call, on } from './core/dom.js';
+import { byId, call, isRTL, on } from './core/dom.js';
 
 /** @typedef {{ length: number, pattern: string, disabled: boolean, readOnly: boolean }} OtpOptions */
 
@@ -107,13 +107,13 @@ export function createOtpField(dotnet, rootId, initial) {
           call(dotnet, 'SetValue', value(), 'input-clear');
           return;
         case 'ArrowLeft':
+        case 'ArrowRight': {
+          // Left and Right follow the slots as laid out: in right-to-left text the first slot is on the right.
           event.preventDefault();
-          focusSlot(index - 1);
+          const back = isRTL(list[index]) ? 'ArrowRight' : 'ArrowLeft';
+          focusSlot(event.key === back ? index - 1 : index + 1);
           return;
-        case 'ArrowRight':
-          event.preventDefault();
-          focusSlot(index + 1);
-          return;
+        }
         case 'Home':
           event.preventDefault();
           focusSlot(0);

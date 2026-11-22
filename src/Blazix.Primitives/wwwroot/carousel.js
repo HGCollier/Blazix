@@ -1455,6 +1455,8 @@ function viewportOf(root) {
 export function create(root, dotNet, options, plugins) {
   const viewport = viewportOf(root)
   if (!viewport) throw new Error('A Carousel needs a CarouselContent.')
+  // Embla needs the direction up front; without one, follow the text direction around the carousel.
+  options = { direction: getComputedStyle(root).direction === 'rtl' ? 'rtl' : 'ltr', ...options }
   const api = EmblaCarousel(viewport, options, createPlugins(plugins || []))
   const forwarded = new Set()
 
@@ -1479,15 +1481,13 @@ export function create(root, dotNet, options, plugins) {
     api.on(name, forward)
   }
 
-  // Arrow keys on the region (captured).
+  // Arrow keys on the region (captured). In right-to-left the next slide is on the left.
   function onKeyDown(event) {
-    if (event.key === 'ArrowLeft') {
-      event.preventDefault()
-      api.scrollPrev()
-    } else if (event.key === 'ArrowRight') {
-      event.preventDefault()
-      api.scrollNext()
-    }
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
+    event.preventDefault()
+    const rtl = api.internalEngine().options.direction === 'rtl'
+    if ((event.key === 'ArrowRight') !== rtl) api.scrollNext()
+    else api.scrollPrev()
   }
   root.addEventListener('keydown', onKeyDown, true)
   listen('select')

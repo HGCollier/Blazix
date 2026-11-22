@@ -39,6 +39,8 @@ public class NavigationMenuRoot() : PopupRootBase("navigation-menu")
 
     [Parameter] public Orientation Orientation { get; set; } = Orientation.Horizontal;
 
+    [CascadingParameter] private TextDirection? Direction { get; set; }
+
     [Parameter(CaptureUnmatchedValues = true)]
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
@@ -129,7 +131,8 @@ public class NavigationMenuRoot() : PopupRootBase("navigation-menu")
         {
             return forward ? "down" : "up";
         }
-        return forward ? "right" : "left";
+        // Physical, as the triggers sit: in right-to-left the next trigger is to the left.
+        return forward != (Direction == TextDirection.Rtl) ? "right" : "left";
     }
 
     /// <summary>Opens the item with this value, or closes the menu with null.</summary>

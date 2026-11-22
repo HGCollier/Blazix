@@ -32,6 +32,18 @@ import { clamp } from './dom.js';
 /** @type {Record<PhysicalSide, PhysicalSide>} */
 const opposite = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' };
 
+/**
+ * The side to report in data-side: a logical side when one was asked for (as Base UI's getLogicalSide), so
+ * data-[side=inline-end] styles hold after a flip and in either direction. Placement math stays physical.
+ * @param {PhysicalSide} placed @param {Side} requested @param {boolean} rtl @returns {Side}
+ */
+export function reportedSide(placed, requested, rtl) {
+  if (requested !== 'inline-start' && requested !== 'inline-end') return placed;
+  if (placed === 'right') return rtl ? 'inline-start' : 'inline-end';
+  if (placed === 'left') return rtl ? 'inline-end' : 'inline-start';
+  return placed;
+}
+
 /** @param {Side} side @param {boolean} rtl @returns {PhysicalSide} */
 function physical(side, rtl) {
   if (side === 'inline-start') return rtl ? 'right' : 'left';
@@ -339,12 +351,13 @@ export function position(getAnchor, el, getOptions, parts = {}) {
     writer.style('--positioner-height', `${size.height}px`);
     const [ox, oy] = transformOrigin(result.side, result.align, rtl, a, size, result);
     writer.style('--transform-origin', `${Math.round(ox)}px ${Math.round(oy)}px`);
-    writer.attribute('data-side', result.side);
+    const side = reportedSide(result.side, resolved.side, rtl);
+    writer.attribute('data-side', side);
     writer.attribute('data-align', result.align);
 
     if (popup) {
       const w = writerOf(popup);
-      w.attribute('data-side', result.side);
+      w.attribute('data-side', side);
       w.attribute('data-align', result.align);
       const hidden = a.y + a.height < view.y || a.y > view.y + view.height || a.x + a.width < view.x || a.x > view.x + view.width;
       w.attribute('data-anchor-hidden', hidden ? '' : null);
@@ -361,7 +374,7 @@ export function position(getAnchor, el, getOptions, parts = {}) {
       w.style('position', 'absolute');
       w.style(along ? 'left' : 'top', `${offset}px`);
       arrow.style.removeProperty(along ? 'top' : 'left');
-      w.attribute('data-side', result.side);
+      w.attribute('data-side', side);
       w.attribute('data-align', result.align);
       w.attribute('data-uncentered', Math.abs(offset - ideal) > 0.5 ? '' : null);
     }

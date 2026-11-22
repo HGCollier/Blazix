@@ -5,7 +5,7 @@
 // navigation. Ctrl/⌘+Enter confirms the active item, ↑/↓ move between its answers, ←/→ between
 // items, Enter on a filled answer confirms it, and letter or number shortcuts pick an answer.
 
-import { byId, call, on } from './core/dom.js';
+import { byId, call, isRTL, on } from './core/dom.js';
 
 /** @typedef {import('./core/dom.js').DotNetRef} DotNetRef */
 
@@ -131,7 +131,8 @@ export function createQuestionnaire(formId, dotnet) {
     if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && !isTextEntry(target) && !isRadio(target)) {
       event.preventDefault();
       if (event.repeat) return;
-      if (event.key === 'ArrowLeft') call(dotnet, 'PreviousAsync');
+      // The previous question is the one the arrow points back to: Left, or Right in right-to-left text.
+      if (event.key === (isRTL(item) ? 'ArrowRight' : 'ArrowLeft')) call(dotnet, 'PreviousAsync');
       else if (item.dataset.status !== 'unanswered') call(dotnet, 'NextAsync');
       return;
     }

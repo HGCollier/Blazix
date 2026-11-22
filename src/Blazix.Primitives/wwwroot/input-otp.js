@@ -6,7 +6,7 @@
 // rejects input that fails the input's pattern, and fixes iOS paste. Blazor owns the value (through the
 // input event) and renders each slot's character.
 
-import { on } from './core/dom.js';
+import { isRTL, on } from './core/dom.js';
 
 /** @param {CSSStyleSheet} sheet @param {string} rule */
 function safeInsertRule(sheet, rule) {
@@ -153,6 +153,22 @@ export function createInputOtp(input, container) {
 
   const offs = [
     on(document, 'selectionchange', onSelectionChange, { capture: true }),
+    // The input's characters read left to right as a number does, while the slots follow the text direction. In
+    // right-to-left the caret would run against the slots, so Left and Right move it here: Left on to the next
+    // slot, as Right does in left-to-right (collapsed where the native key would leave it; selectionchange
+    // then picks the slot).
+    on(input, 'keydown', (/** @type {KeyboardEvent} */ event) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      if (event.shiftKey || event.altKey || event.ctrlKey || event.metaKey || !isRTL(container)) return;
+      event.preventDefault();
+      const forward = event.key === 'ArrowLeft';
+      const start = input.selectionStart ?? 0;
+      const end = input.selectionEnd ?? start;
+      const caret = start !== end
+        ? (forward ? end : start)
+        : Math.max(0, Math.min(input.value.length, start + (forward ? 1 : -1)));
+      input.setSelectionRange(caret, caret);
+    }),
     on(input, 'focus', () => {
       const start = Math.min(input.value.length, input.maxLength - 1);
       const end = input.value.length;

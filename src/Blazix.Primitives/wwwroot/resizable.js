@@ -259,6 +259,10 @@ export function resizePanelLayout(layout, constraints, index, nextSize) {
 
 const isHorizontal = (group) => group.options.orientation === 'horizontal';
 
+// In right-to-left text a horizontal group lays its panels out from the right, so physical movement
+// (pointer x, Left and Right) runs against the layout's order.
+const isReversed = (group) => isHorizontal(group) && getComputedStyle(group.element).direction === 'rtl';
+
 function axisSizeOf(group) {
   return group.panels.reduce((total, panel) => {
     const rect = panel.element.getBoundingClientRect();
@@ -504,9 +508,9 @@ function updateActive(event, useDownPoint) {
     const { group } = region;
     if (!groups.has(group) || !region.axisSize) continue;
     const horizontal = isHorizontal(group);
-    const delta = useDownPoint
+    const delta = (isReversed(group) ? -1 : 1) * (useDownPoint
       ? (((horizontal ? event.clientX - interaction.downAt.x : event.clientY - interaction.downAt.y) / region.axisSize) * 100)
-      : ((horizontal ? event.clientX : event.clientY) < 0 ? -100 : 100);
+      : ((horizontal ? event.clientX : event.clientY) < 0 ? -100 : 100));
     const { layout, constraints } = group.state;
     const next = adjustLayoutByDelta({
       delta,
@@ -690,6 +694,7 @@ function onSeparatorKeyDown(event) {
     if (!layoutsEqual(prevLayout, next)) commit(group, withLayout(group, next));
   };
   const horizontal = isHorizontal(group);
+  const right = isReversed(group) ? -5 : 5;
 
   switch (event.key) {
     case 'ArrowDown':
@@ -698,11 +703,11 @@ function onSeparatorKeyDown(event) {
       break;
     case 'ArrowLeft':
       event.preventDefault();
-      if (horizontal) adjust(-5);
+      if (horizontal) adjust(-right);
       break;
     case 'ArrowRight':
       event.preventDefault();
-      if (horizontal) adjust(5);
+      if (horizontal) adjust(right);
       break;
     case 'ArrowUp':
       event.preventDefault();

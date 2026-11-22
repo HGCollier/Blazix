@@ -6,7 +6,7 @@
 // leaving the menu and the popup closes it after a delay. Tab moves from an open trigger into its
 // content, and on past it to the next trigger. Blazor owns which item is open.
 
-import { byId, call, on } from './core/dom.js';
+import { byId, call, isRTL, on } from './core/dom.js';
 import { tabbables } from './core/focus.js';
 import { createPopup } from './core/popup.js';
 import { whenAnimationsFinish } from './core/presence.js';
@@ -118,7 +118,8 @@ export function createNavigationMenu(dotnet, triggerId, initial) {
     on(document, 'keydown', (/** @type {KeyboardEvent} */ event) => {
       const t = triggerOf(event.target);
       if (!t || event.target !== t || !root()?.contains(t) || event.defaultPrevented) return;
-      const opener = options.orientation === 'vertical' ? 'ArrowRight' : 'ArrowDown';
+      // A vertical menu opens toward the inline end, where its content sits.
+      const opener = options.orientation === 'vertical' ? (isRTL(t) ? 'ArrowLeft' : 'ArrowRight') : 'ArrowDown';
       if (event.key === opener) {
         event.preventDefault();
         call(dotnet, 'RequestOpen', 'list-navigation', t.dataset.value ?? '');
