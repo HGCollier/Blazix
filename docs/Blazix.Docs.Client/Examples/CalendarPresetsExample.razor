@@ -1,7 +1,7 @@
 <Card Class="mx-auto w-fit max-w-[300px]" Size="CardSize.Sm">
     <CardContent>
         <Calendar Mode="CalendarMode.Single" @bind-Selected="_date" Month="_currentMonth" MonthChanged="month => _currentMonth = month"
-                  FixedWeeks Class="p-0 [--cell-size:--spacing(9.5)]" />
+                  FixedWeeks Class="p-0 [--cell-size:--spacing(8)] sm:[--cell-size:--spacing(9.5)]" />
     </CardContent>
     <CardFooter Class="flex flex-wrap gap-2 border-t">
         @foreach (var (label, value) in Presets)

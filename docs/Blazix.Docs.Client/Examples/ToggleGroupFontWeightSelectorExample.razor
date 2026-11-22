@@ -1,6 +1,6 @@
 <Field>
     <FieldLabel>Font Weight</FieldLabel>
-    <ToggleGroup Value="@([_fontWeight])" ValueChanged="SetFontWeight" Variant="ToggleVariant.Outline" Spacing="2" Size="ToggleSize.Lg">
+    <ToggleGroup Value="@([_fontWeight])" ValueChanged="SetFontWeight" Variant="ToggleVariant.Outline" Spacing="2" Size="ToggleSize.Lg" Class="flex-wrap">
         @foreach (var (value, label, weight) in Weights)
         {
             <ToggleGroupItem Value="@value" aria-label="@label" Class="flex size-16 flex-col items-center justify-center rounded-xl">

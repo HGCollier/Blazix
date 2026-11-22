@@ -2,7 +2,7 @@
 <Card Class="mx-auto w-fit p-0">
     <CardContent Class="p-0">
         <Calendar Mode="CalendarMode.Range" DefaultMonth="@_range?.From" @bind-SelectedRange="_range" NumberOfMonths="1"
-                  CaptionLayout="CalendarCaptionLayout.Dropdown" Class="[--cell-size:--spacing(10)] md:[--cell-size:--spacing(12)]"
+                  CaptionLayout="CalendarCaptionLayout.Dropdown" Class="[--cell-size:--spacing(8)] sm:[--cell-size:--spacing(10)] md:[--cell-size:--spacing(12)]"
                   FormatMonthDropdown="@(date => date.ToString("MMMM", CultureInfo.InvariantCulture))">
             <DayButton>
                 <CalendarDayButton @attributes="context.Attributes">

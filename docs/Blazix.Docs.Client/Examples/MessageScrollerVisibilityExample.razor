@@ -1,6 +1,6 @@
 <MessageScrollerProvider @ref="_scroller" ScrollMargin="12">
-    <div class="relative flex flex-col gap-4">
-        <div class="relative mx-auto w-full max-w-sm">
+    <div class="@@container relative flex flex-col gap-4">
+        <div class="relative mx-auto w-full max-w-sm @@max-[30rem]:pr-11">
             <Card Class="h-140 w-full gap-0">
                 <CardHeader Class="gap-1 border-b">
                     <CardTitle>Transcript Outline</CardTitle>
@@ -33,7 +33,7 @@
                     </MessageScroller>
                 </CardContent>
             </Card>
-            <div class="absolute top-1/2 -right-12 -translate-y-1/2">
+            <div class="absolute top-1/2 -right-12 -translate-y-1/2 @@max-[30rem]:right-0">
                 <MessageScrollerVisibility Context="visibility">
                     <HoverCard>
                         <HoverCardTrigger>

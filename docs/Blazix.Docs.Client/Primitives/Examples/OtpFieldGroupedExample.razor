@@ -3,13 +3,13 @@
         Verification code
     </label>
     <OtpFieldRoot Length="OtpLength" class="flex w-full items-center gap-2">
-        <div class="flex gap-2">
+        <div class="flex min-w-0 gap-2">
             <OtpFieldInput id="@_id" class="@InputClass" />
             <OtpFieldInput class="@InputClass" />
             <OtpFieldInput class="@InputClass" />
         </div>
-        <SeparatorRoot class="h-px w-4 bg-current text-neutral-950 dark:text-white" />
-        <div class="flex gap-2">
+        <SeparatorRoot class="h-px w-4 shrink-0 bg-current text-neutral-950 dark:text-white" />
+        <div class="flex min-w-0 gap-2">
             <OtpFieldInput class="@InputClass" />
             <OtpFieldInput class="@InputClass" />
             <OtpFieldInput class="@InputClass" />
@@ -21,7 +21,7 @@
     private const int OtpLength = 6;
 
     private const string InputClass =
-        "m-0 h-10 w-10 rounded-none border border-neutral-950 bg-white dark:bg-neutral-950 text-center font-inherit text-base font-normal text-neutral-950 focus:outline-2 focus:-outline-offset-1 focus:outline-neutral-950 dark:focus:outline-white dark:border-white dark:text-white";
+        "m-0 h-10 w-10 min-w-0 rounded-none border border-neutral-950 bg-white dark:bg-neutral-950 text-center font-inherit text-base font-normal text-neutral-950 focus:outline-2 focus:-outline-offset-1 focus:outline-neutral-950 dark:focus:outline-white dark:border-white dark:text-white";
 
     private readonly string _id = $"verification-code-{Guid.NewGuid():N}";
 }
