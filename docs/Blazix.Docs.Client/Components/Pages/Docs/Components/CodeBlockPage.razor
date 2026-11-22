@@ -1,7 +1,7 @@
 @page "/docs/components/code-block"
 
 <DocsPage Title="Code Block" Description="Displays code, terminal output and diffs with an optional header, line numbers and a copy button.">
-    <ComponentPreview Name="code-block-demo" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-demo" PreviewClass="min-h-0" />
     <p><code>CodeBlock</code> displays code, terminal output, logs and diffs. It has a header with a title and actions, line numbers, wrapping, diff and highlighted lines, and a small size for tool output in a <a href="/docs/components/trace">Trace</a>.</p>
     <p>It doesn&apos;t highlight code itself. Lines take any markup, so a highlighter of your choice can color them.</p>
     <DocsHeading Title="Installation" />
@@ -21,75 +21,75 @@
     </ul>
     <DocsHeading Title="Basic" />
     <p>Pass a string to <code>CodeBlockContent</code> as <code>Code</code>. It renders as one text node, so it stays cheap while output streams.</p>
-    <ComponentPreview Name="code-block-basic" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-basic" PreviewClass="min-h-0" />
     <DocsHeading Title="Header" />
     <p><code>CodeBlockHeader</code> holds a <code>CodeBlockTitle</code> and <code>CodeBlockActions</code>. <code>CodeBlockCopyButton</code> copies its <code>Value</code>.</p>
-    <ComponentPreview Name="code-block-header" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-header" PreviewClass="min-h-0" />
     <p>A long title truncates. To link the title to a file, wrap <code>CodeBlockTitle</code> in an anchor.</p>
     <CodeFigure Code="@HeaderCode" LineNumbers="true" />
     <DocsHeading Title="Actions" />
     <p><code>CodeBlockActions</code> holds any number of buttons. For a wrap toggle, keep the state yourself and pass it to <code>Wrap</code>.</p>
-    <ComponentPreview Name="code-block-actions" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-actions" PreviewClass="min-h-0" />
     <CodeFigure Code="@ActionsCode" LineNumbers="true" />
     <DocsHeading Title="Floating Actions" />
     <p>Without a header, put <code>CodeBlockActions</code> directly inside <code>CodeBlock</code>. The actions float at the top end and stay hidden until the block is hovered or focused. They always show on touch screens.</p>
-    <ComponentPreview Name="code-block-floating-actions" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-floating-actions" PreviewClass="min-h-0" />
     <DocsHeading Title="Line Numbers" />
     <p>Add <code>LineNumbers</code> to <code>CodeBlockContent</code>. A string child is split into lines, and the numbers are not copied with a selection.</p>
-    <ComponentPreview Name="code-block-line-numbers" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-line-numbers" PreviewClass="min-h-0" />
     <DocsHeading Title="Start Line" />
     <p>Set <code>StartLine</code> to number lines from a given line, for a snippet from the middle of a file. The gutter grows to fit the widest number.</p>
-    <ComponentPreview Name="code-block-start-line" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-start-line" PreviewClass="min-h-0" />
     <DocsHeading Title="Wrap" />
     <p>Long lines scroll by default. Add <code>Wrap</code> to wrap them, which suits tool output and error messages. To let the reader toggle it, see <a href="#actions">Actions</a>.</p>
-    <ComponentPreview Name="code-block-wrap" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-wrap" PreviewClass="min-h-0" />
     <DocsHeading Title="Highlighted Lines" />
     <p>Render each line as a <code>CodeBlockLine</code> and set <code>variant="highlighted"</code> on the lines to call out.</p>
-    <ComponentPreview Name="code-block-highlighted-lines" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-highlighted-lines" PreviewClass="min-h-0" />
     <DocsHeading Title="Diff" />
     <p>Set <code>variant="added"</code> or <code>variant="removed"</code> on a <code>CodeBlockLine</code>. Each one adds a <code>+</code> or <code>−</code> marker.</p>
-    <ComponentPreview Name="code-block-diff" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-diff" PreviewClass="min-h-0" />
     <DocsHeading Title="Height" />
     <p>Cap the height with a <code>max-h-*</code> class on <code>CodeBlockContent</code>. The content scrolls inside the block.</p>
-    <ComponentPreview Name="code-block-height" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-height" PreviewClass="min-h-0" />
     <p><code>CodeBlockContent</code> fades its edges with <code>scroll-fade</code> as it scrolls: left and right by default, top and bottom when it wraps. Add <code>scroll-fade-y</code> to a capped block that does not wrap.</p>
     <DocsHeading Title="Show More" />
     <p><code>CodeBlockFooter</code> is a slot below the content. For Show More, cap the content while it is collapsed and put a ghost <code>xs</code> <code>Button</code> in the footer.</p>
-    <ComponentPreview Name="code-block-show-more" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-show-more" PreviewClass="min-h-0" />
     <CodeFigure Code="@ShowMoreCode" LineNumbers="true" />
     <DocsHeading Level="3" Title="Max Height" />
     <p>To keep a long block from taking over the page, raise the cap instead of removing it. The expanded content scrolls, and the edges fade as you scroll.</p>
-    <ComponentPreview Name="code-block-show-more-scroll" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-show-more-scroll" PreviewClass="min-h-0" />
     <DocsHeading Title="Size" />
     <p>Use <code>size="sm"</code> for tool and <a href="#trace">Trace</a> output. It has tighter padding and <code>text-xs</code> text.</p>
-    <ComponentPreview Name="code-block-size" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-size" PreviewClass="min-h-0" />
     <DocsHeading Title="Destructive" />
     <p>Use <code>variant="destructive"</code> for errors and failed output.</p>
-    <ComponentPreview Name="code-block-destructive" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-destructive" PreviewClass="min-h-0" />
     <DocsHeading Title="Trace" />
     <p>Put a <code>CodeBlock</code> with <code>size="sm"</code> in <code>TraceCollapsibleContent</code> for tool and terminal output. Add <code>Wrap</code> and a <code>max-h-64</code> class to <code>CodeBlockContent</code> so long output wraps and scrolls inside the trace. The block sets its own text color, so <code>TraceCollapsibleContent</code> does not mute it.</p>
-    <ComponentPreview Name="code-block-trace" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-trace" PreviewClass="min-h-0" />
     <DocsHeading Title="Tabs" />
     <p>Show several files with <a href="/docs/components/tabs">Tabs</a>, one <code>CodeBlock</code> in each <code>TabsContent</code>.</p>
-    <ComponentPreview Name="code-block-tabs" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-tabs" PreviewClass="min-h-0" />
     <DocsHeading Title="Message" />
     <p>Put a <code>CodeBlock</code> between paragraphs inside a <a href="/docs/components/message">Message</a>.</p>
-    <ComponentPreview Name="code-block-chat" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-chat" PreviewClass="min-h-0" />
     <DocsHeading Title="Typeset" />
     <p>A <code>CodeBlock</code> sits in running text and keeps its own styles.</p>
-    <ComponentPreview Name="code-block-typeset" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-typeset" PreviewClass="min-h-0" />
     <DocsHeading Title="Syntax Highlighting" />
     <p><code>CodeBlock</code> leaves highlighting to you: give each <code>CodeBlockLine</code> your highlighter&apos;s markup for that line. Without one, lines show as plain text, as below.</p>
-    <ComponentPreview Name="code-block-highlighting" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-highlighting" PreviewClass="min-h-0" />
     <CodeFigure Code="@SyntaxHighlightingCode" LineNumbers="true" />
     <p>Highlight on the server, so no highlighter has to load in the browser, and cache the result for code that doesn&apos;t change.</p>
     <DocsHeading Level="3" Title="Terminal Output" />
     <p>For terminal output, turn ANSI escape codes into colored spans. This example handles the few its output uses.</p>
-    <ComponentPreview Name="code-block-ansi" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-ansi" PreviewClass="min-h-0" />
     <p>ANSI colors do not carry from one line to the next.</p>
     <DocsHeading Level="3" Title="Streaming" />
     <p>As the code streams in, render the lines you have. Lines that did not change render the same markup, so Blazor leaves them alone.</p>
-    <ComponentPreview Name="code-block-streaming" PreviewClass="h-auto" />
+    <ComponentPreview Name="code-block-streaming" PreviewClass="min-h-0" />
     <DocsHeading Title="Accessibility" />
     <ul>
         <li><code>CodeBlockContent</code> is a <code>pre</code> with a <code>code</code> element and always sets <code>dir="ltr"</code>, so code reads left to right on an RTL page.</li>

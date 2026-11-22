@@ -1,7 +1,7 @@
 @page "/docs/components/trace"
 
 <DocsPage Title="Trace" Description="The building block for reasoning, tool calls, sources and more.">
-    <ComponentPreview Name="trace-demo" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-demo" PreviewClass="min-h-0" />
     <p><code>Trace</code> is a list of lines. Each line has an icon, a title, and an optional description and status. A line can expand to show more detail, link to a page, or open a dialog or sheet.</p>
     <p>Every line has the same shape, so reasoning, tool calls, sources and plans built from <code>Trace</code> look and behave the same.</p>
     <p>Use <code>Trace</code> for the steps an agent takes, like calling a tool, running a subagent or editing a file. Use <a href="/docs/components/message">Message</a> for its reply, and <a href="/docs/components/marker">Marker</a> for notes and dividers between turns.</p>
@@ -50,10 +50,10 @@
     </ul>
     <DocsHeading Title="Trace Line" />
     <p>Use a <code>TraceLine</code> on its own for a step with no detail to show. It reads as plain text.</p>
-    <ComponentPreview Name="trace-static" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-static" PreviewClass="min-h-0" />
     <DocsHeading Title="Status" />
     <p>Set <code>Status</code> on <code>TraceLine</code> when a step is running, has failed or hasn't started yet.</p>
-    <ComponentPreview Name="trace-status" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-status" PreviewClass="min-h-0" />
     <DocsTable>
         <table>
             <thead><tr><th>Status</th><th>Use for</th></tr></thead>
@@ -67,50 +67,50 @@
     </DocsTable>
     <DocsHeading Title="Description" />
     <p>Put secondary text such as a diff stat, a duration or a count in a <code>TraceDescription</code> after the <code>TraceTitle</code>. It does not truncate.</p>
-    <ComponentPreview Name="trace-description" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-description" PreviewClass="min-h-0" />
     <DocsHeading Title="Collapsible" />
     <p>Wrap the line in a <code>TraceCollapsible</code> to show more detail when it expands. Put the <code>TraceLine</code> inside <code>TraceCollapsibleTrigger</code> and the detail in <code>TraceCollapsibleContent</code>.</p>
-    <ComponentPreview Name="trace-collapsible" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-collapsible" PreviewClass="min-h-0" />
     <DocsHeading Title="Open State" />
     <p>Rows start closed. Use <code>Open</code> on <code>TraceCollapsible</code> to start open, or <code>Open</code> with <code>OpenChanged</code> to control a row.</p>
-    <ComponentPreview Name="trace-open" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-open" PreviewClass="min-h-0" />
     <p>To open a row while it streams and let the reader's click win, pass <code>_open ?? running</code> and keep the reader&apos;s choice in <code>_open</code>.</p>
     <CodeFigure Code="@OpenStateCode" LineNumbers="true" />
     <DocsHeading Title="Link" />
     <p>Wrap the <code>TraceLine</code> in an anchor. For a new tab, use an arrow-up-right icon and sr-only "(opens in a new tab)".</p>
-    <ComponentPreview Name="trace-link" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-link" PreviewClass="min-h-0" />
     <CodeFigure Code="@LinkCode" LineNumbers="true" />
     <DocsHeading Title="Dialog" />
     <p>Wrap the <code>TraceLine</code> in the dialog's trigger. The dialog owns its open state, Escape and focus return.</p>
-    <ComponentPreview Name="trace-dialog" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-dialog" PreviewClass="min-h-0" />
     <CodeFigure Code="@DialogCode" LineNumbers="true" />
     <DocsHeading Title="Sheet" />
     <p>The same shape as the dialog. Drawer and Popover work the same way.</p>
-    <ComponentPreview Name="trace-sheet" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-sheet" PreviewClass="min-h-0" />
     <DocsHeading Title="Group" />
     <p>Put rows that sit next to each other in a <code>Trace</code>. It also styles any trigger or link that wraps a <code>TraceLine</code>.</p>
-    <ComponentPreview Name="trace-group" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-group" PreviewClass="min-h-0" />
     <DocsHeading Title="Sources" />
     <p>A collapsible row whose detail is a <code>Trace</code> of link rows.</p>
-    <ComponentPreview Name="trace-sources" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-sources" PreviewClass="min-h-0" />
     <p>See Sources for more examples.</p>
     <DocsHeading Title="Chain of Thought" />
     <p>A chain of thought is a collapsible row with step rows inside. Set the parent's status and title from its children.</p>
-    <ComponentPreview Name="trace-steps" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-steps" PreviewClass="min-h-0" />
     <p>See Chain of Thought and Task for more examples.</p>
     <DocsHeading Title="Commit" />
     <p>A commit is a collapsible row with a line for each changed file. Say what changed in the title, Added, Edited or Deleted, and put the line counts in the description. Each file opens its diff in a <a href="#sheet">Sheet</a>.</p>
-    <ComponentPreview Name="trace-commit" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-commit" PreviewClass="min-h-0" />
     <DocsHeading Title="Whole Turn" />
     <p>Three levels: the turn, a summary, and the rows. Text between steps sits between two <code>Trace</code> lists.</p>
-    <ComponentPreview Name="trace-turn" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-turn" PreviewClass="min-h-0" />
     <DocsHeading Title="Reasoning" />
     <p>Render a <code>reasoning</code> part from the AI SDK. The row is a <code>TraceLine</code> until the first text arrives. See <a href="#open-state">Open State</a>.</p>
-    <ComponentPreview Name="trace-thinking" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-thinking" PreviewClass="min-h-0" />
     <p>See Reasoning for more examples.</p>
     <DocsHeading Title="Tool" />
     <p>Render tool parts from the AI SDK. Map the tool part as in Tool.</p>
-    <ComponentPreview Name="trace-tool-calls" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-tool-calls" PreviewClass="min-h-0" />
     <p>See Tool for more examples.</p>
     <DocsHeading Title="Accessibility" />
     <p><code>Trace</code> adds no roles of its own. Each line gets its semantics from the element that wraps it.</p>
@@ -125,7 +125,7 @@
     </ul>
     <DocsHeading Title="RTL" />
     <p>To enable RTL support in Blazix, see the <a href="/docs/rtl">RTL configuration guide</a>.</p>
-    <ComponentPreview Name="trace-rtl" Direction="rtl" PreviewClass="h-auto" />
+    <ComponentPreview Name="trace-rtl" Direction="rtl" PreviewClass="min-h-0" />
     <DocsHeading Title="API Reference" />
     <ApiReference Name="trace" />
 </DocsPage>

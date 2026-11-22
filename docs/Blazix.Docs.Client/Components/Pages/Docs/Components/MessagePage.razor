@@ -1,7 +1,7 @@
 @page "/docs/components/message"
 
 <DocsPage Title="Message" Description="Displays a message in a conversation, with optional avatar, header, footer, and alignment.">
-    <ComponentPreview Name="message-demo" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="message-demo" PreviewClass="min-h-0 theme-blue" />
     <p>The <code>Message</code> component lays out a single message in a conversation. It handles the avatar, alignment, header, and footer around the message surface.</p>
     <p>For AI apps, you can render reasoning steps, tool calls and assistant messages using the <code>Message</code> component.</p>
     <DocsHeading Title="Installation" />
@@ -25,7 +25,7 @@
     </ul>
     <DocsHeading Title="Avatar" />
     <p>Use <code>MessageAvatar</code> to render an avatar next to the message. Set <code>align="end"</code> on the message to align the avatar to the end of the message.</p>
-    <ComponentPreview Name="message-avatar" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="message-avatar" PreviewClass="min-h-0 theme-blue" />
     <DocsTable>
         <table>
             <thead><tr><th>align</th><th>Description</th></tr></thead>
@@ -37,15 +37,15 @@
     </DocsTable>
     <DocsHeading Title="Group" />
     <p>Use <code>MessageGroup</code> to stack consecutive messages from the same sender. Render an empty <code>MessageAvatar</code> on the earlier messages to keep them aligned with the avatar on the last one.</p>
-    <ComponentPreview Name="message-group" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="message-group" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="Header and Footer" />
     <p>Use <code>MessageHeader</code> for a sender name and <code>MessageFooter</code> for metadata such as a delivery or read status.</p>
-    <ComponentPreview Name="message-header-footer" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="message-header-footer" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="Actions" />
     <p>Place message-level actions in <code>MessageFooter</code>, such as copy, retry, or feedback buttons.</p>
-    <ComponentPreview Name="message-actions" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="message-actions" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="Attachment" />
-    <ComponentPreview Name="message-attachment" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="message-attachment" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="Accessibility" />
     <p><code>Message</code> is a presentational layout wrapper. Accessibility comes from the content you place inside it.</p>
     <DocsHeading Level="3" Title="Label icon-only actions" />
@@ -56,7 +56,7 @@
     <CodeFigure Code="@StatusUpdatesCode" LineNumbers="true" />
     <DocsHeading Title="RTL" />
     <p>To enable RTL support in Blazix, see the <a href="/docs/rtl">RTL configuration guide</a>.</p>
-    <ComponentPreview Name="message-rtl" Direction="rtl" PreviewClass="h-auto" />
+    <ComponentPreview Name="message-rtl" Direction="rtl" PreviewClass="min-h-0" />
     <DocsHeading Title="API Reference" />
     <ApiReference Name="message" />
 </DocsPage>

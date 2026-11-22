@@ -1,7 +1,7 @@
 @page "/docs/utils/scroll-fade"
 
 <DocsPage Title="scroll-fade" Description="Utilities for adding a fade effect to the edges of a scroll container.">
-    <ComponentPreview Name="scroll-fade-demo" PreviewClass="h-auto" />
+    <ComponentPreview Name="scroll-fade-demo" PreviewClass="min-h-0" />
 
     <DocsHeading Title="Installation" />
     <p>
@@ -56,21 +56,21 @@
 
     <DocsHeading Title="No Overflow, No Fade" />
     <p>If the content does not overflow, no fade is shown. You can apply <code>scroll-fade</code> to any list without checking whether it scrolls.</p>
-    <ComponentPreview Name="scroll-fade-overflow" PreviewClass="h-auto" />
+    <ComponentPreview Name="scroll-fade-overflow" PreviewClass="min-h-0" />
 
     <DocsHeading Title="Horizontal Scrolling" />
     <p>Use <code>scroll-fade-x</code> on containers that scroll horizontally, i.e. the element that has <code>overflow-x-auto</code>.</p>
-    <ComponentPreview Name="scroll-fade-horizontal" PreviewClass="h-64" />
+    <ComponentPreview Name="scroll-fade-horizontal" PreviewClass="min-h-64" />
     <CodeFigure Code="@HorizontalCode" />
     <p>
         The horizontal fade is direction-aware. In RTL layouts, the crisp edge and the fade follow the reading direction with no extra classes needed.
         <code>scroll-fade-&lt;number&gt;</code> and <code>scroll-fade-none</code> work the same for both axes.
     </p>
-    <ComponentPreview Name="scroll-fade-rtl" Direction="rtl" PreviewClass="h-auto" />
+    <ComponentPreview Name="scroll-fade-rtl" Direction="rtl" PreviewClass="min-h-0" />
 
     <DocsHeading Title="Edge Fades" />
     <p>Use edge utilities when only one edge should track the scroll position.</p>
-    <ComponentPreview Name="scroll-fade-edge" PreviewClass="h-auto" />
+    <ComponentPreview Name="scroll-fade-edge" PreviewClass="min-h-0" />
     <CodeFigure Code="@EdgeCode" />
     <p>
         The edge utilities are scroll-aware. Start edges fade in after you scroll away from the start, and end edges fade out when you reach the end. Use
@@ -83,7 +83,7 @@
         The fade depth defaults to <code>12%</code> of the container, capped at <code>40px</code> so tall scrollers stay subtle. Use
         <code>scroll-fade-&lt;number&gt;</code> to set a fixed size on the spacing scale instead, the same way <code>scroll-mt-&lt;number&gt;</code> works.
     </p>
-    <ComponentPreview Name="scroll-fade-size" PreviewClass="h-auto" />
+    <ComponentPreview Name="scroll-fade-size" PreviewClass="min-h-0" />
     <CodeFigure Code="@SizeCode" />
     <p>For one-off values, use an arbitrary length or percentage:</p>
     <CodeFigure Code="@ArbitrarySizeCode" />
@@ -103,7 +103,7 @@
     <DocsHeading Title="Disabling the Fade" />
     <p>Use <code>scroll-fade-none</code> to remove the fade. It works in any class order, so the typical use is responsive or stateful:</p>
     <CodeFigure Code="@NoneCode" />
-    <ComponentPreview Name="scroll-fade-none" PreviewClass="h-auto" />
+    <ComponentPreview Name="scroll-fade-none" PreviewClass="min-h-0" />
 
     <DocsHeading Title="Fallback" />
     <p>

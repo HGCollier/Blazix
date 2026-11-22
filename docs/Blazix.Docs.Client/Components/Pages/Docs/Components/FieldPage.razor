@@ -1,7 +1,7 @@
 @page "/docs/components/field"
 
 <DocsPage Title="Field" Description="Combine labels, controls, and help text to compose accessible form fields and grouped inputs.">
-    <ComponentPreview Name="field-demo" PreviewClass="h-[800px] p-6 md:h-[850px]" />
+    <ComponentPreview Name="field-demo" PreviewClass="min-h-[800px] p-6 md:min-h-[850px]" />
     <DocsHeading Title="Installation" />
     <InstallationTabs Name="field" />
     <DocsHeading Title="Usage" />
@@ -37,7 +37,7 @@
     <DocsHeading Title="Fieldset" />
     <ComponentPreview Name="field-fieldset" />
     <DocsHeading Title="Checkbox" />
-    <ComponentPreview Name="field-checkbox" PreviewClass="h-[32rem]" />
+    <ComponentPreview Name="field-checkbox" PreviewClass="min-h-[32rem]" />
     <DocsHeading Title="Radio" />
     <ComponentPreview Name="field-radio" />
     <DocsHeading Title="Switch" />
@@ -47,14 +47,14 @@
     <ComponentPreview Name="field-choice-card" />
     <DocsHeading Title="Field Group" />
     <p>Stack <code>Field</code> components with <code>FieldGroup</code>. Add <code>FieldSeparator</code> to divide them.</p>
-    <ComponentPreview Name="field-group" PreviewClass="h-96" />
+    <ComponentPreview Name="field-group" PreviewClass="min-h-96" />
     <DocsHeading Title="Responsive Layout" />
     <ul>
         <li><strong>Vertical fields:</strong> Default orientation stacks label, control, and helper text—ideal for mobile-first layouts.</li>
         <li><strong>Horizontal fields:</strong> Set <code>orientation="horizontal"</code> on <code>Field</code> to align the label and control side-by-side. Pair with <code>FieldContent</code> to keep descriptions aligned.</li>
         <li><strong>Responsive fields:</strong> Set <code>orientation="responsive"</code> for automatic column layouts inside container-aware parents. Apply <code>@@container/field-group</code> classes on <code>FieldGroup</code> to switch orientations at specific breakpoints.</li>
     </ul>
-    <ComponentPreview Name="field-responsive" PreviewClass="h-[650px] p-6 md:h-[500px] md:p-10" />
+    <ComponentPreview Name="field-responsive" PreviewClass="min-h-[650px] p-6 md:min-h-[500px] md:p-10" />
     <DocsHeading Title="Validation and Errors" />
     <ul>
         <li>Add <code>data-invalid</code> to <code>Field</code> to switch the entire block into an error state.</li>
@@ -70,7 +70,7 @@
     </ul>
     <DocsHeading Title="RTL" />
     <p>To enable RTL support in Blazix, see the <a href="/docs/rtl">RTL configuration guide</a>.</p>
-    <ComponentPreview Name="field-rtl" Direction="rtl" PreviewClass="h-[800px] p-6 md:h-[850px]" />
+    <ComponentPreview Name="field-rtl" Direction="rtl" PreviewClass="min-h-[800px] p-6 md:min-h-[850px]" />
     <DocsHeading Title="API Reference" />
     <ApiReference Name="field" />
 </DocsPage>

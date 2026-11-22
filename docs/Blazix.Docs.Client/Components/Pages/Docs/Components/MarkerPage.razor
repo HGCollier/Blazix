@@ -1,7 +1,7 @@
 @page "/docs/components/marker"
 
 <DocsPage Title="Marker" Description="Displays an inline status, system note, bordered row, or labeled separator in a conversation.">
-    <ComponentPreview Name="marker-demo" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="marker-demo" PreviewClass="min-h-0 theme-blue" />
     <p>The <code>Marker</code> component displays inline conversation markers such as status updates, system notes, bordered rows, and labeled separators. Compose it with <a href="/docs/components/message"><code>Message</code></a> in a conversation thread.</p>
     <DocsHeading Title="Installation" />
     <InstallationTabs Name="marker" />
@@ -20,7 +20,7 @@
     </ul>
     <DocsHeading Title="Variants" />
     <p>Use <code>Variant</code> to switch between an inline marker, bordered row, and labeled separator.</p>
-    <ComponentPreview Name="marker-variants" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="marker-variants" PreviewClass="min-h-0 theme-blue" />
     <DocsTable>
         <table>
             <thead><tr><th>Variant</th><th>Description</th></tr></thead>
@@ -33,22 +33,22 @@
     </DocsTable>
     <DocsHeading Title="Status" />
     <p>Set <code>role="status"</code> and include a <a href="/docs/components/spinner"><code>Spinner</code></a> for streaming or in-progress markers so updates are announced.</p>
-    <ComponentPreview Name="marker-status" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="marker-status" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="Shimmer" />
     <p>Add the <code>shimmer</code> utility class to <code>MarkerContent</code> for an animated streaming-text effect. The utility ships in <code>Styles/Vendor/variants.css</code>, which <code>init</code> adds to your app.</p>
-    <ComponentPreview Name="marker-shimmer" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="marker-shimmer" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="Separator" />
     <p>Use the <code>separator</code> variant for labeled dividers, such as dates or section breaks, in a conversation. A Checkpoint is a separator with a button that restores the thread to that point.</p>
-    <ComponentPreview Name="marker-separator" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="marker-separator" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="Border" />
     <p>Use the <code>border</code> variant for status rows that should keep the default marker alignment while separating the next row.</p>
-    <ComponentPreview Name="marker-border" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="marker-border" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="With Icon" />
     <p>Use <code>MarkerIcon</code> to render an icon alongside the content. Use <code>flex-col</code> to stack the icon above the content.</p>
-    <ComponentPreview Name="marker-icon" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="marker-icon" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="Links and Buttons" />
     <p>Turn a marker into a link or button with the <code>Render</code> parameter on <code>Marker</code>.</p>
-    <ComponentPreview Name="marker-link-button" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="marker-link-button" PreviewClass="min-h-0 theme-blue" />
     <CodeFigure Code="@LinksAndButtonsCode" LineNumbers="true" />
     <DocsHeading Title="Accessibility" />
     <p><code>Marker</code> is presentational by default. The correct semantics depend on how you use it, so choose the role based on intent rather than relying on a single default.</p>
@@ -70,7 +70,7 @@
     <CodeFigure Code="@InteractiveMarkersCode" LineNumbers="true" />
     <DocsHeading Title="RTL" />
     <p>To enable RTL support in Blazix, see the <a href="/docs/rtl">RTL configuration guide</a>.</p>
-    <ComponentPreview Name="marker-rtl" Direction="rtl" PreviewClass="h-auto" />
+    <ComponentPreview Name="marker-rtl" Direction="rtl" PreviewClass="min-h-0" />
     <DocsHeading Title="API Reference" />
     <ApiReference Name="marker" />
 </DocsPage>

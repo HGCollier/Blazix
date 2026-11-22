@@ -1,7 +1,7 @@
 @page "/docs/components/bubble"
 
 <DocsPage Title="Bubble" Description="Displays conversational content in a message bubble. Supports variants, alignment, grouping, reactions, and collapsible content.">
-    <ComponentPreview Name="bubble-demo" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="bubble-demo" PreviewClass="min-h-0 theme-blue" />
     <p>The <code>Bubble</code> component displays framed conversational content. Use it for chat text, short structured output, quoted replies, suggestions, and reactions.</p>
     <p>For full-featured chat interfaces, use the <a href="/docs/components/message"><code>Message</code></a> component. <code>Bubble</code> is intentionally scoped to the bubble surface. Place avatars, names, timestamps, metadata, and message-level actions in <a href="/docs/components/message"><code>Message</code></a>.</p>
     <DocsHeading Title="Installation" />
@@ -24,7 +24,7 @@
     </ul>
     <DocsHeading Title="Variants" />
     <p>Use <code>Variant</code> to change the visual treatment of the bubble.</p>
-    <ComponentPreview Name="bubble-variants" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="bubble-variants" PreviewClass="min-h-0 theme-blue" />
     <DocsTable>
         <table>
             <thead><tr><th>Variant</th><th>Description</th></tr></thead>
@@ -42,7 +42,7 @@
     <p>A bubble sizes to its content, up to 80% of the container width. The <code>ghost</code> variant removes the max-width so assistant text and rich content can span the full row.</p>
     <DocsHeading Title="Alignment" />
     <p>Use <code>Align</code> on <code>Bubble</code> to align the bubble to the start or end of the conversation.</p>
-    <ComponentPreview Name="bubble-alignment" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="bubble-alignment" PreviewClass="min-h-0 theme-blue" />
     <DocsTable>
         <table>
             <thead><tr><th>align</th><th>Description</th></tr></thead>
@@ -56,23 +56,23 @@
     <DocsHeading Title="Bubble Group" />
     <p>Use <code>BubbleGroup</code> to group consecutive bubbles from the same sender. Note the <code>Align</code> parameter should be set on the <code>Bubble</code> component itself, not the <code>BubbleGroup</code> component.</p>
     <CodeFigure Code="@BubbleGroupCode" Language="text" />
-    <ComponentPreview Name="bubble-group-demo" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="bubble-group-demo" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="Links and Buttons" />
     <p>You can turn a bubble into a link or button by using the <code>Render</code> parameter on <code>BubbleContent</code>.</p>
-    <ComponentPreview Name="bubble-link-button" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="bubble-link-button" PreviewClass="min-h-0 theme-blue" />
     <CodeFigure Code="@LinksAndButtonsCode" LineNumbers="true" />
     <DocsHeading Title="Reactions" />
     <p>Use <code>BubbleReactions</code> for bubble reactions. You can use it to display reactions or quick action buttons. Use <code>Side</code> and <code>Align</code> to position the row — <code>Side="BubbleReactionsSide.Top"</code> anchors it to the upper edge. Reactions overlap the bubble edge, so leave vertical space between rows — the examples below use a larger <code>gap</code> for this reason.</p>
-    <ComponentPreview Name="bubble-reactions" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="bubble-reactions" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="Show More / Collapsible" />
     <p>Long bubble content can be composed with <a href="/docs/components/collapsible"><code>Collapsible</code></a> to allow for a show more or show less interaction. Use the <code>CollapsibleTrigger</code> component to trigger the collapsible content.</p>
-    <ComponentPreview Name="bubble-collapsible" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="bubble-collapsible" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="Tooltip" />
     <p>Wrap a bubble in a <a href="/docs/components/tooltip"><code>Tooltip</code></a> to reveal metadata on hover, such as when a message was read.</p>
-    <ComponentPreview Name="bubble-tooltip" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="bubble-tooltip" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="Popover" />
     <p>Pair a bubble with a <a href="/docs/components/popover"><code>Popover</code></a> to surface more information on demand, such as the full error message for a failed action.</p>
-    <ComponentPreview Name="bubble-popover" PreviewClass="h-auto theme-blue" />
+    <ComponentPreview Name="bubble-popover" PreviewClass="min-h-0 theme-blue" />
     <DocsHeading Title="Accessibility" />
     <p><code>Bubble</code> renders the presentational message surface. Keep conversation-level semantics on the surrounding container and follow the guidelines below.</p>
     <DocsHeading Level="3" Title="Labeling Reactions" />
@@ -87,7 +87,7 @@
     <p>Bubble variants signal role and tone with color. Pair them with text, alignment, or icons so meaning is not conveyed by color alone. For a <code>destructive</code> bubble, keep the error context in the message text rather than relying on the color treatment.</p>
     <DocsHeading Title="RTL" />
     <p>To enable RTL support in Blazix, see the <a href="/docs/rtl">RTL configuration guide</a>.</p>
-    <ComponentPreview Name="bubble-rtl" Direction="rtl" PreviewClass="h-auto" />
+    <ComponentPreview Name="bubble-rtl" Direction="rtl" PreviewClass="min-h-0" />
     <DocsHeading Title="API Reference" />
     <ApiReference Name="bubble" />
 </DocsPage>

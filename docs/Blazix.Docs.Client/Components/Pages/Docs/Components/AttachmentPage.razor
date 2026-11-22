@@ -1,7 +1,7 @@
 @page "/docs/components/attachment"
 
 <DocsPage Title="Attachment" Description="Displays a file or image attachment with media, metadata, upload state, and actions.">
-    <ComponentPreview Name="attachment-demo" PreviewClass="h-auto theme-blue bg-surface dark:bg-background" />
+    <ComponentPreview Name="attachment-demo" PreviewClass="min-h-0 theme-blue bg-surface dark:bg-background" />
     <p>The <code>Attachment</code> component displays a file or image attachment, its media, name, and metadata, with optional actions and upload state. Use it for files and images in chat composers, message threads, and upload lists.</p>
     <DocsHeading Title="Installation" />
     <InstallationTabs Name="attachment" />
@@ -23,19 +23,19 @@
     </ul>
     <DocsHeading Title="Image" />
     <p>Set <code>variant="image"</code> on <code>AttachmentMedia</code> and render an <code>&lt;img&gt;</code> inside it. Use <code>orientation="vertical"</code> to stack the media above the content.</p>
-    <ComponentPreview Name="attachment-image" PreviewClass="h-auto theme-blue bg-surface dark:bg-background" />
+    <ComponentPreview Name="attachment-image" PreviewClass="min-h-0 theme-blue bg-surface dark:bg-background" />
     <DocsHeading Title="States" />
     <p>Set <code>State</code> to reflect the upload lifecycle. <code>uploading</code> and <code>processing</code> shimmer the title, and <code>error</code> switches to a destructive treatment.</p>
-    <ComponentPreview Name="attachment-states" PreviewClass="h-auto theme-blue bg-surface dark:bg-background" />
+    <ComponentPreview Name="attachment-states" PreviewClass="min-h-0 theme-blue bg-surface dark:bg-background" />
     <DocsHeading Title="Sizes" />
     <p>Use <code>Size</code> to switch between <code>default</code>, <code>sm</code>, and <code>xs</code>.</p>
-    <ComponentPreview Name="attachment-sizes" PreviewClass="h-auto theme-blue bg-surface dark:bg-background" />
+    <ComponentPreview Name="attachment-sizes" PreviewClass="min-h-0 theme-blue bg-surface dark:bg-background" />
     <DocsHeading Title="Group" />
     <p>Wrap attachments in <code>AttachmentGroup</code> to lay them out in a horizontally scrollable, snapping row with an edge fade.</p>
-    <ComponentPreview Name="attachment-group" PreviewClass="h-auto theme-blue bg-surface dark:bg-background" />
+    <ComponentPreview Name="attachment-group" PreviewClass="min-h-0 theme-blue bg-surface dark:bg-background" />
     <DocsHeading Title="Trigger" />
     <p>Add an <code>AttachmentTrigger</code> to make the whole card open a link or dialog. It fills the card behind the actions, so the actions stay clickable.</p>
-    <ComponentPreview Name="attachment-trigger" PreviewClass="h-auto theme-blue bg-surface dark:bg-background" />
+    <ComponentPreview Name="attachment-trigger" PreviewClass="min-h-0 theme-blue bg-surface dark:bg-background" />
     <CodeFigure Code="@TriggerCode" LineNumbers="true" />
     <DocsHeading Title="Accessibility" />
     <p><code>AttachmentAction</code> renders a <code>Button</code>, and <code>AttachmentTrigger</code> renders a real <code>&lt;button&gt;</code> (or your element via <code>Render</code>). Follow the guidance below so both are operable and announced.</p>
@@ -52,7 +52,7 @@
     <p>The <code>error</code> state uses a destructive color. Keep the failure reason in <code>AttachmentDescription</code> so the state is not conveyed by color alone.</p>
     <DocsHeading Title="RTL" />
     <p>To enable RTL support in Blazix, see the <a href="/docs/rtl">RTL configuration guide</a>.</p>
-    <ComponentPreview Name="attachment-rtl" Direction="rtl" PreviewClass="h-auto" />
+    <ComponentPreview Name="attachment-rtl" Direction="rtl" PreviewClass="min-h-0" />
     <DocsHeading Title="API Reference" />
     <ApiReference Name="attachment" />
 </DocsPage>

@@ -39,7 +39,7 @@
             }
             <div data-slot="preview" dir="@(Rtl ? _language.Dir : "ltr")" lang="@(Rtl ? _language.Code : null)">
                 <div data-align="@Align" data-chromeless="@(ChromeLessOnMobile ? "true" : "false")"
-                     class="@Cn("preview relative flex h-72 w-full justify-center " + Padding + " data-[align=center]:items-center data-[align=end]:items-start data-[align=start]:items-start data-[chromeless=true]:h-auto data-[chromeless=true]:p-0 sm:data-[align=end]:items-end", PreviewClass)">
+                     class="@Cn("preview relative flex min-h-72 w-full justify-center " + Padding + " data-[align=center]:items-center data-[align=end]:items-start data-[align=start]:items-start data-[chromeless=true]:min-h-0 data-[chromeless=true]:p-0 sm:data-[align=end]:items-end", PreviewClass)">
                     @if (Rtl)
                     {
                         @* A key per language: an example reads its strings once, and some keep state (a chosen date) in them. *@
@@ -199,7 +199,10 @@ else
     /// <summary>No padding or fixed height around the example: for full-width ones like the sidebar.</summary>
     [Parameter] public bool ChromeLessOnMobile { get; set; }
 
-    /// <summary>Classes for the preview area, e.g. a height.</summary>
+    /// <summary>
+    /// Classes for the preview area, e.g. a minimum height (<c>min-h-96</c>). The area grows with the example, so opening an
+    /// accordion or the next questionnaire step never clips it: give it a minimum height, not a height.
+    /// </summary>
     [Parameter] public string? PreviewClass { get; set; }
 
     [Parameter] public string? Caption { get; set; }

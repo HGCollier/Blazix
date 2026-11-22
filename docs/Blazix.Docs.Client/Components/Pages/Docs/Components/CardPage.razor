@@ -1,7 +1,7 @@
 @page "/docs/components/card"
 
 <DocsPage Title="Card" Description="Displays a card with header, content, and footer.">
-    <ComponentPreview Name="card-demo" PreviewClass="h-[30rem]" />
+    <ComponentPreview Name="card-demo" PreviewClass="min-h-[30rem]" />
     <DocsHeading Title="Installation" />
     <InstallationTabs Name="card" />
     <DocsHeading Title="Usage" />
@@ -11,18 +11,18 @@
     <CodeFigure Code="@CompositionCode" Language="text" />
     <DocsHeading Title="Size" />
     <p>Use the <code>size="sm"</code> parameter to set the size of the card to small. The small size variant uses smaller spacing.</p>
-    <ComponentPreview Name="card-small" PreviewClass="h-96" />
+    <ComponentPreview Name="card-small" PreviewClass="min-h-96" />
     <DocsHeading Title="Spacing" />
     <p>In addition to the <code>Size</code> parameter, you can use the <code>--card-spacing</code> CSS variable to control the spacing between sections and the inset of card parts.</p>
-    <ComponentPreview Name="card-spacing" PreviewClass="h-[34rem]" />
+    <ComponentPreview Name="card-spacing" PreviewClass="min-h-[34rem]" />
     <p>Use negative margins with <code>-mx-(--card-spacing)</code> to make content go edge to edge while keeping it aligned with the card inset. When the edge-to-edge content sits above a footer, use <code>-mb-(--card-spacing)</code> on <code>CardContent</code> to remove the section gap.</p>
-    <ComponentPreview Name="card-edge-to-edge" PreviewClass="h-[24rem]" />
+    <ComponentPreview Name="card-edge-to-edge" PreviewClass="min-h-[24rem]" />
     <DocsHeading Title="Image" />
     <p>Add an image before the card header to create a card with an image.</p>
-    <ComponentPreview Name="card-image" PreviewClass="h-[32rem]" />
+    <ComponentPreview Name="card-image" PreviewClass="min-h-[32rem]" />
     <DocsHeading Title="RTL" />
     <p>To enable RTL support in Blazix, see the <a href="/docs/rtl">RTL configuration guide</a>.</p>
-    <ComponentPreview Name="card-rtl" Direction="rtl" PreviewClass="h-auto" />
+    <ComponentPreview Name="card-rtl" Direction="rtl" PreviewClass="min-h-0" />
     <DocsHeading Title="API Reference" />
     <ApiReference Name="card" />
     <DocsHeading Title="Changelog" />

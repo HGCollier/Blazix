@@ -12,7 +12,7 @@
       One version for everything we ship. The CLI copies styled components that were written
       against this exact Blazix.Primitives version, and adds that version to the consumer's project.
     -->
-    <Version>0.2.2</Version>
+    <Version>0.2.3</Version>
 
     <Authors>Blazix</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
