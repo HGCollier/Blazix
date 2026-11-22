@@ -8,7 +8,7 @@
 
 <div align="center">
 
-Accessible, unstyled Blazor primitives and beautifully designed components you copy into your app.
+Unstyled Blazor primitives and beautifully designed components you copy into your app.
 Built with nothing but .NET. Open Source. Open Code.
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -44,6 +44,14 @@ dotnet add package Blazix.Primitives
 ```
 
 No Node.js, npm or `package.json` required. Tailwind runs through its standalone CLI as part of `dotnet build`.
+
+## Accessibility
+
+Blazix aims for WCAG 2.2 AA and follows the [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/) patterns, but it hasn't been tested with screen readers or voice control, and it hasn't been audited.
+
+What has been checked: keyboard use, focus management, ARIA state and [axe](https://github.com/dequelabs/axe-core) scans, in Chromium and Firefox. Automated checks like axe find only some issues.
+
+If your project needs to be accessible, use Blazix at your own risk and test it yourself with the assistive technology your users have. If you find a problem, please [open an issue](https://github.com/HGCollier/Blazix/issues).
 
 ## Documentation
 

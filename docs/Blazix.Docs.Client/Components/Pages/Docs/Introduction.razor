@@ -1,7 +1,7 @@
 @page "/docs"
 
 <DocsPage Title="Introduction"
-          Description="Blazix is a set of beautifully-designed, accessible Blazor components and a code distribution platform. Built with .NET tooling only. Open Source. Open Code.">
+          Description="Blazix is a set of beautifully-designed Blazor components and a code distribution platform. Built with .NET tooling only. Open Source. Open Code.">
     <p><strong>This is not a component library. It is how you build your component library.</strong></p>
     <p>
         You know how most traditional component libraries work: you install a package from NuGet, use its components, and
@@ -51,6 +51,18 @@
             </AccordionContent>
         </AccordionItem>
     </Accordion>
+
+    <DocsHeading Title="Accessibility" />
+    <p>
+        Blazix aims for WCAG 2.2 AA and follows the <a href="https://www.w3.org/WAI/ARIA/apg/">WAI-ARIA Authoring Practices</a>
+        patterns. Keyboard use, focus management, ARIA state and axe scans have been checked in Chromium and Firefox.
+    </p>
+    <p>
+        <strong>It hasn't been tested with screen readers or voice control, and it hasn't been audited.</strong> Automated checks
+        like axe find only some issues. If your project needs to be accessible, use Blazix at your own risk and test it yourself
+        with the assistive technology your users have. If you find a problem, please
+        <a href="https://github.com/HGCollier/Blazix/issues">open an issue</a>.
+    </p>
 
     <DocsHeading Title="Composition" />
     <p>

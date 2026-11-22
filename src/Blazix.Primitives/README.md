@@ -1,6 +1,8 @@
 # Blazix.Primitives
 
-Unstyled, accessible Blazor primitives. You bring the CSS.
+Unstyled Blazor primitives. You bring the CSS.
+
+They follow the WAI-ARIA Authoring Practices, but they haven't been tested with screen readers or audited. If your project needs to be accessible, test it yourself.
 
 ```bash
 dotnet add package Blazix.Primitives
