@@ -14,7 +14,8 @@
     -->
     <Version>0.2.3</Version>
 
-    <Authors>Blazix</Authors>
+    <Authors>Halden Collier</Authors>
+    <Copyright>Copyright (c) 2026 Halden Collier</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://blazix-ui.com</PackageProjectUrl>
     <!-- The docs favicon (docs/Blazix.Docs/wwwroot/favicon.svg) rendered at 128x128: NuGet takes PNG or JPEG, not SVG. -->
