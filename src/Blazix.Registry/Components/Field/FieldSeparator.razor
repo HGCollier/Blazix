@@ -1,0 +1,21 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<div data-slot="field-separator" data-content="@(ChildContent is not null ? "true" : "false")" @attributes="AdditionalAttributes"
+     class="@Cn("relative -my-2 h-5 text-sm group-data-[variant=outline]/field-group:-mb-2", Class)">
+    <Separator Class="absolute inset-0 top-1/2" />
+    @if (ChildContent is not null)
+    {
+        <span class="relative mx-auto block w-fit bg-background px-2 text-muted-foreground" data-slot="field-separator-content">
+            @ChildContent
+        </span>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

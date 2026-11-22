@@ -4,7 +4,8 @@ using System.Text.RegularExpressions;
 
 namespace Blazix.Cli;
 
-internal sealed record RegistryItem(string Name, string Description, string[] Files, string[] Dependencies, bool UsesPrimitives);
+/// <param name="Services">Services its components inject, which the app registers in Program.cs.</param>
+internal sealed record RegistryItem(string Name, string Description, string[] Files, string[] Dependencies, bool UsesPrimitives, string[] Services);
 
 internal static partial class Registry
 {
@@ -29,7 +30,8 @@ internal static partial class Registry
             (string?)kv.Value!["description"] ?? "",
             [.. kv.Value["files"]!.AsArray().Select(f => (string)f!)],
             kv.Value["dependencies"]?.AsArray().Select(d => (string)d!).ToArray() ?? [],
-            (bool?)kv.Value["usesPrimitives"] ?? false))];
+            (bool?)kv.Value["usesPrimitives"] ?? false,
+            kv.Value["services"]?.AsArray().Select(s => (string)s!).ToArray() ?? []))];
     }
 
     /// <summary>The requested items plus their dependencies, dependencies first.</summary>

@@ -1,0 +1,10 @@
+@namespace Blazix.Registry
+@using Blazix.Primitives
+
+@* A portal, for portal-style markup: dialogs render in the browser's top layer, so this renders its content in place. *@
+<DialogPortal KeepMounted="@KeepMounted">@ChildContent</DialogPortal>
+
+@code {
+    [Parameter] public bool KeepMounted { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

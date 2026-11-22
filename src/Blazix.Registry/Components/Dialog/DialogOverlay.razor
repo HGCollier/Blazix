@@ -1,0 +1,16 @@
+@namespace Blazix.Registry
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<DialogBackdrop data-slot="dialog-overlay" @attributes="AdditionalAttributes"
+                class="@Cn(
+                    "fixed inset-0 isolate z-50 bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs " +
+                    "data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
+                    Class)" />
+
+@code {
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

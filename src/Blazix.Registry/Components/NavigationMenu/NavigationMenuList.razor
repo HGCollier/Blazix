@@ -1,0 +1,15 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.NavigationMenuList data-slot="navigation-menu-list" @attributes="AdditionalAttributes"
+                                    class="@Cn("group flex flex-1 list-none items-center justify-center gap-0", Class)">
+    @ChildContent
+</Blazix.Primitives.NavigationMenuList>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

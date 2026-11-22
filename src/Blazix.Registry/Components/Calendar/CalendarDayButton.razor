@@ -1,0 +1,41 @@
+@namespace Blazix.Registry
+@using System.Globalization
+@using static Blazix.Registry.ClassNames
+
+<Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Disabled="@Disabled"
+        data-day="@Day.Date.ToString("d", Locale ?? Calendar.DefaultLocale)"
+        data-selected-single="@Flag(Modifiers.Selected && Modifiers.RangeStart != true && Modifiers.RangeEnd != true && Modifiers.RangeMiddle != true)"
+        data-range-start="@Flag(Modifiers.RangeStart)" data-range-end="@Flag(Modifiers.RangeEnd)" data-range-middle="@Flag(Modifiers.RangeMiddle)"
+        @attributes="AdditionalAttributes"
+        Class="@Cn(
+            "relative isolate z-10 flex aspect-square size-auto w-full min-w-(--cell-size) flex-col gap-1 border-0 leading-none font-normal " +
+            "group-data-[focused=true]/day:relative group-data-[focused=true]/day:z-10 group-data-[focused=true]/day:border-ring " +
+            "group-data-[focused=true]/day:ring-[3px] group-data-[focused=true]/day:ring-ring/50 " +
+            "data-[range-end=true]:rounded-(--cell-radius) data-[range-end=true]:rounded-r-(--cell-radius) data-[range-end=true]:bg-primary " +
+            "data-[range-end=true]:text-primary-foreground data-[range-middle=true]:rounded-none data-[range-middle=true]:bg-muted " +
+            "data-[range-middle=true]:text-foreground data-[range-start=true]:rounded-(--cell-radius) data-[range-start=true]:rounded-l-(--cell-radius) " +
+            "data-[range-start=true]:bg-primary data-[range-start=true]:text-primary-foreground data-[selected-single=true]:bg-primary " +
+            "data-[selected-single=true]:text-primary-foreground dark:hover:text-foreground [&>span]:text-xs [&>span]:opacity-70",
+            "rdp-day", Class)">
+    @ChildContent
+</Button>
+
+@code {
+    /// <summary>The day the button selects.</summary>
+    [Parameter] public CalendarDay Day { get; set; }
+
+    /// <summary>The day's state; it sets the button's data-selected-single and data-range-* attributes.</summary>
+    [Parameter] public CalendarModifiers Modifiers { get; set; } = new();
+
+    /// <summary>Formats data-day. Defaults to en-US.</summary>
+    [Parameter] public CultureInfo? Locale { get; set; }
+
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private static string? Flag(bool? value) => value switch { true => "true", false => "false", null => null };
+}

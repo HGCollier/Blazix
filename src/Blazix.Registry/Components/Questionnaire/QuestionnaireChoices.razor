@@ -1,0 +1,18 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.QuestionnaireChoices data-slot="questionnaire-choices" @attributes="AdditionalAttributes" Render="@Render"
+                                      class="@Cn("group/questionnaire-choices grid min-w-0 gap-2", Class)">
+    @ChildContent
+</Blazix.Primitives.QuestionnaireChoices>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<QuestionnaireChoicesRenderProps>? Render { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,43 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<InputGroup Class="@Cn("w-auto", Class)">
+    <Blazix.Primitives.ComboboxInput @attributes="AdditionalAttributes" Placeholder="@Placeholder" disabled="@Disabled">
+        <Render>
+            <input data-slot="input-group-control" @attributes="context.Attributes" class="@Cn(Input.BaseClasses, InputGroupInput.BaseClasses)" />
+        </Render>
+    </Blazix.Primitives.ComboboxInput>
+    <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
+        @if (ShowTrigger)
+        {
+            <Blazix.Primitives.ComboboxTrigger data-slot="input-group-button" data-size="icon-xs" disabled="@Disabled"
+                                             class="@ButtonVariants.Get(ButtonVariant.Ghost, ButtonSize.Default, Cn("flex items-center gap-2 text-sm shadow-none size-6 rounded-[calc(var(--radius)-3px)] p-0 has-[>svg]:p-0", "group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent [&_svg:not([class*='size-'])]:size-4"))">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="pointer-events-none size-4 text-muted-foreground">
+                    <path d="m6 9 6 6 6-6" />
+                </svg>
+            </Blazix.Primitives.ComboboxTrigger>
+        }
+        @if (ShowClear)
+        {
+            <Blazix.Registry.ComboboxClear disabled="@Disabled" />
+        }
+    </InputGroupAddon>
+    @ChildContent
+</InputGroup>
+
+@code {
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+
+    /// <summary>Show the button that opens the list. Defaults to true.</summary>
+    [Parameter] public bool ShowTrigger { get; set; } = true;
+
+    /// <summary>Show the button that clears the input. Defaults to false.</summary>
+    [Parameter] public bool ShowClear { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

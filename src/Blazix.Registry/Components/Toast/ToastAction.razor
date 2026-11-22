@@ -1,0 +1,15 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.ToastAction data-slot="toast-action" @attributes="AdditionalAttributes"
+                             class="@ButtonVariants.Get(ButtonVariant.Outline, ButtonSize.Sm, Cn("shrink-0", Class))"
+                             ChildContent="@ChildContent" />
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    /// <summary>Overrides the toast's own text. Passed as a parameter, so leaving it out shows the toast's.</summary>
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,18 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<div data-slot="field-group" @attributes="AdditionalAttributes"
+     class="@Cn(
+         "group/field-group @container/field-group flex w-full flex-col gap-5 data-[slot=checkbox-group]:gap-3 " +
+         "*:data-[slot=field-group]:gap-4",
+         Class)">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

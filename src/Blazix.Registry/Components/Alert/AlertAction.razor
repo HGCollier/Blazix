@@ -1,0 +1,15 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<div data-slot="alert-action" @attributes="AdditionalAttributes"
+     class="@Cn("absolute top-2 right-2", Class)">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

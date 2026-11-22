@@ -1,0 +1,208 @@
+﻿@namespace Blazix.Registry
+@using System.Globalization
+@using System.Text
+@using Microsoft.JSInterop
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+@implements IAsyncDisposable
+
+@* The motion is Embla Carousel's, ported to carousel.js. *@
+<CascadingValue Value="_context">
+    <div @ref="_root" role="region" aria-roledescription="carousel" data-slot="carousel" @attributes="AdditionalAttributes"
+         class="@Cn("relative", Class)">
+        @ChildContent
+    </div>
+</CascadingValue>
+
+@code {
+    private CarouselContext _context = null!;
+    private ElementReference _root;
+    private IJSObjectReference? _module;
+    private IJSObjectReference? _controller;
+    private DotNetObjectReference<CarouselInterop>? _interop;
+    private string? _optionsKey;
+    private string? _pluginsKey;
+    private bool _disposed;
+
+    [Inject] private IJSRuntime JsRuntime { get; set; } = null!;
+
+    /// <summary>Which way the slides run. Vertical carousels need a height on CarouselContent.</summary>
+    [Parameter] public Orientation Orientation { get; set; } = Orientation.Horizontal;
+
+    /// <summary>Embla Carousel options, such as Align and Loop.</summary>
+    [Parameter] public CarouselOptions? Opts { get; set; }
+
+    /// <summary>Embla plugins, such as <see cref="CarouselAutoplay"/>. Keep the instances in a field.</summary>
+    [Parameter] public IReadOnlyList<CarouselPlugin>? Plugins { get; set; }
+
+    /// <summary>Receives the carousel's API once it starts.</summary>
+    [Parameter] public EventCallback<CarouselApi> SetApi { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    protected override void OnInitialized() => _context = new CarouselContext(Orientation, Opts);
+
+    protected override void OnParametersSet()
+    {
+        _context.Orientation = Orientation;
+        _context.Opts = Opts;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var options = JsOptions();
+        var plugins = JsPlugins();
+        var optionsKey = Key(options);
+        var pluginsKey = Key(plugins);
+        if (firstRender)
+        {
+            _optionsKey = optionsKey;
+            _pluginsKey = pluginsKey;
+            _module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/Blazix.Primitives/carousel.js");
+            // Removed while the module loaded. The first import can take a while (in Firefox especially), long
+            // enough to navigate away: the element is gone, and DisposeAsync ran before there was a module.
+            if (_disposed)
+            {
+                await DisposeJsAsync();
+                return;
+            }
+            _interop = DotNetObjectReference.Create(new CarouselInterop(this));
+            _controller = await _module.InvokeAsync<IJSObjectReference>("create", _root, _interop, options, plugins);
+            var state = await _controller.InvokeAsync<CarouselState>("state");
+            if (_disposed)
+            {
+                // ...or while Embla started: stop it too.
+                await DisposeJsAsync();
+                return;
+            }
+            AttachPlugins();
+            _context.Api = new CarouselApi(_controller, state, Plugins ?? []);
+            StateHasChanged();
+            await SetApi.InvokeAsync(_context.Api);
+            return;
+        }
+        if (_controller is null)
+            return;
+        AttachPlugins();
+        _context.Api!.Plugins = Plugins ?? [];
+        if (optionsKey == _optionsKey && pluginsKey == _pluginsKey)
+            return;
+        var pluginsChanged = pluginsKey != _pluginsKey;
+        _optionsKey = optionsKey;
+        _pluginsKey = pluginsKey;
+        await _controller.InvokeVoidAsync("reInit", options, pluginsChanged ? plugins : null);
+    }
+
+    private Dictionary<string, object> JsOptions()
+    {
+        var options = Opts?.ToJs() ?? new Dictionary<string, object>(StringComparer.Ordinal);
+        options["axis"] = Orientation == Orientation.Horizontal ? "x" : "y";
+        return options;
+    }
+
+    private Dictionary<string, object>[] JsPlugins() =>
+        (Plugins ?? []).Select(p => new Dictionary<string, object>(StringComparer.Ordinal) { ["name"] = p.Name, ["options"] = p.GetOptions() }).ToArray();
+
+    // What the options and plugins hold, to skip re-creating Embla when nothing changed. Written out by hand
+    // rather than with JsonSerializer, which would need reflection (not trim or AOT safe).
+    private static string Key(object value)
+    {
+        var key = new StringBuilder();
+        AppendKey(key, value);
+        return key.ToString();
+    }
+
+    private static void AppendKey(StringBuilder key, object? value)
+    {
+        switch (value)
+        {
+            case string text:
+                key.Append('"').Append(text.Replace("\\", "\\\\").Replace("\"", "\\\"")).Append('"');
+                break;
+            case IEnumerable<KeyValuePair<string, object>> map:
+                key.Append('{');
+                foreach (var (name, item) in map)
+                {
+                    AppendKey(key, name);
+                    key.Append(':');
+                    AppendKey(key, item);
+                    key.Append(',');
+                }
+                key.Append('}');
+                break;
+            case System.Collections.IEnumerable items:
+                key.Append('[');
+                foreach (var item in items)
+                {
+                    AppendKey(key, item);
+                    key.Append(',');
+                }
+                key.Append(']');
+                break;
+            case IFormattable formattable:
+                key.Append(formattable.ToString(null, CultureInfo.InvariantCulture));
+                break;
+            default:
+                key.Append(value);
+                break;
+        }
+    }
+
+    private void AttachPlugins()
+    {
+        foreach (var plugin in Plugins ?? [])
+            plugin.Attach(_controller);
+    }
+
+    private async Task OnEventAsync(string eventName, CarouselState state)
+    {
+        if (_context.Api is not { } api)
+            return;
+        api.Update(state);
+        if (eventName is "select" or "reInit")
+            StateHasChanged();
+        await api.EmitAsync(eventName);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        _disposed = true;
+        foreach (var plugin in Plugins ?? [])
+            plugin.Attach(null);
+        await DisposeJsAsync();
+    }
+
+    // Takes each reference first: a first render that outlived the component runs this too, after DisposeAsync.
+    private async Task DisposeJsAsync()
+    {
+        var controller = _controller;
+        var module = _module;
+        _controller = null;
+        _module = null;
+        try
+        {
+            if (controller is not null)
+            {
+                await controller.InvokeVoidAsync("dispose");
+                await controller.DisposeAsync();
+            }
+            if (module is not null)
+                await module.DisposeAsync();
+        }
+        catch (JSDisconnectedException)
+        {
+            // The circuit is gone, and the carousel with it.
+        }
+        _interop?.Dispose();
+    }
+
+    private sealed class CarouselInterop(Carousel owner)
+    {
+        [JSInvokable]
+        public Task OnEvent(string eventName, CarouselState state) => owner.OnEventAsync(eventName, state);
+    }
+}

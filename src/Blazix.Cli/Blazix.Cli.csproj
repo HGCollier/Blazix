@@ -37,10 +37,14 @@
     <ItemGroup>
       <!-- Staged in a private item type: unqualified %(Filename) inside a target would batch over
            every existing EmbeddedResource and rename it too. _Imports.razor is registry-only. -->
-      <_BlazixComponentSource Include="$(_BlazixRegistry)Components\*.razor;$(_BlazixRegistry)Components\*.cs"
+      <_BlazixComponentSource Include="$(_BlazixRegistry)Components\**\*.razor;$(_BlazixRegistry)Components\**\*.cs"
                               Exclude="$(_BlazixRegistry)Components\_Imports.razor" />
+      <!-- Named by the path registry.json lists, with the component's folder: Components/Button/Button.razor. -->
+      <_BlazixComponentSource>
+        <ResourcePath>$([System.String]::Copy('%(RecursiveDir)').Replace('\', '/'))%(Filename)%(Extension)</ResourcePath>
+      </_BlazixComponentSource>
       <EmbeddedResource Include="@(_BlazixComponentSource)"
-                        LogicalName="Components/%(_BlazixComponentSource.Filename)%(_BlazixComponentSource.Extension)" />
+                        LogicalName="Components/%(_BlazixComponentSource.ResourcePath)" />
       <EmbeddedResource Include="$(_BlazixRegistry)registry.json" LogicalName="registry.json" />
       <EmbeddedResource Include="$(_BlazixRegistry)Setup\Tailwind.targets" LogicalName="Setup/Tailwind.targets" />
       <EmbeddedResource Include="$(_BlazixRegistry)Setup\TailwindWatcher.cs" LogicalName="Setup/TailwindWatcher.cs" />

@@ -1,0 +1,20 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+@if (Root is { Ready: true, Count: 0 })
+{
+    <div data-slot="command-empty" @attributes="AdditionalAttributes" cmdk-empty="" role="presentation"
+         class="@Cn("py-6 text-center text-sm", Class)">
+        @ChildContent
+    </div>
+}
+
+@code {
+    [CascadingParameter] internal Command Root { get; set; } = null!;
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

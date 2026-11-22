@@ -1,0 +1,64 @@
+@namespace Blazix.Registry
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<div data-slot="resizable-panel" @attributes="OuterAttributes" data-panel id="@_id" data-disabled="@Disabled"
+     data-default-size="@DefaultSize" data-min-size="@MinSize" data-max-size="@MaxSize"
+     data-collapsed-size="@CollapsedSize" data-collapsible="@Collapsible"
+     style="@($"min-height: 0; max-height: 100%; height: auto; min-width: 0; max-width: 100%; width: auto; border: none; border-width: 0; padding: 0; margin: 0; display: flex; flex-basis: 0; flex-shrink: 1; overflow: visible; {(DefaultSize is null ? "flex-grow: 1;" : $"flex-basis: {Css(DefaultSize)};")}")">
+    <div class="@Cn(Class)"
+         style="@($"max-height: 100%; max-width: 100%; flex-grow: 1; overflow: auto; {UserStyle}touch-action: {(Group?.Orientation == Orientation.Vertical ? "pan-x" : "pan-y")};")">
+        @ChildContent
+    </div>
+</div>
+
+@code {
+    private string _id = $"resizable-panel-{Guid.NewGuid():N}";
+
+    [CascadingParameter] private ResizablePanelGroup? Group { get; set; }
+
+    /// <summary>
+    /// The panel's id, used as its key in the group's layout. Set it when the layout is saved and restored. Generated when not set.
+    /// </summary>
+    [Parameter] public string? Id { get; set; }
+
+    /// <summary>
+    /// The panel's initial size. A plain number is a percentage (<c>"50"</c>); units <c>%</c>, <c>px</c>, <c>rem</c>, <c>em</c>,
+    /// <c>vh</c> and <c>vw</c> are supported (<c>"50%"</c>, <c>"200px"</c>). Panels without one share the remaining space.
+    /// </summary>
+    [Parameter] public string? DefaultSize { get; set; }
+
+    /// <summary>The smallest size the panel can be resized to, in the same units as <see cref="DefaultSize"/>. Defaults to <c>0%</c>.</summary>
+    [Parameter] public string? MinSize { get; set; }
+
+    /// <summary>The largest size the panel can be resized to, in the same units as <see cref="DefaultSize"/>. Defaults to <c>100%</c>.</summary>
+    [Parameter] public string? MaxSize { get; set; }
+
+    /// <summary>Lets the panel collapse to <see cref="CollapsedSize"/> when resized below half its <see cref="MinSize"/>, or with Enter on a separator.</summary>
+    [Parameter] public bool Collapsible { get; set; }
+
+    /// <summary>The size of the panel when collapsed, in the same units as <see cref="DefaultSize"/>. Defaults to <c>0%</c>.</summary>
+    [Parameter] public string? CollapsedSize { get; set; }
+
+    /// <summary>Stops the panel from being resized. Other panels in the group can still be.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private IEnumerable<KeyValuePair<string, object>>? OuterAttributes => AdditionalAttributes?.Where(attribute => attribute.Key != "style");
+
+    private string UserStyle => AdditionalAttributes?.GetValueOrDefault("style") is { } style ? $"{style}; " : "";
+
+    // A unitless size is a percentage, as in react-resizable-panels
+    private static string Css(string size) => double.TryParse(size, System.Globalization.CultureInfo.InvariantCulture, out _) ? $"{size}%" : size;
+
+    protected override void OnParametersSet()
+    {
+        if (Id is not null)
+            _id = Id;
+    }
+}

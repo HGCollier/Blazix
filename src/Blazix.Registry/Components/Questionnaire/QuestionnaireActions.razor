@@ -1,0 +1,15 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<div data-slot="questionnaire-actions" @attributes="AdditionalAttributes"
+     class="@Cn("grid min-h-11 w-full grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2 sm:min-h-8", Class)">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

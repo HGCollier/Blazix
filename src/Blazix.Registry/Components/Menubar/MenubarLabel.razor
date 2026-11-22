@@ -1,0 +1,16 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<DropdownMenuLabel data-slot="menubar-label" @attributes="AdditionalAttributes" Inset="@Inset"
+                   Class="@Cn("px-1.5 py-1 text-sm font-medium data-inset:pl-7", Class)">
+    @ChildContent
+</DropdownMenuLabel>
+
+@code {
+    [Parameter] public bool Inset { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,15 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<optgroup data-slot="native-select-optgroup" @attributes="AdditionalAttributes"
+          class="@Cn("bg-[Canvas] text-[CanvasText]", Class)">
+    @ChildContent
+</optgroup>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

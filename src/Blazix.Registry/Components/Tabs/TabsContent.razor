@@ -1,0 +1,25 @@
+@namespace Blazix.Registry
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<TabsPanel data-slot="tabs-content" @attributes="AdditionalAttributes" Render="@Render" Value="@Value" KeepMounted="@KeepMounted"
+           class="@Cn("flex-1 text-sm outline-none", Class)">
+    @ChildContent
+</TabsPanel>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<TabsPanelRenderProps>? Render { get; set; }
+
+    /// <summary>The value of the tab that shows this content. Defaults to its position, from "0".</summary>
+    [Parameter] public string? Value { get; set; }
+
+    /// <summary>Keep the content in the DOM (hidden) while its tab isn't selected.</summary>
+    [Parameter] public bool KeepMounted { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

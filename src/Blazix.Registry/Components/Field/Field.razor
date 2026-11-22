@@ -1,0 +1,42 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<div data-slot="field" role="group" data-orientation="@OrientationName" @attributes="AdditionalAttributes"
+     class="@Cn(
+         "group/field flex w-full gap-2 data-[invalid=true]:text-destructive",
+         Orientation switch
+         {
+             FieldOrientation.Horizontal =>
+                 "flex-row items-center has-[>[data-slot=field-content]]:items-start *:data-[slot=field-label]:flex-auto " +
+                 "has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
+             FieldOrientation.Responsive =>
+                 "flex-col *:w-full @md/field-group:flex-row @md/field-group:items-center @md/field-group:*:w-auto " +
+                 "@md/field-group:has-[>[data-slot=field-content]]:items-start @md/field-group:*:data-[slot=field-label]:flex-auto " +
+                 "[&>.sr-only]:w-auto @md/field-group:has-[>[data-slot=field-content]]:[&>[role=checkbox],[role=radio]]:mt-px",
+             _ => "flex-col *:w-full [&>.sr-only]:w-auto",
+         },
+         Class)">
+    @* Not fixed: when a description or error comes or goes, the control re-renders with its aria-describedby. *@
+    <CascadingValue Value="_descriptions">@ChildContent</CascadingValue>
+</div>
+
+@code {
+    private FieldDescriptions _descriptions = null!;
+
+    protected override void OnInitialized() => _descriptions = new FieldDescriptions(() => _ = InvokeAsync(StateHasChanged));
+
+    [Parameter] public FieldOrientation Orientation { get; set; } = FieldOrientation.Vertical;
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string OrientationName => Orientation switch
+    {
+        FieldOrientation.Horizontal => "horizontal",
+        FieldOrientation.Responsive => "responsive",
+        _ => "vertical",
+    };
+}

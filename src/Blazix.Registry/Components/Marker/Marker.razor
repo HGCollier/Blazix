@@ -1,0 +1,39 @@
+@namespace Blazix.Registry
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<UseRender DefaultTagName="div" Render="@Render" data-slot="marker" data-variant="@VariantName" @attributes="AdditionalAttributes"
+           class="@Cn(
+           "group/marker relative flex min-h-4 w-full items-center gap-2 text-left text-sm text-muted-foreground " +
+           "[&_svg:not([class*='size-'])]:size-4 [a]:underline [a]:underline-offset-3 [a]:hover:text-foreground",
+           Variant switch
+           {
+               MarkerVariant.Separator =>
+                   "before:mr-1 before:h-px before:min-w-0 before:flex-1 before:bg-border after:ml-1 after:h-px after:min-w-0 after:flex-1 " +
+                   "after:bg-border",
+               MarkerVariant.Border => "border-b border-border pb-2",
+               _ => "",
+           },
+           Class)">
+    @ChildContent
+</UseRender>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<UseRenderProps>? Render { get; set; }
+
+    [Parameter] public MarkerVariant Variant { get; set; } = MarkerVariant.Default;
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string VariantName => Variant switch
+    {
+        MarkerVariant.Separator => "separator",
+        MarkerVariant.Border => "border",
+        _ => "default",
+    };
+}

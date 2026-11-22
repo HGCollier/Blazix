@@ -1,0 +1,28 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<div data-slot="card" data-size="@SizeName" @attributes="AdditionalAttributes"
+     class="@Cn(
+         "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl bg-card py-(--card-spacing) text-sm " +
+         "text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] has-data-[slot=card-footer]:pb-0 " +
+         "has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 " +
+         "*:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
+         Class)">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public CardSize Size { get; set; } = CardSize.Default;
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string SizeName => Size switch
+    {
+        CardSize.Sm => "sm",
+        _ => "default",
+    };
+}

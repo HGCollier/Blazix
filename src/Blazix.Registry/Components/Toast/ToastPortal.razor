@@ -1,0 +1,8 @@
+@namespace Blazix.Registry
+
+@* A portal, for portal-style markup: the viewport renders in the browser's top layer, so this renders its content in place. *@
+<Blazix.Primitives.ToastPortal>@ChildContent</Blazix.Primitives.ToastPortal>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

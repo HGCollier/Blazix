@@ -1,0 +1,15 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<tfoot data-slot="table-footer" @attributes="AdditionalAttributes"
+       class="@Cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", Class)">
+    @ChildContent
+</tfoot>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

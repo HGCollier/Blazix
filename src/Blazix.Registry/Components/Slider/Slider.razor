@@ -1,0 +1,64 @@
+@namespace Blazix.Registry
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<SliderRoot data-slot="slider" @attributes="AdditionalAttributes"
+            Value="@Value" ValueChanged="@ValueChanged" Values="@Values" ValuesChanged="@ValuesChanged"
+            OnValueChange="@OnValueChange" OnValueCommitted="@OnValueCommitted"
+            Min="@Min" Max="@Max" Step="@Step" LargeStep="@LargeStep" MinStepsBetweenValues="@MinStepsBetweenValues"
+            Orientation="@Orientation" Disabled="@Disabled" ReadOnly="@ReadOnly" Name="@Name" Format="@Format"
+            class="@Cn("data-horizontal:w-full data-vertical:h-full", Class)">
+    <SliderControl class="relative flex w-full touch-none items-center select-none data-disabled:opacity-50 data-vertical:h-full data-vertical:min-h-40 data-vertical:w-auto data-vertical:flex-col">
+        <SliderTrack data-slot="slider-track"
+                     class="relative grow overflow-hidden rounded-full bg-input select-none data-horizontal:h-1 data-horizontal:w-full data-vertical:h-full data-vertical:w-1">
+            <SliderIndicator data-slot="slider-range" class="bg-primary select-none data-horizontal:h-full data-vertical:w-full" />
+        </SliderTrack>
+        @for (var i = 0; i < ThumbCount; i++)
+        {
+            var index = i;
+            <SliderThumb @key="index" Index="@index" AriaLabel="@GetAriaLabel?.Invoke(index)" data-slot="slider-thumb"
+                         class="relative block size-3 shrink-0 rounded-full border border-ring bg-white ring-ring/50 transition-[color,box-shadow] select-none after:absolute after:-inset-2 hover:ring-3 focus-visible:ring-3 focus-visible:outline-hidden active:ring-3 disabled:pointer-events-none disabled:opacity-50" />
+        }
+    </SliderControl>
+</SliderRoot>
+
+@code {
+    /// <summary>A single value. Supports <c>@bind-Value</c>; set it once for an uncontrolled slider.</summary>
+    [Parameter] public double? Value { get; set; }
+
+    [Parameter] public EventCallback<double> ValueChanged { get; set; }
+
+    /// <summary>Several values, one thumb each (a range). Supports <c>@bind-Values</c>.</summary>
+    [Parameter] public IReadOnlyList<double>? Values { get; set; }
+
+    [Parameter] public EventCallback<IReadOnlyList<double>?> ValuesChanged { get; set; }
+
+    /// <summary>Runs before the value changes; call <c>Cancel()</c> to keep it.</summary>
+    [Parameter] public EventCallback<ValueChangeEventArgs<IReadOnlyList<double>>> OnValueChange { get; set; }
+
+    /// <summary>Runs when the user lets go of a thumb or finishes a key press.</summary>
+    [Parameter] public EventCallback<IReadOnlyList<double>> OnValueCommitted { get; set; }
+
+    [Parameter] public double Min { get; set; }
+    [Parameter] public double Max { get; set; } = 100;
+    [Parameter] public double Step { get; set; } = 1;
+    [Parameter] public double LargeStep { get; set; } = 10;
+    [Parameter] public int MinStepsBetweenValues { get; set; }
+    [Parameter] public Orientation Orientation { get; set; } = Orientation.Horizontal;
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool ReadOnly { get; set; }
+    [Parameter] public string? Name { get; set; }
+    [Parameter] public string? Format { get; set; }
+
+    /// <summary>
+    /// Each thumb's accessible name, by its index, e.g. "Minimum price" and "Maximum price" for a range. Without it the
+    /// thumbs take the slider's <c>aria-label</c> or <c>aria-labelledby</c>.
+    /// </summary>
+    [Parameter] public Func<int, string>? GetAriaLabel { get; set; }
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private int ThumbCount => Values is { Count: > 0 } values ? values.Count : 1;
+}

@@ -1,0 +1,18 @@
+@namespace Blazix.Registry
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.SelectGroup data-slot="select-group" @attributes="AdditionalAttributes" Render="@Render" class="@Cn("scroll-my-1 p-1", Class)">
+    @ChildContent
+</Blazix.Primitives.SelectGroup>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<SelectRenderProps>? Render { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,20 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<DropdownMenuSubContent data-slot="menubar-sub-content" @attributes="AdditionalAttributes"
+                        Class="@Cn(
+                            "min-w-32 rounded-lg bg-popover p-1 text-popover-foreground shadow-lg ring-1 ring-foreground/10 duration-100 " +
+                            "data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 " +
+                            "data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 " +
+                            "data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+                            Class)">
+    @ChildContent
+</DropdownMenuSubContent>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

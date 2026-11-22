@@ -1,0 +1,30 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<span data-slot="trace-line" data-status="@StatusName" @attributes="AdditionalAttributes"
+      class="@Cn(
+          "flex w-fit max-w-full min-w-0 items-center gap-2 text-sm text-muted-foreground transition-colors " +
+          "in-[a,button]:cursor-pointer in-[a:hover,button:hover]:text-foreground data-[status=error]:text-destructive " +
+          "data-[status=error]:in-[a:hover,button:hover]:text-destructive data-[status=pending]:opacity-60 " +
+          "data-[status=running]:*:data-[slot=trace-title]:shimmer",
+          Class)">
+    @ChildContent
+</span>
+
+@code {
+    [Parameter] public TraceLineStatus Status { get; set; } = TraceLineStatus.None;
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string? StatusName => Status switch
+    {
+        TraceLineStatus.Running => "running",
+        TraceLineStatus.Error => "error",
+        TraceLineStatus.Pending => "pending",
+        _ => null,
+    };
+}

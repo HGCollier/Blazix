@@ -1,0 +1,17 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<tr data-slot="table-row" @attributes="AdditionalAttributes"
+    class="@Cn(
+        "border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted",
+        Class)">
+    @ChildContent
+</tr>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

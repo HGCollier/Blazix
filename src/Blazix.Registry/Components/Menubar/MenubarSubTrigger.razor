@@ -1,0 +1,20 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<DropdownMenuSubTrigger data-slot="menubar-sub-trigger" @attributes="AdditionalAttributes" Disabled="@Disabled" Inset="@Inset"
+                        Class="@Cn(
+                            "gap-1.5 rounded-md px-1.5 py-1 text-sm focus:bg-accent focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring/50 focus:text-accent-foreground data-inset:pl-7 data-open:bg-accent " +
+                            "data-open:text-accent-foreground [&_svg:not([class*='size-'])]:size-4",
+                            Class)">
+    @ChildContent
+</DropdownMenuSubTrigger>
+
+@code {
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Inset { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

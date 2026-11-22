@@ -1,0 +1,18 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.ToastContent data-slot="toast-content" @attributes="AdditionalAttributes"
+                              class="@Cn(
+                                  "flex h-full items-center gap-3 overflow-hidden p-4 transition-opacity duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] " +
+                                  "data-behind:opacity-0 data-expanded:opacity-100",
+                                  Class)">
+    @ChildContent
+</Blazix.Primitives.ToastContent>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

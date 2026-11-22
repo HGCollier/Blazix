@@ -1,0 +1,38 @@
+﻿@namespace Blazix.Registry
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+@implements IDisposable
+
+@* Each slide is named by its place, "2 of 5", unless you name it. *@
+<div role="group" aria-roledescription="slide" aria-label="@Label" data-slot="carousel-item" @attributes="AdditionalAttributes"
+     class="@Cn("min-w-0 shrink-0 grow-0 basis-full", Carousel.Orientation == Orientation.Horizontal ? "pl-4" : "pt-4", Class)">
+    @ChildContent
+</div>
+
+@code {
+    [CascadingParameter] private CarouselContext Carousel { get; set; } = null!;
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string? Label => Carousel.IndexOf(this) is var index and >= 0 ? $"{index + 1} of {Carousel.ItemCount}" : null;
+
+    protected override void OnInitialized()
+    {
+        if (Carousel is null)
+            throw new InvalidOperationException("CarouselItem must be used within a <Carousel>.");
+        Carousel.AddItem(this);
+        Carousel.ItemsChanged += OnItemsChanged;
+    }
+
+    private void OnItemsChanged() => InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+    {
+        Carousel.ItemsChanged -= OnItemsChanged;
+        Carousel.RemoveItem(this);
+    }
+}

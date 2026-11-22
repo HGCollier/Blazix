@@ -1,0 +1,24 @@
+@namespace Blazix.Registry
+@using Blazix.Primitives
+
+<CollapsiblePanel data-slot="collapsible-content" @attributes="AdditionalAttributes" Render="@Render"
+                  KeepMounted="@KeepMounted" HiddenUntilFound="@HiddenUntilFound" class="@Class">
+    @ChildContent
+</CollapsiblePanel>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<CollapsiblePanelRenderProps>? Render { get; set; }
+
+    /// <summary>Keep the content in the DOM (hidden) while closed.</summary>
+    [Parameter] public bool KeepMounted { get; set; }
+
+    /// <summary>Keep the closed content findable with find in page; it opens when a match is found.</summary>
+    [Parameter] public bool? HiddenUntilFound { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

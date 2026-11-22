@@ -1,0 +1,18 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<label data-slot="label" @attributes="AdditionalAttributes"
+       class="@Cn(
+           "flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none " +
+           "group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
+           Class)">
+    @ChildContent
+</label>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

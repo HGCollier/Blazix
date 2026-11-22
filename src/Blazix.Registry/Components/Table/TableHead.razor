@@ -1,0 +1,17 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<th data-slot="table-head" @attributes="AdditionalAttributes"
+    class="@Cn(
+        "h-10 px-2 text-left align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pr-0",
+        Class)">
+    @ChildContent
+</th>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

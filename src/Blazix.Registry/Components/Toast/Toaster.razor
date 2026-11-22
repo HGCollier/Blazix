@@ -1,0 +1,39 @@
+@namespace Blazix.Registry
+@using Blazix.Primitives
+
+@* Register a ToastManager as a scoped service (builder.Services.AddScoped<ToastManager>()) and inject it anywhere, or pass your own. *@
+<Blazix.Primitives.ToastProvider ToastManager="@Manager" Timeout="@Timeout" Limit="@Limit">
+    @ChildContent
+    <Blazix.Registry.ToastViewport>
+        <Template Context="toast">
+            <Toast Item="@toast">
+                <Blazix.Registry.ToastContent>
+                    <ToastIcon Type="@toast.Type" />
+                    <div class="flex min-w-0 flex-1 flex-col gap-1">
+                        <Blazix.Registry.ToastTitle />
+                        <Blazix.Registry.ToastDescription />
+                    </div>
+                    <Blazix.Registry.ToastAction />
+                    <Blazix.Registry.ToastClose />
+                </Blazix.Registry.ToastContent>
+            </Toast>
+        </Template>
+    </Blazix.Registry.ToastViewport>
+</Blazix.Primitives.ToastProvider>
+
+@code {
+    [Inject] private IServiceProvider Services { get; set; } = null!;
+
+    /// <summary>The manager toasts are added to. Defaults to the ToastManager service, else the toaster's own.</summary>
+    [Parameter] public ToastManager? ToastManager { get; set; }
+
+    /// <summary>How long a toast stays, in milliseconds. Defaults to 5000.</summary>
+    [Parameter] public int Timeout { get; set; } = 5000;
+
+    /// <summary>How many toasts show at once. Defaults to 3.</summary>
+    [Parameter] public int Limit { get; set; } = 3;
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private ToastManager? Manager => ToastManager ?? Services.GetService(typeof(ToastManager)) as ToastManager;
+}

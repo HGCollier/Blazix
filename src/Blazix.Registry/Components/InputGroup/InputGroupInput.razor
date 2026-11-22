@@ -1,0 +1,21 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<Input data-slot="input-group-control" Type="@Type" Value="@Value" ValueChanged="@ValueChanged" Disabled="@Disabled" @attributes="AdditionalAttributes"
+       Class="@Cn(BaseClasses, Class)" />
+
+@code {
+    /// <summary>The classes it adds to Input's, for parts that render an input of their own (Combobox).</summary>
+    public const string BaseClasses =
+        "flex-1 rounded-none border-0 bg-transparent shadow-none ring-0 focus-visible:ring-0 disabled:bg-transparent aria-invalid:ring-0 " +
+        "dark:bg-transparent dark:disabled:bg-transparent";
+
+    [Parameter] public string? Type { get; set; }
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

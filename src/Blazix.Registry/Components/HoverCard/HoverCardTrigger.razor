@@ -1,0 +1,23 @@
+@namespace Blazix.Registry
+@using Blazix.Primitives
+
+<PreviewCardTrigger data-slot="hover-card-trigger" @attributes="AdditionalAttributes" Render="@Render" Delay="@Delay" CloseDelay="@CloseDelay" class="@Class">
+    @ChildContent
+</PreviewCardTrigger>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<PopupTriggerRenderProps>? Render { get; set; }
+
+    /// <summary>How long the pointer rests before opening, in milliseconds. Defaults to 600.</summary>
+    [Parameter] public int Delay { get; set; } = 600;
+
+    /// <summary>How long after the pointer leaves before closing, in milliseconds. Defaults to 300.</summary>
+    [Parameter] public int CloseDelay { get; set; } = 300;
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

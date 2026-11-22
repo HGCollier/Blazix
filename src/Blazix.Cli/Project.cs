@@ -91,9 +91,44 @@ internal sealed partial class Project
     private static string ProjectFileIn(string directory) => System.IO.Directory.GetFiles(directory, "*.csproj") switch
     {
         [var single] => single,
-        [] => throw new CliException("no .csproj in this folder. Run inside your Blazor project or pass --project."),
+        [] => ProjectInSolutionFolder(directory)
+              ?? throw new CliException("no .csproj in this folder. Run inside your Blazor project or pass --project."),
         _ => throw new CliException("several .csproj files here. Pass --project <path>."),
     };
+
+    /// <summary>
+    /// A solution folder with a project per subfolder, as <c>dotnet new blazor --interactivity Auto</c> makes it: the
+    /// only project, or the one Blazor Web App host whose .Client is beside it (test projects don't count).
+    /// </summary>
+    private static string? ProjectInSolutionFolder(string directory)
+    {
+        var projects = System.IO.Directory.GetDirectories(directory)
+            .SelectMany(d => System.IO.Directory.GetFiles(d, "*.csproj"))
+            .Select(p => new Project(Path.GetFullPath(p)))
+            .ToList();
+        if (projects is [var only])
+        {
+            return only.FilePath;
+        }
+        var hosts = projects
+            .Where(p => p.WebAssemblyClient() is { } client && projects.Any(other => SamePath(other.FilePath, client.FilePath)))
+            .ToList();
+        if (hosts is [var host])
+        {
+            Console.WriteLine($"Using {host.Name}, the Blazor Web App in this folder");
+            return host.FilePath;
+        }
+        return projects.Count > 1
+            ? throw new CliException($"several projects in this folder's subfolders ({string.Join(", ", projects.Select(p => p.Name))}). Pass --project <path>.")
+            : null;
+    }
+
+    /// <summary>The project's Program.cs, if it has one.</summary>
+    public string? ProgramFile => File.Exists(Full("Program.cs")) ? Full("Program.cs") : null;
+
+    /// <summary>Whether the project's Program.cs mentions this text (a service it registers).</summary>
+    public bool ProgramMentions(string text) =>
+        ProgramFile is { } program && File.ReadAllText(program).Contains(text, StringComparison.Ordinal);
 
     // Mirrors how Razor turns folder names into namespace segments.
     public static string Identifier(string segment)

@@ -1,0 +1,19 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<div data-slot="attachment-actions" @attributes="AdditionalAttributes"
+     class="@Cn(
+         "relative z-20 flex shrink-0 items-center group-data-[orientation=vertical]/attachment:absolute " +
+         "group-data-[orientation=vertical]/attachment:top-3 group-data-[orientation=vertical]/attachment:right-3 " +
+         "group-data-[orientation=vertical]/attachment:gap-1",
+         Class)">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,16 @@
+@namespace Blazix.Registry
+@* A Button for the confirming action. It doesn't close the dialog by itself: close it from OnClick (bind Open). *@
+<Button data-slot="alert-dialog-action" @attributes="AdditionalAttributes" Variant="@Variant" Size="@Size" Disabled="@Disabled" Class="@Class">
+    @ChildContent
+</Button>
+
+@code {
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Default;
+    [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Default;
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

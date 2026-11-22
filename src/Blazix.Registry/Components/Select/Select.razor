@@ -1,0 +1,48 @@
+@namespace Blazix.Registry
+@using Blazix.Primitives
+
+@* Give it Items (value and label) so the trigger shows the label before the list has been opened, or a Label on each SelectItem. *@
+<SelectRoot Value="@Value" ValueChanged="@ValueChanged" Values="@Values" ValuesChanged="@ValuesChanged" OnValueChange="@OnValueChange"
+            Multiple="@Multiple" Items="@Items" Disabled="@Disabled" ReadOnly="@ReadOnly" Required="@Required" Name="@Name"
+            Modal="@Modal" Open="@Open" OpenChanged="@OpenChanged" OnOpenChange="@OnOpenChange" OnOpenChangeComplete="@OnOpenChangeComplete">
+    @ChildContent
+</SelectRoot>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    /// <summary>The selected value. Supports <c>@bind-Value</c>; set it once for an uncontrolled select.</summary>
+    [Parameter] public string? Value { get; set; }
+
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+
+    /// <summary>The selected values, with <see cref="Multiple"/>. Supports <c>@bind-Values</c>.</summary>
+    [Parameter] public IReadOnlyList<string>? Values { get; set; }
+
+    [Parameter] public EventCallback<IReadOnlyList<string>?> ValuesChanged { get; set; }
+
+    /// <summary>Runs before the selection changes; call <c>Cancel()</c> to keep it.</summary>
+    [Parameter] public EventCallback<ValueChangeEventArgs<IReadOnlyList<string>>> OnValueChange { get; set; }
+
+    [Parameter] public bool Multiple { get; set; }
+
+    /// <summary>The options' values and labels, so the trigger can show a label before the list renders.</summary>
+    [Parameter] public IEnumerable<SelectOption>? Items { get; set; }
+
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool ReadOnly { get; set; }
+    [Parameter] public bool Required { get; set; }
+
+    /// <summary>The name submitted with the form.</summary>
+    [Parameter] public string? Name { get; set; }
+
+    /// <summary>Whether the page behind is inert and doesn't scroll while open. Defaults to true.</summary>
+    [Parameter] public bool Modal { get; set; } = true;
+
+    /// <summary>Supports <c>@bind-Open</c>; leave unset to let the select manage itself.</summary>
+    [Parameter] public bool Open { get; set; }
+
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public EventCallback<OpenChangeEventArgs> OnOpenChange { get; set; }
+    [Parameter] public EventCallback<bool> OnOpenChangeComplete { get; set; }
+}

@@ -1,0 +1,84 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+@if (Collapsible == SidebarCollapsible.None)
+{
+    <div data-slot="sidebar" @attributes="AdditionalAttributes"
+         class="@Cn("flex h-full w-(--sidebar-width) flex-col bg-sidebar text-sidebar-foreground", Class)">
+        @ChildContent
+    </div>
+}
+else if (Context.IsMobile)
+{
+    <Sheet Open="@Context.OpenMobile" OpenChanged="@Context.SetOpenMobileAsync">
+        <SheetContent dir="@Dir" data-sidebar="sidebar" data-slot="sidebar" data-mobile="true" @attributes="AdditionalAttributes"
+                      Class="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+                      style="@($"--sidebar-width:{SidebarProvider.WidthMobile}")"
+                      Side="@(Side == SidebarSide.Right ? SheetSide.Right : SheetSide.Left)">
+            <SheetHeader Class="sr-only">
+                <SheetTitle>Sidebar</SheetTitle>
+                <SheetDescription>Displays the mobile sidebar.</SheetDescription>
+            </SheetHeader>
+            <div class="flex h-full w-full flex-col">@ChildContent</div>
+        </SheetContent>
+    </Sheet>
+}
+else
+{
+    <div class="group peer hidden text-sidebar-foreground md:block" data-state="@Context.State"
+         data-collapsible="@(Context.Open ? "" : CollapsibleName)" data-variant="@VariantName" data-side="@SideName" data-slot="sidebar">
+        @* The gap the sidebar leaves beside the page on desktop. *@
+        <div data-slot="sidebar-gap"
+             class="@Cn(
+                 "relative w-(--sidebar-width) bg-transparent transition-[width] duration-200 ease-linear",
+                 "group-data-[collapsible=offcanvas]:w-0",
+                 "group-data-[side=right]:rotate-180",
+                 Inset
+                     ? "group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4)))]"
+                     : "group-data-[collapsible=icon]:w-(--sidebar-width-icon)")"></div>
+        <div data-slot="sidebar-container" data-side="@SideName" @attributes="AdditionalAttributes"
+             class="@Cn(
+                 "fixed inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear " +
+                 "data-[side=left]:left-0 data-[side=left]:group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)] " +
+                 "data-[side=right]:right-0 data-[side=right]:group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)] " +
+                 "md:flex",
+                 Inset
+                     ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]"
+                     : "group-data-[collapsible=icon]:w-(--sidebar-width-icon) group-data-[side=left]:border-r group-data-[side=right]:border-l",
+                 Class)">
+            <div data-sidebar="sidebar" data-slot="sidebar-inner"
+                 class="flex size-full flex-col bg-sidebar group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:shadow-sm group-data-[variant=floating]:ring-1 group-data-[variant=floating]:ring-sidebar-border">
+                @ChildContent
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [CascadingParameter] private SidebarContext Context { get; set; } = null!;
+
+    [Parameter] public SidebarSide Side { get; set; } = SidebarSide.Left;
+    [Parameter] public SidebarVariant Variant { get; set; } = SidebarVariant.Sidebar;
+    [Parameter] public SidebarCollapsible Collapsible { get; set; } = SidebarCollapsible.Offcanvas;
+
+    /// <summary>The mobile sheet's reading direction ("ltr" or "rtl").</summary>
+    [Parameter] public string? Dir { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool Inset => Variant is SidebarVariant.Floating or SidebarVariant.Inset;
+
+    private string SideName => Side == SidebarSide.Right ? "right" : "left";
+
+    private string VariantName => Variant switch
+    {
+        SidebarVariant.Floating => "floating",
+        SidebarVariant.Inset => "inset",
+        _ => "sidebar",
+    };
+
+    private string CollapsibleName => Collapsible == SidebarCollapsible.Icon ? "icon" : "offcanvas";
+}

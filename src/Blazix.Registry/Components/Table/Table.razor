@@ -1,0 +1,16 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<div data-slot="table-container" class="relative w-full overflow-x-auto">
+    <table data-slot="table" @attributes="AdditionalAttributes" class="@Cn("w-full caption-bottom text-sm", Class)">
+        @ChildContent
+    </table>
+</div>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

@@ -1,0 +1,36 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<Button Type="@Type" data-size="@SizeName" Variant="@Variant" Disabled="@Disabled" @attributes="AdditionalAttributes"
+        Class="@Cn("flex items-center gap-2 text-sm shadow-none", SizeClass, Class)">
+    @ChildContent
+</Button>
+
+@code {
+    [Parameter] public string Type { get; set; } = "button";
+    [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Ghost;
+    [Parameter] public InputGroupButtonSize Size { get; set; } = InputGroupButtonSize.Xs;
+    [Parameter] public bool Disabled { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string SizeName => Size switch
+    {
+        InputGroupButtonSize.Sm => "sm",
+        InputGroupButtonSize.IconXs => "icon-xs",
+        InputGroupButtonSize.IconSm => "icon-sm",
+        _ => "xs",
+    };
+
+    private string SizeClass => Size switch
+    {
+        InputGroupButtonSize.Sm => "",
+        InputGroupButtonSize.IconXs => "size-6 rounded-[calc(var(--radius)-3px)] p-0 has-[>svg]:p-0",
+        InputGroupButtonSize.IconSm => "size-8 p-0 has-[>svg]:p-0",
+        _ => "h-6 gap-1 rounded-[calc(var(--radius)-3px)] px-1.5 [&>svg:not([class*='size-'])]:size-3.5",
+    };
+}

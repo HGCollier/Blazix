@@ -1,0 +1,68 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+@implements IDisposable
+
+@* Announced as it appears (role="alert"), and describes the field's control while it shows (aria-describedby). *@
+@if (IsShown)
+{
+    <div id="@_id" role="alert" data-slot="field-error" @attributes="AdditionalAttributes" class="@Cn("text-sm font-normal text-destructive", Class)">
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+        else if (Messages.Count == 1)
+        {
+            @Messages[0]
+        }
+        else
+        {
+            <ul class="ml-4 flex list-disc flex-col gap-1">
+                @foreach (var message in Messages)
+                {
+                    <li>@message</li>
+                }
+            </ul>
+        }
+    </div>
+}
+
+@code {
+    /// <summary>Error messages to show, e.g. from an <c>EditContext</c>'s validation messages.</summary>
+    [Parameter] public IEnumerable<string?>? Errors { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private List<string> Messages { get; set; } = [];
+
+    [CascadingParameter] private FieldDescriptions? Descriptions { get; set; }
+
+    private readonly string _generatedId = $"field-error-{Guid.NewGuid():N}";
+    private string _id = "";
+
+    private bool IsShown => ChildContent is not null || Messages.Count > 0;
+
+    protected override void OnParametersSet()
+    {
+        Messages = Errors?.Where(e => !string.IsNullOrEmpty(e)).Select(e => e!).Distinct().ToList() ?? [];
+        var id = AdditionalAttributes?.GetValueOrDefault("id") as string is { Length: > 0 } authored ? authored : _generatedId;
+        if (id != _id)
+        {
+            Descriptions?.Remove(_id);
+            _id = id;
+        }
+        if (IsShown)
+        {
+            Descriptions?.Add(_id);
+        }
+        else
+        {
+            Descriptions?.Remove(_id);
+        }
+    }
+
+    public void Dispose() => Descriptions?.Remove(_id);
+}

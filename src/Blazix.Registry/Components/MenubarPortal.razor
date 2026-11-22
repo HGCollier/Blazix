@@ -1,9 +1,0 @@
-@using Blazix.Primitives
-
-@* A portal, for portal-style markup: menus render in the browser's top layer, so this renders its content in place. *@
-<MenuPortal KeepMounted="@KeepMounted">@ChildContent</MenuPortal>
-
-@code {
-    [Parameter] public bool KeepMounted { get; set; }
-    [Parameter] public RenderFragment? ChildContent { get; set; }
-}

@@ -1,0 +1,18 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.ComboboxClear data-slot="combobox-clear" @attributes="AdditionalAttributes" data-size="icon-xs"
+                               class="@ButtonVariants.Get(ButtonVariant.Ghost, ButtonSize.Default, Cn("flex items-center gap-2 text-sm shadow-none size-6 rounded-[calc(var(--radius)-3px)] p-0 has-[>svg]:p-0", Class))">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="pointer-events-none">
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+    </svg>
+</Blazix.Primitives.ComboboxClear>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

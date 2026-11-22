@@ -1,0 +1,9 @@
+@namespace Blazix.Registry
+
+@* A portal, for portal-style markup: drawers render in the browser's top layer, so this renders its content in place. *@
+<Blazix.Primitives.DrawerPortal KeepMounted="@KeepMounted">@ChildContent</Blazix.Primitives.DrawerPortal>
+
+@code {
+    [Parameter] public bool KeepMounted { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

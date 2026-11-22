@@ -1,0 +1,31 @@
+@namespace Blazix.Registry
+@using Blazix.Primitives
+@using static Blazix.Registry.ClassNames
+
+<UseRender DefaultTagName="a" Render="@Render" data-slot="sidebar-menu-sub-button" data-sidebar="menu-sub-button" data-size="@(Size == SidebarMenuSubButtonSize.Sm ? "sm" : "md")" data-active="@IsActive" aria-current="@(IsActive ? "page" : null)" @attributes="AdditionalAttributes"
+           class="@Cn(
+               "flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground " +
+               "ring-sidebar-ring outline-hidden group-data-[collapsible=icon]:hidden hover:bg-sidebar-accent " +
+               "hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground " +
+               "disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 " +
+               "data-[size=md]:text-sm data-[size=sm]:text-xs data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground " +
+               "[&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-accent-foreground",
+               Class)">
+    @ChildContent
+</UseRender>
+
+@code {
+    /// <summary>Render your own element or component; spread <c>props.Attributes</c> onto it.</summary>
+    [Parameter] public RenderFragment<UseRenderProps>? Render { get; set; }
+
+    /// <summary>Marks the link to the current page.</summary>
+    [Parameter] public bool IsActive { get; set; }
+    
+    [Parameter] public SidebarMenuSubButtonSize Size { get; set; } = SidebarMenuSubButtonSize.Md;
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

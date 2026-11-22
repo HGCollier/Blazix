@@ -1,0 +1,21 @@
+@namespace Blazix.Registry
+@using Blazix.Primitives
+
+<PreviewCardRoot Open="@Open" OpenChanged="@OpenChanged" OnOpenChange="@OnOpenChange" OnOpenChangeComplete="@OnOpenChangeComplete">
+    @ChildContent
+</PreviewCardRoot>
+
+@code {
+    /// <summary>Supports <c>@bind-Open</c>; leave unset to let the card manage itself.</summary>
+    [Parameter] public bool Open { get; set; }
+
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+
+    /// <summary>Runs before the card opens or closes, with the reason; call <c>Cancel()</c> to keep it as it is.</summary>
+    [Parameter] public EventCallback<OpenChangeEventArgs> OnOpenChange { get; set; }
+
+    /// <summary>Runs once the open or close animation has finished.</summary>
+    [Parameter] public EventCallback<bool> OnOpenChangeComplete { get; set; }
+
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

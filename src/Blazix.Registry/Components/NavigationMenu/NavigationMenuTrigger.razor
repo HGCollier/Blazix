@@ -1,0 +1,19 @@
+@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.NavigationMenuTrigger data-slot="navigation-menu-trigger" @attributes="AdditionalAttributes"
+                                       class="@Cn(NavigationMenuTriggerStyle.Classes, "group", Class)">
+    @ChildContent
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="relative top-px ml-1 size-3 transition duration-300 group-data-popup-open/navigation-menu-trigger:rotate-180 group-data-open/navigation-menu-trigger:rotate-180">
+        <path d="m6 9 6 6 6-6" />
+    </svg>
+</Blazix.Primitives.NavigationMenuTrigger>
+
+@code {
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}

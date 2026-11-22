@@ -1,0 +1,22 @@
+﻿@namespace Blazix.Registry
+@using static Blazix.Registry.ClassNames
+
+<Blazix.Primitives.MessageScrollerItem data-slot="message-scroller-item" @attributes="AdditionalAttributes"
+                                     MessageId="@MessageId" ScrollAnchor="@ScrollAnchor"
+                                     class="@Cn("min-w-0 shrink-0 [contain-intrinsic-size:auto_10rem] [content-visibility:auto]", Class)">
+    @ChildContent
+</Blazix.Primitives.MessageScrollerItem>
+
+@code {
+    /// <summary>The id <c>ScrollToMessageAsync</c> and the visibility state use.</summary>
+    [Parameter] public string? MessageId { get; set; }
+
+    /// <summary>When added, scroll it to the top, with the previous turn peeking above. Defaults to false.</summary>
+    [Parameter] public bool ScrollAnchor { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+}
