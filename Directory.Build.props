@@ -12,17 +12,23 @@
       One version for everything we ship. The CLI copies styled components that were written
       against this exact Blazix.Primitives version, and adds that version to the consumer's project.
     -->
-    <Version>0.2.0</Version>
+    <Version>0.2.1</Version>
 
     <Authors>Blazix</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://blazix-ui.com</PackageProjectUrl>
+    <!-- The docs favicon (docs/Blazix.Docs/wwwroot/favicon.svg) rendered at 128x128: NuGet takes PNG or JPEG, not SVG. -->
+    <PackageIcon>icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/HGCollier/Blazix</RepositoryUrl>
     <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts/packages</PackageOutputPath>
 
     <!-- Projects opt in to packing. -->
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(IsPackable)' == 'true'">
+    <None Include="$(MSBuildThisFileDirectory)src/icon.png" Pack="true" PackagePath="/" Visible="false" />
+  </ItemGroup>
 
   <!-- Static analysis for every project. -->
   <ItemGroup>
