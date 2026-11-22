@@ -40,7 +40,7 @@ export function createCombobox(dotnet, inputId, initial) {
   /** @type {MutationObserver | null} */ let observer = null;
 
   const input = () => /** @type {HTMLInputElement | null} */ (byId(id));
-  const popup = createPopup({ trigger: input, requestClose: (reason) => call(dotnet, 'RequestClose', reason) });
+  const popup = createPopup({ trigger: input, anchor: () => byId(options.triggerId), requestClose: (reason) => call(dotnet, 'RequestClose', reason) });
   const popupEl = () => popup.popup;
   const items = () => /** @type {HTMLElement[]} */ ([...(popupEl()?.querySelectorAll(OPTION) ?? [])]).filter((el) => !isDisabled(el));
 

@@ -18,3 +18,12 @@
 @source not "../obj";
 @source not "../../Blazix.Docs.Client/bin";
 @source not "../../Blazix.Docs.Client/obj";
+
+/* RTL examples show in the language picked, in its own typeface as shadcn's do (Geist has no Arabic or Hebrew, so the
+   browser would fall back to a system font of a different size). Google Fonts serves only the subsets a page uses. */
+[data-slot="preview"][lang="ar"] {
+    font-family: "Noto Sans Arabic", var(--font-sans);
+}
+[data-slot="preview"][lang="he"] {
+    font-family: "Noto Sans Hebrew", var(--font-sans);
+}

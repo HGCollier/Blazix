@@ -21,7 +21,7 @@
                         if (_step == 2 + index)
                         {
                             <TraceLine Status="TraceLineStatus.Running">
-                                <TraceIcon><Icon Name="terminal" /></TraceIcon>
+                                <TraceIcon><Icon Data="LucideIcons.Terminal" /></TraceIcon>
                                 <TraceTitle>Running @tool.Command</TraceTitle>
                             </TraceLine>
                         }
@@ -30,7 +30,7 @@
                             <TraceCollapsible @key="tool.Command">
                                 <TraceCollapsibleTrigger>
                                     <TraceLine Status="@(tool.Failed ? TraceLineStatus.Error : TraceLineStatus.None)">
-                                        <TraceIcon><Icon Name="terminal" /></TraceIcon>
+                                        <TraceIcon><Icon Data="LucideIcons.Terminal" /></TraceIcon>
                                         <TraceTitle>@(tool.Failed ? "Failed to run" : "Ran") @tool.Command</TraceTitle>
                                     </TraceLine>
                                 </TraceCollapsibleTrigger>

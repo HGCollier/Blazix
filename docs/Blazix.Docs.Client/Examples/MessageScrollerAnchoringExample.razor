@@ -6,7 +6,7 @@
             <CardAction>
                 <Button Type="button" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="Reset anchored turns"
                         Disabled="@(_count == 0)" @onclick="() => _count = 0">
-                    <Icon Name="rotate-cw" />
+                    <Icon Data="LucideIcons.RotateCw" />
                 </Button>
             </CardAction>
         </CardHeader>
@@ -15,7 +15,7 @@
             {
                 <Empty Class="h-full">
                     <EmptyHeader>
-                        <EmptyMedia Variant="EmptyMediaVariant.Icon"><Icon Name="message-circle-dashed" /></EmptyMedia>
+                        <EmptyMedia Variant="EmptyMediaVariant.Icon"><Icon Data="LucideIcons.MessageCircleDashed" /></EmptyMedia>
                         <EmptyTitle>No anchored messages yet</EmptyTitle>
                         <EmptyDescription>Send the first message to see the selected role anchor.</EmptyDescription>
                     </EmptyHeader>
@@ -44,7 +44,7 @@
                 <ToggleGroupItem Value="assistant" aria-label="Anchor assistant messages">Assistant</ToggleGroupItem>
             </ToggleGroup>
             <Button Type="button" Size="ButtonSize.Icon" Class="ml-auto" Disabled="@(_count == Script.Get().Count)" @onclick="() => _count++">
-                <Icon Name="arrow-up" />
+                <Icon Data="LucideIcons.ArrowUp" />
                 <span class="sr-only">Send Message</span>
             </Button>
         </CardFooter>

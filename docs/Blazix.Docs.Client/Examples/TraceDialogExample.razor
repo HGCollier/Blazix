@@ -2,9 +2,9 @@
     <Dialog>
         <DialogTrigger>
             <TraceLine>
-                <TraceIcon><Icon Name="globe" /></TraceIcon>
+                <TraceIcon><Icon Data="LucideIcons.Globe" /></TraceIcon>
                 <TraceTitle>Searched the web for cache keys</TraceTitle>
-                <TraceIcon><Icon Name="chevron-right" /></TraceIcon>
+                <TraceIcon><Icon Data="LucideIcons.ChevronRight" /></TraceIcon>
             </TraceLine>
         </DialogTrigger>
         <DialogContent>
@@ -17,12 +17,12 @@
                 {
                     <a href="@result.Url" target="_blank" rel="noreferrer">
                         <TraceLine>
-                            <TraceIcon><Icon Name="globe" /></TraceIcon>
+                            <TraceIcon><Icon Data="LucideIcons.Globe" /></TraceIcon>
                             <TraceTitle>
                                 @result.Title
                                 <span class="sr-only">(opens in a new tab)</span>
                             </TraceTitle>
-                            <TraceIcon><Icon Name="arrow-up-right" /></TraceIcon>
+                            <TraceIcon><Icon Data="LucideIcons.ArrowUpRight" /></TraceIcon>
                         </TraceLine>
                     </a>
                 }

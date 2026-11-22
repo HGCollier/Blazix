@@ -17,6 +17,8 @@
   project) should rebuild the CSS when they change too. List them in a property, not as items: an IDE
   takes .razor items for components of this project.
     <TailwindSources>../Shared/**/*.razor;../Shared/**/*.cs</TailwindSources>
+  Targets that must run before the CSS compiles, such as one that generates files it scans:
+    <TailwindDependsOn>ResolveProjectReferences</TailwindDependsOn>
 -->
 <Project>
 
@@ -88,7 +90,7 @@
 
   <Target Name="TailwindBuild"
           BeforeTargets="BeforeBuild"
-          DependsOnTargets="TailwindDownload;_TailwindWriteStamp"
+          DependsOnTargets="$(TailwindDependsOn);TailwindDownload;_TailwindWriteStamp"
           Condition="'$(TailwindEnabled)' != 'false'"
           Inputs="@(_TailwindInputs);$(MSBuildThisFileFullPath);$(_TailwindStamp)"
           Outputs="$(TailwindOutput)">

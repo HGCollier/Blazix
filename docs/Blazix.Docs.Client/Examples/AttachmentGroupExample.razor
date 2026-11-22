@@ -12,7 +12,7 @@
                 else if (item.Icon is not null)
                 {
                     <AttachmentMedia>
-                        <Icon Name="@item.Icon" />
+                        <Icon Data="@item.Icon" />
                     </AttachmentMedia>
                 }
                 <AttachmentContent>
@@ -21,7 +21,7 @@
                 </AttachmentContent>
                 <AttachmentActions>
                     <AttachmentAction aria-label="@($"Remove {item.Name}")">
-                        <Icon Name="x" />
+                        <Icon Data="LucideIcons.X" />
                     </AttachmentAction>
                 </AttachmentActions>
             </Attachment>
@@ -30,14 +30,14 @@
 </div>
 
 @code {
-    private sealed record AttachmentItem(string Name, string Meta, string? Icon = null, string? Src = null);
+    private sealed record AttachmentItem(string Name, string Meta, IconData? Icon = null, string? Src = null);
 
     private static readonly AttachmentItem[] Items =
     [
-        new("briefing-notes.pdf", "PDF · 1.4 MB", Icon: "file-text"),
+        new("briefing-notes.pdf", "PDF · 1.4 MB", Icon: LucideIcons.FileText),
         new("workspace.png", "PNG · 820 KB",
             Src: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80"),
-        new("customers.csv", "CSV · 18 KB", Icon: "table"),
-        new("renderer.tsx", "TSX · 12 KB", Icon: "file-code"),
+        new("customers.csv", "CSV · 18 KB", Icon: LucideIcons.Table),
+        new("renderer.tsx", "TSX · 12 KB", Icon: LucideIcons.FileCode),
     ];
 }

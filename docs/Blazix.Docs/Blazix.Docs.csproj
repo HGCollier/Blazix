@@ -25,6 +25,9 @@
 
     <PropertyGroup>
         <!-- Styles/app.css scans these with @source; editing them rebuilds the CSS. -->
+        <!-- Build the references first: Blazix.Registry.Rtl regenerates its Generated/ components while it builds,
+             which would otherwise happen after the CSS compiled, leaving out the RTL-only classes (ps-2.5, end-2.5). -->
+        <TailwindDependsOn>ResolveProjectReferences</TailwindDependsOn>
         <TailwindSources>..\..\src\Blazix.Registry\Components\**\*.razor;..\..\src\Blazix.Registry\Components\**\*.cs;..\..\src\Blazix.Registry\Setup\**\*.css;..\Blazix.Docs.Client\Components\**\*.razor;..\Blazix.Docs.Client\Components\**\*.cs;..\Blazix.Docs.Client\Examples\**\*.razor;..\Blazix.Docs.Client\RtlExamples\**\*.razor;..\Blazix.Registry.Rtl\Generated\**\*.razor;..\Blazix.Registry.Rtl\Generated\**\*.cs;..\Blazix.Docs.Client\Primitives\**\*.razor;..\Blazix.Docs.Client\Primitives\**\*.css</TailwindSources>
     </PropertyGroup>
 

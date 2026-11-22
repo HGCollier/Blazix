@@ -597,6 +597,11 @@ public class ComboboxInput : ComboboxPart
     /// <summary>Shown while the input is empty.</summary>
     [Parameter] public string? Placeholder { get; set; }
 
+    /// <summary>Disables the input, as if the whole combobox were disabled.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    private bool IsDisabled => Disabled || Root.IsDisabled;
+
     protected override string Tag => "input";
 
     protected override bool IsVoid => true;
@@ -669,7 +674,7 @@ public class ComboboxInput : ComboboxPart
             .Set("spellcheck", "false")
             .Set("placeholder", Placeholder)
             .Set("value", Root.InputText.Rendered)
-            .Set("disabled", Root.IsDisabled)
+            .Set("disabled", IsDisabled)
             .Set("readonly", Root.ReadOnly)
             .Set("oninput", _onInput)
             .Set("onfocus", _onFocus)
@@ -686,11 +691,16 @@ public class ComboboxTrigger : ButtonPart<ComboboxRenderProps>
 
     [CascadingParameter] private ComboboxRoot Root { get; set; } = null!;
 
+    /// <summary>Disables the button, though the rest of the combobox isn't.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    private bool IsDisabled => Disabled || Root.IsDisabled;
+
     protected override string IdPrefix => "combobox-trigger";
 
     protected override void OnInitialized() =>
         _onClick = EventCallback.Factory.Create<MouseEventArgs>(this, () =>
-            Root.IsDisabled ? Task.CompletedTask : Root.RequestOpenChangeAsync(!Root.IsOpen, OpenChangeReason.TriggerPress));
+            IsDisabled ? Task.CompletedTask : Root.RequestOpenChangeAsync(!Root.IsOpen, OpenChangeReason.TriggerPress));
 
     protected override void OnParametersSet()
     {
@@ -700,9 +710,10 @@ public class ComboboxTrigger : ButtonPart<ComboboxRenderProps>
 
     protected override void BuildAttributes(AttributeBuilder attributes)
     {
-        AddButtonAttributes(attributes, Root.IsDisabled);
+        AddButtonAttributes(attributes, IsDisabled);
         Root.AddState(attributes);
         attributes
+            .Flag("data-disabled", IsDisabled)
             .Set("tabindex", "-1")
             .Set("aria-haspopup", "listbox")
             .Set("aria-expanded", Root.IsOpen ? "true" : "false")
@@ -735,15 +746,21 @@ public class ComboboxClear : ButtonPart<ComboboxRenderProps>
 
     protected override string IdPrefix => "combobox-clear";
 
+    /// <summary>Disables the button, though the rest of the combobox isn't.</summary>
+    [Parameter] public bool Disabled { get; set; }
+
+    private bool IsDisabled => Disabled || Root.IsDisabled;
+
     private bool HasValue => Root.SelectedValues.Count > 0 || Root.CurrentInput.Length > 0;
 
     protected override void OnInitialized() =>
-        _onClick = EventCallback.Factory.Create<MouseEventArgs>(this, () => Root.IsDisabled || Root.ReadOnly ? Task.CompletedTask : Root.ClearAsync());
+        _onClick = EventCallback.Factory.Create<MouseEventArgs>(this, () => IsDisabled || Root.ReadOnly ? Task.CompletedTask : Root.ClearAsync());
 
     protected override void BuildAttributes(AttributeBuilder attributes)
     {
-        AddButtonAttributes(attributes, Root.IsDisabled);
+        AddButtonAttributes(attributes, IsDisabled);
         attributes
+            .Flag("data-disabled", IsDisabled)
             .Set("tabindex", "-1")
             .Default("aria-label", "Clear")
             .Flag("data-visible", HasValue)

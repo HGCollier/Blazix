@@ -20,7 +20,7 @@
                     <TraceCollapsible Open="@(_open ?? running)" OpenChanged="@(open => _open = open)">
                         <TraceCollapsibleTrigger>
                             <TraceLine Status="@(running ? TraceLineStatus.Running : TraceLineStatus.None)">
-                                <TraceIcon><Icon Name="brain" /></TraceIcon>
+                                <TraceIcon><Icon Data="LucideIcons.Brain" /></TraceIcon>
                                 <TraceTitle>@(running ? "Thinking" : "Thought")</TraceTitle>
                             </TraceLine>
                         </TraceCollapsibleTrigger>

@@ -8,5 +8,13 @@
     <Project Path="src/Blazix.Primitives/Blazix.Primitives.csproj" />
     <Project Path="src/Blazix.Cli/Blazix.Cli.csproj" />
     <Project Path="src/Blazix.Registry/Blazix.Registry.csproj" />
+    <Project Path="src/Blazix.Icons/Blazix.Icons.csproj" />
+    <Project Path="src/Blazix.Icons.Generator/Blazix.Icons.Generator.csproj" />
+    <Project Path="src/Blazix.Icons.Lucide/Blazix.Icons.Lucide.csproj" />
+    <Project Path="src/Blazix.Icons.Tabler/Blazix.Icons.Tabler.csproj" />
+    <Project Path="src/Blazix.Icons.Hugeicons/Blazix.Icons.Hugeicons.csproj" />
+    <Project Path="src/Blazix.Icons.Phosphor/Blazix.Icons.Phosphor.csproj" />
+    <Project Path="src/Blazix.Icons.Remixicon/Blazix.Icons.Remixicon.csproj" />
+    <Project Path="src/Blazix.Icons.FontAwesome/Blazix.Icons.FontAwesome.csproj" />
   </Folder>
 </Solution>

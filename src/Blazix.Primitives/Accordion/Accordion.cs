@@ -272,6 +272,7 @@ public class AccordionTrigger : ButtonPart<AccordionItemRenderProps>
             .Set("aria-controls", disclosure is { IsOpen: true, HasPanel: true } ? disclosure.PanelId : null)
             .Set("data-index", Item.Index)
             .Flag("data-panel-open", disclosure.IsOpen)
+            .Flag("data-disabled", Item.IsDisabled)
             .Set("data-blazix-roving-item", "")
             .Set("onclick", _onClick);
     }

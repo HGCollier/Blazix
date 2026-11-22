@@ -4,7 +4,7 @@
     <Marker>
         <Render Context="marker">
             <a @attributes="marker.Attributes" href="#links-and-buttons">
-                <MarkerIcon><Icon Name="git-branch" /></MarkerIcon>
+                <MarkerIcon><Icon Data="LucideIcons.GitBranch" /></MarkerIcon>
                 <MarkerContent>View the pull request</MarkerContent>
             </a>
         </Render>
@@ -13,7 +13,7 @@
         <Render Context="marker">
             <button @attributes="marker.Attributes" type="button" class="@Cn(marker.Attributes.GetValueOrDefault("class") as string, "transition-colors hover:text-foreground")"
                     @onclick="@(() => Toasts.Add(new ToastOptions { Title = "You clicked the revert button" }))">
-                <MarkerIcon><Icon Name="rotate-ccw" /></MarkerIcon>
+                <MarkerIcon><Icon Data="LucideIcons.RotateCcw" /></MarkerIcon>
                 <MarkerContent>Revert this change</MarkerContent>
             </button>
         </Render>

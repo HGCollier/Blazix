@@ -1,9 +1,10 @@
 @namespace Blazix.Registry
 @using Blazix.Primitives
 
-@* Styled as an outline Button by default. *@
+@* Styled as an outline Button by default. With Render, the rendered element styles itself: the
+   default button classes would otherwise be joined onto it and override its own variant and size. *@
 <MenuTrigger data-slot="dropdown-menu-trigger" @attributes="AdditionalAttributes" Render="@Render" NativeButton="@NativeButton"
-             class="@ButtonVariants.Get(Variant, Size, Class)">
+             class="@(Render is null ? ButtonVariants.Get(Variant, Size, Class) : Class)">
     @ChildContent
 </MenuTrigger>
 

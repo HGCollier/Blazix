@@ -32,7 +32,7 @@
                             <NavigationMenuLink>
                                 <Render Context="link">
                                     <a @attributes="link.Attributes" href="#" class="@Cn(link.Attributes.GetValueOrDefault("class") as string, "flex-row items-center gap-2")">
-                                        <Icon Name="@icon" />
+                                        <Icon Data="@icon" />
                                         @label
                                     </a>
                                 </Render>
@@ -72,7 +72,7 @@
                 ("/docs/components/tabs", "Tabs", "A set of layered sections of content—known as tab panels—that are displayed one at a time."),
                 ("/docs/components/tooltip", "Tooltip", "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it."),
             ],
-            [("circle-alert", "Backlog"), ("circle-dashed", "To Do"), ("circle-check", "Done")]),
+            [(LucideIcons.CircleAlert, "Backlog"), (LucideIcons.CircleDashed, "To Do"), (LucideIcons.CircleCheck, "Done")]),
         Ar: new("البدء", "المكونات", "مع أيقونة", "الوثائق",
             [
                 ("/docs", "مقدمة", "مكونات قابلة لإعادة الاستخدام مبنية باستخدام Tailwind CSS."),
@@ -87,7 +87,7 @@
                 ("/docs/components/tabs", "التبويبات", "مجموعة من أقسام المحتوى المتعددة الطبقات—المعروفة بألواح التبويب—التي يتم عرضها واحدة في كل مرة."),
                 ("/docs/components/tooltip", "تلميح", "نافذة منبثقة تعرض معلومات متعلقة بعنصر عندما يتلقى العنصر التركيز على لوحة المفاتيح أو عند تحويم الماوس فوقه."),
             ],
-            [("circle-alert", "قائمة الانتظار"), ("circle-dashed", "المهام"), ("circle-check", "منجز")]),
+            [(LucideIcons.CircleAlert, "قائمة الانتظار"), (LucideIcons.CircleDashed, "المهام"), (LucideIcons.CircleCheck, "منجز")]),
         He: new("התחלה", "רכיבים", "עם אייקון", "תיעוד",
             [
                 ("/docs", "הקדמה", "רכיבים לשימוש חוזר שנבנו עם Tailwind CSS."),
@@ -102,12 +102,12 @@
                 ("/docs/components/tabs", "כרטיסיות", "קבוצה של חלקי תוכן מרובדים—המכונים לוחות כרטיסיות—המוצגים אחד בכל פעם."),
                 ("/docs/components/tooltip", "טולטיפ", "חלון קופץ המציג מידע הקשור לאלמנט כאשר האלמנט מקבל מיקוד מקלדת או כאשר העכבר מרחף מעליו."),
             ],
-            [("circle-alert", "רשימת המתנה"), ("circle-dashed", "לעשות"), ("circle-check", "הושלם")]));
+            [(LucideIcons.CircleAlert, "רשימת המתנה"), (LucideIcons.CircleDashed, "לעשות"), (LucideIcons.CircleCheck, "הושלם")]));
 
     private sealed record Text(string GettingStarted, string Components, string WithIcon, string Docs,
         (string Href, string Title, string Description)[] GettingStartedItems,
         (string Href, string Title, string Description)[] ComponentItems,
-        (string Icon, string Label)[] Statuses);
+        (IconData Icon, string Label)[] Statuses);
 
     private static readonly RenderFragment<(string Href, string Title, string Description)> ListItem = item => @<li>
         <NavigationMenuLink>

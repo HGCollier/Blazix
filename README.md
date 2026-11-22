@@ -43,6 +43,13 @@ dnx Blazix.Cli add dropdown-menu
 dotnet add package Blazix.Primitives
 ```
 
+**Icons.** The components come with [Lucide](https://lucide.dev) icons as inline SVG, or Tabler, Hugeicons, Phosphor,
+Remix Icon or Font Awesome with `init --icon-library`. For icons of your own, each set is a package, trimmed to the icons you use:
+
+```bash
+dotnet add package Blazix.Icons.Lucide
+```
+
 No Node.js, npm or `package.json` required. Tailwind runs through its standalone CLI as part of `dotnet build`.
 
 ## Accessibility

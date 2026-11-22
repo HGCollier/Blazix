@@ -21,6 +21,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- The components' icons in every set (generated, plain C#): what `add` writes for blazix.json's "iconLibrary". -->
+    <Compile Include="..\Blazix.Registry\Icons\RegistryIcons.g.cs" Link="RegistryIcons.g.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="/" />
     <None Include="..\..\THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="/" />
   </ItemGroup>

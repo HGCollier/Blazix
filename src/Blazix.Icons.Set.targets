@@ -1,0 +1,54 @@
+<Project>
+
+  <!--
+    Imported by each icon set package (Blazix.Icons.Lucide, .Tabler, ...), which sets $(IconSet), the generator's
+    key for it. The icons are generated into obj/ on build, from the set's npm tarball (downloaded once into
+    artifacts/icon-cache and checked against the sha512 pinned in src/Blazix.Icons.Generator/IconSets.cs), so
+    the megabytes of generated C# never go into git. Each icon is a property with no backing field, so trimming
+    keeps only the icons an app uses.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsAotCompatible>true</IsAotCompatible>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsPackable>true</IsPackable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>blazor;icons;svg;$(IconSet)</PackageTags>
+    <_IconCache>$(MSBuildThisFileDirectory)..\artifacts\icon-cache</_IconCache>
+    <_IconGeneratorProject>$(MSBuildThisFileDirectory)Blazix.Icons.Generator\Blazix.Icons.Generator.csproj</_IconGeneratorProject>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- One file for every configuration (the icons don't change with it), at a path known when the project is
+         evaluated: IDEs (Rider, Visual Studio) read the Compile items from evaluation and design-time builds. -->
+    <_IconGenerated>$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(BaseIntermediateOutputPath)', '$(IconSet).g.cs'))</_IconGenerated>
+    <_IconLicense>$([MSBuild]::NormalizePath('$(MSBuildProjectDirectory)', '$(BaseIntermediateOutputPath)', '$(IconSet).g.LICENSE.txt'))</_IconLicense>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)Blazix.Icons\Blazix.Icons.csproj" />
+    <!-- Built first, to run; nothing references its assembly, and it's no dependency of the package. -->
+    <ProjectReference Include="$(_IconGeneratorProject)" ReferenceOutputAssembly="false" Private="false" PrivateAssets="all" />
+    <Using Include="Blazix.Icons" />
+    <None Include="README.md" Pack="true" PackagePath="/" />
+    <Compile Include="$(_IconGenerated)" Visible="false" />
+    <!-- The set's own license, next to the package's MIT one (which covers Blazix's code). -->
+    <None Include="$(_IconLicense)" Pack="true" PackagePath="ICONS-LICENSE.txt" Visible="false" />
+  </ItemGroup>
+
+  <Target Name="_ResolveIconGenerator" DependsOnTargets="ResolveProjectReferences">
+    <MSBuild Projects="$(_IconGeneratorProject)" Targets="GetTargetPath">
+      <Output TaskParameter="TargetOutputs" PropertyName="_IconGeneratorPath" />
+    </MSBuild>
+    <!-- An IDE's design-time build doesn't build references, and its properties skip the compiler: build the
+         generator for real when it's missing (a normal build has built it as a reference already). -->
+    <MSBuild Projects="$(_IconGeneratorProject)" Targets="Build" Condition="!Exists('$(_IconGeneratorPath)')"
+             Properties="DesignTimeBuild=false;SkipCompilerExecution=false;ProvideCommandLineArgs=false;BuildProjectReferences=true" />
+  </Target>
+
+  <Target Name="GenerateIconSet" BeforeTargets="CoreCompile" DependsOnTargets="_ResolveIconGenerator"
+          Inputs="$(_IconGeneratorPath)" Outputs="$(_IconGenerated);$(_IconLicense)">
+    <Exec Command="dotnet &quot;$(_IconGeneratorPath)&quot; set $(IconSet) &quot;$(_IconCache)&quot; &quot;$(_IconGenerated)&quot;" />
+  </Target>
+
+</Project>

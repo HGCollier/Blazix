@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <!--
-      The registry's components as `blazix add` copies them with "rtl": true, in the namespace Blazix.Registry.Rtl:
+      The registry's components as `blazix add` copies them with "rtl": true (and Lucide icons), in the namespace Blazix.Registry.Rtl:
       the docs' RTL examples (Blazix.Docs.Client/RtlExamples) render with these, like shadcn's ui-rtl/. Generated
       into Generated/ (ignored by git) on every build by the CLI's rtl-copy, from src/Blazix.Registry/Components,
       so edit those, not these.
@@ -28,11 +28,26 @@
         <Using Include="Blazix.Primitives"/>
     </ItemGroup>
 
-    <Target Name="GenerateRtlRegistry" BeforeTargets="PrepareForBuild" DependsOnTargets="ResolveProjectReferences"
+    <!--
+      The generating target's inputs, defined in a target rather than a top-level ItemGroup, so they exist only during
+      a build. IDEs (Rider, Visual Studio) evaluate top-level items and would treat the registry's .razor/.cs files as
+      part of this project: a second Blazix.Registry, which makes every one of its types ambiguous in the docs.
+    -->
+    <Target Name="_RtlSources">
+        <ItemGroup>
+            <_RtlSource Include="$(_RtlRegistry)**\*.razor;$(_RtlRegistry)**\*.cs;..\..\src\Blazix.Cli\Rtl.cs;..\..\src\Blazix.Cli\Icons.cs;..\..\src\Blazix.Cli\Commands.cs;..\..\src\Blazix.Registry\Icons\RegistryIcons.g.cs"/>
+        </ItemGroup>
+    </Target>
+
+    <Target Name="GenerateRtlRegistry" BeforeTargets="PrepareForBuild" DependsOnTargets="ResolveProjectReferences;_RtlSources"
             Inputs="@(_RtlSource)" Outputs="$(_RtlGenerated).stamp">
         <MSBuild Projects="..\..\src\Blazix.Cli\Blazix.Cli.csproj" Targets="GetTargetPath">
             <Output TaskParameter="TargetOutputs" PropertyName="_RtlCliPath"/>
         </MSBuild>
+        <!-- An IDE's design-time build (Rider, Visual Studio) doesn't build references, and its properties skip the
+             compiler: build the CLI for real when it's missing (a normal build has built it as a reference already). -->
+        <MSBuild Projects="..\..\src\Blazix.Cli\Blazix.Cli.csproj" Targets="Build" Condition="!Exists('$(_RtlCliPath)')"
+                 Properties="DesignTimeBuild=false;SkipCompilerExecution=false;ProvideCommandLineArgs=false;BuildProjectReferences=true"/>
         <RemoveDir Directories="$(_RtlGenerated)"/>
         <Exec Command="dotnet &quot;$(_RtlCliPath)&quot; rtl-copy &quot;$(_RtlRegistry.TrimEnd('\'))&quot; &quot;$(_RtlGenerated.TrimEnd('\'))&quot; Blazix.Registry.Rtl"/>
         <Touch Files="$(_RtlGenerated).stamp" AlwaysCreate="true"/>
@@ -45,9 +60,5 @@
             <Compile Include="$(_RtlGenerated)**\*.cs"/>
         </ItemGroup>
     </Target>
-
-    <ItemGroup>
-        <_RtlSource Include="$(_RtlRegistry)**\*.razor;$(_RtlRegistry)**\*.cs;..\..\src\Blazix.Cli\Rtl.cs;..\..\src\Blazix.Cli\Commands.cs"/>
-    </ItemGroup>
 
 </Project>

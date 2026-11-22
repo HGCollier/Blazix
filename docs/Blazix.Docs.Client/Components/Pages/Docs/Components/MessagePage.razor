@@ -93,14 +93,14 @@
 
     private const string LabelIconOnlyActionsCode = """
         <MessageFooter>
-            <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" aria-label="Copy"><Icon Name="copy" /></Button>
+            <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" aria-label="Copy"><Icon Data="LucideIcons.Copy" /></Button>
         </MessageFooter>
         """;
 
     private const string StatusUpdatesCode = """
         <Message>
             <Marker role="status">
-                <Icon Name="marker"><Spinner /></Icon>
+                <MarkerIcon><Spinner /></MarkerIcon>
                 <MarkerContent>Checking the logs...</MarkerContent>
             </Marker>
         </Message>

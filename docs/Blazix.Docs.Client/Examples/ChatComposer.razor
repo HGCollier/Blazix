@@ -18,22 +18,22 @@
                     <Render>
                         <InputGroupButton @attributes="context.Attributes" aria-label="Add files" Size="InputGroupButtonSize.IconSm"
                                           Variant="ButtonVariant.Outline">
-                            <Icon Name="plus" />
+                            <Icon Data="LucideIcons.Plus" />
                         </InputGroupButton>
                     </Render>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent Align="Align.Start" Side="Side.Top" Class="w-44">
-                    <DropdownMenuItem><Icon Name="paperclip" /> Add Photos &amp; Files</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Data="LucideIcons.Paperclip" /> Add Photos &amp; Files</DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem><Icon Name="image" /> Create Image</DropdownMenuItem>
-                    <DropdownMenuItem><Icon Name="telescope" /> Deep Research</DropdownMenuItem>
-                    <DropdownMenuItem><Icon Name="globe" /> Web Search</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Data="LucideIcons.Image" /> Create Image</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Data="LucideIcons.Telescope" /> Deep Research</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Data="LucideIcons.Globe" /> Web Search</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
             @ChildContent
             <InputGroupButton Type="submit" Variant="ButtonVariant.Default" Size="InputGroupButtonSize.IconSm"
                               Disabled="@(Session.NextMessage is null || Session.IsBusy)" Class="ml-auto">
-                <Icon Name="arrow-up" />
+                <Icon Data="LucideIcons.ArrowUp" />
                 <span class="sr-only">Send</span>
             </InputGroupButton>
         </InputGroupAddon>

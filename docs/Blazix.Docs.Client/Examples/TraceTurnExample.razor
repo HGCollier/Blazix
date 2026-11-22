@@ -10,7 +10,7 @@
                 <TraceCollapsible>
                     <TraceCollapsibleTrigger>
                         <TraceLine>
-                            <TraceIcon><Icon Name="brain" /></TraceIcon>
+                            <TraceIcon><Icon Data="LucideIcons.Brain" /></TraceIcon>
                             <TraceTitle>Thought</TraceTitle>
                             <TraceDescription>12s</TraceDescription>
                         </TraceLine>
@@ -22,20 +22,20 @@
                 <TraceCollapsible Open="true">
                     <TraceCollapsibleTrigger>
                         <TraceLine Status="TraceLineStatus.Error">
-                            <TraceIcon><Icon Name="terminal" /></TraceIcon>
+                            <TraceIcon><Icon Data="LucideIcons.Terminal" /></TraceIcon>
                             <TraceTitle>Ran 2 commands, 1 failed</TraceTitle>
                         </TraceLine>
                     </TraceCollapsibleTrigger>
                     <TraceCollapsibleContent keepMounted>
                         <Trace>
                             <TraceLine>
-                                <TraceIcon><Icon Name="terminal" /></TraceIcon>
+                                <TraceIcon><Icon Data="LucideIcons.Terminal" /></TraceIcon>
                                 <TraceTitle>Ran node --version</TraceTitle>
                             </TraceLine>
                             <TraceCollapsible>
                                 <TraceCollapsibleTrigger>
                                     <TraceLine Status="TraceLineStatus.Error">
-                                        <TraceIcon><Icon Name="terminal" /></TraceIcon>
+                                        <TraceIcon><Icon Data="LucideIcons.Terminal" /></TraceIcon>
                                         <TraceTitle>Failed to run pnpm --version</TraceTitle>
                                     </TraceLine>
                                 </TraceCollapsibleTrigger>
@@ -53,9 +53,9 @@
             <Trace>
                 <a href="#turn">
                     <TraceLine>
-                        <TraceIcon><Icon Name="file-text" /></TraceIcon>
+                        <TraceIcon><Icon Data="LucideIcons.FileText" /></TraceIcon>
                         <TraceTitle>Read apps/v4/lib/docs.ts</TraceTitle>
-                        <TraceIcon><Icon Name="chevron-right" /></TraceIcon>
+                        <TraceIcon><Icon Data="LucideIcons.ChevronRight" /></TraceIcon>
                     </TraceLine>
                 </a>
             </Trace>

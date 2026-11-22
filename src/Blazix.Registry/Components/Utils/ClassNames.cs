@@ -160,7 +160,7 @@ internal static class TailwindMerge
             Fixed("p"), Fixed("px"), Fixed("py"), Fixed("ps"), Fixed("pe"), Fixed("pt"), Fixed("pr"), Fixed("pb"), Fixed("pl"),
             Fixed("m"), Fixed("mx"), Fixed("my"), Fixed("ms"), Fixed("me"), Fixed("mt"), Fixed("mr"), Fixed("mb"), Fixed("ml"),
             Fixed("gap"), Fixed("gap-x"), Fixed("gap-y"), Fixed("space-x"), Fixed("space-y"),
-            Fixed("inset"), Fixed("inset-x"), Fixed("inset-y"), Fixed("start"), Fixed("end"), Fixed("top"), Fixed("right"),
+            Fixed("inset"), Fixed("inset-x"), Fixed("inset-y"), Fixed("inset-s"), Fixed("inset-e"), Fixed("start"), Fixed("end"), Fixed("top"), Fixed("right"),
             Fixed("bottom"), Fixed("left"), Fixed("z"), Fixed("order"), Fixed("basis"), Fixed("grow"), Fixed("shrink"),
             ("flex", v => v switch
             {
@@ -237,8 +237,8 @@ internal static class TailwindMerge
             ["mx"] = ["mr", "ml"],
             ["my"] = ["mt", "mb"],
             ["gap"] = ["gap-x", "gap-y"],
-            ["inset"] = ["inset-x", "inset-y", "start", "end", "top", "right", "bottom", "left"],
-            ["inset-x"] = ["right", "left"],
+            ["inset"] = ["inset-x", "inset-y", "inset-s", "inset-e", "start", "end", "top", "right", "bottom", "left"],
+            ["inset-x"] = ["inset-s", "inset-e", "start", "end", "right", "left"],
             ["inset-y"] = ["top", "bottom"],
             ["flex"] = ["basis", "grow", "shrink"],
             ["col-span"] = ["col-start", "col-end"],

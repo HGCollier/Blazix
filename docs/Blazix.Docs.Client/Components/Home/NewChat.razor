@@ -7,7 +7,7 @@
                 <TooltipTrigger>
                     <Render Context="trigger">
                         <Button @attributes="trigger.Attributes" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="Reset conversation">
-                            <Icon Name="rotate-cw" />
+                            <Icon Data="LucideIcons.RotateCw" />
                         </Button>
                     </Render>
                 </TooltipTrigger>
@@ -18,7 +18,7 @@
     <CardContent Class="flex-1 overflow-hidden p-0">
         <Empty Class="h-full">
             <EmptyHeader>
-                <EmptyMedia Variant="EmptyMediaVariant.Icon"><Icon Name="message-circle-dashed" /></EmptyMedia>
+                <EmptyMedia Variant="EmptyMediaVariant.Icon"><Icon Data="LucideIcons.MessageCircleDashed" /></EmptyMedia>
                 <EmptyTitle>Good morning!</EmptyTitle>
                 <EmptyDescription>What are we working on today? Press send to start a new conversation</EmptyDescription>
             </EmptyHeader>
@@ -37,20 +37,20 @@
                         <DropdownMenuTrigger>
                             <Render Context="trigger">
                                 <InputGroupButton @attributes="trigger.Attributes" aria-label="Add files" Size="InputGroupButtonSize.IconSm" Variant="ButtonVariant.Outline">
-                                    <Icon Name="plus" />
+                                    <Icon Data="LucideIcons.Plus" />
                                 </InputGroupButton>
                             </Render>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent Align="Align.Start" Side="Side.Top" Class="w-44">
-                            <DropdownMenuItem><Icon Name="paperclip" />Add Photos &amp; Files</DropdownMenuItem>
+                            <DropdownMenuItem><Icon Data="LucideIcons.Paperclip" />Add Photos &amp; Files</DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem><Icon Name="image" />Create Image</DropdownMenuItem>
-                            <DropdownMenuItem><Icon Name="telescope" />Deep Research</DropdownMenuItem>
-                            <DropdownMenuItem><Icon Name="globe" />Web Search</DropdownMenuItem>
+                            <DropdownMenuItem><Icon Data="LucideIcons.Image" />Create Image</DropdownMenuItem>
+                            <DropdownMenuItem><Icon Data="LucideIcons.Telescope" />Deep Research</DropdownMenuItem>
+                            <DropdownMenuItem><Icon Data="LucideIcons.Globe" />Web Search</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                     <InputGroupButton Variant="ButtonVariant.Default" Size="InputGroupButtonSize.IconSm" Class="ml-auto">
-                        <Icon Name="arrow-up" />
+                        <Icon Data="LucideIcons.ArrowUp" />
                         <span class="sr-only">Send</span>
                     </InputGroupButton>
                 </InputGroupAddon>

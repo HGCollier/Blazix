@@ -88,7 +88,7 @@
                 </Field>
                 <Field>
                     <FieldLabel for="username">Username</FieldLabel>
-                    <Input id="username" autocomplete="off" aria-invalid />
+                    <Input id="username" autocomplete="off" aria-invalid="true" />
                     <FieldError>Choose another username.</FieldError>
                 </Field>
                 <Field Orientation="FieldOrientation.Horizontal">
@@ -145,9 +145,9 @@
         """;
 
     private const string ValidationAndErrorsCode = """
-        <Field data-invalid>
+        <Field data-invalid="true">
             <FieldLabel for="email">Email</FieldLabel>
-            <Input id="email" Type="email" aria-invalid />
+            <Input id="email" Type="email" aria-invalid="true" />
             <FieldError>Enter a valid email address.</FieldError>
         </Field>
         """;

@@ -22,20 +22,20 @@
     </CardContent>
     <CardFooter Class="flex-col gap-4">
         <Button Class="w-full">
-            <Icon Name="lock" />
+            <Icon Data="LucideIcons.Lock" />
             Update Security
         </Button>
         <Item Variant="ItemVariant.Muted">
             <Render>
                 <a @attributes="context.Attributes" href="#">
                     <ItemMedia Variant="ItemMediaVariant.Icon">
-                        <Icon Name="circle-alert" class="text-destructive" />
+                        <Icon Data="LucideIcons.CircleAlert" class="text-destructive" />
                     </ItemMedia>
                     <ItemContent>
                         <ItemTitle>Danger Zone</ItemTitle>
                         <ItemDescription Class="line-clamp-1">Archive account and remove catalog</ItemDescription>
                     </ItemContent>
-                    <Icon Name="chevron-right" class="size-4" />
+                    <Icon Data="LucideIcons.ChevronRight" class="size-4" />
                 </a>
             </Render>
         </Item>

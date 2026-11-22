@@ -1,0 +1,43 @@
+@namespace Blazix.Registry
+
+@*
+    An icon of the components, named in every set Blazix supports, like shadcn/ui's IconPlaceholder. Never copied:
+    `blazix add` replaces each one with the inline <svg> of the set in blazix.json's "iconLibrary" (Blazix.Cli's
+    Icons.cs), keeping the other attributes. The docs render the Lucide icon, as `add` writes it by default.
+
+    Name an icon in all six sets, as each names its files (lucide.dev, tabler.io/icons, hugeicons.com,
+    phosphoricons.com, remixicon.com, fontawesome.com: solid unless "regular/…"), then regenerate
+    RegistryIcons.g.cs (the command is at its top). Every placeholder is aria-hidden="true", or named (role and
+    aria-label, or aria-labelledby), or takes its attributes from @attributes: the docs build checks.
+*@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="@Icon.ViewBox" fill="none" stroke="currentColor" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round" @attributes="AdditionalAttributes">
+    @((MarkupString)Icon.Body)
+</svg>
+
+@code {
+    /// <summary>The Lucide icon (lucide.dev), which the docs render and `add` copies by default.</summary>
+    [Parameter, EditorRequired] public string Lucide { get; set; } = "";
+
+    /// <summary>The Tabler icon (outline).</summary>
+    [Parameter, EditorRequired] public string Tabler { get; set; } = "";
+
+    /// <summary>The Hugeicons icon (free, stroke rounded).</summary>
+    [Parameter, EditorRequired] public string Hugeicons { get; set; } = "";
+
+    /// <summary>The Phosphor icon (regular weight).</summary>
+    [Parameter, EditorRequired] public string Phosphor { get; set; } = "";
+
+    /// <summary>The Remix Icon icon (a -line one).</summary>
+    [Parameter, EditorRequired] public string Remixicon { get; set; } = "";
+
+    /// <summary>The Font Awesome Free icon (solid, unless "regular/…").</summary>
+    [Parameter, EditorRequired] public string FontAwesome { get; set; } = "";
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private RegistryIcon Icon => RegistryIcons.Sets["lucide"].Icons.TryGetValue(Lucide, out var icon)
+        ? icon
+        : throw new InvalidOperationException($"No Lucide icon '{Lucide}' in RegistryIcons.g.cs: regenerate it.");
+}

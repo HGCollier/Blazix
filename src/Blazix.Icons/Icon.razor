@@ -1,0 +1,48 @@
+@namespace Blazix.Icons
+
+@* Attributes passed in come last, so they win: class="size-4", width, stroke-width, data-*, an aria-label of your own. *@
+@if (Data.Style == IconStyle.Stroke)
+{
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="@Data.ViewBox" fill="none" stroke="currentColor"
+         stroke-width="@StrokeWidthValue" stroke-linecap="round" stroke-linejoin="round"
+         role="@Role" aria-label="@Label" aria-hidden="@Hidden" @attributes="AdditionalAttributes">
+        @((MarkupString)Data.Body)
+    </svg>
+}
+else
+{
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="@Data.ViewBox" fill="currentColor"
+         role="@Role" aria-label="@Label" aria-hidden="@Hidden" @attributes="AdditionalAttributes">
+        @((MarkupString)Data.Body)
+    </svg>
+}
+
+@code {
+    /// <summary>The icon, from an icon set package: <c>LucideIcons.ChevronDown</c>, <c>FontAwesomeIcons.Solid.House</c>.</summary>
+    [Parameter, EditorRequired] public IconData Data { get; set; } = null!;
+
+    /// <summary>
+    /// What the icon means, for an icon that's the only content of a button or link, or that says something the text
+    /// around it doesn't. Read out as an image with this name (<c>role="img"</c>, <c>aria-label</c>). Leave it unset for
+    /// an icon next to text that says the same, which is then hidden from assistive tech (<c>aria-hidden="true"</c>).
+    /// </summary>
+    [Parameter] public string? Label { get; set; }
+
+    /// <summary>The stroke width of an outline icon. Defaults to 2; filled icons ignore it.</summary>
+    [Parameter] public double? StrokeWidth { get; set; }
+
+    /// <summary>Attributes for the <c>&lt;svg&gt;</c>: <c>class</c>, <c>style</c>, <c>data-*</c>, and so on.</summary>
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string StrokeWidthValue => (StrokeWidth ?? 2).ToString(System.Globalization.CultureInfo.InvariantCulture);
+
+    // Named by Label, or by an aria-label or aria-labelledby passed as an attribute: then it's an image, otherwise decoration.
+    private bool Named => Label is not null
+        || AdditionalAttributes?.ContainsKey("aria-label") == true
+        || AdditionalAttributes?.ContainsKey("aria-labelledby") == true;
+
+    private string? Role => Named ? "img" : null;
+
+    private string? Hidden => Named ? null : "true";
+}

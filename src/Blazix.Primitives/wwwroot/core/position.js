@@ -25,7 +25,8 @@ import { clamp } from './dom.js';
  * @typedef {{
  *   side?: Side, align?: Align, sideOffset?: number, alignOffset?: number,
  *   collisionPadding?: number, arrowPadding?: number, flip?: boolean, sticky?: boolean,
- *   fallbackAxis?: boolean, trackAnchor?: boolean
+ *   fallbackAxis?: boolean, trackAnchor?: boolean,
+ *   anchorId?: string | null
  * }} PositionOptions
  */
 

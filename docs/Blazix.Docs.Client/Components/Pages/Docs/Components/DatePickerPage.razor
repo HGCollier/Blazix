@@ -40,7 +40,7 @@
                 <Render>
                     <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline" data-empty="@(_date is null ? "true" : "false")"
                             Class="justify-start text-left font-normal data-[empty=true]:text-muted-foreground">
-                        <Icon Name="calendar" />
+                        <Icon Data="LucideIcons.Calendar" />
                         @if (_date is { } date)
                         {
                             @date.ToString("MMMM d, yyyy")

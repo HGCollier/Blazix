@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Remix Icon (remixicon 4.8.0 on npm), generated on build: see ../Blazix.Icons.Set.targets. -->
+  <PropertyGroup>
+    <IconSet>remixicon</IconSet>
+    <PackageId>Blazix.Icons.Remixicon</PackageId>
+    <Description>Remix Icon for Blazor: 3,100 icons as inline SVG, for Blazix.Icons' Icon component. Trimming keeps only the icons you use.</Description>
+    <!-- Blazix's code is MIT; the icons are Apache-2.0. -->
+    <PackageLicenseExpression>MIT AND Apache-2.0</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <Import Project="..\Blazix.Icons.Set.targets" />
+
+</Project>

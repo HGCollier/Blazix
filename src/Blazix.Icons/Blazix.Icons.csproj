@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <!--
+    The <Icon> component and IconData, which every icon set package (Blazix.Icons.Lucide, .Tabler, ...) is written
+    against. The components `blazix add` copies don't use it: they get their icons as inline SVG.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsAotCompatible>true</IsAotCompatible>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <IsPackable>true</IsPackable>
+    <PackageId>Blazix.Icons</PackageId>
+    <Description>The Icon component for Blazix's icon set packages (Blazix.Icons.Lucide, .Tabler, .Hugeicons, .Phosphor, .Remixicon, .FontAwesome): inline SVG, accessible, trimmed to the icons you use.</Description>
+    <PackageTags>blazor;icons;svg</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+</Project>

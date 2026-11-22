@@ -2,7 +2,7 @@
     <TraceCollapsible Open="true">
         <TraceCollapsibleTrigger>
             <TraceLine>
-                <TraceIcon><Icon Name="globe" /></TraceIcon>
+                <TraceIcon><Icon Data="LucideIcons.Globe" /></TraceIcon>
                 <TraceTitle>Used @Sources.Length sources</TraceTitle>
             </TraceLine>
         </TraceCollapsibleTrigger>
@@ -12,12 +12,12 @@
                 {
                     <a @key="source.Href" href="@source.Href" target="_blank" rel="noreferrer">
                         <TraceLine>
-                            <TraceIcon><Icon Name="globe" /></TraceIcon>
+                            <TraceIcon><Icon Data="LucideIcons.Globe" /></TraceIcon>
                             <TraceTitle>
                                 @source.Title
                                 <span class="sr-only"> (opens in a new tab)</span>
                             </TraceTitle>
-                            <TraceIcon><Icon Name="arrow-up-right" /></TraceIcon>
+                            <TraceIcon><Icon Data="LucideIcons.ArrowUpRight" /></TraceIcon>
                         </TraceLine>
                     </a>
                 }

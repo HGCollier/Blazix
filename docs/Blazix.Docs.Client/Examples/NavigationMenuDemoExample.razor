@@ -31,7 +31,7 @@
                             <NavigationMenuLink>
                                 <Render Context="link">
                                     <a @attributes="link.Attributes" href="#" class="@Cn(link.Attributes.GetValueOrDefault("class") as string, "flex-row items-center gap-2")">
-                                        <Icon Name="@icon" />
+                                        <Icon Data="@icon" />
                                         @label
                                     </a>
                                 </Render>
@@ -62,7 +62,7 @@
         ("/docs/components/tooltip", "Tooltip", "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it."),
     ];
 
-    private static readonly (string Icon, string Label)[] Statuses = [("circle-alert", "Backlog"), ("circle-dashed", "To Do"), ("circle-check", "Done")];
+    private static readonly (IconData Icon, string Label)[] Statuses = [(LucideIcons.CircleAlert, "Backlog"), (LucideIcons.CircleDashed, "To Do"), (LucideIcons.CircleCheck, "Done")];
 
     private static readonly RenderFragment<(string Href, string Title, string Description)> ListItem = item => @<li>
         <NavigationMenuLink>

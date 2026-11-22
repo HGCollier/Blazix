@@ -1,0 +1,8 @@
+# Generated/ is the registry as `blazix add` copies it with "rtl": true (see the .csproj), in this project's namespace.
+# Not generated_code = true: that also turns off the nullable context, which the copies are written for. Instead, these
+# inspections are off here: the namespace differs from the folder on purpose, and the docs use only some of the
+# components, so members that apps use look unused. Fix anything else in src/Blazix.Registry/Components.
+[Generated/**]
+resharper_check_namespace_highlighting = none
+resharper_unused_auto_property_accessor_global_highlighting = none
+resharper_not_accessed_positional_property_global_highlighting = none

@@ -7,7 +7,7 @@
                 <Render>
                     <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline" Class="w-32 justify-between font-normal">
                         @(_date is { } date ? Format(date) : "Select date")
-                        <Icon Name="chevron-down" data-icon="inline-end" />
+                        <Icon Data="LucideIcons.ChevronDown" data-icon="inline-end" />
                     </Button>
                 </Render>
             </PopoverTrigger>

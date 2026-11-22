@@ -1,6 +1,6 @@
 @if (Source is { } source)
 {
-    if (Collapsible)
+    if (Collapsible && !FitsWithoutScrolling(source, DisplayTitle is null ? CollapsedLines + 1 : CollapsedLines))
     {
         <div data-state="@(_open ? "open" : "closed")" class="@Cn("group/collapsible relative md:-mx-1", Class)">
             <div class="absolute top-1.5 right-9 z-10 flex items-center">
@@ -28,6 +28,19 @@
 }
 
 @code {
+    /// <summary>The most lines the preview's code area (max-h-72) shows before it scrolls.</summary>
+    public const int PreviewLines = 9;
+
+    /// <summary>The most lines a collapsed source (max-h-64, with its title bar) shows before it's cut.</summary>
+    private const int CollapsedLines = 7;
+
+    /// <summary>
+    /// Whether code is short enough to show in full where it's otherwise cut: then there's nothing for
+    /// "View Code" or "Expand" to reveal, so the code shows as is.
+    /// </summary>
+    public static bool FitsWithoutScrolling(string? code, int maxLines) =>
+        code is not null && code.TrimEnd('\r', '\n').Split('\n').Length <= maxLines;
+
     private readonly string _id = "source-" + Guid.NewGuid().ToString("N")[..8];
     private bool _open;
 

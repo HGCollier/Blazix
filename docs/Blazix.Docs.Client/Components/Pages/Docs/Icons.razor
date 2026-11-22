@@ -1,0 +1,155 @@
+@page "/docs/icons"
+
+<DocsPage Title="Icons" Description="Pick the icon set the components are copied with, and add icons of your own.">
+    <p>
+        The components draw their icons as inline SVG, so they need no icon package. You pick which set those icons come from,
+        the way shadcn/ui&apos;s <code>iconLibrary</code> does: <code>add</code> copies each component with that set&apos;s icons.
+        For icons of your own, each set is also a NuGet package.
+    </p>
+
+    <DocsHeading Title="Icon libraries" />
+    <DocsTable>
+        <table>
+            <thead><tr><th>Library</th><th><code>iconLibrary</code></th><th>Package</th><th>Icons&apos; license</th></tr></thead>
+            <tbody>
+                @foreach (var (name, url, key, package, license) in Libraries)
+                {
+                    <tr>
+                        <th scope="row"><a href="@url" target="_blank" rel="noreferrer">@name</a></th>
+                        <td><code>@key</code></td>
+                        <td><code>@package</code></td>
+                        <td>@license</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </DocsTable>
+    <p>
+        Lucide is the default, and the one these docs show. The components use the same icons in each set as shadcn/ui does.
+        Font Awesome, which shadcn/ui doesn&apos;t offer, uses its free solid icons.
+    </p>
+
+    <DocsHeading Title="Choosing a library" />
+    <p>Pass <code>--icon-library</code> to <code>init</code>. It sets <a href="/docs/blazix-json#iconlibrary"><code>iconLibrary</code></a> in <code>blazix.json</code>, which you can also edit by hand.</p>
+    <CliCommand Args="init --icon-library tabler" />
+    <p>
+        From then on, <code>add</code> copies each component with that set&apos;s icons. Each icon keeps the classes and
+        attributes the component gives it, so it sizes and colors the same way in every set:
+    </p>
+    <CodeFigure Code="@CopiedCode" Title="Components/UI/Accordion/AccordionTrigger.razor" />
+
+    <DocsHeading Title="Changing library" />
+    <p>
+        For components you&apos;ve already added, run <code>migrate icons</code>. It swaps their icons for the new library&apos;s and
+        sets <code>iconLibrary</code>, so later adds match.
+    </p>
+    <CliCommand Args="migrate icons --to phosphor" />
+    <p><strong>Options</strong></p>
+    <CodeFigure Code="@MigrateOptionsCode" Language="text" />
+    <p>
+        It swaps the icons it recognizes as the components&apos; own, in the library <code>blazix.json</code> names. It leaves any
+        other <code>&lt;svg&gt;</code> as it is, such as your own icons or one you&apos;ve redrawn, and says how many it left. Pass
+        <code>--from</code> if your components came with a different library from the one <code>blazix.json</code> names. With a path,
+        it migrates just those files and leaves <code>blazix.json</code> alone.
+    </p>
+
+    <DocsHeading Title="Icons of your own" />
+    <p>Each set is a package of its own. Add the one that matches your components:</p>
+    <CodeFigure Code="@PackageCode" Language="bash" />
+    <p>
+        Then render an icon with <code>&lt;Icon&gt;</code>, from <code>Blazix.Icons</code>, which the set&apos;s package brings with it.
+        Put the two <code>@@using</code> lines in <code>_Imports.razor</code> to use icons everywhere, as the examples in these docs do:
+    </p>
+    <CodeFigure Code="@UsageCode" Title="Pages/Files.razor" LineNumbers="true" />
+    <ul>
+        <li>
+            Without <code>Label</code>, an icon is decoration and is hidden from assistive technology (<code>aria-hidden="true"</code>).
+            Use it next to text that says the same thing.
+        </li>
+        <li>
+            With <code>Label</code>, it&apos;s an image with that name (<code>role="img"</code> and <code>aria-label</code>). Give one to an
+            icon that&apos;s the only content of a button or link, so the control has a name.
+        </li>
+        <li>
+            It takes the text color (<code>currentColor</code>). Attributes you pass, such as <code>class</code>, <code>style</code> and
+            <code>width</code>, go on the <code>&lt;svg&gt;</code> and win over its defaults. <code>StrokeWidth</code> changes an outline
+            icon&apos;s stroke, which defaults to 2.
+        </li>
+        <li>
+            Each icon is a property, so a typo is a compile error, and your editor completes the names. Trimming, which Blazor
+            WebAssembly does when you publish, keeps only the icons your app uses: an app that uses two Lucide icons ships a few
+            kilobytes of icon data, not the whole set.
+        </li>
+        <li>
+            An icon that points along the line, such as an arrow or a chevron, should turn around in right-to-left layouts. Add
+            <code>rtl:rotate-180</code> to its classes. The components&apos; own icons do this already (see <a href="/docs/rtl">RTL</a>).
+        </li>
+    </ul>
+
+    <DocsHeading Title="Licenses" />
+    <p>
+        Blazix&apos;s code is MIT. The icons keep their own licenses, listed above. Each package carries its set&apos;s license as
+        <code>ICONS-LICENSE.txt</code>. Lucide&apos;s icons are ISC, except the ones it took from Feather, which are MIT.
+    </p>
+    <ul>
+        <li>
+            <strong>Font Awesome Free</strong>: its icons are CC BY 4.0, which requires attribution. Each Font Awesome icon that
+            <code>add</code> copies keeps Font Awesome&apos;s attribution comment, as its own SVG files do. Razor drops comments when it
+            compiles, so the comment costs nothing at run time.
+        </li>
+        <li>
+            <strong>Remix Icon</strong>: the package and the components use Remix Icon 4.8.0, its last release under Apache-2.0.
+            From 4.9.0 Remix Icon has a license of its own, the Remix Icon License v1.0. That license doesn&apos;t allow distributing
+            the icons as an icon library, which the package would be. Icons that Remix Icon added after 4.8.0 aren&apos;t included.
+        </li>
+    </ul>
+</DocsPage>
+
+@code {
+    private static readonly (string Name, string Url, string Key, string Package, string License)[] Libraries =
+    [
+        ("Lucide", "https://lucide.dev/icons", "lucide", "Blazix.Icons.Lucide", "ISC"),
+        ("Tabler Icons", "https://tabler.io/icons", "tabler", "Blazix.Icons.Tabler", "MIT"),
+        ("Hugeicons", "https://hugeicons.com/icons", "hugeicons", "Blazix.Icons.Hugeicons", "MIT (the free set)"),
+        ("Phosphor Icons", "https://phosphoricons.com", "phosphor", "Blazix.Icons.Phosphor", "MIT"),
+        ("Remix Icon", "https://remixicon.com", "remixicon", "Blazix.Icons.Remixicon", "Apache-2.0 (4.8.0)"),
+        ("Font Awesome Free", "https://fontawesome.com/search?ic=free", "fontawesome", "Blazix.Icons.FontAwesome", "CC BY 4.0"),
+    ];
+
+    private const string CopiedCode = """
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             aria-hidden="true" data-slot="accordion-trigger-icon" class="pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden">
+            <path d="M6 9l6 6l6 -6" />
+        </svg>
+        """;
+
+    private const string MigrateOptionsCode = """
+        Usage: blazix migrate icons [path] --to <library> [options]
+
+        Arguments:
+          path                   a file or folder to migrate (default: componentsDir)
+
+        Options:
+          --to <library>         the library to change to: lucide, tabler, hugeicons, phosphor, remixicon, fontawesome
+          --from <library>       the library the components came with (default: blazix.json's iconLibrary)
+          -p, --project <path>   the project, when the folder has more than one
+        """;
+
+    private const string PackageCode = """
+        dotnet add package Blazix.Icons.Lucide
+        """;
+
+    private const string UsageCode = """
+        @using Blazix.Icons
+        @using Blazix.Icons.Lucide
+
+        <Button>
+            <Icon Data="LucideIcons.Plus" />
+            New file
+        </Button>
+
+        <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon">
+            <Icon Data="LucideIcons.Settings" Label="Settings" />
+        </Button>
+        """;
+}

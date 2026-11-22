@@ -440,6 +440,8 @@ public class SliderThumb : PrimitivePart<SliderThumbRenderProps>
 
     [CascadingParameter] private SliderContext Slider { get; set; } = null!;
 
+    [CascadingParameter] private TextDirection? Direction { get; set; }
+
     /// <summary>Which value this thumb moves. Defaults to the thumb's position among the slider's thumbs.</summary>
     [Parameter] public int? Index { get; set; }
 
@@ -476,7 +478,9 @@ public class SliderThumb : PrimitivePart<SliderThumbRenderProps>
         var vertical = Slider.Orientation == Orientation.Vertical;
         var edge = vertical ? "bottom" : "inset-inline-start";
         var cross = vertical ? "left" : "top";
-        var translate = vertical ? "-50% 50%" : "-50% -50%";
+        // inset-inline-start becomes right in RTL, but translate is physical: centre the thumb the other way.
+        var shift = !vertical && Direction == TextDirection.Rtl ? "50%" : "-50%";
+        var translate = vertical ? $"{shift} 50%" : $"{shift} -50%";
         var active = Slider.Root.ActiveThumb == ThumbIndex;
         Slider.AddState(attributes);
         // An aria-label or aria-labelledby on the thumb names its range input, the element that takes focus.

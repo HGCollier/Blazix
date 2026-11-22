@@ -2,7 +2,7 @@
     <TraceCollapsible Open="true">
         <TraceCollapsibleTrigger>
             <TraceLine>
-                <TraceIcon><Icon Name="git-commit-horizontal" /></TraceIcon>
+                <TraceIcon><Icon Data="LucideIcons.GitCommitHorizontal" /></TraceIcon>
                 <TraceTitle>Committed a1b2c3: Fix the login redirect</TraceTitle>
             </TraceLine>
         </TraceCollapsibleTrigger>
@@ -13,10 +13,10 @@
                     <Sheet @key="file.Path">
                         <SheetTrigger>
                             <TraceLine>
-                                <TraceIcon><Icon Name="@(file.Added ? "file-plus" : "file-pen")" /></TraceIcon>
+                                <TraceIcon><Icon Data="@(file.Added ? LucideIcons.FilePlus : LucideIcons.FilePen)" /></TraceIcon>
                                 <TraceTitle>@(file.Added ? "Added" : "Edited") @file.Path</TraceTitle>
                                 <TraceDescription Class="font-mono">+@file.Additions −@file.Deletions</TraceDescription>
-                                <TraceIcon><Icon Name="chevron-right" /></TraceIcon>
+                                <TraceIcon><Icon Data="LucideIcons.ChevronRight" /></TraceIcon>
                             </TraceLine>
                         </SheetTrigger>
                         <SheetContent>

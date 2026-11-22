@@ -78,7 +78,7 @@
 @code {
     private const string UsageCode = """
         <Marker>
-            <Icon Name="marker"><Icon Name="check" /></Icon>
+            <MarkerIcon><Icon Data="LucideIcons.Check" /></MarkerIcon>
             <MarkerContent>Explored 4 files</MarkerContent>
         </Marker>
         """;
@@ -101,7 +101,7 @@
 
     private const string StatusAndProgressCode = """
         <Marker role="status">
-            <Icon Name="marker"><Spinner /></Icon>
+            <MarkerIcon><Spinner /></MarkerIcon>
             <MarkerContent>Compacting conversation</MarkerContent>
         </Marker>
         """;
@@ -112,14 +112,14 @@
 
     private const string BorderedMarkersCode = """
         <Marker Variant="MarkerVariant.Border">
-            <Icon Name="marker"><Icon Name="file-text" /></Icon>
+            <MarkerIcon><Icon Data="LucideIcons.FileText" /></MarkerIcon>
             <MarkerContent>Opened implementation notes</MarkerContent>
         </Marker>
         """;
 
     private const string DecorativeIconsCode = """
         <Marker aria-label="Synced">
-            <Icon Name="marker"><Icon Name="check" /></Icon>
+            <MarkerIcon><Icon Data="LucideIcons.Check" /></MarkerIcon>
         </Marker>
         """;
 
@@ -127,7 +127,7 @@
         <Marker>
             <Render>
                 <a @attributes="context.Attributes" href="/files">
-                    <Icon Name="marker"><Icon Name="file-text" /></Icon>
+                    <MarkerIcon><Icon Data="LucideIcons.FileText" /></MarkerIcon>
                     <MarkerContent>Explored 4 files</MarkerContent>
                 </a>
             </Render>

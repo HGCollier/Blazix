@@ -7,7 +7,7 @@
         <Tabs Value="@Config.Runner" ValueChanged="Config.SetRunner" Class="gap-0">
             <div class="flex items-center gap-2 border-b border-border/50 px-3 py-1">
                 <div class="flex size-4 items-center justify-center rounded-[1px] bg-foreground opacity-70">
-                    <Icon Name="terminal" class="size-3 text-(--code)" />
+                    <Icon Data="LucideIcons.Terminal" class="size-3 text-(--code)" />
                 </div>
                 <TabsList Class="rounded-none bg-transparent p-0">
                     @foreach (var runner in Runners)
@@ -31,7 +31,7 @@
         <button type="button" data-slot="copy-button" @onclick="CopyAsync"
                 class="@SiteButton.Get(SiteButton.Ghost, SiteButton.SizeIcon, "absolute top-2 right-2 z-10 size-7 opacity-70 hover:opacity-100 focus-visible:opacity-100")">
             <span class="sr-only">Copy</span>
-            <Icon Name="@(_copied ? "check" : "copy")" />
+            <Icon Data="@(_copied ? LucideIcons.Check : LucideIcons.Copy)" />
         </button>
         <span aria-live="polite" class="sr-only">@(_copied ? "Copied" : "")</span>
     </div>

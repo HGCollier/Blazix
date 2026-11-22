@@ -1,5 +1,6 @@
 @namespace Blazix.Registry
-@using Blazix.Primitives
+@* No @using Blazix.Primitives: its DialogTitle and DialogDescription would clash with these in apps (RZ9985).
+   PopupModal and OpenChangeEventArgs come from the global using that init adds. *@
 @using static Blazix.Registry.ClassNames
 
 <Dialog Open="@Open" OpenChanged="@OpenChanged" OnOpenChange="@OnOpenChange" OnOpenChangeComplete="@OnOpenChangeComplete"

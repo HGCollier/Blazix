@@ -10,7 +10,7 @@
                             <Render>
                                 <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon"
                                         aria-label="Reset conversation" Disabled="@_chat.IsBusy" @onclick="_chat.Reset">
-                                    <Icon Name="rotate-cw" />
+                                    <Icon Data="LucideIcons.RotateCw" />
                                 </Button>
                             </Render>
                         </TooltipTrigger>
@@ -23,7 +23,7 @@
                 {
                     <Empty Class="h-full">
                         <EmptyHeader>
-                            <EmptyMedia Variant="EmptyMediaVariant.Icon"><Icon Name="message-circle-dashed" /></EmptyMedia>
+                            <EmptyMedia Variant="EmptyMediaVariant.Icon"><Icon Data="LucideIcons.MessageCircleDashed" /></EmptyMedia>
                             <EmptyTitle>Good morning!</EmptyTitle>
                             <EmptyDescription>What are we working on today? Press send to start a new conversation</EmptyDescription>
                         </EmptyHeader>

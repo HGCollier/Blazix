@@ -5,7 +5,7 @@
         <InputGroupInput placeholder="https://example.com/blazix" readonly />
         <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
             <InputGroupButton aria-label="Copy" title="Copy" Size="InputGroupButtonSize.IconXs" @onclick="CopyAsync">
-                <Icon Name="@(_isCopied ? "check" : "copy")" />
+                <Icon Data="@(_isCopied ? LucideIcons.Check : LucideIcons.Copy)" />
             </InputGroupButton>
         </InputGroupAddon>
     </InputGroup>
@@ -17,7 +17,7 @@
                     <Render Context="trigger">
                         <InputGroupButton @attributes="trigger.Attributes" Variant="ButtonVariant.Secondary" Size="InputGroupButtonSize.IconXs"
                                           aria-label="Connection details">
-                            <Icon Name="info" />
+                            <Icon Data="LucideIcons.Info" />
                         </InputGroupButton>
                     </Render>
                 </PopoverTrigger>
@@ -32,7 +32,7 @@
         <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
             <InputGroupButton Size="InputGroupButtonSize.IconXs" @onclick="ToggleFavorite" aria-label="Favorite"
                               aria-pressed="@(_isFavorite ? "true" : "false")">
-                <Icon Name="star" data-favorite="@(_isFavorite ? "true" : "false")"
+                <Icon Data="LucideIcons.Star" data-favorite="@(_isFavorite ? "true" : "false")"
                       class="data-[favorite=true]:fill-blue-600 data-[favorite=true]:stroke-blue-600" />
             </InputGroupButton>
         </InputGroupAddon>

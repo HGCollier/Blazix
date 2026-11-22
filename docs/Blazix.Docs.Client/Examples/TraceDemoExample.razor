@@ -17,7 +17,7 @@
                     <TraceCollapsible Open="@(_thoughtOpen ?? thinking)" OpenChanged="@(open => _thoughtOpen = open)">
                         <TraceCollapsibleTrigger>
                             <TraceLine Status="@(thinking ? TraceLineStatus.Running : TraceLineStatus.None)">
-                                <TraceIcon><Icon Name="@(thinking ? "loader-circle" : "circle-check")" class="@(thinking ? "animate-spin" : null)" /></TraceIcon>
+                                <TraceIcon><Icon Data="@(thinking ? LucideIcons.LoaderCircle : LucideIcons.CircleCheck)" class="@(thinking ? "animate-spin" : null)" /></TraceIcon>
                                 <TraceTitle>@(thinking ? "Thinking" : "Thought for 5s")</TraceTitle>
                             </TraceLine>
                         </TraceCollapsibleTrigger>
@@ -29,7 +29,7 @@
                         if (running)
                         {
                             <TraceLine Status="TraceLineStatus.Running">
-                                <TraceIcon><Icon Name="loader-circle" class="animate-spin" /></TraceIcon>
+                                <TraceIcon><Icon Data="LucideIcons.LoaderCircle" class="animate-spin" /></TraceIcon>
                                 <TraceTitle>Running @tool.Command</TraceTitle>
                             </TraceLine>
                         }
@@ -38,7 +38,7 @@
                             <TraceCollapsible @key="tool.Command" Open="@(index == 1)">
                                 <TraceCollapsibleTrigger>
                                     <TraceLine Status="@(tool.Failed ? TraceLineStatus.Error : TraceLineStatus.None)">
-                                        <TraceIcon><Icon Name="@(tool.Failed ? "circle-alert" : "circle-check")" /></TraceIcon>
+                                        <TraceIcon><Icon Data="@(tool.Failed ? LucideIcons.CircleAlert : LucideIcons.CircleCheck)" /></TraceIcon>
                                         <TraceTitle>@(tool.Failed ? "Failed to run" : "Ran") @tool.Command</TraceTitle>
                                     </TraceLine>
                                 </TraceCollapsibleTrigger>
@@ -56,7 +56,7 @@
                         <TraceCollapsible>
                             <TraceCollapsibleTrigger>
                                 <TraceLine Status="@(reading ? TraceLineStatus.Running : TraceLineStatus.None)">
-                                    <TraceIcon><Icon Name="@(reading ? "loader-circle" : "globe")" class="@(reading ? "animate-spin" : null)" /></TraceIcon>
+                                    <TraceIcon><Icon Data="@(reading ? LucideIcons.LoaderCircle : LucideIcons.Globe)" class="@(reading ? "animate-spin" : null)" /></TraceIcon>
                                     <TraceTitle>@(reading ? "Using" : "Used") @Sources.Length sources</TraceTitle>
                                 </TraceLine>
                             </TraceCollapsibleTrigger>
@@ -66,12 +66,12 @@
                                     {
                                         <a @key="source.Url" href="@source.Url" target="_blank" rel="noreferrer">
                                             <TraceLine>
-                                                <TraceIcon><Icon Name="globe" /></TraceIcon>
+                                                <TraceIcon><Icon Data="LucideIcons.Globe" /></TraceIcon>
                                                 <TraceTitle>
                                                     @source.Title
                                                     <span class="sr-only"> (opens in a new tab)</span>
                                                 </TraceTitle>
-                                                <TraceIcon><Icon Name="arrow-up-right" /></TraceIcon>
+                                                <TraceIcon><Icon Data="LucideIcons.ArrowUpRight" /></TraceIcon>
                                             </TraceLine>
                                         </a>
                                     }

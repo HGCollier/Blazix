@@ -1,20 +1,45 @@
-<div class="flex w-full max-w-xs flex-col gap-6">
-    <p class="text-sm">@T.Current <Badge Variant="BadgeVariant.Secondary">@(Direction == TextDirection.Rtl ? "rtl" : "ltr")</Badge></p>
-    <Slider Value="25" Max="100" aria-label="@T.Volume" />
-</div>
+<Card Class="w-full max-w-sm">
+    <CardHeader>
+        <CardTitle>@T.Title</CardTitle>
+        <CardDescription>@T.Description</CardDescription>
+        <CardAction><Button Variant="ButtonVariant.Link">@T.SignUp</Button></CardAction>
+    </CardHeader>
+    <CardContent>
+        <form>
+            <div class="flex flex-col gap-6">
+                <div class="grid gap-2">
+                    <Label for="direction-rtl-email">@T.Email</Label>
+                    <Input id="direction-rtl-email" Type="email" placeholder="m@example.com" required />
+                </div>
+                <div class="grid gap-2">
+                    <div class="flex items-center">
+                        <Label for="direction-rtl-password">@T.Password</Label>
+                        <a href="#" class="ms-auto inline-block text-sm underline-offset-4 hover:underline">@T.ForgotPassword</a>
+                    </div>
+                    <Input id="direction-rtl-password" Type="password" required />
+                </div>
+            </div>
+        </form>
+    </CardContent>
+    <CardFooter Class="flex-col gap-2">
+        <Button Type="submit" Class="w-full">@T.Login</Button>
+        <Button Variant="ButtonVariant.Outline" Class="w-full">@T.LoginWithGoogle</Button>
+    </CardFooter>
+</Card>
 
 @code {
     [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
 
-    /// <summary>The direction from the nearest DirectionProvider.</summary>
-    [CascadingParameter] private TextDirection Direction { get; set; }
-
     private Text T => Texts[Language];
 
     private static readonly Translations<Text> Texts = new(
-        En: new("Current direction:", "Volume"),
-        Ar: new("الاتجاه الحالي:", "مستوى الصوت"),
-        He: new("הכיוון הנוכחי:", "עוצמת קול"));
+        En: new("Login to your account", "Enter your email below to login to your account", "Sign Up", "Email", "Password",
+            "Forgot your password?", "Login", "Login with Google"),
+        Ar: new("تسجيل الدخول إلى حسابك", "أدخل بريدك الإلكتروني أدناه لتسجيل الدخول إلى حسابك", "إنشاء حساب", "البريد الإلكتروني",
+            "كلمة المرور", "نسيت كلمة المرور؟", "تسجيل الدخول", "تسجيل الدخول باستخدام Google"),
+        He: new("התחבר לחשבון שלך", "הזן את האימייל שלך למטה כדי להתחבר לחשבון שלך", "הירשם", "אימייל", "סיסמה",
+            "שכחת את הסיסמה?", "התחבר", "התחבר עם Google"));
 
-    private sealed record Text(string Current, string Volume);
+    private sealed record Text(string Title, string Description, string SignUp, string Email, string Password,
+        string ForgotPassword, string Login, string LoginWithGoogle);
 }
