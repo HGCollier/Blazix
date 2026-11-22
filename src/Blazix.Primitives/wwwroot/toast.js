@@ -84,17 +84,24 @@ export function createToasts(dotnet, hostId, initial) {
     for (const id of timers.keys()) startTimer(id);
   }
 
+  /** @param {HTMLElement} toast @param {boolean} value */
+  function markExpanded(toast, value) {
+    toast.toggleAttribute('data-expanded', value);
+    for (const content of toast.querySelectorAll('[data-blazix-toast-content]')) content.toggleAttribute('data-expanded', value);
+  }
+
   function setExpanded(/** @type {boolean} */ value) {
     if (expanded === value) return;
     expanded = value;
     viewport()?.toggleAttribute('data-expanded', value);
-    for (const toast of toasts()) {
-      toast.toggleAttribute('data-expanded', value);
-      for (const content of toast.querySelectorAll('[data-blazix-toast-content]')) content.toggleAttribute('data-expanded', value);
-    }
+    for (const toast of toasts()) markExpanded(toast, value);
     if (value) pauseTimers();
     else resumeTimers();
   }
+
+  // A toast closed from its own button takes the focus and the pointer with it, and Firefox then
+  // fires neither focusout nor pointerleave: without this the region stays expanded (and paused).
+  const syncExpanded = () => setExpanded(host.matches(':hover') || host.contains(document.activeElement));
 
   /** Starts placing new positioners against their anchors; stops for the ones that left. */
   function positionAnchored() {
@@ -152,7 +159,7 @@ export function createToasts(dotnet, hostId, initial) {
       fresh.add(id);
       setVar(toast, '--toast-swipe-movement-x', '0px');
       setVar(toast, '--toast-swipe-movement-y', '0px');
-      toast.toggleAttribute('data-expanded', expanded);
+      markExpanded(toast, expanded);
       animateIn([toast]);
     }
     positionAnchored();
@@ -215,6 +222,9 @@ export function createToasts(dotnet, hostId, initial) {
     on(host, 'focusin', () => setExpanded(true)),
     on(host, 'focusout', (/** @type {FocusEvent} */ event) => {
       if (!host.contains(/** @type {Node | null} */ (event.relatedTarget)) && !host.matches(':hover')) setExpanded(false);
+    }),
+    on(document, 'pointerover', (/** @type {PointerEvent} */ event) => {
+      if (expanded && !swipe && !host.contains(/** @type {Node} */ (event.target))) syncExpanded();
     }),
     on(window, 'blur', () => {
       windowBlurred = true;
@@ -281,7 +291,10 @@ export function createToasts(dotnet, hostId, initial) {
       timers.delete(id);
       if (toast) await whenAnimationsFinish([toast]).done;
       call(dotnet, 'Removed', id);
-      requestAnimationFrame(layout);
+      requestAnimationFrame(() => {
+        layout();
+        if (expanded && !host.contains(document.activeElement)) syncExpanded();
+      });
     },
     /** @param {ToastOptions} next */
     update(next) {
