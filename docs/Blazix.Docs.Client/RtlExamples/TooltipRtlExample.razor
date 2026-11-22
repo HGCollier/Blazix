@@ -1,0 +1,42 @@
+<div class="grid gap-4">
+    @foreach (var sides in Rows)
+    {
+        <div class="flex flex-wrap justify-center gap-2">
+            @foreach (var side in sides)
+            {
+                <Tooltip @key="side">
+                    <TooltipTrigger Class="@ButtonVariants.Get(ButtonVariant.Outline)">@T.Sides[side]</TooltipTrigger>
+                    <TooltipContent Side="@side">@T.Content</TooltipContent>
+                </Tooltip>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    // Left and Right stay physical in RTL; InlineStart and InlineEnd follow the reading direction.
+    private static readonly Side[][] Rows = [[Side.Left, Side.Top, Side.Bottom, Side.Right], [Side.InlineStart, Side.InlineEnd]];
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Add to library", new()
+        {
+            [Side.InlineStart] = "Inline Start", [Side.Left] = "Left", [Side.Top] = "Top",
+            [Side.Bottom] = "Bottom", [Side.Right] = "Right", [Side.InlineEnd] = "Inline End",
+        }),
+        Ar: new("إضافة إلى المكتبة", new()
+        {
+            [Side.InlineStart] = "بداية السطر", [Side.Left] = "يسار", [Side.Top] = "أعلى",
+            [Side.Bottom] = "أسفل", [Side.Right] = "يمين", [Side.InlineEnd] = "نهاية السطر",
+        }),
+        He: new("הוסף לספרייה", new()
+        {
+            [Side.InlineStart] = "תחילת השורה", [Side.Left] = "שמאל", [Side.Top] = "למעלה",
+            [Side.Bottom] = "למטה", [Side.Right] = "ימין", [Side.InlineEnd] = "סוף השורה",
+        }));
+
+    private sealed record Text(string Content, Dictionary<Side, string> Sides);
+}

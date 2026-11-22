@@ -1,0 +1,20 @@
+<div class="flex w-full max-w-xs flex-col gap-6">
+    <p class="text-sm">@T.Current <Badge Variant="BadgeVariant.Secondary">@(Direction == TextDirection.Rtl ? "rtl" : "ltr")</Badge></p>
+    <Slider Value="25" Max="100" aria-label="@T.Volume" />
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    /// <summary>The direction from the nearest DirectionProvider.</summary>
+    [CascadingParameter] private TextDirection Direction { get; set; }
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Current direction:", "Volume"),
+        Ar: new("الاتجاه الحالي:", "مستوى الصوت"),
+        He: new("הכיוון הנוכחי:", "עוצמת קול"));
+
+    private sealed record Text(string Current, string Volume);
+}

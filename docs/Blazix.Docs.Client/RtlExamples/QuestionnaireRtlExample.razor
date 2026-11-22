@@ -1,0 +1,81 @@
+@* Left and Right step through the questions as the reading direction runs: Right goes back in RTL. *@
+<Questionnaire Class="mx-auto max-w-md" DefaultItem="direction" Items="@_items" Shortcuts="QuestionnaireShortcuts.Letters">
+    <QuestionnaireProgress>
+        <Render Context="progress">
+            <div @attributes="progress.Attributes" aria-label="@T.ProgressLabel" aria-valuetext="@Step(progress)">@Step(progress)</div>
+        </Render>
+    </QuestionnaireProgress>
+    @foreach (var question in T.Questions)
+    {
+        <QuestionnaireItem @key="question.Name" Name="@question.Name" Multiple="@question.Multiple" Required="@question.Required">
+            <QuestionnaireTitle>@question.Title</QuestionnaireTitle>
+            <QuestionnaireDescription>@question.Description</QuestionnaireDescription>
+            <QuestionnaireChoices>
+                @foreach (var (value, label) in question.Choices)
+                {
+                    <QuestionnaireChoice @key="value" Value="@value">
+                        <span class="font-medium">@label</span>
+                    </QuestionnaireChoice>
+                }
+            </QuestionnaireChoices>
+            <QuestionnaireError />
+        </QuestionnaireItem>
+    }
+    <QuestionnaireActions>
+        <QuestionnairePrevious>@T.Previous</QuestionnairePrevious>
+        <QuestionnaireSkip>@T.Skip</QuestionnaireSkip>
+        <QuestionnaireNext>@T.Next</QuestionnaireNext>
+        <QuestionnaireSubmit>@T.Submit</QuestionnaireSubmit>
+    </QuestionnaireActions>
+</Questionnaire>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private sealed record Question(string Name, string Title, string Description, bool Required, (string Value, string Label)[] Choices,
+                                   bool Multiple = false);
+
+    private QuestionnaireItemDefinition[] _items = [];
+
+    protected override void OnInitialized() =>
+        _items = [.. T.Questions.Select(question => new QuestionnaireItemDefinition(
+            question.Name, question.Required,
+            Choices: [.. question.Choices.Select(choice => new QuestionnaireChoiceDefinition(choice.Value))]))];
+
+    private string Step(QuestionnaireRenderProps progress) =>
+        string.Format(T.StepFormat, Language.Digits(progress.Current), Language.Digits(progress.Total));
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Back", "Skip", "Next", "Save plan", "Questionnaire progress", "Question {0} of {1}",
+            [
+                new("direction", "What should the agent build next?", "Choose a direction.", true,
+                    [("tool-calls", "Tool call timeline"), ("approvals", "Approval checkpoints"), ("handoffs", "Sub-agent handoffs")]),
+                new("signals", "What should every progress update include?", "Select all that apply, or skip this question.", false,
+                    [("progress", "Progress"), ("decisions", "Decisions"), ("risks", "Risks"), ("next-step", "Next step")], Multiple: true),
+                new("timing", "When should work begin?", "Choose when the agent should begin the work.", true,
+                    [("now", "Start now"), ("next-cycle", "Next development cycle"), ("backlog", "Add it to the backlog")]),
+            ]),
+        Ar: new("رجوع", "تخطٍّ", "التالي", "حفظ الخطة", "تقدم الاستبيان", "السؤال {0} من {1}",
+            [
+                new("direction", "ما الذي يجب أن يبنيه الوكيل بعد ذلك؟", "اختر اتجاهًا.", true,
+                    [("tool-calls", "مخطط زمني لاستدعاءات الأدوات"), ("approvals", "نقاط موافقة"), ("handoffs", "تسليم المهام لوكلاء فرعيين")]),
+                new("signals", "ماذا يجب أن يتضمن كل تحديث للتقدم؟", "اختر كل ما ينطبق، أو تخطَّ هذا السؤال.", false,
+                    [("progress", "التقدم"), ("decisions", "القرارات"), ("risks", "المخاطر"), ("next-step", "الخطوة التالية")], Multiple: true),
+                new("timing", "متى يجب أن يبدأ العمل؟", "اختر متى يجب أن يبدأ الوكيل العمل.", true,
+                    [("now", "ابدأ الآن"), ("next-cycle", "دورة التطوير القادمة"), ("backlog", "أضفه إلى قائمة الانتظار")]),
+            ]),
+        He: new("חזרה", "דלג", "הבא", "שמור תוכנית", "התקדמות השאלון", "שאלה {0} מתוך {1}",
+            [
+                new("direction", "מה הסוכן צריך לבנות עכשיו?", "בחר כיוון.", true,
+                    [("tool-calls", "ציר זמן של קריאות לכלים"), ("approvals", "נקודות אישור"), ("handoffs", "העברה לסוכני משנה")]),
+                new("signals", "מה כל עדכון התקדמות צריך לכלול?", "בחר את כל מה שמתאים, או דלג על השאלה.", false,
+                    [("progress", "התקדמות"), ("decisions", "החלטות"), ("risks", "סיכונים"), ("next-step", "הצעד הבא")], Multiple: true),
+                new("timing", "מתי העבודה צריכה להתחיל?", "בחר מתי הסוכן יתחיל לעבוד.", true,
+                    [("now", "התחל עכשיו"), ("next-cycle", "מחזור הפיתוח הבא"), ("backlog", "הוסף לרשימת ההמתנה")]),
+            ]));
+
+    private sealed record Text(string Previous, string Skip, string Next, string Submit, string ProgressLabel, string StepFormat,
+        Question[] Questions);
+}

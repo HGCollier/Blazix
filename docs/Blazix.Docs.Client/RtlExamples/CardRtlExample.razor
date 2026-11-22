@@ -1,0 +1,45 @@
+<Card Class="w-full max-w-sm">
+    <CardHeader>
+        <CardTitle>@T.Title</CardTitle>
+        <CardDescription>@T.Description</CardDescription>
+        <CardAction><Button Variant="ButtonVariant.Link">@T.SignUp</Button></CardAction>
+    </CardHeader>
+    <CardContent>
+        <form>
+            <div class="flex flex-col gap-6">
+                <div class="grid gap-2">
+                    <Label for="card-rtl-email">@T.Email</Label>
+                    <Input id="card-rtl-email" Type="email" placeholder="m@example.com" required />
+                </div>
+                <div class="grid gap-2">
+                    <div class="flex items-center">
+                        <Label for="card-rtl-password">@T.Password</Label>
+                        <a href="#" class="ms-auto inline-block text-sm underline-offset-4 hover:underline">@T.ForgotPassword</a>
+                    </div>
+                    <Input id="card-rtl-password" Type="password" required />
+                </div>
+            </div>
+        </form>
+    </CardContent>
+    <CardFooter Class="flex-col gap-2">
+        <Button Type="submit" Class="w-full">@T.Login</Button>
+        <Button Variant="ButtonVariant.Outline" Class="w-full">@T.LoginWithGoogle</Button>
+    </CardFooter>
+</Card>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Login to your account", "Enter your email below to login to your account", "Sign Up", "Email", "Password",
+            "Forgot your password?", "Login", "Login with Google"),
+        Ar: new("تسجيل الدخول إلى حسابك", "أدخل بريدك الإلكتروني أدناه لتسجيل الدخول إلى حسابك", "إنشاء حساب", "البريد الإلكتروني",
+            "كلمة المرور", "نسيت كلمة المرور؟", "تسجيل الدخول", "تسجيل الدخول باستخدام Google"),
+        He: new("התחבר לחשבון שלך", "הזן את האימייל שלך למטה כדי להתחבר לחשבון שלך", "הירשם", "אימייל", "סיסמה",
+            "שכחת את הסיסמה?", "התחבר", "התחבר עם Google"));
+
+    private sealed record Text(string Title, string Description, string SignUp, string Email, string Password,
+        string ForgotPassword, string Login, string LoginWithGoogle);
+}

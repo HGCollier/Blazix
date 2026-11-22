@@ -26,7 +26,7 @@ src/
   Blazix.Cli/                → NuGet tool (`dnx Blazix.Cli ...`): init / add / list, embeds Blazix.Registry/
   Blazix.Registry/           source of truth for what the CLI copies (never packed)
     registry.json            items, files, dependencies
-    Components/              ← what `add` copies: styled components (Tailwind classes)
+    Components/              ← what `add` copies: styled components (Tailwind classes), a folder per item
     Setup/                   ← what `init` copies
       Tailwind.targets, TailwindWatcher.cs
       theme.css              design tokens (the default theme)
@@ -34,6 +34,7 @@ src/
 docs/
   Blazix.Docs/               the docs site's host (run this): prerendering, Tailwind, static files
   Blazix.Docs.Client/        the docs site on WebAssembly: pages, examples, uses Blazix.Registry/ from source
+  Blazix.Registry.Rtl/       the registry as `add` copies it with "rtl": true, generated on build for the RTL examples
     Primitives/              the primitives' pages and examples (for Blazix.Primitives)
 ```
 
@@ -47,13 +48,15 @@ It's laid out as a registry that is the source of truth, a docs app that renders
   - `Examples/` has the examples, named in kebab case for previews (`button-demo` → `ButtonDemoExample.razor`). `<ComponentPreview Name="button-demo" />` shows one with its source.
   - The site embeds the pages, examples and registry files at build time, so pages can show their source and search can find text in them.
   - API Reference sections are read by reflection over the registry assembly, with its XML doc comments (embedded in the client, since a browser has no files to read), so they can't drift from the code. The client keeps both libraries whole when trimming (`TrimmerRootAssembly`) for that; apps don't need to.
+  - `RtlExamples/` has the RTL examples (`button-rtl` → `ButtonRtlExample.razor`), shown with `<ComponentPreview Name="button-rtl" Direction="rtl" />`. They use `docs/Blazix.Registry.Rtl`: the registry's components run through the CLI's RTL transform (`rtl-copy`) on every build, in the namespace `Blazix.Registry.Rtl`, the way shadcn renders its RTL examples from `ui-rtl/`. Each takes the picked `Language` as a cascading parameter and keeps its strings in a `Translations<T>` (English, Arabic, Hebrew).
   - `Primitives/` has the primitives' docs: `Pages/` (one per primitive, plus the handbook and the utilities) and `Examples/` (`<ComponentPreview Name="primitives/accordion-hero" />` shows `AccordionHeroExample.razor`). It's outside `Components/` so that only `Blazix.Primitives` is imported there: the registry's tags (`AccordionItem`, `DialogTrigger`...) would clash with the primitives'.
   - A primitive page lists each part with `<PartReference Type="typeof(AccordionRoot)">`, which reads the part's summary, element and parameters from `Blazix.Primitives` and its XML doc comments. The page lists the part's data attributes and CSS variables as `<StyleHook>` rows, since they're set across C# and JS.
 - **Primitives** (`src/Blazix.Primitives`): edits to `.cs` files hot reload through the project reference too. After editing a JS module, refresh the page; browsers cache ES modules per page load.
 
 ## Adding things
 
-- **A component**: put its files in `src/Blazix.Registry/Components` in the `Blazix.Registry` namespace (the CLI rewrites it to the app's), and add an entry (files and dependencies) to [`src/Blazix.Registry/registry.json`](src/Blazix.Registry/registry.json). Then add its examples to `docs/Blazix.Docs.Client/Examples`, a page to `docs/Blazix.Docs.Client/Components/Pages/Docs/Components`, and a link to `DocsNav.Components`.
+- **A component**: put its files in a folder of its own in `src/Blazix.Registry/Components`, named after its registry item (`alert-dialog` → `AlertDialog/`), in the `Blazix.Registry` namespace (the CLI rewrites it to the app's). Each `.razor` file starts with `@namespace Blazix.Registry`: Razor would otherwise put every folder in a namespace of its own. Add an entry (files, by their path in `Components/`, and dependencies) to [`src/Blazix.Registry/registry.json`](src/Blazix.Registry/registry.json). Then add its examples to `docs/Blazix.Docs.Client/Examples`, an RTL example to `docs/Blazix.Docs.Client/RtlExamples`, a page to `docs/Blazix.Docs.Client/Components/Pages/Docs/Components`, and a link to `DocsNav.Components`.
+- **RTL in a component**: write physical classes (`ml-2`, `left-0`), as shadcn/ui does; `add` with `"rtl": true` maps them ([`src/Blazix.Cli/Rtl.cs`](src/Blazix.Cli/Rtl.cs)). Mark icons that point along the line with `cn-rtl-flip`, which becomes `rtl:rotate-180` (without `"rtl"` it stays as a class no CSS matches, so `migrate rtl` can find the icon later). Primitives' JS reads the computed CSS `direction` for keys, pointer movement and placement; what C# decides while rendering takes the cascaded `TextDirection` from `DirectionProvider`.
 - **A primitive**: put it in its own folder in `src/Blazix.Primitives`, then add a page and its examples to `docs/Blazix.Docs.Client/Primitives` and a link to `DocsNav.Primitives`. Document its data attributes and CSS variables in tables on the page.
 
 Everything targets WCAG 2.2 AA, and Firefox must work as well as Chromium. Check both.
@@ -77,6 +80,7 @@ Every component follows the same split:
 - **The top layer instead of portals.** Popups are `popover="manual"` elements, so they escape `overflow: hidden` and z-index stacking but stay where you wrote them in the DOM. Cascading values, CSS isolation (`::deep`) and a `.dark` class on any wrapper all keep working. `Portal` parts exist so portal-style markup works unchanged; `KeepMounted` on them keeps a closed popup in the DOM.
 - **Blazor can change things at any time.** After every Blazor DOM patch, a `MutationObserver` re-syncs focus. If Blazor removes the focused item, focus moves to the item now in its place, never to `<body>`. Disabled and added items are picked up on the next key press, and closing or disabling from code returns focus to the trigger.
 - **After-render code acts on what was rendered.** Parts snapshot open and mounted state while rendering, and `OnAfterRenderAsync` uses the snapshot rather than live state. On Blazor Server an earlier batch can be acknowledged after `Open` has already flipped, and reading live state there acted on stale DOM.
+- **Two runtimes can share a page.** Under Interactive Auto, or with islands that have their own render modes, Server and WebAssembly components run side by side and import the same JS modules. Page-wide state (the layer stack, the scroll lock, inert counts) lives on `globalThis` under `Symbol.for(...)`, so both runtimes see one stack. Ids from `Ids.Next` carry a `w` on WebAssembly, so the two counters never produce the same id. Modal layers leave Blazor's reconnect dialog and error bar live, so a dropped circuit can be retried while a dialog is open.
 - **JS ships in the package.** The modules in `src/Blazix.Primitives/wwwroot` are hand-written ES modules with `// @ts-check` + JSDoc types, so editors type-check them with no build step. `dotnet pack` puts them in the `.nupkg` as static web assets (`_content/Blazix.Primitives/...`), and each component imports its module on first use.
 
 ### Enter and exit animations
@@ -111,5 +115,5 @@ Push a tag like `v0.2.0` and [`.github/workflows/release.yml`](.github/workflows
 - **The components built on third-party libraries**: Chart, Sonner (Toast covers it) and Code Block's Markdown example (it needs Streamdown), and primitives for those libraries.
 - **Automated tests.** Browser checks of every primitive (keyboard, focus, ARIA, state sync, animations) and of the docs site ran while building this, but they aren't in the repo yet. bUnit for ARIA output and state, and Playwright for .NET for keyboard, focus and positioning, would need no Node.
 - **`blazix diff <item>`**, to show upstream changes before overwriting.
-- **Interactive Auto apps.** The docs run the components on WebAssembly (prerendered, trimmed and AOT compiled when published), and they were built on Interactive Server; Auto, which switches between the two, isn't tested. Components used on the client belong in the `.Client` project (`init --project`), and Tailwind needs `@source` pointing at it.
+- **Interactive Auto: what's untested.** Auto was checked by hand in Chromium and Firefox in apps from `dotnet new blazor --interactivity Auto`, with per-page and global (`--all-interactive`) interactivity and a trimmed Release publish. The checks covered the first load on Server, reloads on WebAssembly, navigating with a popup open, and a Server island over a WebAssembly page. Not covered: AOT in an Auto app (the docs cover AOT on WebAssembly), Safari, reconnecting a circuit after a long disconnect, and a server with several instances behind a load balancer.
 - **Platforms.** Tested on Windows x64. Tailwind asset names for macOS and Linux follow the release naming. Alpine/musl needs `<TailwindExecutable>`.

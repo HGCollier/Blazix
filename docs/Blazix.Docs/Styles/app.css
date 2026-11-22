@@ -10,6 +10,8 @@
 @import "../../Blazix.Docs.Client/Primitives/Examples/Css/index.css";
 
 @source "../../../src/Blazix.Registry/Components";
+/* The same components as `add` copies them with "rtl": true, which the RTL examples use (generated on build). */
+@source "../../Blazix.Registry.Rtl/Generated";
 /* The pages, examples and site, in the WebAssembly client. */
 @source "../../Blazix.Docs.Client";
 @source not "../bin";

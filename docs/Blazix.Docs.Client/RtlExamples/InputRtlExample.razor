@@ -1,0 +1,18 @@
+<Field>
+    <FieldLabel for="input-rtl-api-key">@T.ApiKey</FieldLabel>
+    <Input id="input-rtl-api-key" Type="password" placeholder="sk-..." />
+    <FieldDescription>@T.Description</FieldDescription>
+</Field>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("API Key", "Your API key is encrypted and stored securely."),
+        Ar: new("مفتاح API", "مفتاح API الخاص بك مشفر ومخزن بأمان."),
+        He: new("מפתח API", "מפתח ה-API שלך מוצפן ונשמר בצורה מאובטחת."));
+
+    private sealed record Text(string ApiKey, string Description);
+}

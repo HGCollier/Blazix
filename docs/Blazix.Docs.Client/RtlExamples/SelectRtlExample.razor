@@ -1,0 +1,41 @@
+<Select Items="@T.Items">
+    <SelectTrigger Class="w-40" aria-label="@T.Label">
+        <SelectValue Placeholder="@T.Placeholder" />
+    </SelectTrigger>
+    <SelectContent>
+        <SelectGroup>
+            <SelectLabel>@T.Fruits</SelectLabel>
+            @foreach (var item in T.Items.Take(5))
+            {
+                <SelectItem Value="@item.Value">@item.Label</SelectItem>
+            }
+        </SelectGroup>
+        <SelectSeparator />
+        <SelectGroup>
+            <SelectLabel>@T.Vegetables</SelectLabel>
+            @foreach (var item in T.Items.Skip(5))
+            {
+                <SelectItem Value="@item.Value">@item.Label</SelectItem>
+            }
+        </SelectGroup>
+    </SelectContent>
+</Select>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Food", "Select a fruit", "Fruits", "Vegetables",
+            [new("apple", "Apple"), new("banana", "Banana"), new("blueberry", "Blueberry"), new("grapes", "Grapes"),
+             new("pineapple", "Pineapple"), new("carrot", "Carrot"), new("broccoli", "Broccoli"), new("spinach", "Spinach")]),
+        Ar: new("الطعام", "اختر فاكهة", "الفواكه", "الخضروات",
+            [new("apple", "تفاح"), new("banana", "موز"), new("blueberry", "توت أزرق"), new("grapes", "عنب"),
+             new("pineapple", "أناناس"), new("carrot", "جزر"), new("broccoli", "بروكلي"), new("spinach", "سبانخ")]),
+        He: new("מזון", "בחר פרי", "פירות", "ירקות",
+            [new("apple", "תפוח"), new("banana", "בננה"), new("blueberry", "אוכמניה"), new("grapes", "ענבים"),
+             new("pineapple", "אננס"), new("carrot", "גזר"), new("broccoli", "ברוקולי"), new("spinach", "תרד")]));
+
+    private sealed record Text(string Label, string Placeholder, string Fruits, string Vegetables, SelectOption[] Items);
+}

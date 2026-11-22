@@ -1,0 +1,30 @@
+<div class="flex flex-row flex-wrap items-center gap-6 md:gap-12">
+    <Avatar>
+        <AvatarImage Src="https://avatar.vercel.sh/blazix" alt="@("@blazix")" Class="grayscale" />
+        <AvatarFallback>BX</AvatarFallback>
+    </Avatar>
+    <Avatar>
+        <AvatarImage Src="https://github.com/evilrabbit.png" alt="@("@evilrabbit")" />
+        <AvatarFallback>ER</AvatarFallback>
+        <AvatarBadge Class="bg-green-600 dark:bg-green-800" />
+    </Avatar>
+    <AvatarGroup Class="grayscale">
+        <Avatar>
+            <AvatarImage Src="https://avatar.vercel.sh/blazix" alt="@("@blazix")" />
+            <AvatarFallback>BX</AvatarFallback>
+        </Avatar>
+        <Avatar>
+            <AvatarImage Src="https://github.com/maxleiter.png" alt="@("@maxleiter")" />
+            <AvatarFallback>LR</AvatarFallback>
+        </Avatar>
+        <Avatar>
+            <AvatarImage Src="https://github.com/evilrabbit.png" alt="@("@evilrabbit")" />
+            <AvatarFallback>ER</AvatarFallback>
+        </Avatar>
+        <AvatarGroupCount>+@Language.Digits(3)</AvatarGroupCount>
+    </AvatarGroup>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+}

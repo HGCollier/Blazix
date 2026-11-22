@@ -25,7 +25,7 @@
 
     <PropertyGroup>
         <!-- Styles/app.css scans these with @source; editing them rebuilds the CSS. -->
-        <TailwindSources>..\..\src\Blazix.Registry\Components\**\*.razor;..\..\src\Blazix.Registry\Components\**\*.cs;..\..\src\Blazix.Registry\Setup\**\*.css;..\Blazix.Docs.Client\Components\**\*.razor;..\Blazix.Docs.Client\Components\**\*.cs;..\Blazix.Docs.Client\Examples\**\*.razor;..\Blazix.Docs.Client\Primitives\**\*.razor;..\Blazix.Docs.Client\Primitives\**\*.css</TailwindSources>
+        <TailwindSources>..\..\src\Blazix.Registry\Components\**\*.razor;..\..\src\Blazix.Registry\Components\**\*.cs;..\..\src\Blazix.Registry\Setup\**\*.css;..\Blazix.Docs.Client\Components\**\*.razor;..\Blazix.Docs.Client\Components\**\*.cs;..\Blazix.Docs.Client\Examples\**\*.razor;..\Blazix.Docs.Client\RtlExamples\**\*.razor;..\Blazix.Registry.Rtl\Generated\**\*.razor;..\Blazix.Registry.Rtl\Generated\**\*.cs;..\Blazix.Docs.Client\Primitives\**\*.razor;..\Blazix.Docs.Client\Primitives\**\*.css</TailwindSources>
     </PropertyGroup>
 
     <Import Project="..\..\src\Blazix.Registry\Setup\Tailwind.targets"/>

@@ -1,0 +1,117 @@
+<Menubar Class="w-72">
+    <MenubarMenu>
+        <MenubarTrigger>@T.File</MenubarTrigger>
+        <MenubarContent>
+            <MenubarGroup>
+                <MenubarItem>@T.NewTab <MenubarShortcut>⌘T</MenubarShortcut></MenubarItem>
+                <MenubarItem>@T.NewWindow <MenubarShortcut>⌘N</MenubarShortcut></MenubarItem>
+                <MenubarItem Disabled="true">@T.NewIncognitoWindow</MenubarItem>
+            </MenubarGroup>
+            <MenubarSeparator />
+            <MenubarGroup>
+                <MenubarSub>
+                    <MenubarSubTrigger>@T.Share</MenubarSubTrigger>
+                    <MenubarSubContent>
+                        <MenubarGroup>
+                            <MenubarItem>@T.EmailLink</MenubarItem>
+                            <MenubarItem>@T.Messages</MenubarItem>
+                            <MenubarItem>@T.Notes</MenubarItem>
+                        </MenubarGroup>
+                    </MenubarSubContent>
+                </MenubarSub>
+            </MenubarGroup>
+            <MenubarSeparator />
+            <MenubarGroup>
+                <MenubarItem>@T.Print <MenubarShortcut>⌘P</MenubarShortcut></MenubarItem>
+            </MenubarGroup>
+        </MenubarContent>
+    </MenubarMenu>
+    <MenubarMenu>
+        <MenubarTrigger>@T.Edit</MenubarTrigger>
+        <MenubarContent>
+            <MenubarGroup>
+                <MenubarItem>@T.Undo <MenubarShortcut>⌘Z</MenubarShortcut></MenubarItem>
+                <MenubarItem>@T.Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut></MenubarItem>
+            </MenubarGroup>
+            <MenubarSeparator />
+            <MenubarGroup>
+                <MenubarSub>
+                    <MenubarSubTrigger>@T.Find</MenubarSubTrigger>
+                    <MenubarSubContent>
+                        <MenubarGroup><MenubarItem>@T.SearchTheWeb</MenubarItem></MenubarGroup>
+                        <MenubarSeparator />
+                        <MenubarGroup>
+                            <MenubarItem>@T.FindItem</MenubarItem>
+                            <MenubarItem>@T.FindNext</MenubarItem>
+                            <MenubarItem>@T.FindPrevious</MenubarItem>
+                        </MenubarGroup>
+                    </MenubarSubContent>
+                </MenubarSub>
+            </MenubarGroup>
+            <MenubarSeparator />
+            <MenubarGroup>
+                <MenubarItem>@T.Cut</MenubarItem>
+                <MenubarItem>@T.Copy</MenubarItem>
+                <MenubarItem>@T.Paste</MenubarItem>
+            </MenubarGroup>
+        </MenubarContent>
+    </MenubarMenu>
+    <MenubarMenu>
+        <MenubarTrigger>@T.View</MenubarTrigger>
+        <MenubarContent Class="w-44">
+            <MenubarGroup>
+                <MenubarCheckboxItem>@T.BookmarksBar</MenubarCheckboxItem>
+                <MenubarCheckboxItem Checked="true">@T.FullUrls</MenubarCheckboxItem>
+            </MenubarGroup>
+            <MenubarSeparator />
+            <MenubarGroup>
+                <MenubarItem Inset="true">@T.Reload <MenubarShortcut>⌘R</MenubarShortcut></MenubarItem>
+                <MenubarItem Disabled="true" Inset="true">@T.ForceReload <MenubarShortcut>⇧⌘R</MenubarShortcut></MenubarItem>
+            </MenubarGroup>
+            <MenubarSeparator />
+            <MenubarGroup><MenubarItem Inset="true">@T.ToggleFullscreen</MenubarItem></MenubarGroup>
+            <MenubarSeparator />
+            <MenubarGroup><MenubarItem Inset="true">@T.HideSidebar</MenubarItem></MenubarGroup>
+        </MenubarContent>
+    </MenubarMenu>
+    <MenubarMenu>
+        <MenubarTrigger>@T.Profiles</MenubarTrigger>
+        <MenubarContent>
+            <MenubarRadioGroup Value="benoit">
+                <MenubarRadioItem Value="andy">Andy</MenubarRadioItem>
+                <MenubarRadioItem Value="benoit">Benoit</MenubarRadioItem>
+                <MenubarRadioItem Value="luis">Luis</MenubarRadioItem>
+            </MenubarRadioGroup>
+            <MenubarSeparator />
+            <MenubarGroup><MenubarItem Inset="true">@T.EditProfile</MenubarItem></MenubarGroup>
+            <MenubarSeparator />
+            <MenubarGroup><MenubarItem Inset="true">@T.AddProfile</MenubarItem></MenubarGroup>
+        </MenubarContent>
+    </MenubarMenu>
+</Menubar>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("File", "New Tab", "New Window", "New Incognito Window", "Share", "Email link", "Messages", "Notes", "Print...",
+            "Edit", "Undo", "Redo", "Find", "Search the web", "Find...", "Find Next", "Find Previous", "Cut", "Copy", "Paste",
+            "View", "Bookmarks Bar", "Full URLs", "Reload", "Force Reload", "Toggle Fullscreen", "Hide Sidebar", "Profiles",
+            "Edit...", "Add Profile..."),
+        Ar: new("ملف", "علامة تبويب جديدة", "نافذة جديدة", "نافذة التصفح المتخفي الجديدة", "مشاركة", "رابط البريد الإلكتروني",
+            "الرسائل", "الملاحظات", "طباعة...", "تعديل", "تراجع", "إعادة", "بحث", "البحث على الويب", "بحث...", "البحث التالي",
+            "البحث السابق", "قص", "نسخ", "لصق", "عرض", "شريط الإشارات المرجعية", "عناوين URL الكاملة", "إعادة تحميل",
+            "إعادة تحميل قسري", "تبديل وضع ملء الشاشة", "إخفاء الشريط الجانبي", "الملفات الشخصية", "تعديل...", "إضافة ملف شخصي..."),
+        He: new("קובץ", "כרטיסייה חדשה", "חלון חדש", "חלון גלישה בסתר חדש", "שתף", "קישור אימייל", "הודעות", "הערות", "הדפס...",
+            "ערוך", "בטל", "בצע שוב", "מצא", "חפש באינטרנט", "מצא...", "מצא הבא", "מצא הקודם", "גזור", "העתק", "הדבק",
+            "תצוגה", "סרגל סימניות", "כתובות URL מלאות", "רענן", "רענן בכוח", "החלף מסך מלא", "הסתר סרגל צד", "פרופילים",
+            "ערוך...", "הוסף פרופיל..."));
+
+    private sealed record Text(string File, string NewTab, string NewWindow, string NewIncognitoWindow, string Share,
+        string EmailLink, string Messages, string Notes, string Print, string Edit, string Undo, string Redo, string Find,
+        string SearchTheWeb, string FindItem, string FindNext, string FindPrevious, string Cut, string Copy, string Paste,
+        string View, string BookmarksBar, string FullUrls, string Reload, string ForceReload, string ToggleFullscreen,
+        string HideSidebar, string Profiles, string EditProfile, string AddProfile);
+}

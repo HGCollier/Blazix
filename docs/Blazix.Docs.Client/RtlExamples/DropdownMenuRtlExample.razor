@@ -1,0 +1,97 @@
+<DropdownMenu>
+    <DropdownMenuTrigger>
+        <Render>
+            <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">@T.Open</Button>
+        </Render>
+    </DropdownMenuTrigger>
+    @* Start is the reading direction's start: the trigger's right edge in RTL. *@
+    <DropdownMenuContent Class="w-36" Align="Align.Start">
+        <DropdownMenuGroup>
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger>@T.Account</DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem><Icon Name="user" /> @T.Profile</DropdownMenuItem>
+                        <DropdownMenuItem><Icon Name="credit-card" /> @T.Billing</DropdownMenuItem>
+                        <DropdownMenuItem><Icon Name="settings" /> @T.Settings</DropdownMenuItem>
+                    </DropdownMenuGroup>
+                </DropdownMenuSubContent>
+            </DropdownMenuSub>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>@T.Team</DropdownMenuLabel>
+            <DropdownMenuItem>@T.Team</DropdownMenuItem>
+            <DropdownMenuSub>
+                <DropdownMenuSubTrigger>@T.InviteUsers</DropdownMenuSubTrigger>
+                <DropdownMenuSubContent>
+                    <DropdownMenuItem>@T.Email</DropdownMenuItem>
+                    <DropdownMenuItem>@T.Message</DropdownMenuItem>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger>@T.More</DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent>
+                            <DropdownMenuItem>@T.Calendar</DropdownMenuItem>
+                            <DropdownMenuItem>@T.Chat</DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>@T.Webhook</DropdownMenuItem>
+                        </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>@T.Advanced</DropdownMenuItem>
+                </DropdownMenuSubContent>
+            </DropdownMenuSub>
+            <DropdownMenuItem>
+                @T.NewTeam
+                <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
+            </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>@T.View</DropdownMenuLabel>
+            <DropdownMenuCheckboxItem @bind-Checked="_showStatusBar">@T.StatusBar</DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem @bind-Checked="_showActivityBar">@T.ActivityBar</DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem @bind-Checked="_showPanel">@T.Panel</DropdownMenuCheckboxItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuLabel>@T.Position</DropdownMenuLabel>
+            <DropdownMenuRadioGroup @bind-Value="_position">
+                <DropdownMenuRadioItem Value="top">@T.Top</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="bottom">@T.Bottom</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="right">@T.Right</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem Value="left">@T.Left</DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+            <DropdownMenuItem Destructive="true">@T.Logout</DropdownMenuItem>
+        </DropdownMenuGroup>
+    </DropdownMenuContent>
+</DropdownMenu>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private bool _showStatusBar = true;
+    private bool _showActivityBar;
+    private bool _showPanel;
+    private string? _position = "bottom";
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Open", "Account", "Profile", "Billing", "Settings", "Log out", "Team", "Invite users", "Email", "Message", "More",
+            "Calendar", "Chat", "Webhook", "Advanced...", "New Team", "View", "Status Bar", "Activity Bar", "Panel", "Position",
+            "Top", "Bottom", "Right", "Left"),
+        Ar: new("افتح القائمة", "الحساب", "الملف الشخصي", "الفوترة", "الإعدادات", "تسجيل الخروج", "الفريق", "دعوة المستخدمين",
+            "البريد الإلكتروني", "رسالة", "المزيد", "تقويم", "دردشة", "خطاف ويب", "متقدم...", "فريق جديد", "عرض", "شريط الحالة",
+            "شريط النشاط", "اللوحة", "الموضع", "أعلى", "أسفل", "يمين", "يسار"),
+        He: new("פתח תפריט", "חשבון", "פרופיל", "חיוב", "הגדרות", "התנתק", "הצוות", "הזמן משתמשים", "אימייל", "הודעה", "עוד",
+            "יומן", "צ'אט", "Webhook", "מתקדם...", "צוות חדש", "תצוגה", "שורת סטטוס", "שורת פעילות", "לוח", "מיקום",
+            "למעלה", "למטה", "ימין", "שמאל"));
+
+    private sealed record Text(string Open, string Account, string Profile, string Billing, string Settings, string Logout,
+        string Team, string InviteUsers, string Email, string Message, string More, string Calendar, string Chat, string Webhook,
+        string Advanced, string NewTeam, string View, string StatusBar, string ActivityBar, string Panel, string Position,
+        string Top, string Bottom, string Right, string Left);
+}

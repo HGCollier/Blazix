@@ -1,0 +1,26 @@
+<div class="flex flex-wrap items-center gap-2 md:flex-row">
+    <Button Variant="ButtonVariant.Outline">@T.Button</Button>
+    <Button Variant="ButtonVariant.Destructive">@T.Delete</Button>
+    <Button Variant="ButtonVariant.Outline">
+        @T.Submit <Icon Name="arrow-right" class="rtl:rotate-180" data-icon="inline-end" />
+    </Button>
+    <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="@T.Add">
+        <Icon Name="plus" />
+    </Button>
+    <Button Variant="ButtonVariant.Secondary" disabled>
+        <Spinner data-icon="inline-start" /> @T.Loading
+    </Button>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Button", "Submit", "Delete", "Loading", "Add"),
+        Ar: new("زر", "إرسال", "حذف", "جاري التحميل", "إضافة"),
+        He: new("כפתור", "שלח", "מחק", "טוען", "הוסף"));
+
+    private sealed record Text(string Button, string Submit, string Delete, string Loading, string Add);
+}

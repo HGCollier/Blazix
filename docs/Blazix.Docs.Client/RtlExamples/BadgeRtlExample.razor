@@ -1,0 +1,27 @@
+<div class="flex w-full flex-wrap justify-center gap-2">
+    <Badge>@T.Badge</Badge>
+    <Badge Variant="BadgeVariant.Secondary">@T.Secondary</Badge>
+    <Badge Variant="BadgeVariant.Destructive">@T.Destructive</Badge>
+    <Badge Variant="BadgeVariant.Outline">@T.Outline</Badge>
+    <Badge Variant="BadgeVariant.Secondary">
+        <Icon Name="badge-check" data-icon="inline-start" />
+        @T.Verified
+    </Badge>
+    <Badge Variant="BadgeVariant.Outline">
+        @T.Bookmark
+        <Icon Name="bookmark" data-icon="inline-end" />
+    </Badge>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Badge", "Secondary", "Destructive", "Outline", "Verified", "Bookmark"),
+        Ar: new("شارة", "ثانوي", "مدمر", "مخطط", "متحقق", "إشارة مرجعية"),
+        He: new("תג", "משני", "הרסני", "קווי מתאר", "מאומת", "סימנייה"));
+
+    private sealed record Text(string Badge, string Secondary, string Destructive, string Outline, string Verified, string Bookmark);
+}

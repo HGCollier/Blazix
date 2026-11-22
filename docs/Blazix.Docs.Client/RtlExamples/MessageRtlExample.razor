@@ -1,0 +1,57 @@
+@* Align.End puts your own messages at the end of the reading direction: the left in RTL. *@
+<div class="flex w-full max-w-sm flex-col gap-6 py-12">
+    @foreach (var (mine, lines, footer) in T.Thread)
+    {
+        <Message Align="@(mine ? MessageAlign.End : MessageAlign.Start)">
+            <MessageAvatar>
+                <Avatar>
+                    <AvatarImage Src="@(mine ? "https://avatar.vercel.sh/blazix" : "https://github.com/evilrabbit.png")" alt="@(mine ? "@me" : "@rabbit")" />
+                    <AvatarFallback>@(mine ? "ME" : "R")</AvatarFallback>
+                </Avatar>
+            </MessageAvatar>
+            <MessageContent>
+                <BubbleGroup>
+                    @foreach (var line in lines)
+                    {
+                        <Bubble Variant="@(mine ? BubbleVariant.Default : BubbleVariant.Muted)"><BubbleContent>@line</BubbleContent></Bubble>
+                    }
+                </BubbleGroup>
+                @if (footer is not null)
+                {
+                    <MessageFooter>@footer</MessageFooter>
+                }
+            </MessageContent>
+        </Message>
+    }
+    <Marker role="status">
+        <MarkerContent Class="shimmer">@T.Typing</MarkerContent>
+    </Marker>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new([
+                (true, ["Deploying to prod real quick."], null),
+                (false, ["It's 4:55 PM. On a Friday."], null),
+                (true, ["It's a one-line change."], "Delivered"),
+                (false, ["It's always a one-line change 😭.", "Alright, let me take a look."], null),
+            ], "Oliver is typing..."),
+        Ar: new([
+                (true, ["سأنشر على الإنتاج بسرعة."], null),
+                (false, ["الساعة ٤:٥٥ مساءً. يوم جمعة."], null),
+                (true, ["إنه تغيير في سطر واحد فقط."], "تم التسليم"),
+                (false, ["دائمًا ما يكون تغييرًا في سطر واحد 😭.", "حسنًا، دعني ألقي نظرة."], null),
+            ], "أوليفر يكتب..."),
+        He: new([
+                (true, ["פורס לפרודקשן ממש מהר."], null),
+                (false, ["השעה 16:55. ביום שישי."], null),
+                (true, ["זה שינוי של שורה אחת."], "נמסר"),
+                (false, ["זה תמיד שינוי של שורה אחת 😭.", "בסדר, תן לי להסתכל."], null),
+            ], "אוליבר מקליד..."));
+
+    private sealed record Text((bool Mine, string[] Lines, string? Footer)[] Thread, string Typing);
+}

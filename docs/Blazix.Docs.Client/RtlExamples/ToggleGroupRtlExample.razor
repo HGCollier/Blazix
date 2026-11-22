@@ -1,0 +1,20 @@
+<ToggleGroup Variant="ToggleVariant.Outline" @bind-Value="_value">
+    <ToggleGroupItem Value="list">@T.List</ToggleGroupItem>
+    <ToggleGroupItem Value="grid">@T.Grid</ToggleGroupItem>
+    <ToggleGroupItem Value="cards">@T.Cards</ToggleGroupItem>
+</ToggleGroup>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private IReadOnlyList<string>? _value = ["list"];
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("List", "Grid", "Cards"),
+        Ar: new("قائمة", "شبكة", "بطاقات"),
+        He: new("רשימה", "רשת", "כרטיסים"));
+
+    private sealed record Text(string List, string Grid, string Cards);
+}

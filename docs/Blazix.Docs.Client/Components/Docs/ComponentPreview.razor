@@ -18,10 +18,41 @@
         @* The whole source, for Copy Page: the code view only shows a few lines until expanded. *@
         <template data-example-source>@Sources.Example(Name)</template>
         <div data-slot="component-preview" class="@Cn("group relative mt-4 mb-12 flex flex-col overflow-hidden rounded-2xl border", Class)">
-            <div data-slot="preview" dir="ltr">
+            @if (Rtl)
+            {
+                <div class="flex min-h-16 flex-wrap items-center gap-x-4 gap-y-1 border-b px-4 py-3">
+                    <Select Items="Languages" Value="@_language.Code" ValueChanged="SetLanguage">
+                        <SelectTrigger Size="SelectTriggerSize.Sm" aria-label="Language" Class="w-44">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent AlignItemWithTrigger="false">
+                            <SelectGroup>
+                                @foreach (var language in Languages)
+                                {
+                                    <SelectItem Value="@language.Value">@language.Label</SelectItem>
+                                }
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                    <p class="text-xs text-muted-foreground">Translated with AI for the demo, so it may have mistakes.</p>
+                </div>
+            }
+            <div data-slot="preview" dir="@(Rtl ? _language.Dir : "ltr")" lang="@(Rtl ? _language.Code : null)">
                 <div data-align="@Align" data-chromeless="@(ChromeLessOnMobile ? "true" : "false")"
-                     class="@Cn("preview relative flex h-72 w-full justify-center p-10 data-[align=center]:items-center data-[align=end]:items-start data-[align=start]:items-start data-[chromeless=true]:h-auto data-[chromeless=true]:p-0 sm:data-[align=end]:items-end", PreviewClass)">
-                    <DynamicComponent Type="type" />
+                     class="@Cn("preview relative flex h-72 w-full justify-center " + Padding + " data-[align=center]:items-center data-[align=end]:items-start data-[align=start]:items-start data-[chromeless=true]:h-auto data-[chromeless=true]:p-0 sm:data-[align=end]:items-end", PreviewClass)">
+                    @if (Rtl)
+                    {
+                        @* A key per language: an example reads its strings once, and some keep state (a chosen date) in them. *@
+                        <CascadingValue Value="_language">
+                            <DirectionProvider Direction="@_language.Direction">
+                                <DynamicComponent @key="_language" Type="type" />
+                            </DirectionProvider>
+                        </CascadingValue>
+                    }
+                    else
+                    {
+                        <DynamicComponent Type="type" />
+                    }
                 </div>
             </div>
             @if (!HideCode && cssType is not null)
@@ -60,6 +91,13 @@
                      class="@("relative overflow-hidden **:data-[slot=copy-button]:right-4 **:data-[slot=copy-button]:hidden data-[mobile-code-visible=true]:**:data-[slot=copy-button]:flex [&_[data-code-figure]]:m-0! [&_[data-code-figure]]:rounded-t-none [&_[data-code-figure]]:border-t [&_pre]:max-h-72")">
                     @if (_codeVisible)
                     {
+                        @if (Rtl)
+                        {
+                            <p class="relative z-10 border-t bg-(--code) px-6 py-4 font-mono text-sm text-muted-foreground">
+                                // The preview sets dir and lang around this example, as your app sets them on &lt;html&gt;.
+                                // It uses components added with "rtl": true. See the <a href="/docs/rtl" class="underline underline-offset-4">RTL guide</a>.
+                            </p>
+                        }
                         <ComponentSource Example="@Name" Code="@source" CodeLanguage="@language" Collapsible="false" />
                     }
                     else
@@ -95,6 +133,15 @@ else
     private const string FileTabClasses =
         "h-7 shrink-0 rounded-md px-2 font-mono text-[0.8125rem] whitespace-nowrap text-muted-foreground hover:text-foreground " +
         "aria-pressed:bg-muted aria-pressed:text-foreground";
+
+    private static readonly SelectOption[] Languages = [.. Language.All.Select(l => new SelectOption(l.Code, l.Label))];
+
+    /// <summary>The language an RTL example shows in, Arabic until the reader picks another.</summary>
+    private Language _language = Language.Arabic;
+
+    private bool Rtl => Direction == "rtl";
+
+    private void SetLanguage(string? code) => _language = Language.Find(code);
 
     /// <summary>The styling methods the primitives' examples come in.</summary>
     private static readonly SelectOption[] StylingMethods = [new("css", "CSS"), new("tailwind", "Tailwind")];
@@ -156,5 +203,20 @@ else
     [Parameter] public string? PreviewClass { get; set; }
 
     [Parameter] public string? Caption { get; set; }
+
+    /// <summary>"rtl" for an RTL example ("button-rtl"): shown in Arabic or Hebrew, right to left, with a language picker.</summary>
+    [Parameter] public string? Direction { get; set; }
+
+    /// <summary>
+    /// Less padding on phones so examples keep their width, unless the page sets its own: a plain <c>p-6</c> from the page
+    /// wouldn't override a responsive <c>sm:p-10</c>.
+    /// </summary>
+    private string Padding => SetsPadding(PreviewClass) ? "p-10" : "p-2 min-[360px]:p-4 sm:p-10";
+
+    private static bool SetsPadding(string? classes) =>
+        classes is not null && classes.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Select(c => c[(c.LastIndexOf(':') + 1)..])
+            .Any(c => c.StartsWith("p-") || c.StartsWith("px-") || c.StartsWith("py-"));
+
     [Parameter] public string? Class { get; set; }
 }

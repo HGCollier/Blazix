@@ -46,12 +46,12 @@
     </DocsTable>
     <DocsHeading Level="3" Title="Width" />
     <p>If you have a single sidebar in your application, you can use the <code>Width</code> and <code>WidthMobile</code> constants in <code>SidebarProvider.razor</code> to set the width of the sidebar.</p>
-    <CodeFigure Code="@WidthCode" Language="csharp" Title="Components/UI/SidebarProvider.razor" LineNumbers="true" />
+    <CodeFigure Code="@WidthCode" Language="csharp" Title="Components/UI/Sidebar/SidebarProvider.razor" LineNumbers="true" />
     <p>For multiple sidebars in your application, you can set the <code>--sidebar-width</code> CSS variable with the <code>Style</code> parameter.</p>
     <CodeFigure Code="@StyleCode" LineNumbers="true" />
     <DocsHeading Level="3" Title="Keyboard Shortcut" />
     <p>To trigger the sidebar, you use the <code>cmd+b</code> keyboard shortcut on Mac and <code>ctrl+b</code> on Windows.</p>
-    <CodeFigure Code="@ShortcutCode" Language="csharp" Title="Components/UI/SidebarProvider.razor" LineNumbers="true" />
+    <CodeFigure Code="@ShortcutCode" Language="csharp" Title="Components/UI/Sidebar/SidebarProvider.razor" LineNumbers="true" />
     <DocsHeading Level="3" Title="Persisted State" />
     <p>The provider keeps the sidebar&apos;s state in the <code>sidebar_state</code> cookie. Read it when the page renders and pass it as <code>DefaultOpen</code> to start the way the user left it.</p>
     <CodeFigure Code="@PersistedCode" LineNumbers="true" />
@@ -166,6 +166,10 @@
     <p>Here are some tips for styling the sidebar based on different states.</p>
     <CodeFigure Code="@StylingCode" />
     <CodeFigure Code="@StylingCode2" />
+    <DocsHeading Title="RTL" />
+    <p>To enable RTL support in Blazix, see the <a href="/docs/rtl">RTL configuration guide</a>.</p>
+    <ComponentPreview Name="sidebar-rtl" Direction="rtl" ChromeLessOnMobile="true"
+                      PreviewClass="@("h-[600px]! overflow-hidden p-0! [transform:translateZ(0)] [&_[data-slot=sidebar-wrapper]]:min-h-full [&_[data-slot=sidebar-container]]:h-full")" />
 
     <DocsHeading Title="API Reference" />
     <ApiReference Name="sidebar" />

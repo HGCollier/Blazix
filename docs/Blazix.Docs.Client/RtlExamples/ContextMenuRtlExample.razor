@@ -1,0 +1,78 @@
+<ContextMenu>
+    <ContextMenuTrigger Class="flex aspect-video w-full max-w-xs items-center justify-center rounded-xl border border-dashed text-sm">
+        <span class="hidden pointer-fine:inline-block">@T.RightClick</span>
+        <span class="hidden pointer-coarse:inline-block">@T.LongPress</span>
+    </ContextMenuTrigger>
+    <ContextMenuContent Class="w-48">
+        <ContextMenuGroup>
+            <ContextMenuSub>
+                <ContextMenuSubTrigger>@T.Navigation</ContextMenuSubTrigger>
+                <ContextMenuSubContent Class="w-44">
+                    <ContextMenuGroup>
+                        <ContextMenuItem>
+                            <Icon Name="arrow-left" class="rtl:rotate-180" />
+                            @T.Back
+                            <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+                        </ContextMenuItem>
+                        <ContextMenuItem Disabled="true">
+                            <Icon Name="arrow-right" class="rtl:rotate-180" />
+                            @T.Forward
+                            <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+                        </ContextMenuItem>
+                        <ContextMenuItem>
+                            <Icon Name="rotate-cw" />
+                            @T.Reload
+                            <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+                        </ContextMenuItem>
+                    </ContextMenuGroup>
+                </ContextMenuSubContent>
+            </ContextMenuSub>
+            <ContextMenuSub>
+                <ContextMenuSubTrigger>@T.MoreTools</ContextMenuSubTrigger>
+                <ContextMenuSubContent Class="w-44">
+                    <ContextMenuGroup>
+                        <ContextMenuItem>@T.SavePage</ContextMenuItem>
+                        <ContextMenuItem>@T.CreateShortcut</ContextMenuItem>
+                        <ContextMenuItem>@T.NameWindow</ContextMenuItem>
+                    </ContextMenuGroup>
+                    <ContextMenuSeparator />
+                    <ContextMenuGroup><ContextMenuItem>@T.DeveloperTools</ContextMenuItem></ContextMenuGroup>
+                    <ContextMenuSeparator />
+                    <ContextMenuGroup><ContextMenuItem Destructive="true">@T.Delete</ContextMenuItem></ContextMenuGroup>
+                </ContextMenuSubContent>
+            </ContextMenuSub>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
+        <ContextMenuGroup>
+            <ContextMenuCheckboxItem Checked="true">@T.ShowBookmarks</ContextMenuCheckboxItem>
+            <ContextMenuCheckboxItem>@T.ShowFullUrls</ContextMenuCheckboxItem>
+        </ContextMenuGroup>
+        <ContextMenuSeparator />
+        <ContextMenuGroup>
+            <ContextMenuRadioGroup Value="pedro">
+                <ContextMenuLabel>@T.People</ContextMenuLabel>
+                <ContextMenuRadioItem Value="pedro">Pedro Duarte</ContextMenuRadioItem>
+                <ContextMenuRadioItem Value="colm">Colm Tuite</ContextMenuRadioItem>
+            </ContextMenuRadioGroup>
+        </ContextMenuGroup>
+    </ContextMenuContent>
+</ContextMenu>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Right click here", "Long press here", "Navigation", "Back", "Forward", "Reload", "More Tools", "Save Page...",
+            "Create Shortcut...", "Name Window...", "Developer Tools", "Delete", "Show Bookmarks", "Show Full URLs", "People"),
+        Ar: new("انقر بزر الماوس الأيمن هنا", "اضغط مطولاً هنا", "التنقل", "رجوع", "تقدم", "إعادة تحميل", "المزيد من الأدوات",
+            "حفظ الصفحة...", "إنشاء اختصار...", "تسمية النافذة...", "أدوات المطور", "حذف", "إظهار الإشارات المرجعية",
+            "إظهار عناوين URL الكاملة", "الأشخاص"),
+        He: new("לחץ לחיצה ימנית כאן", "לחץ לחיצה ארוכה כאן", "ניווט", "חזור", "קדימה", "רענן", "כלים נוספים", "שמור עמוד...",
+            "צור קיצור דרך...", "שם חלון...", "כלי מפתח", "מחק", "הצג סימניות", "הצג כתובות URL מלאות", "אנשים"));
+
+    private sealed record Text(string RightClick, string LongPress, string Navigation, string Back, string Forward, string Reload,
+        string MoreTools, string SavePage, string CreateShortcut, string NameWindow, string DeveloperTools, string Delete,
+        string ShowBookmarks, string ShowFullUrls, string People);
+}

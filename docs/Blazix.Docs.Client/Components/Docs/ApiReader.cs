@@ -55,7 +55,7 @@ internal static partial class ApiReader
         var root = Sources.Pascal(name);
         return registryItem.Files
             .Where(f => f.EndsWith(".razor", StringComparison.Ordinal))
-            .Select(f => f[..^".razor".Length])
+            .Select(Path.GetFileNameWithoutExtension)
             .OrderBy(n => n == root ? 0 : 1)
             .Select(n => RegistryAssembly.GetType($"Blazix.Registry.{n}"))
             .OfType<Type>()

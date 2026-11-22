@@ -1,0 +1,65 @@
+<Table>
+    <TableCaption>@T.Caption</TableCaption>
+    <TableHeader>
+        <TableRow>
+            <TableHead Class="w-[100px]">@T.Invoice</TableHead>
+            <TableHead>@T.Status</TableHead>
+            <TableHead>@T.Method</TableHead>
+            <TableHead Class="text-end">@T.Amount</TableHead>
+        </TableRow>
+    </TableHeader>
+    <TableBody>
+        @foreach (var (invoice, status, amount, method) in Invoices)
+        {
+            <TableRow>
+                <TableCell Class="font-medium">@invoice</TableCell>
+                <TableCell>@T.Words[status]</TableCell>
+                <TableCell>@T.Words[method]</TableCell>
+                <TableCell Class="text-end">@amount</TableCell>
+            </TableRow>
+        }
+    </TableBody>
+    <TableFooter>
+        <TableRow>
+            <TableCell colspan="3">@T.Total</TableCell>
+            <TableCell Class="text-end">$2,500.00</TableCell>
+        </TableRow>
+    </TableFooter>
+</Table>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private static readonly (string Invoice, string Status, string Amount, string Method)[] Invoices =
+    [
+        ("INV001", "paid", "$250.00", "credit-card"),
+        ("INV002", "pending", "$150.00", "paypal"),
+        ("INV003", "unpaid", "$350.00", "bank-transfer"),
+        ("INV004", "paid", "$450.00", "credit-card"),
+        ("INV005", "paid", "$550.00", "paypal"),
+        ("INV006", "pending", "$200.00", "bank-transfer"),
+        ("INV007", "unpaid", "$300.00", "credit-card"),
+    ];
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("A list of your recent invoices.", "Invoice", "Status", "Method", "Amount", "Total", new()
+        {
+            ["paid"] = "Paid", ["pending"] = "Pending", ["unpaid"] = "Unpaid",
+            ["credit-card"] = "Credit Card", ["paypal"] = "PayPal", ["bank-transfer"] = "Bank Transfer",
+        }),
+        Ar: new("قائمة بفواتيرك الأخيرة.", "الفاتورة", "الحالة", "الطريقة", "المبلغ", "المجموع", new()
+        {
+            ["paid"] = "مدفوع", ["pending"] = "قيد الانتظار", ["unpaid"] = "غير مدفوع",
+            ["credit-card"] = "بطاقة ائتمانية", ["paypal"] = "PayPal", ["bank-transfer"] = "تحويل بنكي",
+        }),
+        He: new("רשימת החשבוניות האחרונות שלך.", "חשבונית", "סטטוס", "שיטה", "סכום", "סה\"כ", new()
+        {
+            ["paid"] = "שולם", ["pending"] = "ממתין", ["unpaid"] = "לא שולם",
+            ["credit-card"] = "כרטיס אשראי", ["paypal"] = "PayPal", ["bank-transfer"] = "העברה בנקאית",
+        }));
+
+    private sealed record Text(string Caption, string Invoice, string Status, string Method, string Amount, string Total,
+        Dictionary<string, string> Words);
+}

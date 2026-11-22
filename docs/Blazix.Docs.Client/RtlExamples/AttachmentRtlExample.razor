@@ -1,0 +1,58 @@
+<div class="mx-auto flex w-full max-w-sm flex-col gap-3 py-12">
+    <AttachmentGroup>
+        @foreach (var image in Images)
+        {
+            <Attachment Orientation="Orientation.Vertical">
+                <AttachmentMedia Variant="AttachmentMediaVariant.Image">
+                    <img src="@image.Src" alt="@T.Words[image.Alt]" />
+                </AttachmentMedia>
+                <AttachmentContent>
+                    <AttachmentTitle>@image.Name</AttachmentTitle>
+                    <AttachmentDescription>@image.Type · @Language.Digits(image.Size)</AttachmentDescription>
+                </AttachmentContent>
+            </Attachment>
+        }
+    </AttachmentGroup>
+    <Attachment State="AttachmentState.Uploading" Class="w-full">
+        <AttachmentMedia><Spinner /></AttachmentMedia>
+        <AttachmentContent>
+            <AttachmentTitle>sales-dashboard.pdf</AttachmentTitle>
+            <AttachmentDescription>@T.Uploading · @Language.Digits("64%")</AttachmentDescription>
+        </AttachmentContent>
+        <AttachmentActions>
+            <AttachmentAction aria-label="@T.CancelUpload"><Icon Name="x" /></AttachmentAction>
+        </AttachmentActions>
+    </Attachment>
+    <Attachment Class="w-full">
+        <AttachmentMedia><Icon Name="file-code" /></AttachmentMedia>
+        <AttachmentContent>
+            <AttachmentTitle>message-renderer.tsx</AttachmentTitle>
+            <AttachmentDescription>TypeScript · @Language.Digits("12 KB")</AttachmentDescription>
+        </AttachmentContent>
+        <AttachmentActions>
+            <AttachmentAction aria-label="@($"{T.Remove} message-renderer.tsx")"><Icon Name="x" /></AttachmentAction>
+        </AttachmentActions>
+    </Attachment>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private sealed record ImageEntry(string Name, string Type, string Size, string Src, string Alt);
+
+    private static readonly ImageEntry[] Images =
+    [
+        new("workspace.png", "PNG", "820 KB", "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=900&auto=format&fit=crop&q=80", "workspace"),
+        new("desk-reference.jpg", "JPG", "1.1 MB", "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=900&auto=format&fit=crop&q=80", "desk"),
+        new("office-reference.jpg", "JPG", "940 KB", "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80", "office"),
+    ];
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Uploading", "Cancel upload", "Remove", new() { ["workspace"] = "Workspace", ["desk"] = "Desk", ["office"] = "Office" }),
+        Ar: new("جاري الرفع", "إلغاء الرفع", "إزالة", new() { ["workspace"] = "مساحة العمل", ["desk"] = "مكتب", ["office"] = "مكتب الشركة" }),
+        He: new("מעלה", "בטל העלאה", "הסר", new() { ["workspace"] = "סביבת עבודה", ["desk"] = "שולחן", ["office"] = "משרד" }));
+
+    private sealed record Text(string Uploading, string CancelUpload, string Remove, Dictionary<string, string> Words);
+}

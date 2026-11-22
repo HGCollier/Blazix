@@ -1,0 +1,9 @@
+@* Month and day names come from Locale; dir="rtl" around it (or a DirectionProvider) swaps Left and Right. *@
+<Calendar Mode="CalendarMode.Single" @bind-Selected="_date" Locale="@Language.Culture"
+          Class="rounded-lg border [--cell-size:--spacing(9)]" CaptionLayout="CalendarCaptionLayout.Dropdown" />
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private DateOnly? _date = DateOnly.FromDateTime(DateTime.Today);
+}

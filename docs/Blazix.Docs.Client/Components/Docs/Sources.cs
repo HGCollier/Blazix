@@ -26,6 +26,9 @@ internal static class Sources
         return items;
     });
 
+    /// <summary>The suffix of an RTL example's name ("button-rtl"): one in RtlExamples, on the registry copied for RTL.</summary>
+    private const string RtlSuffix = "-rtl";
+
     /// <summary>The prefix of a primitive's example name ("primitives/accordion-hero"): one in Primitives/Examples.</summary>
     private const string PrimitivePrefix = "primitives/";
 
@@ -85,6 +88,10 @@ internal static class Sources
             return ($"Blazix.Docs.Primitives.Examples.{primitive}Example", $"primitive-examples/{primitive}Example.razor");
         }
         var example = Pascal(name);
+        if (name.EndsWith(RtlSuffix, StringComparison.Ordinal))
+        {
+            return ($"Blazix.Docs.RtlExamples.{example}Example", $"rtl-examples/{example}Example.razor");
+        }
         return ($"Blazix.Docs.Examples.{example}Example", $"examples/{example}Example.razor");
     }
 

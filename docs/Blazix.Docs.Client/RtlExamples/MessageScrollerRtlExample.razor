@@ -1,0 +1,61 @@
+@* The scroll button stays centered in RTL: the registry copied with "rtl": true flips its translate. *@
+<MessageScrollerProvider>
+    <Card Class="mx-auto h-96 w-full max-w-sm gap-0">
+        <CardHeader Class="gap-1 border-b">
+            <CardTitle>@T.Title</CardTitle>
+            <CardDescription>@T.Description</CardDescription>
+        </CardHeader>
+        <CardContent Class="flex-1 overflow-hidden p-0">
+            <MessageScroller>
+                <MessageScrollerViewport>
+                    <MessageScrollerContent Class="flex flex-col gap-4 p-(--card-spacing)">
+                        @foreach (var (line, index) in T.Lines.Select((l, i) => (l, i)))
+                        {
+                            var mine = index % 2 == 0;
+                            <Message @key="index" Align="@(mine ? MessageAlign.End : MessageAlign.Start)">
+                                <MessageContent>
+                                    <Bubble Variant="@(mine ? BubbleVariant.Default : BubbleVariant.Muted)"><BubbleContent>@line</BubbleContent></Bubble>
+                                </MessageContent>
+                            </Message>
+                        }
+                    </MessageScrollerContent>
+                </MessageScrollerViewport>
+                <MessageScrollerButton>
+                    <Icon Name="arrow-up" class="rotate-180" />
+                    <span class="sr-only">@T.ScrollToEnd</span>
+                </MessageScrollerButton>
+            </MessageScroller>
+        </CardContent>
+    </Card>
+</MessageScrollerProvider>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Release notes", "Scroll up to read the thread.", "Scroll to end",
+            [
+                "Is the release ready?", "Almost. Two tests are still flaky.", "Which ones?",
+                "The calendar keyboard tests, in right-to-left.", "Arrow keys run the other way there.",
+                "Fixed. Left goes to the next day now.", "Great. And the carousel?", "It follows the text direction on its own.",
+                "Then ship it.", "Shipping now.",
+            ]),
+        Ar: new("ملاحظات الإصدار", "مرّر لأعلى لقراءة المحادثة.", "التمرير إلى النهاية",
+            [
+                "هل الإصدار جاهز؟", "تقريبًا. اختباران ما زالا غير مستقرين.", "أيهما؟",
+                "اختبارات لوحة المفاتيح في التقويم، من اليمين إلى اليسار.", "مفاتيح الأسهم تعمل بالاتجاه المعاكس هناك.",
+                "تم الإصلاح. السهم الأيسر ينتقل إلى اليوم التالي الآن.", "رائع. والعرض الدوّار؟", "يتبع اتجاه النص تلقائيًا.",
+                "إذن انشره.", "جارٍ النشر الآن.",
+            ]),
+        He: new("הערות גרסה", "גלול למעלה כדי לקרוא את השיחה.", "גלול לסוף",
+            [
+                "הגרסה מוכנה?", "כמעט. שתי בדיקות עדיין לא יציבות.", "אילו?",
+                "בדיקות המקלדת של לוח השנה, מימין לשמאל.", "מקשי החיצים פועלים שם בכיוון ההפוך.",
+                "תוקן. חץ שמאלה עובר עכשיו ליום הבא.", "מעולה. והקרוסלה?", "היא עוקבת אחרי כיוון הטקסט בעצמה.",
+                "אז תשחרר.", "משחרר עכשיו.",
+            ]));
+
+    private sealed record Text(string Title, string Description, string ScrollToEnd, string[] Lines);
+}

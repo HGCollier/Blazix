@@ -1,0 +1,39 @@
+<Collapsible @bind-Open="_isOpen" Class="flex w-[350px] max-w-full flex-col gap-2">
+    <div class="flex items-center justify-between gap-4 px-4">
+        <h4 class="text-sm font-semibold">@T.OrderNumber</h4>
+        <CollapsibleTrigger Class="@ButtonVariants.Get(ButtonVariant.Ghost, ButtonSize.Icon, "size-8")">
+            <Icon Name="chevrons-up-down" />
+            <span class="sr-only">@T.ToggleDetails</span>
+        </CollapsibleTrigger>
+    </div>
+    <div class="flex items-center justify-between rounded-md border px-4 py-2 text-sm">
+        <span class="text-muted-foreground">@T.Status</span>
+        <span class="font-medium">@T.Shipped</span>
+    </div>
+    <CollapsibleContent Class="flex flex-col gap-2">
+        <div class="rounded-md border px-4 py-2 text-sm">
+            <p class="font-medium">@T.ShippingAddress</p>
+            <p class="text-muted-foreground">100 Market St, San Francisco</p>
+        </div>
+        <div class="rounded-md border px-4 py-2 text-sm">
+            <p class="font-medium">@T.Items</p>
+            <p class="text-muted-foreground">@T.ItemsDescription</p>
+        </div>
+    </CollapsibleContent>
+</Collapsible>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private bool _isOpen;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Order #4189", "Toggle details", "Status", "Shipped", "Shipping address", "Items", "2x Studio Headphones"),
+        Ar: new("الطلب #4189", "إظهار التفاصيل", "الحالة", "تم الشحن", "عنوان الشحن", "العناصر", "2x سماعات الاستوديو"),
+        He: new("הזמנה #4189", "הצג פרטים", "סטטוס", "נשלח", "כתובת משלוח", "פריטים", "2x אוזניות סטודיו"));
+
+    private sealed record Text(string OrderNumber, string ToggleDetails, string Status, string Shipped, string ShippingAddress,
+        string Items, string ItemsDescription);
+}

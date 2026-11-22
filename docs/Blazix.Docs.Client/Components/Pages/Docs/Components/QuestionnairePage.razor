@@ -1,7 +1,7 @@
 @page "/docs/components/questionnaire"
 
 <DocsPage Title="Questionnaire" Description="A multi-step questionnaire with single-choice, multiple-choice, freeform, and skippable questions.">
-    <ComponentPreview Name="questionnaire-demo" Align="end" PreviewClass="min-h-[560px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-demo" Align="end" PreviewClass="h-auto min-h-[560px] p-4 sm:p-8" />
     <DocsHeading Title="Installation" />
     <InstallationTabs Name="questionnaire" />
     <DocsHeading Title="Usage" />
@@ -15,43 +15,43 @@
     <p>Pass <code>Items</code> to render the active item, progress, actions, and answer shortcuts before the items register, including during prerendering.</p>
     <DocsHeading Title="Multiple Selection" />
     <p>Use <code>Multiple</code> for an item that accepts more than one fixed answer.</p>
-    <ComponentPreview Name="questionnaire-multiple" Align="end" PreviewClass="min-h-[420px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-multiple" Align="end" PreviewClass="h-auto min-h-[420px] p-4 sm:p-8" />
     <DocsHeading Title="Freeform Answer" />
     <p>Compose <code>QuestionnaireInput</code> with fixed choices when the user can provide another answer.</p>
-    <ComponentPreview Name="questionnaire-freeform" Align="end" PreviewClass="min-h-[420px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-freeform" Align="end" PreviewClass="h-auto min-h-[420px] p-4 sm:p-8" />
     <DocsHeading Title="Explicit Skip" />
     <p>Add <code>QuestionnaireSkip</code> when an optional item may be intentionally left unanswered.</p>
-    <ComponentPreview Name="questionnaire-skip" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-skip" Align="end" PreviewClass="h-auto min-h-[520px] p-4 sm:p-8" />
     <DocsHeading Title="Shortcuts" />
     <p>Assign a letter or number key to each answer with <code>Shortcuts</code>.</p>
-    <ComponentPreview Name="questionnaire-shortcuts" Align="end" PreviewClass="min-h-[480px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-shortcuts" Align="end" PreviewClass="h-auto min-h-[480px] p-4 sm:p-8" />
     <DocsHeading Title="Custom Validation" />
     <p>Combine controlled navigation with your own validation to return to an invalid item and present its error.</p>
-    <ComponentPreview Name="questionnaire-validation" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-validation" Align="end" PreviewClass="h-auto min-h-[520px] p-4 sm:p-8" />
     <DocsHeading Title="Controlled" />
     <p>Control the active item from host state with <code>@@bind-Item</code>, such as returning to an invalid step.</p>
-    <ComponentPreview Name="questionnaire-controlled" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-controlled" Align="end" PreviewClass="h-auto min-h-[520px] p-4 sm:p-8" />
     <DocsHeading Title="Resume" />
     <p>Restore a saved active item and default answers, then reset changes back to that saved state.</p>
-    <ComponentPreview Name="questionnaire-resume" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-resume" Align="end" PreviewClass="h-auto min-h-[520px] p-4 sm:p-8" />
     <DocsHeading Title="Conditional Items" />
     <p>Disable items that do not apply to the user's earlier answers.</p>
-    <ComponentPreview Name="questionnaire-conditional" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-conditional" Align="end" PreviewClass="h-auto min-h-[520px] p-4 sm:p-8" />
     <DocsHeading Title="Navigation State" />
     <p>Read item status to opt into disabled navigation and custom action styling.</p>
-    <ComponentPreview Name="questionnaire-navigation-state" Align="end" PreviewClass="min-h-[480px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-navigation-state" Align="end" PreviewClass="h-auto min-h-[480px] p-4 sm:p-8" />
     <DocsHeading Title="Custom Progress" />
     <p>Use the <code>Render</code> fragment of <code>QuestionnaireProgress</code> to build a custom progress indicator.</p>
-    <ComponentPreview Name="questionnaire-progress" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-progress" Align="end" PreviewClass="h-auto min-h-[520px] p-4 sm:p-8" />
     <DocsHeading Title="Animated Items" />
     <p>Animate the active item while keeping progress and navigation stationary.</p>
-    <ComponentPreview Name="questionnaire-animated" Align="end" PreviewClass="min-h-[520px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-animated" Align="end" PreviewClass="h-auto min-h-[520px] p-4 sm:p-8" />
     <DocsHeading Title="Card" />
     <p>Compose Questionnaire with Card slots while keeping the question title and description semantic.</p>
-    <ComponentPreview Name="questionnaire-card" Align="end" PreviewClass="min-h-[560px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-card" Align="end" PreviewClass="h-auto min-h-[560px] p-4 sm:p-8" />
     <DocsHeading Title="Dialog" />
     <p>Compose Questionnaire inside a Dialog while keeping cancellation and dismissal host-owned.</p>
-    <ComponentPreview Name="questionnaire-dialog" Align="end" PreviewClass="min-h-[320px] p-4 sm:p-8" />
+    <ComponentPreview Name="questionnaire-dialog" Align="end" PreviewClass="h-auto min-h-[320px] p-4 sm:p-8" />
     <DocsHeading Title="Accessibility" />
     <p><code>QuestionnaireItem</code> renders a <code>fieldset</code>, and <code>QuestionnaireTitle</code> renders its <code>legend</code>. Descriptions and active errors are associated with the current item, and invalid items and answer controls expose <code>aria-invalid</code>. If the title renders something else through <code>Render</code>, give it an <code>id</code> and point the item's <code>aria-labelledby</code> at it, as the Card example does.</p>
     <p>Fixed choices preserve native radio and checkbox behavior. Progress is exposed as a named progressbar, navigation uses real buttons, and inactive items and actions are hidden and inert. Successful navigation focuses the newly active item; failed validation focuses an available answer control.</p>
@@ -73,6 +73,9 @@
     <p>Shortcuts and arrow navigation pause while you type in a text field.</p>
     <DocsHeading Title="Unstyled" />
     <p>The behavior comes from the Questionnaire parts in Blazix.Primitives (<code>QuestionnaireRoot</code>, <code>QuestionnaireItem</code>, <code>QuestionnaireChoice</code>, <code>QuestionnaireChoiceInput</code>, and the rest). Use them directly with your own markup and styles.</p>
+    <DocsHeading Title="RTL" />
+    <p>To enable RTL support in Blazix, see the <a href="/docs/rtl">RTL configuration guide</a>.</p>
+    <ComponentPreview Name="questionnaire-rtl" Direction="rtl" PreviewClass="h-auto" />
     <DocsHeading Title="API Reference" />
     <p>Navigation components also take Button's <code>Size</code> and <code>Variant</code>, and <code>QuestionnaireActions</code> is a styled-only layout helper.</p>
     <ApiReference Name="questionnaire" />

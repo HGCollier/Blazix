@@ -2,7 +2,13 @@
 
 <DocsPage Title="Direction" Description="A provider component that sets the text direction for your application.">
     <p>The <code>DirectionProvider</code> component is used to set the text direction (<code>ltr</code> or <code>rtl</code>) for your application. This is essential for supporting right-to-left languages like Arabic, Hebrew, and Persian.</p>
-    <p>Here's a preview of the component in RTL mode. Use the language selector to switch the language. To see more examples, look for the RTL section on components pages.</p>
+    <p>Here&apos;s a preview of the component in RTL mode. Use the language selector to switch the language. To see more examples, look for the RTL section on component pages, and see the <a href="/docs/rtl">RTL guide</a> to set up a project.</p>
+    <ComponentPreview Name="direction-rtl" Direction="rtl" />
+    <p>
+        It renders no element and sets no <code>dir</code> attribute: set <code>dir="rtl"</code> on <code>&lt;html&gt;</code> for the layout. Keyboard
+        navigation and popup placement read that. The provider is for what&apos;s decided while rendering: which way a Tabs or Navigation Menu
+        indicator moves, and which way the arrow keys go in a Calendar.
+    </p>
     <DocsHeading Title="Installation" />
     <InstallationTabs Name="direction" />
     <DocsHeading Title="Usage" />

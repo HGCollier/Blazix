@@ -1,0 +1,60 @@
+<div class="flex flex-wrap justify-center gap-4">
+    <AlertDialog>
+        <AlertDialogTrigger>
+            <Render>
+                <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">@T.ShowDialog</Button>
+            </Render>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+            <AlertDialogHeader>
+                <AlertDialogTitle>@T.Title</AlertDialogTitle>
+                <AlertDialogDescription>@T.Description</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+                <AlertDialogCancel>@T.Cancel</AlertDialogCancel>
+                <AlertDialogAction>@T.Continue</AlertDialogAction>
+            </AlertDialogFooter>
+        </AlertDialogContent>
+    </AlertDialog>
+    <AlertDialog>
+        <AlertDialogTrigger>
+            <Render>
+                <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">@T.ShowDialogSm</Button>
+            </Render>
+        </AlertDialogTrigger>
+        <AlertDialogContent Size="AlertDialogSize.Sm">
+            <AlertDialogHeader>
+                <AlertDialogMedia><Icon Name="bluetooth" /></AlertDialogMedia>
+                <AlertDialogTitle>@T.SmallTitle</AlertDialogTitle>
+                <AlertDialogDescription>@T.SmallDescription</AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+                <AlertDialogCancel>@T.DontAllow</AlertDialogCancel>
+                <AlertDialogAction>@T.Allow</AlertDialogAction>
+            </AlertDialogFooter>
+        </AlertDialogContent>
+    </AlertDialog>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Show Dialog", "Show Dialog (sm)", "Are you absolutely sure?",
+            "This action cannot be undone. This will permanently delete your account from our servers.",
+            "Cancel", "Continue", "Allow accessory to connect?",
+            "Do you want to allow the USB accessory to connect to this device?", "Don't allow", "Allow"),
+        Ar: new("إظهار الحوار", "إظهار الحوار (صغير)", "هل أنت متأكد تمامًا؟",
+            "لا يمكن التراجع عن هذا الإجراء. سيؤدي هذا إلى حذف حسابك نهائيًا من خوادمنا.",
+            "إلغاء", "متابعة", "السماح للملحق بالاتصال؟",
+            "هل تريد السماح لملحق USB بالاتصال بهذا الجهاز؟", "عدم السماح", "السماح"),
+        He: new("הצג דיאלוג", "הצג דיאלוג (קטן)", "האם אתה בטוח לחלוטין?",
+            "פעולה זו לא ניתנת לביטול. זה ימחק לצמיתות את החשבון שלך מהשרתים שלנו.",
+            "ביטול", "המשך", "לאפשר להתקן להתחבר?",
+            "האם אתה רוצה לאפשר להתקן USB להתחבר למכשיר זה?", "אל תאפשר", "אפשר"));
+
+    private sealed record Text(string ShowDialog, string ShowDialogSm, string Title, string Description, string Cancel,
+        string Continue, string SmallTitle, string SmallDescription, string DontAllow, string Allow);
+}

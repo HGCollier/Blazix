@@ -1,0 +1,15 @@
+@* The sweep runs with the reading direction: left to right, or right to left under dir="rtl". *@
+<div class="mx-auto grid w-full max-w-lg gap-6 text-center text-sm text-muted-foreground sm:grid-cols-2">
+    <div class="flex flex-col gap-3">
+        <p dir="ltr" lang="en" class="shimmer">Generating response&hellip;</p>
+        <p class="font-mono text-xs" dir="ltr">dir="ltr"</p>
+    </div>
+    <div class="flex flex-col gap-3">
+        <p dir="rtl" lang="@(Language.Code == "he" ? "he" : "ar")" class="shimmer">@(Language.Code == "he" ? "יוצר תשובה…" : "جارٍ إنشاء الرد…")</p>
+        <p class="font-mono text-xs" dir="ltr">dir="rtl"</p>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+}

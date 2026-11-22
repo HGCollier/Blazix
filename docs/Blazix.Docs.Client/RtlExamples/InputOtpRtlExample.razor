@@ -1,0 +1,19 @@
+<Field Class="mx-auto max-w-xs">
+    <FieldLabel for="input-otp-rtl">@Texts[Language]</FieldLabel>
+    <InputOtp id="input-otp-rtl" MaxLength="6" DefaultValue="123456">
+        <InputOtpGroup>
+            <InputOtpSlot Index="0" />
+            <InputOtpSlot Index="1" />
+            <InputOtpSlot Index="2" />
+            <InputOtpSlot Index="3" />
+            <InputOtpSlot Index="4" />
+            <InputOtpSlot Index="5" />
+        </InputOtpGroup>
+    </InputOtp>
+</Field>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private static readonly Translations<string> Texts = new(En: "Verification code", Ar: "رمز التحقق", He: "קוד אימות");
+}

@@ -1,0 +1,17 @@
+<Toggle aria-label="@T.Label" Size="ToggleSize.Sm" Variant="ToggleVariant.Outline">
+    <Icon Name="bookmark" class="group-aria-pressed/toggle:fill-foreground" />
+    @T.Label
+</Toggle>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Bookmark"),
+        Ar: new("إشارة مرجعية"),
+        He: new("סימנייה"));
+
+    private sealed record Text(string Label);
+}

@@ -1,0 +1,31 @@
+<div class="flex w-full max-w-md flex-col gap-6">
+    <Item Variant="ItemVariant.Outline">
+        <ItemContent>
+            <ItemTitle>@T.BasicItem</ItemTitle>
+            <ItemDescription>@T.BasicItemDescription</ItemDescription>
+        </ItemContent>
+        <ItemActions><Button Variant="ButtonVariant.Outline" Size="ButtonSize.Sm">@T.Action</Button></ItemActions>
+    </Item>
+    <Item Variant="ItemVariant.Outline" Size="ItemSize.Sm">
+        <Render>
+            <a @attributes="context.Attributes" href="#">
+                <ItemMedia><Icon Name="badge-check" class="size-5" /></ItemMedia>
+                <ItemContent><ItemTitle>@T.Verified</ItemTitle></ItemContent>
+                <ItemActions><Icon Name="chevron-right" class="size-4 rtl:rotate-180" /></ItemActions>
+            </a>
+        </Render>
+    </Item>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Basic Item", "A simple item with title and description.", "Action", "Your profile has been verified."),
+        Ar: new("عنصر أساسي", "عنصر بسيط يحتوي على عنوان ووصف.", "إجراء", "تم التحقق من ملفك الشخصي."),
+        He: new("פריט בסיסי", "פריט פשוט עם כותרת ותיאור.", "פעולה", "הפרופיל שלך אומת."));
+
+    private sealed record Text(string BasicItem, string BasicItemDescription, string Action, string Verified);
+}

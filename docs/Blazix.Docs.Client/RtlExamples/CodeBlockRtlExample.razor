@@ -1,0 +1,39 @@
+@* The code itself stays left to right: CodeBlockContent sets dir="ltr" on its <pre>. *@
+<div class="flex w-full max-w-md flex-col gap-3 text-sm">
+    <p>@T.Description</p>
+    <CodeBlock>
+        <CodeBlockHeader>
+            <CodeBlockTitle>
+                <Icon Name="terminal" />
+                @T.Title
+            </CodeBlockTitle>
+            <CodeBlockActions>
+                <CodeBlockCopyButton Value="@Code" />
+            </CodeBlockActions>
+        </CodeBlockHeader>
+        <CodeBlockContent LineNumbers="true">
+            @foreach (var line in Code.Split('\n'))
+            {
+                <CodeBlockLine>@line</CodeBlockLine>
+            }
+        </CodeBlockContent>
+    </CodeBlock>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private const string Code = """
+        dnx Blazix.Cli init --rtl
+        dnx Blazix.Cli add code-block
+        """;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Set up the project for RTL, then add the component.", "Terminal"),
+        Ar: new("هيّئ المشروع للكتابة من اليمين إلى اليسار، ثم أضف المكون.", "الطرفية"),
+        He: new("הגדר את הפרויקט לכתיבה מימין לשמאל, ואז הוסף את הרכיב.", "מסוף"));
+
+    private sealed record Text(string Description, string Title);
+}

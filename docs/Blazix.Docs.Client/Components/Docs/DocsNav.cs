@@ -44,6 +44,7 @@ internal static class DocsNav
         new("Theming", "/docs/theming"),
         new("Typeset", "/docs/typeset"),
         new("Dark Mode", "/docs/dark-mode"),
+        new("RTL", "/docs/rtl"),
         new("CLI", "/docs/cli"),
     ];
 

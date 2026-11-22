@@ -25,7 +25,7 @@
         <Step>Add components</Step>
         <p>You can now start adding components to your project.</p>
         <CliCommand Args="add button" />
-        <p>The command above adds the <code>Button</code> component to <code>Components/UI</code>. You can then use it in a page:</p>
+        <p>The command above adds the <code>Button</code> component to <code>Components/UI/Button</code>. You can then use it in a page:</p>
         <CodeFigure Code="@PageCode" Title="Components/Pages/Home.razor" LineNumbers="true" />
         <Step>Run your app</Step>
         <CliCommandRaw Command="dotnet watch" />
@@ -47,10 +47,12 @@
     <CliCommand Args="init" />
     <p>Then add components with <code>add</code>, as above.</p>
     <p>
-        If your app has a <code>.Client</code> project (the WebAssembly and Auto render modes), run <code>init</code> in either project.
-        The components, usings, package and <code>blazix.json</code> go in the <code>.Client</code> project, so pages in every render mode can use them.
-        Tailwind and <code>TailwindWatcher.cs</code> go in the server project, which serves the CSS and scans the <code>.Client</code> project&apos;s files.
-        <code>add</code> and <code>list</code> also work from either folder.
+        If your app has a <code>.Client</code> project (the WebAssembly and Auto render modes), run <code>init</code> in either project,
+        or in the solution folder above them. The components, usings, package and <code>blazix.json</code> go in the <code>.Client</code>
+        project, so pages in every render mode can use them. Tailwind and <code>TailwindWatcher.cs</code> go in the server project, which
+        serves the CSS and scans the <code>.Client</code> project&apos;s files with <code>@@source</code>. The server project gets the usings too,
+        for its layouts and static pages. <code>add</code> and <code>list</code> also work from any of these folders. See
+        <a href="#render-modes">Render Modes</a>.
     </p>
     <p>
         A standalone WebAssembly app has no server to run the watcher, so <code>init</code> leaves it out and links <code>app.css</code> in <code>wwwroot/index.html</code>.
@@ -58,6 +60,52 @@
     </p>
     <Callout>
         <code>init</code> asks for Inter and falls back to the system font. To get Inter, load it in <code>App.razor</code>&apos;s <code>&lt;head&gt;</code>. The comment at the top of <code>Styles/theme.css</code> shows how.
+    </Callout>
+
+    <DocsHeading Title="Render Modes" />
+    <p>
+        The components work in Interactive Server, Interactive WebAssembly and Interactive Auto apps, prerendered or not.
+        In static server rendering, they render but don&apos;t respond: menus, dialogs and the rest need an interactive render mode.
+    </p>
+    <p>
+        Interactive Auto runs a page on the server the first time, while the WebAssembly runtime downloads, and in the browser once
+        it&apos;s cached, usually from the next full page load. Nothing changes in how you use the components. To set up an Auto app:
+    </p>
+    <CliCommandRaw Command="dotnet new blazor -n MyApp --interactivity Auto" />
+    <CliCommand Args="init" />
+    <p>Run <code>init</code> in the <code>MyApp</code> folder the template made. Then keep these in mind:</p>
+    <ul>
+        <li>
+            <strong>Components that use Blazix go in the <code>.Client</code> project</strong>, where <code>add</code> puts the components.
+            The server can run them, but WebAssembly can only load what&apos;s in the client.
+        </li>
+        <li>
+            <strong>Give them a render mode.</strong> Without <code>--all-interactive</code>, the layout in the server project renders
+            statically, so put <code>@@rendermode InteractiveAuto</code> on each page, or render an interactive part of the layout (a header
+            with a menu) as its own component: <code>&lt;Header @@rendermode="InteractiveAuto" /&gt;</code>.
+        </li>
+        <li>
+            <strong>Register services in both <code>Program.cs</code> files.</strong> A page runs on the server (prerendering, and Auto
+            before WebAssembly) and in the browser, so a service it injects, like the <a href="/docs/components/toast"><code>ToastManager</code></a>,
+            must be registered in both. Otherwise the page fails only once it runs in the browser. <code>add</code> tells you when one is missing.
+        </li>
+        <li>
+            <strong>Cascading values stop at a render mode.</strong> A <code>DirectionProvider</code> or <code>Toaster</code> in a static
+            layout doesn&apos;t reach an interactive page. Put the <code>Toaster</code> in an interactive part of the layout
+            (<code>&lt;Toaster @@rendermode="InteractiveAuto" /&gt;</code>) or in the page. For right-to-left, cascade the direction
+            from both <code>Program.cs</code> files instead: <code>builder.Services.AddCascadingValue(_ =&gt; TextDirection.Rtl);</code>.
+            With <code>--all-interactive</code> the layout is interactive, and both work there as usual.
+        </li>
+    </ul>
+    <p>
+        Parts of a page can run on different runtimes, for example a header on the server over a page on WebAssembly. That works:
+        Escape, outside presses and modal dialogs see popups from both runtimes, and the ids they render can&apos;t collide. But each
+        runtime has its own services, so a toast added on one runtime doesn&apos;t show in a <code>Toaster</code> on the other.
+        Interactive Auto keeps the parts of a page on one runtime, so this only comes up when you mix fixed render modes.
+    </p>
+    <Callout>
+        On the server, a modal dialog makes the rest of the page inert, but not Blazor&apos;s reconnect dialog or error bar. If the
+        connection drops while a dialog is open, they can still be read and used.
     </Callout>
 
     <DocsHeading Title="Icons" />

@@ -1,0 +1,42 @@
+<Accordion Value="@(["item-1"])" Class="max-w-md">
+    @foreach (var (value, question, answer) in T.Items)
+    {
+        <AccordionItem Value="@value">
+            <AccordionTrigger>@question</AccordionTrigger>
+            <AccordionContent>@answer</AccordionContent>
+        </AccordionItem>
+    }
+</Accordion>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new([
+            ("item-1", "How do I reset my password?",
+                "Click on 'Forgot Password' on the login page, enter your email address, and we'll send you a link to reset your password."),
+            ("item-2", "Can I change my subscription plan?",
+                "Yes, you can upgrade or downgrade your plan at any time from your account settings. Changes will be reflected in your next billing cycle."),
+            ("item-3", "What payment methods do you accept?",
+                "We accept all major credit cards, PayPal, and bank transfers. All payments are processed securely through our payment partners."),
+        ]),
+        Ar: new([
+            ("item-1", "كيف يمكنني إعادة تعيين كلمة المرور؟",
+                "انقر على 'نسيت كلمة المرور' في صفحة تسجيل الدخول، أدخل عنوان بريدك الإلكتروني، وسنرسل لك رابطًا لإعادة تعيين كلمة المرور."),
+            ("item-2", "هل يمكنني تغيير خطة الاشتراك الخاصة بي؟",
+                "نعم، يمكنك ترقية أو تخفيض خطتك في أي وقت من إعدادات حسابك. ستظهر التغييرات في دورة الفوترة التالية."),
+            ("item-3", "ما هي طرق الدفع التي تقبلونها؟",
+                "نقبل جميع بطاقات الائتمان الرئيسية و PayPal والتحويلات المصرفية. تتم معالجة جميع المدفوعات بأمان من خلال شركاء الدفع لدينا."),
+        ]),
+        He: new([
+            ("item-1", "איך אני מאפס את הסיסמה שלי?",
+                "לחץ על 'שכחתי סיסמה' בעמוד ההתחברות, הזן את כתובת האימייל שלך, ונשלח לך קישור לאיפוס הסיסמה."),
+            ("item-2", "האם אני יכול לשנות את תוכנית המנוי שלי?",
+                "כן, אתה יכול לשדרג או להוריד את התוכנית שלך בכל עת מההגדרות של החשבון שלך. השינויים יבואו לידי ביטוי במחזור החיוב הבא."),
+            ("item-3", "אילו אמצעי תשלום אתם מקבלים?", "אנו מקבלים כרטיסי אשראי, PayPal והעברות בנקאיות."),
+        ]));
+
+    private sealed record Text((string Value, string Question, string Answer)[] Items);
+}

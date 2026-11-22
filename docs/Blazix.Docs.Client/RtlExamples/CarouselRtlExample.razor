@@ -1,0 +1,25 @@
+@* The carousel scrolls right to left on its own: it follows the text direction around it. *@
+<Carousel aria-label="@Texts[Language]" Class="w-[calc(100%-6rem)] max-w-[12rem] sm:max-w-xs">
+    <CarouselContent>
+        @foreach (var index in Enumerable.Range(0, 5))
+        {
+            <CarouselItem @key="index">
+                <div class="p-1">
+                    <Card>
+                        <CardContent Class="flex aspect-square items-center justify-center p-6">
+                            <span class="text-4xl font-semibold">@Language.Digits(index + 1)</span>
+                        </CardContent>
+                    </Card>
+                </div>
+            </CarouselItem>
+        }
+    </CarouselContent>
+    <CarouselPrevious />
+    <CarouselNext />
+</Carousel>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private static readonly Translations<string> Texts = new(En: "Numbered slides", Ar: "شرائح مرقمة", He: "שקופיות ממוספרות");
+}

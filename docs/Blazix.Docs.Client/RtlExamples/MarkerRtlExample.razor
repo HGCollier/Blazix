@@ -1,0 +1,28 @@
+<div class="flex w-full max-w-sm flex-col gap-8 py-12">
+    <Marker>
+        <MarkerIcon><Icon Name="git-branch" /></MarkerIcon>
+        <MarkerContent>@T.Branch</MarkerContent>
+    </Marker>
+    <Marker role="status">
+        <MarkerIcon><Spinner /></MarkerIcon>
+        <MarkerContent Class="shimmer">@T.Thinking</MarkerContent>
+    </Marker>
+    <Marker Variant="MarkerVariant.Separator"><MarkerContent>@T.Compacted</MarkerContent></Marker>
+    <Marker>
+        <MarkerIcon><Icon Name="search" /></MarkerIcon>
+        <MarkerContent>@T.Explored</MarkerContent>
+    </Marker>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Switched to a new branch", "Thinking...", "Conversation compacted", "Explored 4 files"),
+        Ar: new("تم التبديل إلى فرع جديد", "جارٍ التفكير...", "تم ضغط المحادثة", "تم استكشاف ٤ ملفات"),
+        He: new("עבר לענף חדש", "חושב...", "השיחה דוחסה", "נסרקו 4 קבצים"));
+
+    private sealed record Text(string Branch, string Thinking, string Compacted, string Explored);
+}

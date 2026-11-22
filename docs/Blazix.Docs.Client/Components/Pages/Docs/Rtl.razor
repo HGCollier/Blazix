@@ -1,0 +1,120 @@
+@page "/docs/rtl"
+
+<DocsPage Title="RTL" Description="Right-to-left support for Blazix components.">
+    <p>
+        Blazix components support right-to-left (RTL) layouts. Text alignment, positioning, keyboard navigation and directional
+        styles follow the reading direction for languages like Arabic, Hebrew, and Persian.
+    </p>
+    <ComponentPreview Name="card-rtl" Direction="rtl" HideCode="true" PreviewClass="h-auto" Caption="A card component in RTL mode." />
+    <p>
+        When you add components to a project set up for RTL, the CLI turns physical positioning classes into logical ones, so the
+        components work in both left-to-right and right-to-left layouts.
+    </p>
+
+    <DocsHeading Title="Get Started" />
+    <Steps>
+        <Step>Set up the project for RTL</Step>
+        <p>For a new project, pass <code>--rtl</code> to <code>init</code>. It sets <a href="/docs/blazix-json#rtl"><code>"rtl": true</code></a> in <code>blazix.json</code>.</p>
+        <CliCommand Args="init --rtl" />
+        <p>For a project that already has components, migrate them. See <a href="#migrating-existing-components">Migrating existing components</a>.</p>
+        <Step>Set the direction on the page</Step>
+        <p>Put <code>dir</code> and <code>lang</code> on <code>&lt;html&gt;</code> in <code>App.razor</code>. The layout, keyboard navigation and popup placement all read the direction from there.</p>
+        <CodeFigure Code="@HtmlCode" Title="Components/App.razor" LineNumbers="true" />
+        <Step>Add the direction provider</Step>
+        <p>
+            Some things are decided while rendering, where there&apos;s no CSS to read: which way a Tabs or Navigation Menu indicator
+            moves, and which way the arrow keys go in a Calendar. Wrap the app in a <a href="/docs/components/direction">DirectionProvider</a>
+            to tell them.
+        </p>
+        <CliCommand Args="add direction" />
+        <CodeFigure Code="@ProviderCode" Title="Components/Routes.razor" LineNumbers="true" />
+    </Steps>
+
+    <DocsHeading Title="How it works" />
+    <p>With <code>"rtl": true</code> in <code>blazix.json</code>, <code>add</code> rewrites the classes of each component as it copies it, the way shadcn/ui&apos;s CLI does:</p>
+    <ul>
+        <li>Physical classes become logical ones: <code>ml-2</code> becomes <code>ms-2</code>, <code>pr-4</code> becomes <code>pe-4</code>, <code>left-0</code> becomes <code>start-0</code>, <code>rounded-l-lg</code> becomes <code>rounded-s-lg</code>, <code>border-r</code> becomes <code>border-e</code> and <code>text-left</code> becomes <code>text-start</code>.</li>
+        <li>Classes with no logical form get an <code>rtl:</code> twin: <code>-translate-x-1/2</code> gets <code>rtl:translate-x-1/2</code>, and <code>cursor-w-resize</code> gets <code>rtl:cursor-e-resize</code>.</li>
+        <li>Popups on a logical side slide in from it: <code>data-[side=inline-end]:slide-in-from-left-2</code> becomes <code>slide-in-from-start-2</code>.</li>
+        <li>Directional icons (chevrons, arrows) turn around under <code>rtl:rotate-180</code>.</li>
+        <li>Context Menu and Dropdown Menu submenus open on <code>Side.InlineEnd</code> instead of <code>Side.Right</code>.</li>
+    </ul>
+    <p>
+        Where the side is physical, classes stay physical: a sheet with <code>Side="SheetSide.Left"</code> keeps its border on its right edge, and a
+        tooltip on <code>Side.Left</code> keeps its arrow on the right. Tailwind 4&apos;s <code>space-x-*</code> and <code>divide-x-*</code> already follow
+        the direction, so they&apos;re left as they are.
+    </p>
+    <p>Without <code>"rtl": true</code>, components are copied with physical classes, as before.</p>
+
+    <DocsHeading Title="Sides" />
+    <p>
+        Popups take a logical side: <code>Side.InlineStart</code> and <code>Side.InlineEnd</code> follow the reading direction, and the popup&apos;s
+        <code>data-side</code> keeps saying <code>inline-start</code> or <code>inline-end</code>. <code>Side.Left</code> and <code>Side.Right</code> stay where they are.
+        See the <a href="/docs/components/tooltip#rtl">Tooltip</a> and <a href="/docs/components/popover#rtl">Popover</a> examples.
+    </p>
+    <p>
+        Sheet, Drawer and Sidebar sides are physical. Pick the side for the direction, as the
+        <a href="/docs/components/sheet#rtl">Sheet</a> and <a href="/docs/components/sidebar#rtl">Sidebar</a> examples do.
+    </p>
+
+    <DocsHeading Title="Icons" />
+    <p>
+        Icons that point along the line, like <code>ArrowRight</code> or <code>ChevronLeft</code>, need <code>rtl:rotate-180</code> to point the right
+        way. The components that ship one already have it. Add it to your own:
+    </p>
+    <CodeFigure Code="@IconCode" />
+
+    <DocsHeading Title="Font Recommendations" />
+    <p>
+        Use a font that covers your language. <a href="https://fonts.google.com/noto">Noto</a> has Arabic, Hebrew and Persian families, and it
+        pairs well with Inter and Geist.
+    </p>
+
+    <DocsHeading Title="Migrating existing components" />
+    <Steps>
+        <Step>Run the migrate command</Step>
+        <CliCommand Args="migrate rtl [path]" />
+        <p>
+            <code>[path]</code> is a file or a folder to migrate. Without one, it migrates the files in <code>componentsDir</code>. It also sets
+            <code>"rtl": true</code>, so components you add later come migrated.
+        </p>
+        <p>Run it once: a second run adds the <code>rtl:</code> classes again.</p>
+        <Step>Check the components it lists</Step>
+        <p>
+            <code>Sidebar.razor</code>, <code>Pagination.razor</code> and <code>Calendar.razor</code> may need a look: pick the sidebar&apos;s side for the
+            direction, and check that the pagination and calendar chevrons point the right way.
+        </p>
+        <Step>Turn your own icons around</Step>
+        <p>Add <code>rtl:rotate-180</code> to the directional icons in your own markup. See <a href="#icons">Icons</a>.</p>
+    </Steps>
+</DocsPage>
+
+@code {
+    private const string HtmlCode = """
+        <!DOCTYPE html>
+        <html lang="ar" dir="rtl">
+        <head>
+            ...
+        </head>
+        <body>
+            <Routes />
+            <script src="_framework/blazor.web.js"></script>
+        </body>
+        </html>
+        """;
+
+    private const string ProviderCode = """
+        <DirectionProvider Direction="TextDirection.Rtl">
+            <Router AppAssembly="typeof(Program).Assembly">
+                ...
+            </Router>
+        </DirectionProvider>
+        """;
+
+    private const string IconCode = """
+        <Button Variant="ButtonVariant.Outline">
+            Next
+            <ArrowRight class="rtl:rotate-180" data-icon="inline-end" />
+        </Button>
+        """;
+}

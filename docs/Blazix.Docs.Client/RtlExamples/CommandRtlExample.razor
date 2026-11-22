@@ -1,0 +1,55 @@
+<Command Class="max-w-sm rounded-lg border">
+    <CommandInput placeholder="@T.Placeholder" />
+    <CommandList>
+        <CommandEmpty>@T.Empty</CommandEmpty>
+        <CommandGroup Heading="@T.Suggestions">
+            <CommandItem>
+                <Icon Name="calendar" />
+                <span>@T.Calendar</span>
+            </CommandItem>
+            <CommandItem>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M8 14s1.5 2 4 2 4-2 4-2" /><line x1="9" x2="9.01" y1="9" y2="9" /><line x1="15" x2="15.01" y1="9" y2="9" /></svg>
+                <span>@T.SearchEmoji</span>
+            </CommandItem>
+            <CommandItem Disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="20" x="4" y="2" rx="2" /><line x1="8" x2="16" y1="6" y2="6" /><line x1="16" x2="16" y1="14" y2="18" /><path d="M16 10h.01" /><path d="M12 10h.01" /><path d="M8 10h.01" /><path d="M12 14h.01" /><path d="M8 14h.01" /><path d="M12 18h.01" /><path d="M8 18h.01" /></svg>
+                <span>@T.Calculator</span>
+            </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup Heading="@T.Settings">
+            <CommandItem>
+                <Icon Name="user" />
+                <span>@T.Profile</span>
+                <CommandShortcut>⌘P</CommandShortcut>
+            </CommandItem>
+            <CommandItem>
+                <Icon Name="credit-card" />
+                <span>@T.Billing</span>
+                <CommandShortcut>⌘B</CommandShortcut>
+            </CommandItem>
+            <CommandItem>
+                <Icon Name="settings" />
+                <span>@T.Settings</span>
+                <CommandShortcut>⌘S</CommandShortcut>
+            </CommandItem>
+        </CommandGroup>
+    </CommandList>
+</Command>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Type a command or search...", "No results found.", "Suggestions", "Calendar", "Search Emoji", "Calculator",
+            "Settings", "Profile", "Billing"),
+        Ar: new("اكتب أمرًا أو ابحث...", "لم يتم العثور على نتائج.", "اقتراحات", "التقويم", "البحث عن الرموز التعبيرية",
+            "الآلة الحاسبة", "الإعدادات", "الملف الشخصي", "الفوترة"),
+        He: new("הקלד פקודה או חפש...", "לא נמצאו תוצאות.", "הצעות", "לוח שנה", "חפש אמוג'י", "מחשבון", "הגדרות", "פרופיל",
+            "חיוב"));
+
+    private sealed record Text(string Placeholder, string Empty, string Suggestions, string Calendar, string SearchEmoji,
+        string Calculator, string Settings, string Profile, string Billing);
+}

@@ -1,0 +1,49 @@
+<Sheet>
+    <SheetTrigger>
+        <Render>
+            <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">@T.Open</Button>
+        </Render>
+    </SheetTrigger>
+    @* Side is physical: open it at the end of the reading direction, on the left in RTL. *@
+    <SheetContent Side="@(Language.Direction == TextDirection.Rtl ? SheetSide.Left : SheetSide.Right)">
+        <SheetHeader>
+            <SheetTitle>@T.EditProfile</SheetTitle>
+            <SheetDescription>@T.Description</SheetDescription>
+        </SheetHeader>
+        <FieldGroup Class="px-4">
+            <Field>
+                <FieldLabel for="sheet-rtl-name">@T.Name</FieldLabel>
+                <Input id="sheet-rtl-name" Value="Pedro Duarte" />
+            </Field>
+            <Field>
+                <FieldLabel for="sheet-rtl-username">@T.Username</FieldLabel>
+                <Input id="sheet-rtl-username" Value="peduarte" />
+            </Field>
+        </FieldGroup>
+        <SheetFooter>
+            <Button Type="submit">@T.Save</Button>
+            <SheetClose>
+                <Render>
+                    <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">@T.Close</Button>
+                </Render>
+            </SheetClose>
+        </SheetFooter>
+    </SheetContent>
+</Sheet>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Open", "Edit profile", "Make changes to your profile here. Click save when you're done.",
+            "Name", "Username", "Save changes", "Close"),
+        Ar: new("فتح", "تعديل الملف الشخصي", "قم بإجراء تغييرات على ملفك الشخصي هنا. انقر حفظ عند الانتهاء.",
+            "الاسم", "اسم المستخدم", "حفظ التغييرات", "إغلاق"),
+        He: new("פתח", "עריכת פרופיל", "בצע שינויים בפרופיל שלך כאן. לחץ שמור כשתסיים.",
+            "שם", "שם משתמש", "שמור שינויים", "סגור"));
+
+    private sealed record Text(string Open, string EditProfile, string Description, string Name, string Username,
+        string Save, string Close);
+}

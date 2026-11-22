@@ -1,0 +1,39 @@
+<Trace Class="max-w-sm">
+    <TraceCollapsible Open="true">
+        <TraceCollapsibleTrigger>
+            <TraceLine>
+                <TraceIcon><Icon Name="circle-check" /></TraceIcon>
+                <TraceTitle>@T.Thought</TraceTitle>
+            </TraceLine>
+        </TraceCollapsibleTrigger>
+        <TraceCollapsibleContent>@T.Reasoning</TraceCollapsibleContent>
+    </TraceCollapsible>
+    <TraceLine>
+        <TraceIcon><Icon Name="search" /></TraceIcon>
+        <TraceTitle>@T.Searched <code>minimumReleaseAge</code></TraceTitle>
+    </TraceLine>
+    <TraceLine>
+        <TraceIcon><Icon Name="file-text" /></TraceIcon>
+        <TraceTitle>@T.Read <code>pnpm-workspace.yaml</code></TraceTitle>
+    </TraceLine>
+    <TraceLine Status="TraceLineStatus.Error">
+        <TraceIcon><Icon Name="circle-alert" /></TraceIcon>
+        <TraceTitle>@T.Failed <code>pnpm install</code></TraceTitle>
+    </TraceLine>
+</Trace>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Thought for 5s", "The lockfile was written by a newer pnpm than CI runs, so the install refuses to update it.",
+            "Searched for", "Read", "Failed to run"),
+        Ar: new("فكّر لمدة ٥ ثوانٍ", "كُتب ملف القفل بإصدار أحدث من pnpm مما يشغّله CI، لذلك يرفض التثبيت تحديثه.",
+            "بحث عن", "قرأ", "فشل تشغيل"),
+        He: new("חשב 5 שניות", "קובץ הנעילה נכתב בגרסה חדשה יותר של pnpm מזו שרצה ב-CI, ולכן ההתקנה מסרבת לעדכן אותו.",
+            "חיפש את", "קרא את", "נכשל בהרצת"));
+
+    private sealed record Text(string Thought, string Reasoning, string Searched, string Read, string Failed);
+}

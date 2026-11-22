@@ -1,0 +1,10 @@
+<Progress Value="56" Class="w-full max-w-sm">
+    <ProgressLabel>@Texts[Language]</ProgressLabel>
+    <ProgressValue Class="ms-auto">@Language.Digits(56)%</ProgressValue>
+</Progress>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private static readonly Translations<string> Texts = new(En: "Upload progress", Ar: "تقدم الرفع", He: "התקדמות העלאה");
+}

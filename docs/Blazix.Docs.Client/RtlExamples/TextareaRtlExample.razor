@@ -1,0 +1,18 @@
+<Field Class="w-full max-w-xs">
+    <FieldLabel for="textarea-rtl-feedback">@T.Label</FieldLabel>
+    <Textarea id="textarea-rtl-feedback" placeholder="@T.Placeholder" rows="4" />
+    <FieldDescription>@T.Description</FieldDescription>
+</Field>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Feedback", "Your feedback helps us improve...", "Share your thoughts about our service."),
+        Ar: new("التعليقات", "تعليقاتك تساعدنا على التحسين...", "شاركنا أفكارك حول خدمتنا."),
+        He: new("משוב", "המשוב שלך עוזר לנו להשתפר...", "שתף את מחשבותיך על השירות שלנו."));
+
+    private sealed record Text(string Label, string Placeholder, string Description);
+}

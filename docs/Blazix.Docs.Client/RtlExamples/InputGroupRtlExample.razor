@@ -1,0 +1,48 @@
+<div class="grid w-full max-w-sm gap-6">
+    <InputGroup Class="max-w-xs">
+        <InputGroupInput placeholder="@T.Placeholder" aria-label="@T.Placeholder" />
+        <InputGroupAddon><Icon Name="search" /></InputGroupAddon>
+        <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">@T.Results</InputGroupAddon>
+    </InputGroup>
+    <InputGroup>
+        <InputGroupInput placeholder="@T.Searching" aria-label="@T.Searching" />
+        <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd"><Spinner /></InputGroupAddon>
+    </InputGroup>
+    <InputGroup>
+        <InputGroupInput placeholder="@T.SavingChanges" aria-label="@T.SavingChanges" />
+        <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
+            <InputGroupText>@T.Saving</InputGroupText>
+            <Spinner />
+        </InputGroupAddon>
+    </InputGroup>
+    <FieldGroup Class="max-w-sm">
+        <Field>
+            <FieldLabel for="input-group-rtl-textarea">@T.TextareaLabel</FieldLabel>
+            <InputGroup>
+                <InputGroupTextarea id="input-group-rtl-textarea" placeholder="@T.TextareaPlaceholder" />
+                <InputGroupAddon Align="InputGroupAddonAlign.BlockEnd">
+                    <InputGroupText>@T.CharacterCount</InputGroupText>
+                    <InputGroupButton Variant="ButtonVariant.Default" Size="InputGroupButtonSize.Sm" Class="ms-auto">@T.Post</InputGroupButton>
+                </InputGroupAddon>
+            </InputGroup>
+            <FieldDescription>@T.TextareaDescription</FieldDescription>
+        </Field>
+    </FieldGroup>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Search...", "12 results", "Searching...", "Saving...", "Saving changes...", "Textarea", "Write a comment...",
+            "0/280", "Post", "Footer positioned below the textarea."),
+        Ar: new("بحث...", "١٢ نتيجة", "جاري البحث...", "جاري الحفظ...", "جاري حفظ التغييرات...", "منطقة النص", "اكتب تعليقًا...",
+            "٠/٢٨٠", "نشر", "تذييل موضع أسفل منطقة النص."),
+        He: new("חפש...", "12 תוצאות", "מחפש...", "שומר...", "שומר שינויים...", "אזור טקסט", "כתוב תגובה...",
+            "0/280", "פרסם", "כותרת תחתונה ממוקמת מתחת לאזור הטקסט."));
+
+    private sealed record Text(string Placeholder, string Results, string Searching, string Saving, string SavingChanges,
+        string TextareaLabel, string TextareaPlaceholder, string CharacterCount, string Post, string TextareaDescription);
+}

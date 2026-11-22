@@ -1,0 +1,41 @@
+<Field Class="mx-auto w-full max-w-xs">
+    <FieldLabel for="combobox-rtl-input">@T.Label</FieldLabel>
+    <Combobox Multiple="true" AutoHighlight="true" Items="@T.Categories" @bind-Values="_values">
+        <ComboboxChips id="combobox-rtl-chips">
+            <Template Context="value">
+                <ComboboxChip Value="@value">@value</ComboboxChip>
+            </Template>
+            <ChildContent>
+                <ComboboxChipsInput id="combobox-rtl-input" placeholder="@T.Placeholder" />
+            </ChildContent>
+        </ComboboxChips>
+        <ComboboxContent Anchor="combobox-rtl-chips">
+            <ComboboxEmpty>@T.Empty</ComboboxEmpty>
+            <ComboboxList>
+                <Template Context="item">
+                    <ComboboxItem Value="@item">@item</ComboboxItem>
+                </Template>
+            </ComboboxList>
+        </ComboboxContent>
+    </Combobox>
+</Field>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private IReadOnlyList<string> _values = [];
+
+    protected override void OnInitialized() => _values = [T.Categories[0]];
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Categories", "Add categories", "No categories found.",
+            ["Technology", "Design", "Business", "Marketing", "Education", "Health"]),
+        Ar: new("الفئات", "أضف فئات", "لم يتم العثور على فئات.",
+            ["التكنولوجيا", "التصميم", "الأعمال", "التسويق", "التعليم", "الصحة"]),
+        He: new("קטגוריות", "הוסף קטגוריות", "לא נמצאו קטגוריות.",
+            ["טכנולוגיה", "עיצוב", "עסקים", "שיווק", "חינוך", "בריאות"]));
+
+    private sealed record Text(string Label, string Placeholder, string Empty, string[] Categories);
+}

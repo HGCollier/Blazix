@@ -1,0 +1,20 @@
+<Field Orientation="FieldOrientation.Horizontal" Class="max-w-sm">
+    <FieldContent>
+        <FieldLabel for="switch-rtl-focus-mode">@T.Label</FieldLabel>
+        <FieldDescription>@T.Description</FieldDescription>
+    </FieldContent>
+    <Switch id="switch-rtl-focus-mode" />
+</Field>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Share across devices", "Focus is shared across devices, and turns off when you leave the app."),
+        Ar: new("المشاركة عبر الأجهزة", "يتم مشاركة التركيز عبر الأجهزة، ويتم إيقاف تشغيله عند مغادرة التطبيق."),
+        He: new("שיתוף בין מכשירים", "המיקוד משותף בין מכשירים, וכבה כשאתה עוזב את האפליקציה."));
+
+    private sealed record Text(string Label, string Description);
+}

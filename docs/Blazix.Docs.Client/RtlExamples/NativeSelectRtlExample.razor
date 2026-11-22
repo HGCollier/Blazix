@@ -1,0 +1,20 @@
+<NativeSelect aria-label="@T.Label">
+    <NativeSelectOption value="">@T.Placeholder</NativeSelectOption>
+    <NativeSelectOption value="todo">@T.Todo</NativeSelectOption>
+    <NativeSelectOption value="in-progress">@T.InProgress</NativeSelectOption>
+    <NativeSelectOption value="done">@T.Done</NativeSelectOption>
+    <NativeSelectOption value="cancelled">@T.Cancelled</NativeSelectOption>
+</NativeSelect>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Status", "Select status", "Todo", "In Progress", "Done", "Cancelled"),
+        Ar: new("الحالة", "اختر الحالة", "مهام", "قيد التنفيذ", "منجز", "ملغي"),
+        He: new("סטטוס", "בחר סטטוס", "לעשות", "בתהליך", "הושלם", "בוטל"));
+
+    private sealed record Text(string Label, string Placeholder, string Todo, string InProgress, string Done, string Cancelled);
+}

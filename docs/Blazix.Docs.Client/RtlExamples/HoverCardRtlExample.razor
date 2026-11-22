@@ -1,0 +1,49 @@
+<div class="grid gap-4">
+    @foreach (var sides in Rows)
+    {
+        <div class="flex flex-wrap justify-center gap-2">
+            @foreach (var side in sides)
+            {
+                <HoverCard @key="side">
+                    <HoverCardTrigger Delay="10" CloseDelay="100">
+                        <Render>
+                            <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">@T.Sides[side]</Button>
+                        </Render>
+                    </HoverCardTrigger>
+                    <HoverCardContent Side="@side" Class="flex w-64 flex-col gap-1">
+                        <div class="font-semibold">@T.Name</div>
+                        <div class="text-sm text-muted-foreground">@T.Price</div>
+                    </HoverCardContent>
+                </HoverCard>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    // Left and Right stay physical in RTL; InlineStart and InlineEnd follow the reading direction.
+    private static readonly Side[][] Rows = [[Side.Left, Side.Top, Side.Bottom, Side.Right], [Side.InlineStart, Side.InlineEnd]];
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Wireless Headphones", "$99.99", new()
+        {
+            [Side.InlineStart] = "Inline Start", [Side.Left] = "Left", [Side.Top] = "Top",
+            [Side.Bottom] = "Bottom", [Side.Right] = "Right", [Side.InlineEnd] = "Inline End",
+        }),
+        Ar: new("سماعات لاسلكية", "٩٩٫٩٩ $", new()
+        {
+            [Side.InlineStart] = "بداية السطر", [Side.Left] = "يسار", [Side.Top] = "أعلى",
+            [Side.Bottom] = "أسفل", [Side.Right] = "يمين", [Side.InlineEnd] = "نهاية السطر",
+        }),
+        He: new("אוזניות אלחוטיות", "99.99 $", new()
+        {
+            [Side.InlineStart] = "תחילת השורה", [Side.Left] = "שמאל", [Side.Top] = "למעלה",
+            [Side.Bottom] = "למטה", [Side.Right] = "ימין", [Side.InlineEnd] = "סוף השורה",
+        }));
+
+    private sealed record Text(string Name, string Price, Dictionary<Side, string> Sides);
+}

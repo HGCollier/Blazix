@@ -1,0 +1,50 @@
+<Dialog>
+    <form>
+        <DialogTrigger>
+            <Render>
+                <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">@T.OpenDialog</Button>
+            </Render>
+        </DialogTrigger>
+        <DialogContent Class="sm:max-w-sm">
+            <DialogHeader>
+                <DialogTitle>@T.EditProfile</DialogTitle>
+                <DialogDescription>@T.Description</DialogDescription>
+            </DialogHeader>
+            <FieldGroup>
+                <Field>
+                    <Label for="dialog-rtl-name">@T.Name</Label>
+                    <Input id="dialog-rtl-name" name="name" Value="Pedro Duarte" />
+                </Field>
+                <Field>
+                    <Label for="dialog-rtl-username">@T.Username</Label>
+                    <Input id="dialog-rtl-username" name="username" Value="@@peduarte" />
+                </Field>
+            </FieldGroup>
+            <DialogFooter>
+                <DialogClose>
+                    <Render>
+                        <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">@T.Cancel</Button>
+                    </Render>
+                </DialogClose>
+                <Button Type="submit">@T.SaveChanges</Button>
+            </DialogFooter>
+        </DialogContent>
+    </form>
+</Dialog>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Open Dialog", "Edit profile", "Make changes to your profile here. Click save when you're done.",
+            "Name", "Username", "Cancel", "Save changes"),
+        Ar: new("فتح الحوار", "تعديل الملف الشخصي", "قم بإجراء تغييرات على ملفك الشخصي هنا. انقر فوق حفظ عند الانتهاء.",
+            "الاسم", "اسم المستخدم", "إلغاء", "حفظ التغييرات"),
+        He: new("פתח דיאלוג", "ערוך פרופיל", "בצע שינויים בפרופיל שלך כאן. לחץ על שמור כשתסיים.",
+            "שם", "שם משתמש", "בטל", "שמור שינויים"));
+
+    private sealed record Text(string OpenDialog, string EditProfile, string Description, string Name, string Username,
+        string Cancel, string SaveChanges);
+}

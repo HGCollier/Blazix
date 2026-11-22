@@ -1,0 +1,66 @@
+<ButtonGroup>
+    <ButtonGroup Class="hidden sm:flex">
+        <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="@T.GoBack">
+            <Icon Name="arrow-left" class="rtl:rotate-180" />
+        </Button>
+    </ButtonGroup>
+    <ButtonGroup>
+        <Button Variant="ButtonVariant.Outline">@T.Archive</Button>
+        <Button Variant="ButtonVariant.Outline">@T.Report</Button>
+    </ButtonGroup>
+    <ButtonGroup>
+        <Button Variant="ButtonVariant.Outline">@T.Snooze</Button>
+        <DropdownMenu>
+            <DropdownMenuTrigger Class="@ButtonVariants.Get(ButtonVariant.Outline, ButtonSize.Icon)" aria-label="@T.MoreOptions">
+                <Icon Name="ellipsis" />
+            </DropdownMenuTrigger>
+            @* End is the reading direction's end: the trigger's left edge in RTL. *@
+            <DropdownMenuContent Align="Align.End" Class="w-40">
+                <DropdownMenuGroup>
+                    <DropdownMenuItem><Icon Name="mail-check" /> @T.MarkAsRead</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Name="archive" /> @T.Archive</DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    <DropdownMenuItem><Icon Name="clock" /> @T.Snooze</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Name="calendar-plus" /> @T.AddToCalendar</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Name="list-filter" /> @T.AddToList</DropdownMenuItem>
+                    <DropdownMenuSub>
+                        <DropdownMenuSubTrigger><Icon Name="tag" /> @T.LabelAs</DropdownMenuSubTrigger>
+                        <DropdownMenuSubContent>
+                            <DropdownMenuRadioGroup @bind-Value="_label">
+                                <DropdownMenuRadioItem Value="personal">@T.Personal</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem Value="work">@T.Work</DropdownMenuRadioItem>
+                                <DropdownMenuRadioItem Value="other">@T.Other</DropdownMenuRadioItem>
+                            </DropdownMenuRadioGroup>
+                        </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    <DropdownMenuItem Destructive="true"><Icon Name="trash-2" /> @T.Trash</DropdownMenuItem>
+                </DropdownMenuGroup>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    </ButtonGroup>
+</ButtonGroup>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private string? _label = "personal";
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Go Back", "More Options", "Archive", "Report", "Snooze", "Mark as Read", "Add to Calendar", "Add to List",
+            "Label As...", "Personal", "Work", "Other", "Trash"),
+        Ar: new("رجوع", "المزيد من الخيارات", "أرشفة", "تقرير", "تأجيل", "وضع علامة كمقروء", "إضافة إلى التقويم",
+            "إضافة إلى القائمة", "تصنيف كـ...", "شخصي", "عمل", "آخر", "سلة المهملات"),
+        He: new("חזור", "אפשרויות נוספות", "ארכיון", "דוח", "דחה", "סמן כנקרא", "הוסף ליומן", "הוסף לרשימה",
+            "תייג כ...", "אישי", "עבודה", "אחר", "פח"));
+
+    private sealed record Text(string GoBack, string MoreOptions, string Archive, string Report, string Snooze,
+        string MarkAsRead, string AddToCalendar, string AddToList, string LabelAs, string Personal, string Work, string Other,
+        string Trash);
+}

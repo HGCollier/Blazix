@@ -1,0 +1,77 @@
+@* typeset.css uses logical properties (padding-inline-start, border-inline-start), so it lays out right to left as it is. *@
+<article class="typeset w-full max-w-2xl">
+    <h1>@T.Title</h1>
+    <p>@T.Lead</p>
+    <h2>@T.KingsPlan</h2>
+    <p>@T.KingThought <a href="#">@T.BrilliantPlan</a>@T.TaxJokes</p>
+    <blockquote>@T.Blockquote</blockquote>
+    <h3>@T.JokeTax</h3>
+    <p>@T.NotAmused</p>
+    <ul>
+        @foreach (var level in T.Levels)
+        {
+            <li>@level</li>
+        }
+    </ul>
+    <table>
+        <thead>
+            <tr>
+                <th>@T.Treasury</th>
+                <th>@T.Happiness</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var (treasury, happiness) in T.Rows)
+            {
+                <tr>
+                    <td>@treasury</td>
+                    <td>@happiness</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p>@T.Moral</p>
+</article>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Taxing Laughter: The Joke Tax Chronicles",
+            "Once upon a time, in a far-off land, there was a very lazy king who spent all day lounging on his throne. One day, his advisors came to him with a problem: the kingdom was running out of money.",
+            "The King's Plan", "The king thought long and hard, and finally came up with", "a brilliant plan",
+            ": he would tax the jokes in the kingdom.",
+            "\"After all,\" he said, \"everyone enjoys a good joke, so it's only fair that they should pay for the privilege.\"",
+            "The Joke Tax",
+            "The king's subjects were not amused. They grumbled and complained, but the king was firm:",
+            ["1st level of puns: 5 gold coins", "2nd level of jokes: 10 gold coins", "3rd level of one-liners: 20 gold coins"],
+            "King's Treasury", "People's happiness",
+            [("Empty", "Overflowing"), ("Modest", "Satisfied"), ("Full", "Ecstatic")],
+            "The moral of the story is: never underestimate the power of a good laugh and always be careful of bad ideas."),
+        Ar: new("فرض الضرائب على الضحك: سجلات ضريبة النكتة",
+            "في قديم الزمان، في أرض بعيدة، كان هناك ملك كسول جداً يقضي يومه كله مستلقياً على عرشه. في أحد الأيام، جاءه مستشاروه بمشكلة: المملكة كانت تنفد من المال.",
+            "خطة الملك", "فكر الملك طويلاً وبجد، وأخيراً توصل إلى", "خطة عبقرية", ": سيفرض ضريبة على النكات في المملكة.",
+            "\"في النهاية،\" قال، \"الجميع يستمتع بنكتة جيدة، لذا من العدل أن يدفعوا مقابل هذا الامتياز.\"",
+            "ضريبة النكتة",
+            "لم يكن رعايا الملك سعداء. تذمروا واشتكوا، لكن الملك كان حازماً:",
+            ["المستوى الأول من التورية: 5 قطع ذهبية", "المستوى الثاني من النكات: 10 قطع ذهبية", "المستوى الثالث من النكات القصيرة: 20 قطعة ذهبية"],
+            "خزينة الملك", "سعادة الشعب",
+            [("فارغة", "فائضة"), ("متواضعة", "راضٍ"), ("ممتلئة", "منتشٍ")],
+            "مغزى القصة هو: لا تستهن أبداً بقوة الضحك الجيد وكن دائماً حذراً من الأفكار السيئة."),
+        He: new("מיסוי הצחוק: כרוניקות מס הבדיחה",
+            "היה היה פעם, בארץ רחוקה, מלך עצלן מאוד שבילה את כל היום בהתרווחות על כס מלכותו. יום אחד, יועציו באו אליו עם בעיה: הממלכה נגמר לה הכסף.",
+            "התוכנית של המלך", "המלך חשב ארוכות וקשות, ולבסוף העלה", "תוכנית גאונית", ": הוא ימסה את הבדיחות בממלכה.",
+            "\"אחרי הכל,\" אמר, \"כולם נהנים מבדיחה טובה, אז זה רק הוגן שישלמו על הזכות הזו.\"",
+            "מס הבדיחה",
+            "נתיני המלך לא היו מרוצים. הם התלוננו והתרעמו, אבל המלך היה נחוש:",
+            ["רמה ראשונה של משחקי מילים: 5 מטבעות זהב", "רמה שנייה של בדיחות: 10 מטבעות זהב", "רמה שלישית של חידודים: 20 מטבעות זהב"],
+            "אוצר המלך", "אושר העם",
+            [("ריק", "גדוש"), ("צנוע", "מרוצה"), ("מלא", "אקסטטי")],
+            "המוסר של הסיפור הוא: לעולם אל תזלזל בכוח של צחוק טוב ותמיד היזהר מרעיונות רעים."));
+
+    private sealed record Text(string Title, string Lead, string KingsPlan, string KingThought, string BrilliantPlan,
+        string TaxJokes, string Blockquote, string JokeTax, string NotAmused, string[] Levels, string Treasury, string Happiness,
+        (string Treasury, string Happiness)[] Rows, string Moral);
+}

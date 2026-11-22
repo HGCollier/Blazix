@@ -1,0 +1,23 @@
+<Pagination>
+    <PaginationContent>
+        <PaginationItem><PaginationPrevious href="#" Text="@T.Previous" /></PaginationItem>
+        <PaginationItem><PaginationLink href="#">@Language.Digits(1)</PaginationLink></PaginationItem>
+        <PaginationItem><PaginationLink href="#" IsActive="true">@Language.Digits(2)</PaginationLink></PaginationItem>
+        <PaginationItem><PaginationLink href="#">@Language.Digits(3)</PaginationLink></PaginationItem>
+        <PaginationItem><PaginationEllipsis /></PaginationItem>
+        <PaginationItem><PaginationNext href="#" Text="@T.Next" /></PaginationItem>
+    </PaginationContent>
+</Pagination>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Previous", "Next"),
+        Ar: new("السابق", "التالي"),
+        He: new("הקודם", "הבא"));
+
+    private sealed record Text(string Previous, string Next);
+}

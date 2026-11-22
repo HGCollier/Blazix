@@ -1,0 +1,37 @@
+<RadioGroup Value="comfortable" Class="w-fit">
+    @foreach (var (value, label, description) in T.Options)
+    {
+        <Field Orientation="FieldOrientation.Horizontal">
+            <RadioGroupItem Value="@value" id="@($"radio-rtl-{value}")" />
+            <FieldContent>
+                <FieldLabel for="@($"radio-rtl-{value}")">@label</FieldLabel>
+                <FieldDescription>@description</FieldDescription>
+            </FieldContent>
+        </Field>
+    }
+</RadioGroup>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new([
+            ("default", "Default", "Standard spacing for most use cases."),
+            ("comfortable", "Comfortable", "More space between elements."),
+            ("compact", "Compact", "Minimal spacing for dense layouts."),
+        ]),
+        Ar: new([
+            ("default", "افتراضي", "تباعد قياسي لمعظم حالات الاستخدام."),
+            ("comfortable", "مريح", "مساحة أكبر بين العناصر."),
+            ("compact", "مضغوط", "تباعد أدنى للتخطيطات الكثيفة."),
+        ]),
+        He: new([
+            ("default", "ברירת מחדל", "ריווח סטנדרטי לרוב מקרי השימוש."),
+            ("comfortable", "נוח", "יותר מקום בין האלמנטים."),
+            ("compact", "קומפקטי", "ריווח מינימלי לפריסות צפופות."),
+        ]));
+
+    private sealed record Text((string Value, string Label, string Description)[] Options);
+}

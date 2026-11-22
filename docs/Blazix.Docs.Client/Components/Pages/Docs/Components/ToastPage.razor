@@ -7,8 +7,13 @@
         <Setup>
             <Step>Register a <code>ToastManager</code> for each user.</Step>
             <CodeFigure Code="@ProgramCode" Language="csharp" Title="Program.cs" LineNumbers="true" Highlight="@([3])" />
+            <p>With a <code>.Client</code> project (WebAssembly or Auto), register it in both projects&apos; <code>Program.cs</code>.</p>
             <Step>Add the <code>Toaster</code> component.</Step>
             <CodeFigure Code="@LayoutCode" Title="Components/Layout/MainLayout.razor" LineNumbers="true" Highlight="@([4])" />
+            <p>
+                The layout has to be interactive. If only your pages have a render mode, give the <code>Toaster</code> one:
+                <code>&lt;Toaster @@rendermode="InteractiveAuto" /&gt;</code>. See <a href="/docs/installation#render-modes">Render Modes</a>.
+            </p>
         </Setup>
     </InstallationTabs>
     <DocsHeading Title="Usage" />

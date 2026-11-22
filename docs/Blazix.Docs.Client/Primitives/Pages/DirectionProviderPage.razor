@@ -3,10 +3,14 @@
 <DocsPage Title="Direction Provider" Description="Enables right-to-left behavior for the primitives.">
     <ComponentPreview Name="primitives/direction-provider-hero" />
     <p>
-        <code>DirectionProvider</code> tells the components inside it the reading direction, for arrow-key navigation and
-        logical placement (<code>InlineStart</code>, <code>InlineEnd</code>). It renders no element and sets no
-        <code>dir</code> attribute, so set <code>dir="rtl"</code> on an element yourself for the layout. Without a provider,
-        components read the computed CSS <code>direction</code>.
+        <code>DirectionProvider</code> tells the components inside it the reading direction. It renders no element and sets
+        no <code>dir</code> attribute, so set <code>dir="rtl"</code> on an element yourself for the layout.
+    </p>
+    <p>
+        Arrow keys, pointer dragging and logical placement (<code>InlineStart</code>, <code>InlineEnd</code>) run in the
+        browser and read the computed CSS <code>direction</code>, so <code>dir="rtl"</code> is enough for them. The provider
+        is for what's decided while rendering, where there's no CSS to read: the physical
+        <code>data-activation-direction</code> of Tabs and Navigation Menu.
     </p>
     <DocsHeading Title="Anatomy" />
     <CodeFigure Code="@Anatomy" />

@@ -1,0 +1,19 @@
+<figure class="w-full max-w-sm">
+    <AspectRatio Ratio="@(16.0 / 9)" Class="rounded-lg bg-muted">
+        <img src="https://avatar.vercel.sh/blazix1" alt="@T.Alt" class="absolute inset-0 size-full rounded-lg object-cover grayscale dark:brightness-20" />
+    </AspectRatio>
+    <figcaption class="mt-2 text-center text-sm text-muted-foreground">@T.Caption</figcaption>
+</figure>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Beautiful landscape", "Photo"),
+        Ar: new("منظر طبيعي جميل", "صورة"),
+        He: new("נוף יפה", "תמונה"));
+
+    private sealed record Text(string Caption, string Alt);
+}

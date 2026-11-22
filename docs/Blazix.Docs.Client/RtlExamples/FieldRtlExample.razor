@@ -1,0 +1,110 @@
+<div class="w-full max-w-md">
+    <form>
+        <FieldGroup>
+            <FieldSet>
+                <FieldLegend>@T.PaymentMethod</FieldLegend>
+                <FieldDescription>@T.SecureTransactions</FieldDescription>
+                <FieldGroup>
+                    <Field>
+                        <FieldLabel for="field-rtl-card-name">@T.NameOnCard</FieldLabel>
+                        <Input id="field-rtl-card-name" placeholder="Evil Rabbit" required />
+                    </Field>
+                    <Field>
+                        <FieldLabel for="field-rtl-card-number">@T.CardNumber</FieldLabel>
+                        <Input id="field-rtl-card-number" placeholder="1234 5678 9012 3456" required />
+                        <FieldDescription>@T.CardNumberDescription</FieldDescription>
+                    </Field>
+                    <div class="grid grid-cols-3 gap-4">
+                        <Field>
+                            <FieldLabel for="field-rtl-exp-month">@T.Month</FieldLabel>
+                            <Select Items="Months">
+                                <SelectTrigger id="field-rtl-exp-month">
+                                    <SelectValue Placeholder="@T.MonthPlaceholder" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        @foreach (var item in Months)
+                                        {
+                                            <SelectItem Value="@item.Value">@Language.Digits(item.Label)</SelectItem>
+                                        }
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </Field>
+                        <Field>
+                            <FieldLabel for="field-rtl-exp-year">@T.Year</FieldLabel>
+                            <Select Items="Years">
+                                <SelectTrigger id="field-rtl-exp-year">
+                                    <SelectValue Placeholder="YYYY" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectGroup>
+                                        @foreach (var item in Years)
+                                        {
+                                            <SelectItem Value="@item.Value">@item.Label</SelectItem>
+                                        }
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+                        </Field>
+                        <Field>
+                            <FieldLabel for="field-rtl-cvv">CVV</FieldLabel>
+                            <Input id="field-rtl-cvv" placeholder="123" required />
+                        </Field>
+                    </div>
+                </FieldGroup>
+            </FieldSet>
+            <FieldSeparator />
+            <FieldSet>
+                <FieldLegend>@T.BillingAddress</FieldLegend>
+                <FieldDescription>@T.BillingAddressDescription</FieldDescription>
+                <FieldGroup>
+                    <Field Orientation="FieldOrientation.Horizontal">
+                        <Checkbox id="field-rtl-same-as-shipping" Checked="true" />
+                        <FieldLabel for="field-rtl-same-as-shipping" Class="font-normal">@T.SameAsShipping</FieldLabel>
+                    </Field>
+                </FieldGroup>
+            </FieldSet>
+            <FieldSet>
+                <FieldGroup>
+                    <Field>
+                        <FieldLabel for="field-rtl-comments">@T.Comments</FieldLabel>
+                        <Textarea id="field-rtl-comments" placeholder="@T.CommentsPlaceholder" Class="resize-none" />
+                    </Field>
+                </FieldGroup>
+            </FieldSet>
+            <Field Orientation="FieldOrientation.Horizontal">
+                <Button Type="submit">@T.Submit</Button>
+                <Button Variant="ButtonVariant.Outline" Type="button">@T.Cancel</Button>
+            </Field>
+        </FieldGroup>
+    </form>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private static readonly SelectOption[] Months = [.. Enumerable.Range(1, 12).Select(m => new SelectOption($"{m:00}", $"{m:00}"))];
+    private static readonly SelectOption[] Years = [.. Enumerable.Range(2024, 6).Select(y => new SelectOption($"{y}", $"{y}"))];
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Payment Method", "All transactions are secure and encrypted", "Name on Card", "Card Number",
+            "Enter your 16-digit card number", "Month", "MM", "Year", "Billing Address",
+            "The billing address associated with your payment method", "Same as shipping address", "Comments",
+            "Add any additional comments", "Submit", "Cancel"),
+        Ar: new("طريقة الدفع", "جميع المعاملات آمنة ومشفرة", "الاسم على البطاقة", "رقم البطاقة",
+            "أدخل رقم البطاقة المكون من 16 رقمًا", "الشهر", "ش.ش", "السنة", "عنوان الفوترة",
+            "عنوان الفوترة المرتبط بطريقة الدفع الخاصة بك", "نفس عنوان الشحن", "تعليقات",
+            "أضف أي تعليقات إضافية", "إرسال", "إلغاء"),
+        He: new("אמצעי תשלום", "כל העסקאות מאובטחות ומוצפנות", "שם על הכרטיס", "מספר כרטיס",
+            "הזן את מספר הכרטיס בן 16 הספרות שלך", "חודש", "MM", "שנה", "כתובת חיוב",
+            "כתובת החיוב המשויכת לאמצעי התשלום שלך", "זהה לכתובת המשלוח", "הערות",
+            "הוסף הערות נוספות", "שלח", "בטל"));
+
+    private sealed record Text(string PaymentMethod, string SecureTransactions, string NameOnCard, string CardNumber,
+        string CardNumberDescription, string Month, string MonthPlaceholder, string Year, string BillingAddress,
+        string BillingAddressDescription, string SameAsShipping, string Comments, string CommentsPlaceholder, string Submit,
+        string Cancel);
+}

@@ -1,0 +1,47 @@
+@* Align.End puts your own messages at the end of the reading direction: the left in RTL. *@
+<div class="flex w-full max-w-sm flex-col gap-8 py-12">
+    <Bubble Align="BubbleAlign.End"><BubbleContent>@T.Hey</BubbleContent></Bubble>
+    <BubbleGroup>
+        <Bubble Variant="BubbleVariant.Muted"><BubbleContent>@T.WantToSee</BubbleContent></Bubble>
+        <Bubble Variant="BubbleVariant.Muted">
+            <BubbleContent>@T.Group</BubbleContent>
+            <BubbleReactions role="img" aria-label="@T.ThumbsUp"><span>👍</span></BubbleReactions>
+        </Bubble>
+    </BubbleGroup>
+    <Bubble Align="BubbleAlign.End"><BubbleContent>@T.Sure</BubbleContent></Bubble>
+    <Bubble Variant="BubbleVariant.Muted">
+        <BubbleContent>@T.Meta</BubbleContent>
+        <BubbleReactions role="img" aria-label="@T.Reactions">
+            <span>👍</span>
+            <span>🔥</span>
+            <span>👀</span>
+            <span>+@Language.Digits(2)</span>
+        </BubbleReactions>
+    </Bubble>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Hey there! what's up?", "Hey! Want to see chat bubbles?",
+            "I can group messages, switch sides, and keep the whole thread easy to scan.", "Reaction: thumbs up",
+            "Sure. Hit me with your best demo.",
+            "Yes. You are reading a demo that is demoing itself. Very meta. Very on-brand.",
+            "Reactions: thumbs up, fire, eyes, and 2 more"),
+        Ar: new("مرحبًا! ما الأخبار؟", "مرحبًا! هل تريد أن ترى فقاعات الدردشة؟",
+            "يمكنني تجميع الرسائل، وتبديل الجوانب، وإبقاء المحادثة بأكملها سهلة القراءة.", "تفاعل: إعجاب",
+            "بالتأكيد. أرني أفضل عرض لديك.",
+            "نعم. أنت تقرأ عرضًا يعرض نفسه. أمر طريف حقًا.",
+            "التفاعلات: إعجاب، نار، عيون، و٢ أخرى"),
+        He: new("היי! מה קורה?", "היי! רוצה לראות בועות צ'אט?",
+            "אני יכול לקבץ הודעות, להחליף צדדים ולשמור על השיחה כולה קלה לסריקה.", "תגובה: אגודל למעלה",
+            "בטח. תראה לי את ההדגמה הכי טובה שלך.",
+            "כן. אתה קורא הדגמה שמדגימה את עצמה. מאוד מטא.",
+            "תגובות: אגודל למעלה, אש, עיניים ועוד 2"));
+
+    private sealed record Text(string Hey, string WantToSee, string Group, string ThumbsUp, string Sure, string Meta,
+        string Reactions);
+}

@@ -1,0 +1,124 @@
+<NavigationMenu>
+    <NavigationMenuList Class="flex-wrap">
+        <NavigationMenuItem>
+            <NavigationMenuTrigger>@T.GettingStarted</NavigationMenuTrigger>
+            <NavigationMenuContent>
+                <ul class="w-96">
+                    @foreach (var item in T.GettingStartedItems)
+                    {
+                        @ListItem(item)
+                    }
+                </ul>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem Class="hidden md:flex">
+            <NavigationMenuTrigger>@T.Components</NavigationMenuTrigger>
+            <NavigationMenuContent>
+                <ul class="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                    @foreach (var component in T.ComponentItems)
+                    {
+                        @ListItem(component)
+                    }
+                </ul>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+            <NavigationMenuTrigger>@T.WithIcon</NavigationMenuTrigger>
+            <NavigationMenuContent>
+                <ul class="grid w-[200px]">
+                    <li>
+                        @foreach (var (icon, label) in T.Statuses)
+                        {
+                            <NavigationMenuLink>
+                                <Render Context="link">
+                                    <a @attributes="link.Attributes" href="#" class="@Cn(link.Attributes.GetValueOrDefault("class") as string, "flex-row items-center gap-2")">
+                                        <Icon Name="@icon" />
+                                        @label
+                                    </a>
+                                </Render>
+                            </NavigationMenuLink>
+                        }
+                    </li>
+                </ul>
+            </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+            <NavigationMenuLink Class="@NavigationMenuTriggerStyle.Get()">
+                <Render Context="link">
+                    <a @attributes="link.Attributes" href="/docs">@T.Docs</a>
+                </Render>
+            </NavigationMenuLink>
+        </NavigationMenuItem>
+    </NavigationMenuList>
+</NavigationMenu>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Getting started", "Components", "With Icon", "Docs",
+            [
+                ("/docs", "Introduction", "Re-usable components built with Tailwind CSS."),
+                ("/docs/installation", "Installation", "How to install dependencies and structure your app."),
+                ("/docs/components/typography", "Typography", "Styles for headings, paragraphs, lists...etc"),
+            ],
+            [
+                ("/docs/components/alert-dialog", "Alert Dialog", "A modal dialog that interrupts the user with important content and expects a response."),
+                ("/docs/components/hover-card", "Hover Card", "For sighted users to preview content available behind a link."),
+                ("/docs/components/progress", "Progress", "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar."),
+                ("/docs/components/scroll-area", "Scroll-area", "Visually or semantically separates content."),
+                ("/docs/components/tabs", "Tabs", "A set of layered sections of content—known as tab panels—that are displayed one at a time."),
+                ("/docs/components/tooltip", "Tooltip", "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it."),
+            ],
+            [("circle-alert", "Backlog"), ("circle-dashed", "To Do"), ("circle-check", "Done")]),
+        Ar: new("البدء", "المكونات", "مع أيقونة", "الوثائق",
+            [
+                ("/docs", "مقدمة", "مكونات قابلة لإعادة الاستخدام مبنية باستخدام Tailwind CSS."),
+                ("/docs/installation", "التثبيت", "كيفية تثبيت التبعيات وتنظيم تطبيقك."),
+                ("/docs/components/typography", "الطباعة", "أنماط للعناوين والفقرات والقوائم...إلخ"),
+            ],
+            [
+                ("/docs/components/alert-dialog", "حوار التنبيه", "حوار نافذة يقطع المستخدم بمحتوى مهم ويتوقع استجابة."),
+                ("/docs/components/hover-card", "بطاقة التحويم", "للمستخدمين المبصرين لمعاينة المحتوى المتاح خلف الرابط."),
+                ("/docs/components/progress", "التقدم", "يعرض مؤشرًا يوضح تقدم إتمام المهمة، عادةً يتم عرضه كشريط تقدم."),
+                ("/docs/components/scroll-area", "منطقة التمرير", "يفصل المحتوى بصريًا أو دلاليًا."),
+                ("/docs/components/tabs", "التبويبات", "مجموعة من أقسام المحتوى المتعددة الطبقات—المعروفة بألواح التبويب—التي يتم عرضها واحدة في كل مرة."),
+                ("/docs/components/tooltip", "تلميح", "نافذة منبثقة تعرض معلومات متعلقة بعنصر عندما يتلقى العنصر التركيز على لوحة المفاتيح أو عند تحويم الماوس فوقه."),
+            ],
+            [("circle-alert", "قائمة الانتظار"), ("circle-dashed", "المهام"), ("circle-check", "منجز")]),
+        He: new("התחלה", "רכיבים", "עם אייקון", "תיעוד",
+            [
+                ("/docs", "הקדמה", "רכיבים לשימוש חוזר שנבנו עם Tailwind CSS."),
+                ("/docs/installation", "התקנה", "כיצד להתקין תלויות ולבנות את האפליקציה שלך."),
+                ("/docs/components/typography", "טיפוגרפיה", "סגנונות לכותרות, פסקאות, רשימות...וכו'"),
+            ],
+            [
+                ("/docs/components/alert-dialog", "דיאלוג התראה", "דיאלוג מודאלי שמפריע למשתמש עם תוכן חשוב ומצפה לתגובה."),
+                ("/docs/components/hover-card", "כרטיס ריחוף", "למשתמשים רואים כדי להציג תצוגה מקדימה של תוכן זמין מאחורי קישור."),
+                ("/docs/components/progress", "התקדמות", "מציג אינדיקטור המציג את התקדמות ההשלמה של משימה, בדרך כלל מוצג כסרגל התקדמות."),
+                ("/docs/components/scroll-area", "אזור גלילה", "מפריד תוכן חזותית או סמנטית."),
+                ("/docs/components/tabs", "כרטיסיות", "קבוצה של חלקי תוכן מרובדים—המכונים לוחות כרטיסיות—המוצגים אחד בכל פעם."),
+                ("/docs/components/tooltip", "טולטיפ", "חלון קופץ המציג מידע הקשור לאלמנט כאשר האלמנט מקבל מיקוד מקלדת או כאשר העכבר מרחף מעליו."),
+            ],
+            [("circle-alert", "רשימת המתנה"), ("circle-dashed", "לעשות"), ("circle-check", "הושלם")]));
+
+    private sealed record Text(string GettingStarted, string Components, string WithIcon, string Docs,
+        (string Href, string Title, string Description)[] GettingStartedItems,
+        (string Href, string Title, string Description)[] ComponentItems,
+        (string Icon, string Label)[] Statuses);
+
+    private static readonly RenderFragment<(string Href, string Title, string Description)> ListItem = item => @<li>
+        <NavigationMenuLink>
+            <Render Context="link">
+                <a @attributes="link.Attributes" href="@item.Href">
+                    <div class="flex flex-col gap-1 text-sm">
+                        <div class="leading-none font-medium">@item.Title</div>
+                        <div class="line-clamp-2 text-muted-foreground">@item.Description</div>
+                    </div>
+                </a>
+            </Render>
+        </NavigationMenuLink>
+    </li>;
+}

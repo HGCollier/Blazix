@@ -1,0 +1,43 @@
+<FieldGroup Class="max-w-sm">
+    <Field Orientation="FieldOrientation.Horizontal">
+        <Checkbox id="checkbox-rtl-terms" Name="terms-checkbox" />
+        <Label for="checkbox-rtl-terms">@T.AcceptTerms</Label>
+    </Field>
+    <Field Orientation="FieldOrientation.Horizontal">
+        <Checkbox id="checkbox-rtl-terms-2" Name="terms-checkbox-2" Checked="true" />
+        <FieldContent>
+            <FieldLabel for="checkbox-rtl-terms-2">@T.AcceptTerms</FieldLabel>
+            <FieldDescription>@T.AcceptTermsDescription</FieldDescription>
+        </FieldContent>
+    </Field>
+    <Field Orientation="FieldOrientation.Horizontal" data-disabled>
+        <Checkbox id="checkbox-rtl-toggle" Name="toggle-checkbox" Disabled="true" />
+        <FieldLabel for="checkbox-rtl-toggle">@T.EnableNotifications</FieldLabel>
+    </Field>
+    <FieldLabel>
+        <Field Orientation="FieldOrientation.Horizontal">
+            <Checkbox id="checkbox-rtl-toggle-2" Name="toggle-checkbox-2" />
+            <FieldContent>
+                <FieldTitle>@T.EnableNotifications</FieldTitle>
+                <FieldDescription>@T.EnableNotificationsDescription</FieldDescription>
+            </FieldContent>
+        </Field>
+    </FieldLabel>
+</FieldGroup>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Accept terms and conditions", "By clicking this checkbox, you agree to the terms.",
+            "Enable notifications", "You can enable or disable notifications at any time."),
+        Ar: new("قبول الشروط والأحكام", "بالنقر على هذا المربع، فإنك توافق على الشروط.",
+            "تفعيل الإشعارات", "يمكنك تفعيل أو إلغاء تفعيل الإشعارات في أي وقت."),
+        He: new("קבל תנאים והגבלות", "על ידי לחיצה על תיבת הסימון הזו, אתה מסכים לתנאים.",
+            "הפעל התראות", "אתה יכול להפעיל או להשבית התראות בכל עת."));
+
+    private sealed record Text(string AcceptTerms, string AcceptTermsDescription, string EnableNotifications,
+        string EnableNotificationsDescription);
+}

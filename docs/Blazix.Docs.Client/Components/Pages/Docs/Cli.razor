@@ -21,6 +21,13 @@
     <CodeFigure Code="@AddOptionsCode" Language="text" />
     <p>A file you already have is kept, unless you pass <code>--overwrite</code>.</p>
 
+    <DocsHeading Title="migrate rtl" />
+    <p>Use <code>migrate rtl</code> to make components you&apos;ve already added right-to-left ready, and set <code>"rtl": true</code> so later adds come that way. See <a href="/docs/rtl">RTL</a>.</p>
+    <CliCommand Args="migrate rtl [path]" />
+    <p><strong>Options</strong></p>
+    <CodeFigure Code="@MigrateOptionsCode" Language="text" />
+    <p>Run it once: a second run adds the <code>rtl:</code> classes again. Without a path, it migrates the files in <code>componentsDir</code>.</p>
+
     <DocsHeading Title="list" />
     <p>Use the <code>list</code> command to see the components you can add. The ones you&apos;ve added are marked.</p>
     <CliCommand Args="list" />
@@ -39,7 +46,19 @@
         Options:
           -p, --project <path>   the project to set up, when the folder has more than one
           --dir <folder>         where components go (default: "Components/UI")
+          --rtl                  copy components right-to-left ready ("rtl": true)
           --skip-package         don't add the Blazix.Primitives package
+        """;
+
+    private const string MigrateOptionsCode = """
+        Usage: blazix migrate rtl [path] [options]
+
+        Arguments:
+          path                   a file or folder to migrate (default: componentsDir)
+
+        Options:
+          -p, --project <path>   the project, when the folder has more than one
+          -y, --yes              migrate again when "rtl" is already true
         """;
 
     private const string AddOptionsCode = """

@@ -1,0 +1,34 @@
+<div class="grid w-full max-w-md items-start gap-4">
+    <Alert>
+        <Icon Name="check-circle-2" />
+        <AlertTitle>@T.PaymentTitle</AlertTitle>
+        <AlertDescription>@T.PaymentDescription</AlertDescription>
+    </Alert>
+    <Alert>
+        <Icon Name="info" />
+        <AlertTitle>@T.FeatureTitle</AlertTitle>
+        <AlertDescription>@T.FeatureDescription</AlertDescription>
+    </Alert>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Payment successful",
+            "Your payment of $29.99 has been processed. A receipt has been sent to your email address.",
+            "New feature available",
+            "We've added dark mode support. You can enable it in your account settings."),
+        Ar: new("تم الدفع بنجاح",
+            "تمت معالجة دفعتك البالغة 29.99 دولارًا. تم إرسال إيصال إلى عنوان بريدك الإلكتروني.",
+            "ميزة جديدة متاحة",
+            "لقد أضفنا دعم الوضع الداكن. يمكنك تفعيله في إعدادات حسابك."),
+        He: new("התשלום בוצע בהצלחה",
+            "התשלום שלך בסך 29.99 דולר עובד. קבלה נשלחה לכתובת האימייל שלך.",
+            "תכונה חדשה זמינה",
+            "הוספנו תמיכה במצב כהה. אתה יכול להפעיל אותו בהגדרות החשבון שלך."));
+
+    private sealed record Text(string PaymentTitle, string PaymentDescription, string FeatureTitle, string FeatureDescription);
+}

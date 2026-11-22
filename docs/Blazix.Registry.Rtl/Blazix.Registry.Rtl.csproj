@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <!--
+      The registry's components as `blazix add` copies them with "rtl": true, in the namespace Blazix.Registry.Rtl:
+      the docs' RTL examples (Blazix.Docs.Client/RtlExamples) render with these, like shadcn's ui-rtl/. Generated
+      into Generated/ (ignored by git) on every build by the CLI's rtl-copy, from src/Blazix.Registry/Components,
+      so edit those, not these.
+    -->
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <RootNamespace>Blazix.Registry.Rtl</RootNamespace>
+        <IsPackable>false</IsPackable>
+        <!-- The items come from the generating target: a glob would see last build's files before it runs. -->
+        <EnableDefaultItems>false</EnableDefaultItems>
+        <_RtlRegistry>$(MSBuildThisFileDirectory)..\..\src\Blazix.Registry\Components\</_RtlRegistry>
+        <_RtlGenerated>$(MSBuildThisFileDirectory)Generated\</_RtlGenerated>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web"/>
+        <ProjectReference Include="..\..\src\Blazix.Primitives\Blazix.Primitives.csproj"/>
+        <!-- Built first, for its rtl-copy command; nothing references its assembly. -->
+        <ProjectReference Include="..\..\src\Blazix.Cli\Blazix.Cli.csproj" ReferenceOutputAssembly="false" Private="false"/>
+        <Using Include="Blazix.Primitives"/>
+    </ItemGroup>
+
+    <Target Name="GenerateRtlRegistry" BeforeTargets="PrepareForBuild" DependsOnTargets="ResolveProjectReferences"
+            Inputs="@(_RtlSource)" Outputs="$(_RtlGenerated).stamp">
+        <MSBuild Projects="..\..\src\Blazix.Cli\Blazix.Cli.csproj" Targets="GetTargetPath">
+            <Output TaskParameter="TargetOutputs" PropertyName="_RtlCliPath"/>
+        </MSBuild>
+        <RemoveDir Directories="$(_RtlGenerated)"/>
+        <Exec Command="dotnet &quot;$(_RtlCliPath)&quot; rtl-copy &quot;$(_RtlRegistry.TrimEnd('\'))&quot; &quot;$(_RtlGenerated.TrimEnd('\'))&quot; Blazix.Registry.Rtl"/>
+        <Touch Files="$(_RtlGenerated).stamp" AlwaysCreate="true"/>
+    </Target>
+
+    <!-- Added after generating, every build (also when generating was up to date), so Razor and C# compile them. -->
+    <Target Name="IncludeRtlRegistry" AfterTargets="GenerateRtlRegistry" BeforeTargets="PrepareForBuild">
+        <ItemGroup>
+            <Content Include="$(_RtlGenerated)**\*.razor"/>
+            <Compile Include="$(_RtlGenerated)**\*.cs"/>
+        </ItemGroup>
+    </Target>
+
+    <ItemGroup>
+        <_RtlSource Include="$(_RtlRegistry)**\*.razor;$(_RtlRegistry)**\*.cs;..\..\src\Blazix.Cli\Rtl.cs;..\..\src\Blazix.Cli\Commands.cs"/>
+    </ItemGroup>
+
+</Project>

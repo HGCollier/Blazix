@@ -1,0 +1,29 @@
+<Popover>
+    <PopoverTrigger>
+        <Render>
+            <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline" data-empty="@(_date is null ? "true" : "false")"
+                    Class="w-[212px] justify-between text-start font-normal data-[empty=true]:text-muted-foreground">
+                @if (_date is { } date)
+                {
+                    @date.ToString("D", Language.Culture)
+                }
+                else
+                {
+                    <span>@Texts[Language]</span>
+                }
+                <Icon Name="chevron-down" data-icon="inline-end" />
+            </Button>
+        </Render>
+    </PopoverTrigger>
+    <PopoverContent Class="w-auto p-0" Align="Align.Start">
+        <Calendar Mode="CalendarMode.Single" @bind-Selected="_date" DefaultMonth="_date" Locale="@Language.Culture" />
+    </PopoverContent>
+</Popover>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private DateOnly? _date;
+
+    private static readonly Translations<string> Texts = new(En: "Pick a date", Ar: "اختر تاريخًا", He: "בחר תאריך");
+}

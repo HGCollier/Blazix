@@ -1,0 +1,51 @@
+<div class="grid gap-4">
+    @foreach (var sides in Rows)
+    {
+        <div class="flex flex-wrap justify-center gap-2">
+            @foreach (var side in sides)
+            {
+                <Popover @key="side">
+                    <PopoverTrigger>
+                        <Render>
+                            <Button @attributes="context.Attributes" Variant="ButtonVariant.Outline">@T.Sides[side]</Button>
+                        </Render>
+                    </PopoverTrigger>
+                    <PopoverContent Side="@side">
+                        <PopoverHeader>
+                            <PopoverTitle>@T.Title</PopoverTitle>
+                            <PopoverDescription>@T.Description</PopoverDescription>
+                        </PopoverHeader>
+                    </PopoverContent>
+                </Popover>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    // Left and Right stay physical in RTL; InlineStart and InlineEnd follow the reading direction.
+    private static readonly Side[][] Rows = [[Side.Left, Side.Top, Side.Bottom, Side.Right], [Side.InlineStart, Side.InlineEnd]];
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Dimensions", "Set the dimensions for the layer.", new()
+        {
+            [Side.InlineStart] = "Inline Start", [Side.Left] = "Left", [Side.Top] = "Top",
+            [Side.Bottom] = "Bottom", [Side.Right] = "Right", [Side.InlineEnd] = "Inline End",
+        }),
+        Ar: new("الأبعاد", "تعيين الأبعاد للطبقة.", new()
+        {
+            [Side.InlineStart] = "بداية السطر", [Side.Left] = "يسار", [Side.Top] = "أعلى",
+            [Side.Bottom] = "أسفل", [Side.Right] = "يمين", [Side.InlineEnd] = "نهاية السطر",
+        }),
+        He: new("מימדים", "הגדר את המימדים לשכבה.", new()
+        {
+            [Side.InlineStart] = "תחילת השורה", [Side.Left] = "שמאל", [Side.Top] = "למעלה",
+            [Side.Bottom] = "למטה", [Side.Right] = "ימין", [Side.InlineEnd] = "סוף השורה",
+        }));
+
+    private sealed record Text(string Title, string Description, Dictionary<Side, string> Sides);
+}

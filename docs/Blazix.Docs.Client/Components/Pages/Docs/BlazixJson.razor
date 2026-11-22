@@ -12,11 +12,15 @@
     <CodeFigure Code="@NamespaceCode" Language="json" Title="blazix.json" />
 
     <DocsHeading Title="componentsDir" />
-    <p>Where <code>add</code> puts components, relative to the project. Set it with <code>init --dir</code>. Defaults to <code>Components/UI</code>.</p>
+    <p>Where <code>add</code> puts components, relative to the project. Set it with <code>init --dir</code>. Defaults to <code>Components/UI</code>. Each component gets a folder of its own in it, such as <code>Components/UI/Button</code>, and every folder shares <code>namespace</code>.</p>
     <CodeFigure Code="@DirCode" Language="json" Title="blazix.json" />
 
     <DocsHeading Title="version" />
     <p>The CLI version that set up the project. The components it copies are written against the <code>Blazix.Primitives</code> package of the same version.</p>
+
+    <DocsHeading Title="rtl" />
+    <p>Copy components right-to-left ready: <code>add</code> turns physical classes into logical ones (<code>ml-2</code> into <code>ms-2</code>, <code>left-0</code> into <code>start-0</code>) and flips directional icons under <code>rtl:</code>. Set it with <code>init --rtl</code> or <code>migrate rtl</code>. Defaults to <code>false</code>. See <a href="/docs/rtl">RTL</a>.</p>
+    <CodeFigure Code="@RtlCode" Language="json" Title="blazix.json" />
 
     <DocsHeading Title="installed" />
     <p>What you&apos;ve added, with the version each came from. <code>list</code> marks these. To pick up a newer version of a component, run <code>add &lt;name&gt; --overwrite</code> and review the diff.</p>
@@ -29,6 +33,7 @@
           "namespace": "MyApp.Components.UI",
           "componentsDir": "Components/UI",
           "version": "0.1.0",
+          "rtl": false,
           "installed": {
             "utils": "0.1.0",
             "button": "0.1.0"
@@ -45,6 +50,12 @@
     private const string DirCode = """
         {
           "componentsDir": "Components/UI"
+        }
+        """;
+
+    private const string RtlCode = """
+        {
+          "rtl": true
         }
         """;
 

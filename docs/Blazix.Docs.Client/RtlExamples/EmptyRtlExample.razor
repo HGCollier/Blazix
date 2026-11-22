@@ -1,0 +1,36 @@
+<Empty>
+    <EmptyHeader>
+        <EmptyMedia Variant="EmptyMediaVariant.Icon"><Icon Name="folder-code" /></EmptyMedia>
+        <EmptyTitle>@T.Title</EmptyTitle>
+        <EmptyDescription>@T.Description</EmptyDescription>
+    </EmptyHeader>
+    <EmptyContent Class="flex-row justify-center gap-2">
+        <Button>@T.CreateProject</Button>
+        <Button Variant="ButtonVariant.Outline">@T.ImportProject</Button>
+    </EmptyContent>
+    <Button Variant="ButtonVariant.Link" Class="text-muted-foreground" Size="ButtonSize.Sm" NativeButton="false">
+        <Render>
+            <a @attributes="context.Attributes" href="#">
+                @T.LearnMore
+                @* An arrow up and to the end: turned a quarter more in RTL, to point up and left. *@
+                <Icon Name="arrow-up-right" class="rtl:rotate-270" data-icon="inline-end" />
+            </a>
+        </Render>
+    </Button>
+</Empty>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("No Projects Yet", "You haven't created any projects yet. Get started by creating your first project.",
+            "Create Project", "Import Project", "Learn More"),
+        Ar: new("لا توجد مشاريع بعد", "لم تقم بإنشاء أي مشاريع بعد. ابدأ بإنشاء مشروعك الأول.",
+            "إنشاء مشروع", "استيراد مشروع", "تعرف على المزيد"),
+        He: new("אין פרויקטים עדיין", "עדיין לא יצרת פרויקטים. התחל על ידי יצירת הפרויקט הראשון שלך.",
+            "צור פרויקט", "ייבא פרויקט", "למד עוד"));
+
+    private sealed record Text(string Title, string Description, string CreateProject, string ImportProject, string LearnMore);
+}

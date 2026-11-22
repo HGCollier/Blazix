@@ -1,0 +1,7 @@
+<Slider Value="75" Max="100" Step="1" aria-label="@Texts[Language]" Class="mx-auto w-full max-w-xs" />
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private static readonly Translations<string> Texts = new(En: "Volume", Ar: "مستوى الصوت", He: "עוצמת קול");
+}

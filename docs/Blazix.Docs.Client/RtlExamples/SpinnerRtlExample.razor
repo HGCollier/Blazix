@@ -1,0 +1,20 @@
+<div class="flex w-full max-w-xs flex-col gap-4 [--radius:1rem]">
+    <Item Variant="ItemVariant.Muted">
+        <ItemMedia><Spinner /></ItemMedia>
+        <ItemContent><ItemTitle Class="line-clamp-1">@T.Title</ItemTitle></ItemContent>
+        <ItemContent Class="flex-none justify-end"><span class="text-sm tabular-nums">@T.Amount</span></ItemContent>
+    </Item>
+</div>
+
+@code {
+    [CascadingParameter] private Language Language { get; set; } = Language.Arabic;
+
+    private Text T => Texts[Language];
+
+    private static readonly Translations<Text> Texts = new(
+        En: new("Processing payment...", "$100.00"),
+        Ar: new("جاري معالجة الدفع...", "١٠٠٫٠٠ دولار"),
+        He: new("מעבד תשלום...", "$100.00"));
+
+    private sealed record Text(string Title, string Amount);
+}
