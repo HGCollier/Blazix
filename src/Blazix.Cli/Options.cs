@@ -1,11 +1,12 @@
 namespace Blazix.Cli;
 
-internal sealed record Options(List<string> Items, string? Project, string? Dir, bool Overwrite, bool SkipPackage, bool Rtl, bool Yes)
+internal sealed record Options(List<string> Items, string? Project, string? Dir, bool Overwrite, bool SkipPackage, bool Rtl, bool Yes, string? IconLibrary = null, string? From = null, string? To = null)
 {
     public static Options Parse(string[] args)
     {
         var items = new List<string>();
         string? project = null, dir = null;
+        string? iconLibrary = null, from = null, to = null;
         bool overwrite = false, skipPackage = false, rtl = false, yes = false;
         for (var i = 0; i < args.Length; i++)
         {
@@ -17,11 +18,14 @@ internal sealed record Options(List<string> Items, string? Project, string? Dir,
                 case "--skip-package": skipPackage = true; break;
                 case "--rtl": rtl = true; break;
                 case "--yes" or "-y": yes = true; break;
+                case "--icon-library": iconLibrary = Next(args, ref i); break;
+                case "--from": from = Next(args, ref i); break;
+                case "--to": to = Next(args, ref i); break;
                 case var a when a.StartsWith('-'): throw new CliException($"unknown option '{a}'");
                 default: items.Add(args[i]); break;
             }
         }
-        return new Options(items, project, dir, overwrite, skipPackage, rtl, yes);
+        return new Options(items, project, dir, overwrite, skipPackage, rtl, yes, iconLibrary, from, to);
     }
 
     private static string Next(string[] args, ref int i) =>

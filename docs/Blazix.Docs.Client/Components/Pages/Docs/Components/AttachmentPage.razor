@@ -60,13 +60,13 @@
 @code {
     private const string UsageCode = """
         <Attachment>
-            <AttachmentMedia><Icon Name="file-text" /></AttachmentMedia>
+            <AttachmentMedia><Icon Data="LucideIcons.FileText" /></AttachmentMedia>
             <AttachmentContent>
                 <AttachmentTitle>sales-dashboard.pdf</AttachmentTitle>
                 <AttachmentDescription>PDF · 2.4 MB</AttachmentDescription>
             </AttachmentContent>
             <AttachmentActions>
-                <AttachmentAction aria-label="Remove sales-dashboard.pdf"><Icon Name="x" /></AttachmentAction>
+                <AttachmentAction aria-label="Remove sales-dashboard.pdf"><Icon Data="LucideIcons.X" /></AttachmentAction>
             </AttachmentActions>
         </Attachment>
         """;
@@ -103,7 +103,7 @@
         """;
 
     private const string LabelIconOnlyActionsCode = """
-        <AttachmentAction aria-label="Remove sales-dashboard.pdf"><Icon Name="x" /></AttachmentAction>
+        <AttachmentAction aria-label="Remove sales-dashboard.pdf"><Icon Data="LucideIcons.X" /></AttachmentAction>
         """;
 
     private const string LabelTheTriggerCode = """

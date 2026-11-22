@@ -2,16 +2,16 @@
     <CodeBlock>
         <CodeBlockHeader>
             <CodeBlockTitle>
-                <Icon Name="terminal" />
+                <Icon Data="LucideIcons.Terminal" />
                 Terminal
             </CodeBlockTitle>
             <CodeBlockActions>
                 <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.IconXs" aria-label="Wrap lines" aria-pressed="@(_wrap ? "true" : "false")"
                         Class="aria-pressed:text-foreground" @onclick="ToggleWrap">
-                    <Icon Name="wrap-text" />
+                    <Icon Data="LucideIcons.WrapText" />
                 </Button>
                 <a href="@DownloadUrl" download="lint.log" aria-label="Download" class="@ButtonVariants.Get(ButtonVariant.Ghost, ButtonSize.IconXs)">
-                    <Icon Name="download" />
+                    <Icon Data="LucideIcons.Download" />
                 </a>
                 <CodeBlockCopyButton Value="@Output" />
             </CodeBlockActions>

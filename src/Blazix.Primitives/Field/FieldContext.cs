@@ -252,8 +252,8 @@ internal static class FieldStateExtensions
         {
             attributes.Default("aria-labelledby", field.LabelId);
         }
-        return attributes
-            .Default("aria-describedby", field.DescribedBy)
-            .Set("aria-invalid", field.Invalid ? "true" : null);
+        attributes.Default("aria-describedby", field.DescribedBy);
+        // Only ever add it: a valid field leaves the author's own aria-invalid (e.g. from form validation) in place.
+        return field.Invalid ? attributes.Set("aria-invalid", "true") : attributes;
     }
 }

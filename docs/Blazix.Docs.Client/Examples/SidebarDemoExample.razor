@@ -10,13 +10,13 @@
                                 <SidebarMenuButton @attributes="trigger.Attributes" Size="SidebarMenuButtonSize.Lg"
                                                    Class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                                     <div class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                                        <Icon Name="@_activeTeam.Logo" class="size-4" />
+                                        <Icon Data="@_activeTeam.Logo" class="size-4" />
                                     </div>
                                     <div class="grid flex-1 text-left text-sm leading-tight">
                                         <span class="truncate font-medium">@_activeTeam.Name</span>
                                         <span class="truncate text-xs">@_activeTeam.Plan</span>
                                     </div>
-                                    <Icon Name="chevrons-up-down" class="ml-auto" />
+                                    <Icon Data="LucideIcons.ChevronsUpDown" class="ml-auto" />
                                 </SidebarMenuButton>
                             </Render>
                         </DropdownMenuTrigger>
@@ -27,7 +27,7 @@
                                 {
                                     <DropdownMenuItem @key="team.Name" OnClick="@(() => _activeTeam = team)" Class="gap-2 p-2">
                                         <div class="flex size-6 items-center justify-center rounded-md border">
-                                            <Icon Name="@team.Logo" class="size-3.5 shrink-0" />
+                                            <Icon Data="@team.Logo" class="size-3.5 shrink-0" />
                                         </div>
                                         @team.Name
                                         <DropdownMenuShortcut>⌘@(index + 1)</DropdownMenuShortcut>
@@ -38,7 +38,7 @@
                             <DropdownMenuGroup>
                                 <DropdownMenuItem Class="gap-2 p-2">
                                     <div class="flex size-6 items-center justify-center rounded-md border bg-transparent">
-                                        <Icon Name="plus" class="size-4" />
+                                        <Icon Data="LucideIcons.Plus" class="size-4" />
                                     </div>
                                     <div class="font-medium text-muted-foreground">Add team</div>
                                 </DropdownMenuItem>
@@ -63,9 +63,9 @@
                                             <SidebarMenuButton @attributes="trigger.Attributes">
                                                 <Tooltip>@item.Title</Tooltip>
                                                 <ChildContent>
-                                                    <Icon Name="@item.Icon" />
+                                                    <Icon Data="@item.Icon" />
                                                     <span>@item.Title</span>
-                                                    <Icon Name="chevron-right" class="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
+                                                    <Icon Data="LucideIcons.ChevronRight" class="ml-auto transition-transform duration-200 group-data-open/collapsible:rotate-90" />
                                                 </ChildContent>
                                             </SidebarMenuButton>
                                         </Render>
@@ -99,7 +99,7 @@
                             <SidebarMenuButton>
                                 <Render Context="link">
                                     <a @attributes="link.Attributes" href="#">
-                                        <Icon Name="@project.Icon" />
+                                        <Icon Data="@project.Icon" />
                                         <span>@project.Name</span>
                                     </a>
                                 </Render>
@@ -108,23 +108,23 @@
                                 <DropdownMenuTrigger>
                                     <Render Context="trigger">
                                         <SidebarMenuAction @attributes="trigger.Attributes" ShowOnHover="true">
-                                            <Icon Name="ellipsis" />
+                                            <Icon Data="LucideIcons.Ellipsis" />
                                             <span class="sr-only">More</span>
                                         </SidebarMenuAction>
                                     </Render>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent Class="w-48 rounded-lg" Side="@SideForMenus" Align="@(_isMobile ? Align.End : Align.Start)">
                                     <DropdownMenuItem>
-                                        <Icon Name="folder" class="text-muted-foreground" />
+                                        <Icon Data="LucideIcons.Folder" class="text-muted-foreground" />
                                         <span>View Project</span>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
-                                        <Icon Name="forward" class="text-muted-foreground" />
+                                        <Icon Data="LucideIcons.Forward" class="text-muted-foreground" />
                                         <span>Share Project</span>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuItem>
-                                        <Icon Name="trash-2" class="text-muted-foreground" />
+                                        <Icon Data="LucideIcons.Trash2" class="text-muted-foreground" />
                                         <span>Delete Project</span>
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
@@ -133,7 +133,7 @@
                     }
                     <SidebarMenuItem>
                         <SidebarMenuButton Class="text-sidebar-foreground/70">
-                            <Icon Name="ellipsis" class="text-sidebar-foreground/70" />
+                            <Icon Data="LucideIcons.Ellipsis" class="text-sidebar-foreground/70" />
                             <span>More</span>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -149,7 +149,7 @@
                                 <SidebarMenuButton @attributes="trigger.Attributes" Size="SidebarMenuButtonSize.Lg"
                                                    Class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                                     @UserSummary
-                                    <Icon Name="chevrons-up-down" class="ml-auto size-4" />
+                                    <Icon Data="LucideIcons.ChevronsUpDown" class="ml-auto size-4" />
                                 </SidebarMenuButton>
                             </Render>
                         </DropdownMenuTrigger>
@@ -162,29 +162,29 @@
                             <DropdownMenuSeparator />
                             <DropdownMenuGroup>
                                 <DropdownMenuItem>
-                                    <Icon Name="sparkles" />
+                                    <Icon Data="LucideIcons.Sparkles" />
                                     Upgrade to Pro
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuGroup>
                                 <DropdownMenuItem>
-                                    <Icon Name="badge-check" />
+                                    <Icon Data="LucideIcons.BadgeCheck" />
                                     Account
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    <Icon Name="credit-card" />
+                                    <Icon Data="LucideIcons.CreditCard" />
                                     Billing
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    <Icon Name="bell" />
+                                    <Icon Data="LucideIcons.Bell" />
                                     Notifications
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                             <DropdownMenuGroup>
                                 <DropdownMenuItem>
-                                    <Icon Name="log-out" />
+                                    <Icon Data="LucideIcons.LogOut" />
                                     Log out
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
@@ -205,32 +205,32 @@
 </SidebarProvider>
 
 @code {
-    private sealed record Team(string Name, string Logo, string Plan);
+    private sealed record Team(string Name, IconData Logo, string Plan);
 
-    private sealed record NavItem(string Title, string Icon, string[] Items, bool IsActive = false);
+    private sealed record NavItem(string Title, IconData Icon, string[] Items, bool IsActive = false);
 
-    private sealed record Project(string Name, string Icon);
+    private sealed record Project(string Name, IconData Icon);
 
     private static readonly Team[] Teams =
     [
-        new("Blazix Inc", "gallery-vertical-end", "Enterprise"),
-        new("Blazix Corp.", "audio-waveform", "Startup"),
-        new("Evil Corp.", "command", "Free"),
+        new("Blazix Inc", LucideIcons.GalleryVerticalEnd, "Enterprise"),
+        new("Blazix Corp.", LucideIcons.AudioWaveform, "Startup"),
+        new("Evil Corp.", LucideIcons.Command, "Free"),
     ];
 
     private static readonly NavItem[] NavMain =
     [
-        new("Playground", "square-terminal", ["History", "Starred", "Settings"], IsActive: true),
-        new("Models", "bot", ["Genesis", "Explorer", "Quantum"]),
-        new("Documentation", "book-open", ["Introduction", "Get Started", "Tutorials", "Changelog"]),
-        new("Settings", "settings-2", ["General", "Team", "Billing", "Limits"]),
+        new("Playground", LucideIcons.SquareTerminal, ["History", "Starred", "Settings"], IsActive: true),
+        new("Models", LucideIcons.Bot, ["Genesis", "Explorer", "Quantum"]),
+        new("Documentation", LucideIcons.BookOpen, ["Introduction", "Get Started", "Tutorials", "Changelog"]),
+        new("Settings", LucideIcons.Settings2, ["General", "Team", "Billing", "Limits"]),
     ];
 
     private static readonly Project[] Projects =
     [
-        new("Design Engineering", "frame"),
-        new("Sales & Marketing", "chart-pie"),
-        new("Travel", "map"),
+        new("Design Engineering", LucideIcons.Frame),
+        new("Sales & Marketing", LucideIcons.ChartPie),
+        new("Travel", LucideIcons.Map),
     ];
 
     private static readonly RenderFragment UserSummary = @<text>

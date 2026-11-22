@@ -458,7 +458,12 @@ public class ToastRoot : PrimitivePart<ToastRenderProps>
     /// <summary>The toast to render, from the viewport's template.</summary>
     [Parameter, EditorRequired] public ToastObject Toast { get; set; } = null!;
 
-    private int Index => Viewport.Manager.Toasts.Where(t => !t.Closing).ToList().IndexOf(Toast);
+    // A closing toast keeps its place in the stack (counting the other closing toasts too), so it
+    // slides out from where it was, behind the toasts in front of it, rather than jumping to the front.
+    private int Index => StackIndex(Viewport.Manager.Toasts, Toast);
+
+    internal static int StackIndex(IEnumerable<ToastObject> toasts, ToastObject toast) =>
+        toast.Closing ? toasts.ToList().IndexOf(toast) : toasts.Where(t => !t.Closing).ToList().IndexOf(toast);
 
     internal void Rerender() => StateHasChanged();
 
@@ -507,7 +512,7 @@ public class ToastContent : PrimitivePart<PartRenderProps>
 
     protected override void BuildAttributes(AttributeBuilder attributes) => attributes
         .Set("data-blazix-toast-content", "")
-        .Flag("data-behind", Viewport.Manager.Toasts.Where(t => !t.Closing).ToList().IndexOf(Toast.Toast) > 0);
+        .Flag("data-behind", ToastRoot.StackIndex(Viewport.Manager.Toasts, Toast.Toast) > 0);
 
     protected override PartRenderProps CreateRenderProps(IReadOnlyDictionary<string, object> attributes) => new(attributes);
 }

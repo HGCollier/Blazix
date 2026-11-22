@@ -42,6 +42,7 @@ internal static class DocsNav
         new("Components", "/docs/components"),
         new("blazix.json", "/docs/blazix-json"),
         new("Theming", "/docs/theming"),
+        new("Icons", "/docs/icons"),
         new("Typeset", "/docs/typeset"),
         new("Dark Mode", "/docs/dark-mode"),
         new("RTL", "/docs/rtl"),

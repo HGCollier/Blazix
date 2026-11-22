@@ -7,7 +7,7 @@ namespace Blazix.Primitives;
 /// Tells the components inside it the reading direction. It renders no element and sets no <c>dir</c>
 /// attribute: set <c>dir="rtl"</c> on an element yourself for the layout. Keyboard navigation and
 /// placement read the computed CSS <c>direction</c>; the provider covers what's decided while rendering
-/// (the <c>data-activation-direction</c> of Tabs and Navigation Menu).
+/// (the <c>data-activation-direction</c> of Tabs and Navigation Menu, and how a Slider thumb is centred).
 /// </summary>
 public sealed class DirectionProvider : ComponentBase
 {

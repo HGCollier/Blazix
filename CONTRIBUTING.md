@@ -27,10 +27,15 @@ src/
   Blazix.Registry/           source of truth for what the CLI copies (never packed)
     registry.json            items, files, dependencies
     Components/              ← what `add` copies: styled components (Tailwind classes), a folder per item
+    Icons/                   IconPlaceholder (never copied) + RegistryIcons.g.cs, the components' icons in every set
     Setup/                   ← what `init` copies
       Tailwind.targets, TailwindWatcher.cs
       theme.css              design tokens (the default theme)
       Vendor/                tw-animate-css + variants.css, unmodified
+  Blazix.Icons/              → NuGet library: the <Icon> component and IconData
+  Blazix.Icons.Lucide/ …     → NuGet libraries, one per icon set (Lucide, Tabler, Hugeicons, Phosphor, Remixicon,
+                               FontAwesome), generated on build by Blazix.Icons.Set.targets
+  Blazix.Icons.Generator/    reads each set's npm tarball (no Node): the set packages' icons, RegistryIcons.g.cs
 docs/
   Blazix.Docs/               the docs site's host (run this): prerendering, Tailwind, static files
   Blazix.Docs.Client/        the docs site on WebAssembly: pages, examples, uses Blazix.Registry/ from source
@@ -45,17 +50,20 @@ It's laid out as a registry that is the source of truth, a docs app that renders
   - `docs/Blazix.Docs` is the host, the project you run: it prerenders each page, serves the files and runs Tailwind (`Program.cs`, `Components/App.razor`, `Styles/`, `wwwroot/`). `docs/Blazix.Docs.Client` has everything else, which runs in the browser. Running the client by itself shows nothing: it has no page of its own. The paths below are in the client.
   - `dotnet publish docs/Blazix.Docs` trims the client and compiles it ahead of time to WebAssembly, which needs `dotnet workload install wasm-tools`. Building doesn't.
   - `Components/Pages/Docs/` has the pages. `Components/Pages/Docs/Components/` has one per component.
+  - The examples and the site draw icons with `Blazix.Icons.Lucide` (`<Icon Data="LucideIcons.ChevronRight" />`), as an app does, so their source can be copied as it is.
   - `Examples/` has the examples, named in kebab case for previews (`button-demo` → `ButtonDemoExample.razor`). `<ComponentPreview Name="button-demo" />` shows one with its source.
   - The site embeds the pages, examples and registry files at build time, so pages can show their source and search can find text in them.
   - API Reference sections are read by reflection over the registry assembly, with its XML doc comments (embedded in the client, since a browser has no files to read), so they can't drift from the code. The client keeps both libraries whole when trimming (`TrimmerRootAssembly`) for that; apps don't need to.
   - `RtlExamples/` has the RTL examples (`button-rtl` → `ButtonRtlExample.razor`), shown with `<ComponentPreview Name="button-rtl" Direction="rtl" />`. They use `docs/Blazix.Registry.Rtl`: the registry's components run through the CLI's RTL transform (`rtl-copy`) on every build, in the namespace `Blazix.Registry.Rtl`, the way shadcn renders its RTL examples from `ui-rtl/`. Each takes the picked `Language` as a cascading parameter and keeps its strings in a `Translations<T>` (English, Arabic, Hebrew).
   - `Primitives/` has the primitives' docs: `Pages/` (one per primitive, plus the handbook and the utilities) and `Examples/` (`<ComponentPreview Name="primitives/accordion-hero" />` shows `AccordionHeroExample.razor`). It's outside `Components/` so that only `Blazix.Primitives` is imported there: the registry's tags (`AccordionItem`, `DialogTrigger`...) would clash with the primitives'.
   - A primitive page lists each part with `<PartReference Type="typeof(AccordionRoot)">`, which reads the part's summary, element and parameters from `Blazix.Primitives` and its XML doc comments. The page lists the part's data attributes and CSS variables as `<StyleHook>` rows, since they're set across C# and JS.
+- **Icons** (`src/Blazix.Icons*`): `Blazix.Icons` has `<Icon Data="..." />` and `IconData`; each set package is generated into `obj/` on build from the set's npm tarball. `src/Blazix.Icons.Generator/IconSets.cs` pins each tarball's version and sha512. Tarballs are downloaded once into `artifacts/icon-cache` and checked on every use. Each icon is an expression-bodied property, so trimming keeps only the icons an app uses. Remix Icon stays on 4.8.0, the last Apache-2.0 release (see `IconSets.cs`).
 - **Primitives** (`src/Blazix.Primitives`): edits to `.cs` files hot reload through the project reference too. After editing a JS module, refresh the page; browsers cache ES modules per page load.
 
 ## Adding things
 
 - **A component**: put its files in a folder of its own in `src/Blazix.Registry/Components`, named after its registry item (`alert-dialog` → `AlertDialog/`), in the `Blazix.Registry` namespace (the CLI rewrites it to the app's). Each `.razor` file starts with `@namespace Blazix.Registry`: Razor would otherwise put every folder in a namespace of its own. Add an entry (files, by their path in `Components/`, and dependencies) to [`src/Blazix.Registry/registry.json`](src/Blazix.Registry/registry.json). Then add its examples to `docs/Blazix.Docs.Client/Examples`, an RTL example to `docs/Blazix.Docs.Client/RtlExamples`, a page to `docs/Blazix.Docs.Client/Components/Pages/Docs/Components`, and a link to `DocsNav.Components`.
+- **An icon in a component**: write `<IconPlaceholder Lucide="chevron-down" Tabler="chevron-down" Hugeicons="arrow-down-01" Phosphor="caret-down" Remixicon="arrow-down-s-line" FontAwesome="chevron-down" aria-hidden="true" class="..." />`, naming the icon in all six sets as each names its files (Font Awesome: solid, unless `regular/...`). Use the icon shadcn/ui uses where it has one. Then regenerate the data with `dotnet run --project src/Blazix.Icons.Generator -- registry src/Blazix.Registry artifacts/icon-cache src/Blazix.Registry/Icons/RegistryIcons.g.cs`. `add` turns each placeholder into the inline `<svg>` of the app's `iconLibrary` and keeps its other attributes ([`src/Blazix.Cli/Icons.cs`](src/Blazix.Cli/Icons.cs)); the docs render Lucide. A placeholder must be `aria-hidden="true"`, named (`role` and `aria-label`, or `aria-labelledby`), or given its attributes by `@attributes`. The docs build checks this, and that every name exists.
 - **RTL in a component**: write physical classes (`ml-2`, `left-0`), as shadcn/ui does; `add` with `"rtl": true` maps them ([`src/Blazix.Cli/Rtl.cs`](src/Blazix.Cli/Rtl.cs)). Mark icons that point along the line with `cn-rtl-flip`, which becomes `rtl:rotate-180` (without `"rtl"` it stays as a class no CSS matches, so `migrate rtl` can find the icon later). Primitives' JS reads the computed CSS `direction` for keys, pointer movement and placement; what C# decides while rendering takes the cascaded `TextDirection` from `DirectionProvider`.
 - **A primitive**: put it in its own folder in `src/Blazix.Primitives`, then add a page and its examples to `docs/Blazix.Docs.Client/Primitives` and a link to `DocsNav.Primitives`. Document its data attributes and CSS variables in tables on the page.
 
@@ -104,11 +112,11 @@ dnx Blazix.Cli init && dnx Blazix.Cli add dropdown-menu
 
 ## Releasing
 
-Both packages share one version (`<Version>` in `Directory.Build.props`), and they always release together.
+All the packages (Blazix.Primitives, Blazix.Cli, Blazix.Icons and the six set packages) share one version (`<Version>` in `Directory.Build.props`), and they always release together.
 CLI `0.3.0` adds `Blazix.Primitives 0.3.0` and copies components written against exactly that version.
 Data attributes and CSS variables are public API, so treat changes to them as breaking (SemVer).
 
-Push a tag like `v0.2.0` and [`.github/workflows/release.yml`](.github/workflows/release.yml) packs both packages at that version and pushes them to NuGet. It needs a `NUGET_API_KEY` secret.
+Push a tag like `v0.2.0` and [`.github/workflows/release.yml`](.github/workflows/release.yml) packs them at that version and pushes them to NuGet. It needs a `NUGET_API_KEY` secret.
 
 ## Not done yet
 

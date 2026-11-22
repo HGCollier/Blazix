@@ -12,10 +12,8 @@
         {
             <Blazix.Primitives.ComboboxTrigger data-slot="input-group-button" data-size="icon-xs" disabled="@Disabled"
                                              class="@ButtonVariants.Get(ButtonVariant.Ghost, ButtonSize.Default, Cn("flex items-center gap-2 text-sm shadow-none size-6 rounded-[calc(var(--radius)-3px)] p-0 has-[>svg]:p-0", "group-has-data-[slot=combobox-clear]/input-group:hidden data-pressed:bg-transparent [&_svg:not([class*='size-'])]:size-4"))">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="pointer-events-none size-4 text-muted-foreground">
-                    <path d="m6 9 6 6 6-6" />
-                </svg>
+                <IconPlaceholder Lucide="chevron-down" Tabler="chevron-down" Hugeicons="arrow-down-01" Phosphor="caret-down" Remixicon="arrow-down-s-line" FontAwesome="chevron-down"
+                                 aria-hidden="true" class="pointer-events-none size-4 text-muted-foreground" />
             </Blazix.Primitives.ComboboxTrigger>
         }
         @if (ShowClear)

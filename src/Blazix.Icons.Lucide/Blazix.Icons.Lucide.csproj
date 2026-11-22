@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Lucide (lucide-static 1.77.0 on npm), generated on build: see ../Blazix.Icons.Set.targets. -->
+  <PropertyGroup>
+    <IconSet>lucide</IconSet>
+    <PackageId>Blazix.Icons.Lucide</PackageId>
+    <Description>Lucide for Blazor: 2,400 icons as inline SVG, for Blazix.Icons' Icon component. Trimming keeps only the icons you use.</Description>
+    <!-- Blazix's code is MIT; the icons are ISC (icons derived from Feather: MIT). -->
+    <PackageLicenseExpression>MIT AND ISC</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <Import Project="..\Blazix.Icons.Set.targets" />
+
+</Project>

@@ -6,7 +6,7 @@
             <CardAction Class="flex items-center gap-2">
                 <Button Type="button" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="Reset animated messages"
                         Disabled="@(_chat.Messages.Count == 0 || _chat.IsBusy)" @onclick="_chat.Reset">
-                    <Icon Name="rotate-cw" />
+                    <Icon Data="LucideIcons.RotateCw" />
                 </Button>
             </CardAction>
         </CardHeader>
@@ -15,7 +15,7 @@
             {
                 <Empty Class="h-full">
                     <EmptyHeader>
-                        <EmptyMedia Variant="EmptyMediaVariant.Icon"><Icon Name="message-circle-dashed" /></EmptyMedia>
+                        <EmptyMedia Variant="EmptyMediaVariant.Icon"><Icon Data="LucideIcons.MessageCircleDashed" /></EmptyMedia>
                         <EmptyTitle>No Messages Yet</EmptyTitle>
                         <EmptyDescription>Click the button below to send the first message.</EmptyDescription>
                     </EmptyHeader>
@@ -54,7 +54,7 @@
             </Select>
             <Button Type="button" Size="ButtonSize.Icon" Class="ml-auto" Disabled="@(_chat.NextMessage is null || _chat.IsBusy)"
                     @onclick="() => _chat.SendAsync(() => InvokeAsync(StateHasChanged))">
-                <Icon Name="arrow-up" />
+                <Icon Data="LucideIcons.ArrowUp" />
                 <span class="sr-only">Send Message</span>
             </Button>
         </CardFooter>

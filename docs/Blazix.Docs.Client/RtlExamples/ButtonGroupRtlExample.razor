@@ -1,7 +1,7 @@
 <ButtonGroup>
     <ButtonGroup Class="hidden sm:flex">
         <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="@T.GoBack">
-            <Icon Name="arrow-left" class="rtl:rotate-180" />
+            <Icon Data="LucideIcons.ArrowLeft" class="rtl:rotate-180" />
         </Button>
     </ButtonGroup>
     <ButtonGroup>
@@ -12,21 +12,21 @@
         <Button Variant="ButtonVariant.Outline">@T.Snooze</Button>
         <DropdownMenu>
             <DropdownMenuTrigger Class="@ButtonVariants.Get(ButtonVariant.Outline, ButtonSize.Icon)" aria-label="@T.MoreOptions">
-                <Icon Name="ellipsis" />
+                <Icon Data="LucideIcons.Ellipsis" />
             </DropdownMenuTrigger>
             @* End is the reading direction's end: the trigger's left edge in RTL. *@
             <DropdownMenuContent Align="Align.End" Class="w-40">
                 <DropdownMenuGroup>
-                    <DropdownMenuItem><Icon Name="mail-check" /> @T.MarkAsRead</DropdownMenuItem>
-                    <DropdownMenuItem><Icon Name="archive" /> @T.Archive</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Data="LucideIcons.MailCheck" /> @T.MarkAsRead</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Data="LucideIcons.Archive" /> @T.Archive</DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem><Icon Name="clock" /> @T.Snooze</DropdownMenuItem>
-                    <DropdownMenuItem><Icon Name="calendar-plus" /> @T.AddToCalendar</DropdownMenuItem>
-                    <DropdownMenuItem><Icon Name="list-filter" /> @T.AddToList</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Data="LucideIcons.Clock" /> @T.Snooze</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Data="LucideIcons.CalendarPlus" /> @T.AddToCalendar</DropdownMenuItem>
+                    <DropdownMenuItem><Icon Data="LucideIcons.ListFilter" /> @T.AddToList</DropdownMenuItem>
                     <DropdownMenuSub>
-                        <DropdownMenuSubTrigger><Icon Name="tag" /> @T.LabelAs</DropdownMenuSubTrigger>
+                        <DropdownMenuSubTrigger><Icon Data="LucideIcons.Tag" /> @T.LabelAs</DropdownMenuSubTrigger>
                         <DropdownMenuSubContent>
                             <DropdownMenuRadioGroup @bind-Value="_label">
                                 <DropdownMenuRadioItem Value="personal">@T.Personal</DropdownMenuRadioItem>
@@ -38,7 +38,7 @@
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem Destructive="true"><Icon Name="trash-2" /> @T.Trash</DropdownMenuItem>
+                    <DropdownMenuItem Destructive="true"><Icon Data="LucideIcons.Trash2" /> @T.Trash</DropdownMenuItem>
                 </DropdownMenuGroup>
             </DropdownMenuContent>
         </DropdownMenu>

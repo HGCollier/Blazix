@@ -171,7 +171,8 @@ export function createToasts(dotnet, hostId, initial) {
       setVar(toast, '--toast-offset-y', `${offset}px`);
       offset += heights[index];
     });
-    viewport()?.style.setProperty('--toast-frontmost-height', `${heights[0] ?? 0}px`);
+    // Keep the last height while the last toast closes: at 0px it would squash as it slides out.
+    if (list.length) viewport()?.style.setProperty('--toast-frontmost-height', `${heights[0]}px`);
     for (const toast of toasts()) {
       const id = toast.dataset.blazixToast ?? '';
       const timeout = Number(toast.dataset.timeout ?? 0);

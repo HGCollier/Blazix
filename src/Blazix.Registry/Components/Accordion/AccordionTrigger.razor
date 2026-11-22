@@ -7,20 +7,14 @@
                                       class="@Cn(
                                           "group/accordion-trigger relative flex flex-1 items-start justify-between rounded-lg border border-transparent py-2.5 text-left text-sm font-medium transition-all outline-none " +
                                           "hover:underline focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:after:border-ring " +
-                                          "aria-disabled:pointer-events-none aria-disabled:opacity-50 " +
+                                          "data-disabled:pointer-events-none data-disabled:opacity-50 " +
                                           "**:data-[slot=accordion-trigger-icon]:ml-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
                                           Class)">
         @ChildContent
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-             data-slot="accordion-trigger-icon" class="pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden">
-            <path d="m6 9 6 6 6-6" />
-        </svg>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-             data-slot="accordion-trigger-icon" class="pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline">
-            <path d="m18 15-6-6-6 6" />
-        </svg>
+        <IconPlaceholder Lucide="chevron-down" Tabler="chevron-down" Hugeicons="arrow-down-01" Phosphor="caret-down" Remixicon="arrow-down-s-line" FontAwesome="chevron-down"
+                         aria-hidden="true" data-slot="accordion-trigger-icon" class="pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden" />
+        <IconPlaceholder Lucide="chevron-up" Tabler="chevron-up" Hugeicons="arrow-up-01" Phosphor="caret-up" Remixicon="arrow-up-s-line" FontAwesome="chevron-up"
+                         aria-hidden="true" data-slot="accordion-trigger-icon" class="pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline" />
     </Blazix.Primitives.AccordionTrigger>
 </AccordionHeader>
 

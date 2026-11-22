@@ -93,6 +93,7 @@ new MutationObserver((records) => {
 /**
  * @param {{
  *   trigger: () => HTMLElement | null,
+ *   anchor?: () => HTMLElement | null,
  *   requestClose: (reason: string, event?: Event) => void,
  *   onShown?: () => void,
  * }} config
@@ -155,7 +156,12 @@ export function createPopup(config) {
   const popup = () => byId(options?.popupId);
   const anchor = () => {
     if (options?.anchorPoint) return options.anchorPoint;
-    return byId(options?.anchorId) ?? config.trigger();
+    // An anchor inside the popup (a combobox's input in its popup) moves with it, and following it moves the popup
+    // again, without end: skip it for the next one.
+    const el = popup();
+    const outside = (/** @type {HTMLElement | null | undefined} */ a) => (a && !el?.contains(a) ? a : null);
+    return outside(byId(options?.placement?.anchorId ?? options?.anchorId)) ?? outside(config.trigger())
+      ?? config.anchor?.() ?? config.trigger();
   };
   // Backdrops render in the top layer too, but pressing one is pressing outside the popup.
   const isBackdrop = (/** @type {HTMLElement} */ host) => (options?.backdrops ?? []).includes(host.id);

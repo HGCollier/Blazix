@@ -21,7 +21,7 @@
                                     {
                                         <a href="@Previous.Href"
                                            class="@ButtonVariants.Get(ButtonVariant.Secondary, ButtonSize.Icon, "size-8 shadow-none md:size-7 pointer-coarse:relative pointer-coarse:after:absolute pointer-coarse:after:-inset-2")">
-                                            <Icon Name="arrow-left" />
+                                            <Icon Data="LucideIcons.ArrowLeft" />
                                             <span class="sr-only">Previous: @Previous.Title</span>
                                         </a>
                                     }
@@ -30,7 +30,7 @@
                                         <a href="@Next.Href"
                                            class="@ButtonVariants.Get(ButtonVariant.Secondary, ButtonSize.Icon, "size-8 shadow-none md:size-7 pointer-coarse:relative pointer-coarse:after:absolute pointer-coarse:after:-inset-2")">
                                             <span class="sr-only">Next: @Next.Title</span>
-                                            <Icon Name="arrow-right" />
+                                            <Icon Data="LucideIcons.ArrowRight" />
                                         </a>
                                     }
                                 </div>
@@ -46,7 +46,7 @@
                                 @foreach (var link in _related)
                                 {
                                     <a href="@link.Href" class="@BadgeVariants.Get(BadgeVariant.Secondary, "rounded-full")">
-                                        @link.Title @(_inPrimitives ? "component" : "primitive") <Icon Name="arrow-right" />
+                                        @link.Title @(_inPrimitives ? "component" : "primitive") <Icon Data="LucideIcons.ArrowRight" />
                                     </a>
                                 }
                             </div>
@@ -60,13 +60,13 @@
                     @if (Previous is not null)
                     {
                         <a href="@Previous.Href" class="@ButtonVariants.Get(ButtonVariant.Secondary, ButtonSize.Sm, "shadow-none")">
-                            <Icon Name="arrow-left" /> @Previous.Title
+                            <Icon Data="LucideIcons.ArrowLeft" /> @Previous.Title
                         </a>
                     }
                     @if (Next is not null)
                     {
                         <a href="@Next.Href" class="@ButtonVariants.Get(ButtonVariant.Secondary, ButtonSize.Sm, "ml-auto shadow-none")">
-                            @Next.Title <Icon Name="arrow-right" />
+                            @Next.Title <Icon Data="LucideIcons.ArrowRight" />
                         </a>
                     }
                 </div>

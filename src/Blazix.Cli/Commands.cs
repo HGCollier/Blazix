@@ -9,13 +9,17 @@ internal static class Commands
         blazix — copy Blazix components into your Blazor project as source you own.
 
         Usage:
-          blazix init [--project <path>] [--dir Components/UI] [--rtl] [--skip-package]
+          blazix init [--project <path>] [--dir Components/UI] [--rtl] [--icon-library <name>] [--skip-package]
           blazix add <item...> [--project <path>] [--overwrite] [--skip-package]
           blazix list [--project <path>]
           blazix migrate rtl [path] [--project <path>] [--yes]
+          blazix migrate icons [path] --to <name> [--from <name>] [--project <path>]
 
         --rtl sets "rtl": true in blazix.json: components are copied with logical classes
         (ms-2, start-0, text-start), so they lay out right to left under dir="rtl".
+
+        --icon-library sets "iconLibrary" in blazix.json: the icon set the components are copied
+        with, as inline SVG: lucide (the default), tabler, hugeicons, phosphor, remixicon, fontawesome.
 
         Run without installing:  dnx Blazix.Cli <command>
         """;
@@ -110,10 +114,16 @@ internal static class Commands
             project.EnsurePackage("Blazix.Primitives", version);
         }
 
-        // Running init again keeps the record of what's installed.
+        // Running init again keeps the record of what's installed, and the icon library unless one is given.
         var configPath = Path.Combine(project.Directory, ConfigFile);
-        var installed = File.Exists(configPath) ? JsonNode.Parse(File.ReadAllText(configPath))?["installed"]?.DeepClone() : null;
-        var config = new JsonObject { ["namespace"] = ns, ["componentsDir"] = dir, ["version"] = version, ["rtl"] = options.Rtl, ["installed"] = installed ?? new JsonObject() };
+        var existing = File.Exists(configPath) ? JsonNode.Parse(File.ReadAllText(configPath)) : null;
+        var installed = existing?["installed"]?.DeepClone();
+        var iconLibrary = Icons.Library(options.IconLibrary ?? (string?)existing?["iconLibrary"]);
+        var config = new JsonObject
+        {
+            ["namespace"] = ns, ["componentsDir"] = dir, ["version"] = version, ["rtl"] = options.Rtl, ["iconLibrary"] = iconLibrary,
+            ["installed"] = installed ?? new JsonObject(),
+        };
         WriteConfig(configPath, config);
         Console.WriteLine($"  wrote {ConfigFile}");
 
@@ -125,6 +135,8 @@ internal static class Commands
               dotnet watch
 
             {output} is now generated on build; you can add it to .gitignore.
+            The components come with {iconLibrary} icons, as inline SVG. For icons of your own:
+              dotnet add package Blazix.Icons.{IconPackage(iconLibrary)}
             """);
         if (styles != project)
         {
@@ -199,13 +211,14 @@ internal static class Commands
         var dir = (string)config["componentsDir"]!;
         var installed = config["installed"] as JsonObject ?? [];
         var rtl = (bool?)config["rtl"] ?? false;
+        var iconLibrary = Icons.Library((string?)config["iconLibrary"]);
 
         var plan = Registry.Resolve(options.Items);
         foreach (var item in plan)
         {
             foreach (var file in item.Files)
             {
-                var content = Registry.RewriteComponentNamespace(Registry.Read("Components/" + file), ns);
+                var content = Icons.Transform(file, Registry.RewriteComponentNamespace(Registry.Read("Components/" + file), ns), iconLibrary);
                 if (rtl)
                 {
                     content = Rtl.Transform(file, content);
@@ -323,13 +336,84 @@ internal static class Commands
         return 0;
     }
 
-    /// <summary>Copies the registry's components mapped for RTL, in another namespace: the docs render their RTL examples from it.</summary>
+    /// <summary>
+    /// shadcn's migrate icons: swaps the registry's icons in components copied with one icon library for another's,
+    /// then sets <c>iconLibrary</c> so later adds match. A path migrates just those files and leaves blazix.json alone.
+    /// </summary>
+    public static int MigrateIcons(Options options)
+    {
+        var project = ComponentsProject(options);
+        var configPath = Path.Combine(project.Directory, ConfigFile);
+        if (!File.Exists(configPath))
+        {
+            throw new CliException($"no {ConfigFile} found. Run 'blazix init' first.");
+        }
+        var config = JsonNode.Parse(File.ReadAllText(configPath))!.AsObject();
+        if (options.To is null)
+        {
+            throw new CliException($"say which icon library to migrate to, e.g. --to tabler. Available: {string.Join(", ", Icons.Libraries)}");
+        }
+        var from = Icons.Library(options.From ?? (string?)config["iconLibrary"]);
+        var to = Icons.Library(options.To);
+        if (from == to)
+        {
+            throw new CliException($"your components already use {to} icons. Pass --from if they came with another library.");
+        }
+
+        var root = options.Items.Count > 0
+            ? Path.GetFullPath(options.Items[0], project.Directory)
+            : Path.Combine(project.Directory, (string)config["componentsDir"]!);
+        if (!File.Exists(root) && !Directory.Exists(root))
+        {
+            throw new CliException($"not found: {root}");
+        }
+        string[] files = File.Exists(root) ? [root] : [.. Directory.EnumerateFiles(root, "*.razor", SearchOption.AllDirectories).Where(IsComponentSource)];
+
+        int swapped = 0, skipped = 0, changed = 0;
+        foreach (var file in files)
+        {
+            var source = File.ReadAllText(file);
+            var migrated = Icons.Migrate(source, from, to, out var fileSwapped, out var fileSkipped);
+            swapped += fileSwapped;
+            skipped += fileSkipped;
+            if (migrated != source)
+            {
+                File.WriteAllText(file, migrated);
+                changed++;
+                Console.WriteLine($"  migrated {Path.GetRelativePath(project.Directory, file)} ({fileSwapped} icon(s))");
+            }
+        }
+
+        if (options.Items.Count == 0)
+        {
+            config["iconLibrary"] = to;
+            WriteConfig(configPath, config);
+        }
+        Console.WriteLine($"\nSwapped {swapped} {from} icon(s) for {to} in {changed} of {files.Length} file(s)."
+            + (options.Items.Count == 0 ? $" Set \"iconLibrary\": \"{to}\" in {ConfigFile}." : ""));
+        if (skipped > 0)
+        {
+            Console.WriteLine($"Left {skipped} other <svg>(s) as they are: your own icons, or ones you've changed.");
+        }
+        return 0;
+    }
+
+    /// <summary>
+    /// Copies the registry's components as <c>add</c> would with <c>"rtl": true</c> (and Lucide icons), in another
+    /// namespace: the docs render their RTL examples from it. Fails the docs build on a bad IconPlaceholder.
+    /// </summary>
     public static int RtlCopy(string from, string to, string ns)
     {
-        foreach (var file in Directory.EnumerateFiles(from, "*.*", SearchOption.AllDirectories).Where(IsComponentSource))
+        var sources = Directory.EnumerateFiles(from, "*.*", SearchOption.AllDirectories).Where(IsComponentSource).ToList();
+        var problems = sources.SelectMany(f => Icons.Check(Path.GetRelativePath(from, f), File.ReadAllText(f))).ToList();
+        if (problems.Count > 0)
+        {
+            throw new CliException("the components' icons:\n  " + string.Join("\n  ", problems));
+        }
+        foreach (var file in sources)
         {
             var relative = Path.GetRelativePath(from, file);
-            var content = Rtl.Transform(relative, Registry.RewriteComponentNamespace(File.ReadAllText(file), ns));
+            var content = Rtl.Transform(relative, Icons.Transform(relative, Registry.RewriteComponentNamespace(File.ReadAllText(file), ns), Icons.Default));
             var target = Path.Combine(to, relative);
             Directory.CreateDirectory(Path.GetDirectoryName(target)!);
             if (!File.Exists(target) || File.ReadAllText(target) != content)
@@ -339,6 +423,13 @@ internal static class Commands
         }
         return 0;
     }
+
+    /// <summary>The Blazix.Icons.* package for an icon library: Blazix.Icons.Lucide for lucide.</summary>
+    private static string IconPackage(string library) => library switch
+    {
+        "fontawesome" => "FontAwesome",
+        _ => char.ToUpperInvariant(library[0]) + library[1..],
+    };
 
     private static bool IsComponentSource(string file) =>
         Path.GetExtension(file) is ".razor" or ".cs" && !file.Replace(Path.DirectorySeparatorChar, '/').Split('/').Any(p => p is "bin" or "obj");

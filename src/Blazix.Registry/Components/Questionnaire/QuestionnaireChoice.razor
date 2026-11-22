@@ -20,10 +20,8 @@
           class="pointer-events-none relative flex size-4 shrink-0 translate-y-[--spacing(0.45)] items-center justify-center rounded-[4px] border border-input group-has-data-[slot=questionnaire-choice-description]/questionnaire-choice:translate-y-0.5 group-data-[type=radio]/questionnaire-choice:rounded-full group-data-checked/questionnaire-choice:border-primary group-data-checked/questionnaire-choice:bg-primary group-data-checked/questionnaire-choice:text-primary-foreground dark:bg-input/15 dark:group-data-checked/questionnaire-choice:bg-primary">
         <span data-slot="questionnaire-choice-indicator-dot"
               class="hidden size-2 rounded-full bg-primary-foreground group-data-[type=checkbox]/questionnaire-choice:hidden group-data-checked/questionnaire-choice:block"></span>
-        <svg data-slot="questionnaire-choice-indicator-check" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-             class="hidden size-3.5 group-data-[type=radio]/questionnaire-choice:hidden group-data-checked/questionnaire-choice:block">
-            <path d="M20 6 9 17l-5-5" />
-        </svg>
+        <IconPlaceholder Lucide="check" Tabler="check" Hugeicons="tick-02" Phosphor="check" Remixicon="check-line" FontAwesome="check"
+                         data-slot="questionnaire-choice-indicator-check" aria-hidden="true" class="hidden size-3.5 group-data-[type=radio]/questionnaire-choice:hidden group-data-checked/questionnaire-choice:block" />
     </span>
     <Blazix.Primitives.QuestionnaireChoiceLabel data-slot="questionnaire-choice-label" class="flex min-w-0 flex-1 flex-col gap-0.5 leading-snug">
         @ChildContent

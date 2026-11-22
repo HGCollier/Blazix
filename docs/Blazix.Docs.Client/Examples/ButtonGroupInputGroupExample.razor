@@ -1,7 +1,7 @@
 <ButtonGroup Class="[--radius:9999rem]">
     <ButtonGroup>
         <Button Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="Add">
-            <Icon Name="plus" />
+            <Icon Data="LucideIcons.Plus" />
         </Button>
     </ButtonGroup>
     <ButtonGroup>
@@ -14,7 +14,7 @@
                             <InputGroupButton @attributes="trigger.Attributes" @onclick="ToggleVoice" Size="InputGroupButtonSize.IconXs" aria-label="Voice mode"
                                               data-active="@(_voiceEnabled ? "true" : "false")" aria-pressed="@(_voiceEnabled ? "true" : "false")"
                                               Class="data-[active=true]:bg-orange-100 data-[active=true]:text-orange-700 dark:data-[active=true]:bg-orange-800 dark:data-[active=true]:text-orange-100">
-                                <Icon Name="audio-lines" />
+                                <Icon Data="LucideIcons.AudioLines" />
                             </InputGroupButton>
                         </Render>
                     </TooltipTrigger>

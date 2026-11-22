@@ -17,14 +17,14 @@
             <button type="button" class="@ButtonVariants.Get(ButtonVariant, ButtonSize.Default, "size-(--cell-size) p-0 select-none aria-disabled:opacity-50 rdp-button_previous")"
                     tabindex="@(_previousMonth is null ? "-1" : null)" aria-disabled="@(_previousMonth is null ? "true" : null)"
                     aria-label="Go to the Previous Month" @onclick="() => GoToMonthAsync(_previousMonth)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-4 cn-rtl-flip rdp-chevron"><path d="m15 18-6-6 6-6" /></svg>
+                <IconPlaceholder Lucide="chevron-left" Tabler="chevron-left" Hugeicons="arrow-left-01" Phosphor="caret-left" Remixicon="arrow-left-s-line" FontAwesome="chevron-left"
+                                 aria-hidden="true" class="size-4 cn-rtl-flip rdp-chevron" />
             </button>
             <button type="button" class="@ButtonVariants.Get(ButtonVariant, ButtonSize.Default, "size-(--cell-size) p-0 select-none aria-disabled:opacity-50 rdp-button_next")"
                     tabindex="@(_nextMonth is null ? "-1" : null)" aria-disabled="@(_nextMonth is null ? "true" : null)"
                     aria-label="Go to the Next Month" @onclick="() => GoToMonthAsync(_nextMonth)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-4 cn-rtl-flip rdp-chevron"><path d="m9 18 6-6-6-6" /></svg>
+                <IconPlaceholder Lucide="chevron-right" Tabler="chevron-right" Hugeicons="arrow-right-01" Phosphor="caret-right" Remixicon="arrow-right-s-line" FontAwesome="chevron-right"
+                                 aria-hidden="true" class="size-4 cn-rtl-flip rdp-chevron" />
             </button>
         </nav>
         @for (var index = 0; index < _months.Count; index++)
@@ -242,7 +242,7 @@
 
     // react-day-picker's dir prop: Left and Right swap in right-to-left, where the week runs from the right.
     private bool Rtl => AdditionalAttributes?.TryGetValue("dir", out var dir) == true
-        ? string.Equals(dir?.ToString(), "rtl", StringComparison.OrdinalIgnoreCase)
+        ? string.Equals(Convert.ToString(dir, CultureInfo.InvariantCulture), "rtl", StringComparison.OrdinalIgnoreCase)
         : Direction == TextDirection.Rtl;
 
     private string? ModeName => Mode?.ToString().ToLowerInvariant();
@@ -652,8 +652,8 @@
             </select>
             <span class="font-medium select-none flex items-center gap-1 rounded-(--cell-radius) text-sm [&>svg]:size-3.5 [&>svg]:text-muted-foreground rdp-caption_label" aria-hidden="true">
                 @list.Find(o => o.Value == value).Label
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="size-4 rdp-chevron"><path d="m6 9 6 6 6-6" /></svg>
+                <IconPlaceholder Lucide="chevron-down" Tabler="chevron-down" Hugeicons="arrow-down-01" Phosphor="caret-down" Remixicon="arrow-down-s-line" FontAwesome="chevron-down"
+                                 width="18" height="18" aria-hidden="true" class="size-4 rdp-chevron" />
             </span>
         </span>;
     }

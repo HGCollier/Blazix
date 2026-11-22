@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Tabler Icons (@tabler/icons 3.52.0 on npm), generated on build: see ../Blazix.Icons.Set.targets. -->
+  <PropertyGroup>
+    <IconSet>tabler</IconSet>
+    <PackageId>Blazix.Icons.Tabler</PackageId>
+    <Description>Tabler Icons for Blazor: 6,500 icons as inline SVG, for Blazix.Icons' Icon component. Trimming keeps only the icons you use.</Description>
+    <!-- Blazix's code is MIT; the icons are MIT. -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <Import Project="..\Blazix.Icons.Set.targets" />
+
+</Project>

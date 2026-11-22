@@ -4,43 +4,43 @@
         <DropdownMenuGroup>
             <DropdownMenuLabel>File</DropdownMenuLabel>
             <DropdownMenuItem>
-                <Icon Name="file" />
+                <Icon Data="LucideIcons.File" />
                 New File
                 <DropdownMenuShortcut>⌘N</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem>
-                <Icon Name="folder" />
+                <Icon Data="LucideIcons.Folder" />
                 New Folder
                 <DropdownMenuShortcut>⇧⌘N</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
-                    <Icon Name="folder-open" />
+                    <Icon Data="LucideIcons.FolderOpen" />
                     Open Recent
                 </DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>
                     <DropdownMenuGroup>
                         <DropdownMenuLabel>Recent Projects</DropdownMenuLabel>
                         <DropdownMenuItem>
-                            <Icon Name="file-code" />
+                            <Icon Data="LucideIcons.FileCode" />
                             Project Alpha
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <Icon Name="file-code" />
+                            <Icon Data="LucideIcons.FileCode" />
                             Project Beta
                         </DropdownMenuItem>
                         <DropdownMenuSub>
                             <DropdownMenuSubTrigger>
-                                <Icon Name="ellipsis" />
+                                <Icon Data="LucideIcons.Ellipsis" />
                                 More Projects
                             </DropdownMenuSubTrigger>
                             <DropdownMenuSubContent>
                                 <DropdownMenuItem>
-                                    <Icon Name="file-code" />
+                                    <Icon Data="LucideIcons.FileCode" />
                                     Project Gamma
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    <Icon Name="file-code" />
+                                    <Icon Data="LucideIcons.FileCode" />
                                     Project Delta
                                 </DropdownMenuItem>
                             </DropdownMenuSubContent>
@@ -49,7 +49,7 @@
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                         <DropdownMenuItem>
-                            <Icon Name="folder-search" />
+                            <Icon Data="LucideIcons.FolderSearch" />
                             Browse...
                         </DropdownMenuItem>
                     </DropdownMenuGroup>
@@ -57,12 +57,12 @@
             </DropdownMenuSub>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-                <Icon Name="save" />
+                <Icon Data="LucideIcons.Save" />
                 Save
                 <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem>
-                <Icon Name="download" />
+                <Icon Data="LucideIcons.Download" />
                 Export
                 <DropdownMenuShortcut>⇧⌘E</DropdownMenuShortcut>
             </DropdownMenuItem>
@@ -71,16 +71,16 @@
         <DropdownMenuGroup>
             <DropdownMenuLabel>View</DropdownMenuLabel>
             <DropdownMenuCheckboxItem @bind-Checked="_email">
-                <Icon Name="eye" />
+                <Icon Data="LucideIcons.Eye" />
                 Show Sidebar
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem @bind-Checked="_sms">
-                <Icon Name="layout" />
+                <Icon Data="LucideIcons.Layout" />
                 Show Status Bar
             </DropdownMenuCheckboxItem>
             <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
-                    <Icon Name="palette" />
+                    <Icon Data="LucideIcons.Palette" />
                     Theme
                 </DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>
@@ -88,15 +88,15 @@
                         <DropdownMenuLabel>Appearance</DropdownMenuLabel>
                         <DropdownMenuRadioGroup @bind-Value="_theme">
                             <DropdownMenuRadioItem Value="light">
-                                <Icon Name="sun" />
+                                <Icon Data="LucideIcons.Sun" />
                                 Light
                             </DropdownMenuRadioItem>
                             <DropdownMenuRadioItem Value="dark">
-                                <Icon Name="moon" />
+                                <Icon Data="LucideIcons.Moon" />
                                 Dark
                             </DropdownMenuRadioItem>
                             <DropdownMenuRadioItem Value="system">
-                                <Icon Name="monitor" />
+                                <Icon Data="LucideIcons.Monitor" />
                                 System
                             </DropdownMenuRadioItem>
                         </DropdownMenuRadioGroup>
@@ -108,44 +108,44 @@
         <DropdownMenuGroup>
             <DropdownMenuLabel>Account</DropdownMenuLabel>
             <DropdownMenuItem>
-                <Icon Name="user" />
+                <Icon Data="LucideIcons.User" />
                 Profile
                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem>
-                <Icon Name="credit-card" />
+                <Icon Data="LucideIcons.CreditCard" />
                 Billing
             </DropdownMenuItem>
             <DropdownMenuSub>
                 <DropdownMenuSubTrigger>
-                    <Icon Name="settings" />
+                    <Icon Data="LucideIcons.Settings" />
                     Settings
                 </DropdownMenuSubTrigger>
                 <DropdownMenuSubContent>
                     <DropdownMenuGroup>
                         <DropdownMenuLabel>Preferences</DropdownMenuLabel>
                         <DropdownMenuItem>
-                            <Icon Name="keyboard" />
+                            <Icon Data="LucideIcons.Keyboard" />
                             Keyboard Shortcuts
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <Icon Name="languages" />
+                            <Icon Data="LucideIcons.Languages" />
                             Language
                         </DropdownMenuItem>
                         <DropdownMenuSub>
                             <DropdownMenuSubTrigger>
-                                <Icon Name="bell" />
+                                <Icon Data="LucideIcons.Bell" />
                                 Notifications
                             </DropdownMenuSubTrigger>
                             <DropdownMenuSubContent>
                                 <DropdownMenuGroup>
                                     <DropdownMenuLabel>Notification Types</DropdownMenuLabel>
                                     <DropdownMenuCheckboxItem @bind-Checked="_push">
-                                        <Icon Name="bell" />
+                                        <Icon Data="LucideIcons.Bell" />
                                         Push Notifications
                                     </DropdownMenuCheckboxItem>
                                     <DropdownMenuCheckboxItem @bind-Checked="_email">
-                                        <Icon Name="mail" />
+                                        <Icon Data="LucideIcons.Mail" />
                                         Email Notifications
                                     </DropdownMenuCheckboxItem>
                                 </DropdownMenuGroup>
@@ -155,7 +155,7 @@
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                         <DropdownMenuItem>
-                            <Icon Name="shield" />
+                            <Icon Data="LucideIcons.Shield" />
                             Privacy &amp; Security
                         </DropdownMenuItem>
                     </DropdownMenuGroup>
@@ -165,18 +165,18 @@
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
             <DropdownMenuItem>
-                <Icon Name="circle-question-mark" />
+                <Icon Data="LucideIcons.CircleQuestionMark" />
                 Help &amp; Support
             </DropdownMenuItem>
             <DropdownMenuItem>
-                <Icon Name="file-text" />
+                <Icon Data="LucideIcons.FileText" />
                 Documentation
             </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
             <DropdownMenuItem Destructive="true">
-                <Icon Name="log-out" />
+                <Icon Data="LucideIcons.LogOut" />
                 Sign Out
                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </DropdownMenuItem>

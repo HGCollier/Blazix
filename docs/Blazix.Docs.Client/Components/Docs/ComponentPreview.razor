@@ -27,9 +27,9 @@
                         </SelectTrigger>
                         <SelectContent AlignItemWithTrigger="false">
                             <SelectGroup>
-                                @foreach (var language in Languages)
+                                @foreach (var option in Languages)
                                 {
-                                    <SelectItem Value="@language.Value">@language.Label</SelectItem>
+                                    <SelectItem Value="@option.Value">@option.Label</SelectItem>
                                 }
                             </SelectGroup>
                         </SelectContent>
@@ -89,7 +89,7 @@
             {
                 <div @ref="_code" data-slot="code" data-mobile-code-visible="@(_codeVisible ? "true" : "false")"
                      class="@("relative overflow-hidden **:data-[slot=copy-button]:right-4 **:data-[slot=copy-button]:hidden data-[mobile-code-visible=true]:**:data-[slot=copy-button]:flex [&_[data-code-figure]]:m-0! [&_[data-code-figure]]:rounded-t-none [&_[data-code-figure]]:border-t [&_pre]:max-h-72")">
-                    @if (_codeVisible)
+                    @if (_codeVisible || ComponentSource.FitsWithoutScrolling(source ?? Sources.Example(Name), ComponentSource.PreviewLines))
                     {
                         @if (Rtl)
                         {

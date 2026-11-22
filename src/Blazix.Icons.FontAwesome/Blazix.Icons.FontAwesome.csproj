@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Font Awesome Free (@fortawesome/fontawesome-free 7.3.1 on npm), generated on build: see ../Blazix.Icons.Set.targets. -->
+  <PropertyGroup>
+    <IconSet>fontawesome</IconSet>
+    <PackageId>Blazix.Icons.FontAwesome</PackageId>
+    <Description>Font Awesome Free for Blazor: 2,800 icons as inline SVG, for Blazix.Icons' Icon component. Trimming keeps only the icons you use.</Description>
+    <!-- Blazix's code is MIT; the icons are CC BY 4.0. -->
+    <PackageLicenseExpression>MIT AND CC-BY-4.0</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <Import Project="..\Blazix.Icons.Set.targets" />
+
+</Project>

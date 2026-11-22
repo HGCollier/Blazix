@@ -17,7 +17,7 @@
         </DialogHeader>
         <div class="flex flex-col">
         <div class="flex h-9 items-center gap-2 rounded-md border border-input bg-input/10 px-3 has-[input:focus-visible]:border-ring has-[input:focus-visible]:ring-3 has-[input:focus-visible]:ring-ring/50 dark:bg-input/20">
-            <Icon Name="search" class="size-4 shrink-0 opacity-50" />
+            <Icon Data="LucideIcons.Search" class="size-4 shrink-0 opacity-50" />
             <input @ref="_input" id="docs-search-input" type="text" role="combobox" aria-label="Search documentation" aria-expanded="true" aria-controls="docs-search-list"
                    aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="Search documentation..."
                    class="flex h-9 w-full bg-transparent py-0 text-sm outline-hidden placeholder:text-muted-foreground" @oninput="OnQuery" />
@@ -54,7 +54,7 @@
         <div @ref="_footer"
              class="absolute inset-x-0 bottom-0 z-20 flex h-10 items-center gap-2 rounded-b-xl border-t border-t-neutral-100 bg-neutral-50 px-4 text-xs font-medium text-muted-foreground dark:border-t-neutral-700 dark:bg-neutral-800">
             <div class="flex items-center gap-2">
-                <SearchKbd><Icon Name="corner-down-left" /></SearchKbd>
+                <SearchKbd><Icon Data="LucideIcons.CornerDownLeft" /></SearchKbd>
                 <span data-search-action>Go to Page</span>
             </div>
             <Separator Orientation="Orientation.Vertical" Class="h-4!" data-search-copy hidden />

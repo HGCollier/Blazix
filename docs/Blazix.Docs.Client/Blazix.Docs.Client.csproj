@@ -34,10 +34,10 @@
       The sources the pages show: each example, each registry file the installation steps list, and the pages
       themselves for the search dialog's full-text results. Added by a target that skips design-time builds, so
       they exist only during a real build: an IDE would take every embedded .razor file for another component
-      (the registry's, and second copies of this project's).
+      (the registry's, and second copies of this project's). Not BuildingByReSharper: Rider sets it on its real
+      builds too, which then ship a docs site with none of these and fail on the first page that reads one.
     -->
-    <Target Name="EmbedDocsSources" BeforeTargets="PrepareForBuild"
-            Condition="'$(DesignTimeBuild)' != 'true' and '$(BuildingByReSharper)' != 'true'">
+    <Target Name="EmbedDocsSources" BeforeTargets="PrepareForBuild" Condition="'$(DesignTimeBuild)' != 'true'">
         <ItemGroup>
             <!-- Staged in private item types: unqualified %(Filename) inside a target would batch over every EmbeddedResource. -->
             <_DocsExample Include="Examples\*.razor" Exclude="Examples\_Imports.razor"/>
@@ -102,6 +102,8 @@
     <ItemGroup>
         <ProjectReference Include="..\..\src\Blazix.Primitives\Blazix.Primitives.csproj"/>
         <ProjectReference Include="..\..\src\Blazix.Registry\Blazix.Registry.csproj"/>
+        <!-- The icons in the examples and the site, as an app writes them: <Icon Data="LucideIcons.ChevronRight" />. -->
+        <ProjectReference Include="..\..\src\Blazix.Icons.Lucide\Blazix.Icons.Lucide.csproj"/>
         <!-- The registry as copied with "rtl": true, for the RTL examples (RtlExamples/). -->
         <ProjectReference Include="..\Blazix.Registry.Rtl\Blazix.Registry.Rtl.csproj"/>
     </ItemGroup>

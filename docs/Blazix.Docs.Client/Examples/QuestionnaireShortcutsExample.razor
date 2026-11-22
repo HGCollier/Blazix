@@ -1,7 +1,7 @@
 @inject ToastManager Toasts
 
-<div class="relative mx-auto flex h-full w-full max-w-md flex-col">
-    <NativeSelect aria-label="Shortcut style" Class="absolute end-0 top-0" Value="@ModeName" ValueChanged="@SetMode">
+<div class="mx-auto flex w-full max-w-md flex-col gap-6 self-stretch">
+    <NativeSelect aria-label="Shortcut style" Class="self-end" Value="@ModeName" ValueChanged="@SetMode">
         <NativeSelectOption value="none">No shortcuts</NativeSelectOption>
         <NativeSelectOption value="letters">Letters</NativeSelectOption>
         <NativeSelectOption value="numbers">Numbers</NativeSelectOption>

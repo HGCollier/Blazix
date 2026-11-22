@@ -2,22 +2,22 @@
     <TraceCollapsible Open="true">
         <TraceCollapsibleTrigger>
             <TraceLine>
-                <TraceIcon><Icon Name="circle-check" /></TraceIcon>
+                <TraceIcon><Icon Data="LucideIcons.CircleCheck" /></TraceIcon>
                 <TraceTitle>@T.Thought</TraceTitle>
             </TraceLine>
         </TraceCollapsibleTrigger>
         <TraceCollapsibleContent>@T.Reasoning</TraceCollapsibleContent>
     </TraceCollapsible>
     <TraceLine>
-        <TraceIcon><Icon Name="search" /></TraceIcon>
+        <TraceIcon><Icon Data="LucideIcons.Search" /></TraceIcon>
         <TraceTitle>@T.Searched <code>minimumReleaseAge</code></TraceTitle>
     </TraceLine>
     <TraceLine>
-        <TraceIcon><Icon Name="file-text" /></TraceIcon>
+        <TraceIcon><Icon Data="LucideIcons.FileText" /></TraceIcon>
         <TraceTitle>@T.Read <code>pnpm-workspace.yaml</code></TraceTitle>
     </TraceLine>
     <TraceLine Status="TraceLineStatus.Error">
-        <TraceIcon><Icon Name="circle-alert" /></TraceIcon>
+        <TraceIcon><Icon Data="LucideIcons.CircleAlert" /></TraceIcon>
         <TraceTitle>@T.Failed <code>pnpm install</code></TraceTitle>
     </TraceLine>
 </Trace>

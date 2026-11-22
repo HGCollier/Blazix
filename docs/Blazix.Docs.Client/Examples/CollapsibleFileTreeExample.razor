@@ -46,8 +46,8 @@
         {
             <Collapsible>
                 <CollapsibleTrigger Class="@ButtonVariants.Get(ButtonVariant.Ghost, ButtonSize.Sm, "group w-full justify-start transition-none hover:bg-accent hover:text-accent-foreground")">
-                    <Icon Name="chevron-right" class="transition-transform group-data-panel-open:rotate-90" />
-                    <Icon Name="folder" />
+                    <Icon Data="LucideIcons.ChevronRight" class="transition-transform group-data-panel-open:rotate-90" />
+                    <Icon Data="LucideIcons.Folder" />
                     @fileItem.Name
                 </CollapsibleTrigger>
                 <CollapsibleContent Class="mt-1 ml-5">
@@ -63,7 +63,7 @@
         else
         {
             <Button Variant="ButtonVariant.Link" Size="ButtonSize.Sm" Class="w-full justify-start gap-2 text-foreground">
-                <Icon Name="file" />
+                <Icon Data="LucideIcons.File" />
                 <span>@fileItem.Name</span>
             </Button>
         }

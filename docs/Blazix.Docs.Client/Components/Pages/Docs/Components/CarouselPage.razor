@@ -17,7 +17,7 @@
     <CodeFigure Code="@SizesCode" LineNumbers="true" Highlight="@([3, 4, 5])" />
     <CodeFigure Code="@SizesResponsiveCode" LineNumbers="true" Highlight="@([3, 4, 5])" />
     <DocsHeading Title="Spacing" />
-    <p>To set the spacing between the items, we use a <code>pl-[VALUE]</code> utility on the <code>&lt;CarouselItem /&gt;</code> and a negative <code>-ml-[VALUE]</code> on the <code>&lt;CarouselContent /&gt;</code>.</p>
+    <p>To set the spacing between the items, we use a <code>ps-[VALUE]</code> utility on the <code>&lt;CarouselItem /&gt;</code> and a negative <code>-ms-[VALUE]</code> on the <code>&lt;CarouselContent /&gt;</code>.</p>
     <ComponentPreview Name="carousel-spacing" />
     <CodeFigure Code="@SpacingCode" LineNumbers="true" />
     <CodeFigure Code="@SpacingResponsiveCode" LineNumbers="true" />
@@ -92,20 +92,20 @@
 
     private const string SpacingCode = """
         <Carousel>
-            <CarouselContent Class="-ml-4">
-                <CarouselItem Class="pl-4">...</CarouselItem>
-                <CarouselItem Class="pl-4">...</CarouselItem>
-                <CarouselItem Class="pl-4">...</CarouselItem>
+            <CarouselContent Class="-ms-4">
+                <CarouselItem Class="ps-4">...</CarouselItem>
+                <CarouselItem Class="ps-4">...</CarouselItem>
+                <CarouselItem Class="ps-4">...</CarouselItem>
             </CarouselContent>
         </Carousel>
         """;
 
     private const string SpacingResponsiveCode = """
         <Carousel>
-            <CarouselContent Class="-ml-2 md:-ml-4">
-                <CarouselItem Class="pl-2 md:pl-4">...</CarouselItem>
-                <CarouselItem Class="pl-2 md:pl-4">...</CarouselItem>
-                <CarouselItem Class="pl-2 md:pl-4">...</CarouselItem>
+            <CarouselContent Class="-ms-2 md:-ms-4">
+                <CarouselItem Class="ps-2 md:ps-4">...</CarouselItem>
+                <CarouselItem Class="ps-2 md:ps-4">...</CarouselItem>
+                <CarouselItem Class="ps-2 md:ps-4">...</CarouselItem>
             </CarouselContent>
         </Carousel>
         """;

@@ -110,9 +110,15 @@
 
     <DocsHeading Title="Icons" />
     <p>
-        The components draw their own icons as inline SVG, so they need no icon package. The examples in these docs use a small
-        <code>&lt;Icon Name="..." /&gt;</code> component of the docs site for <a href="https://lucide.dev" target="_blank" rel="noreferrer">Lucide</a> icons.
-        Use inline SVG or any icon package you like in its place.
+        The components draw their own icons as inline SVG, so they need no icon package. They come with
+        <a href="https://lucide.dev" target="_blank" rel="noreferrer">Lucide</a> icons unless you pick another set with
+        <code>init --icon-library</code>. For icons of your own, add the set&apos;s package, such as <code>Blazix.Icons.Lucide</code>.
+        See <a href="/docs/icons">Icons</a>.
+    </p>
+    <p>
+        The examples in these docs use <code>Blazix.Icons.Lucide</code> (<code>&lt;Icon Data="LucideIcons.ChevronRight" /&gt;</code>). To
+        copy them as they are, add the package and <code>@@using Blazix.Icons</code> and <code>@@using Blazix.Icons.Lucide</code> to
+        <code>_Imports.razor</code>.
     </p>
 </DocsPage>
 

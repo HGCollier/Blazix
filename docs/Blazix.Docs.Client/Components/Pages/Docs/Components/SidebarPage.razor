@@ -284,7 +284,7 @@
                                 <Render Context="trigger">
                                     <SidebarMenuButton @attributes="trigger.Attributes">
                                         Select Workspace
-                                        <Icon Name="chevron-down" class="ml-auto" />
+                                        <Icon Data="LucideIcons.ChevronDown" class="ml-auto" />
                                     </SidebarMenuButton>
                                 </Render>
                             </DropdownMenuTrigger>
@@ -306,7 +306,7 @@
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton>
-                            <Icon Name="user-round" /> Username
+                            <Icon Data="LucideIcons.UserRound" /> Username
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
@@ -327,7 +327,7 @@
         <SidebarGroup>
             <SidebarGroupLabel>Application</SidebarGroupLabel>
             <SidebarGroupAction>
-                <Icon Name="plus" /> <span class="sr-only">Add Project</span>
+                <Icon Data="LucideIcons.Plus" /> <span class="sr-only">Add Project</span>
             </SidebarGroupAction>
             <SidebarGroupContent></SidebarGroupContent>
         </SidebarGroup>
@@ -340,7 +340,7 @@
                     <Render Context="label">
                         <CollapsibleTrigger @attributes="label.Attributes">
                             Help
-                            <Icon Name="chevron-down" class="ml-auto transition-transform group-data-open/collapsible:rotate-180" />
+                            <Icon Data="LucideIcons.ChevronDown" class="ml-auto transition-transform group-data-open/collapsible:rotate-180" />
                         </CollapsibleTrigger>
                     </Render>
                 </SidebarGroupLabel>
@@ -359,7 +359,7 @@
                     <SidebarMenuButton>
                         <Render Context="link">
                             <a @attributes="link.Attributes" href="@project.Url">
-                                <Icon Name="@project.Icon" />
+                                <Icon Data="@project.Icon" />
                                 <span>@project.Name</span>
                             </a>
                         </Render>
@@ -382,13 +382,13 @@
             <SidebarMenuButton>
                 <Render Context="link">
                     <a @attributes="link.Attributes" href="#">
-                        <Icon Name="house" />
+                        <Icon Data="LucideIcons.House" />
                         <span>Home</span>
                     </a>
                 </Render>
             </SidebarMenuButton>
             <SidebarMenuAction>
-                <Icon Name="plus" /> <span class="sr-only">Add Project</span>
+                <Icon Data="LucideIcons.Plus" /> <span class="sr-only">Add Project</span>
             </SidebarMenuAction>
         </SidebarMenuItem>
         """;

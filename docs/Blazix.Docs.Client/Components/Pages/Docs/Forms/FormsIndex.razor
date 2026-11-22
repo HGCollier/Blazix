@@ -11,7 +11,7 @@
         {
             <a href="@href" data-not-typeset
                class="flex w-full flex-col items-center rounded-2xl bg-(--surface) p-6 text-(--surface-foreground) transition-colors hover:bg-(--surface)/80 sm:p-10">
-                <Icon Name="@icon" class="size-10" />
+                <Icon Data="@icon" class="size-10" />
                 <p class="mt-2 font-medium">@title</p>
             </a>
         }
@@ -19,9 +19,9 @@
 </DocsPage>
 
 @code {
-    private static readonly (string Title, string Href, string Icon)[] Approaches =
+    private static readonly (string Title, string Href, IconData Icon)[] Approaches =
     [
-        ("Data Annotations", "/docs/forms/data-annotations", "clipboard-list"),
-        ("FluentValidation", "/docs/forms/fluent-validation", "list-checks"),
+        ("Data Annotations", "/docs/forms/data-annotations", LucideIcons.ClipboardList),
+        ("FluentValidation", "/docs/forms/fluent-validation", LucideIcons.ListChecks),
     ];
 }

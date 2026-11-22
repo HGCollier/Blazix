@@ -6,6 +6,7 @@ using Blazix.Cli;
 //   add <item...>        copy components (and their dependencies) into your project
 //   list                 show what's available
 //   migrate rtl [path]   make components you already copied right-to-left ready
+//   migrate icons [path] swap the icons of components you already copied to another icon library
 
 var version = typeof(Registry).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!
     .InformationalVersion.Split('+')[0];
@@ -18,6 +19,7 @@ try
         ["add", .. var rest] => Commands.Add(Options.Parse(rest), version),
         ["list", .. var rest] => Commands.List(Options.Parse(rest)),
         ["migrate", "rtl", .. var rest] => Commands.MigrateRtl(Options.Parse(rest)),
+        ["migrate", "icons", .. var rest] => Commands.MigrateIcons(Options.Parse(rest)),
         // Not for apps: the docs build renders its RTL examples from a copy made by this.
         ["rtl-copy", var from, var to, var ns] => Commands.RtlCopy(from, to, ns),
         ["--version"] => Print(version),

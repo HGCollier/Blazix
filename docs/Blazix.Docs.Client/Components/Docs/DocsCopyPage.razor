@@ -4,14 +4,14 @@
 
 <div class="group/buttons relative flex rounded-lg bg-secondary *:[[data-slot=button]]:focus-visible:relative *:[[data-slot=button]]:focus-visible:z-10">
     <Button Variant="ButtonVariant.Secondary" Size="ButtonSize.Sm" Class="h-8 shadow-none md:h-7 md:text-[0.8rem]" @onclick="CopyAsync">
-        <Icon Name="@(_copied ? "check" : "copy")" />
+        <Icon Data="@(_copied ? LucideIcons.Check : LucideIcons.Copy)" />
         Copy Page
     </Button>
     <span aria-live="polite" class="sr-only">@(_copied ? "Page copied" : "")</span>
     <DropdownMenu>
         <DropdownMenuTrigger Variant="ButtonVariant.Secondary" Size="ButtonSize.Sm" aria-label="More ways to use this page"
                              Class="peer -ml-0.5 size-8 shadow-none md:size-7 md:text-[0.8rem]">
-            <Icon Name="chevron-down" />
+            <Icon Data="LucideIcons.ChevronDown" />
         </DropdownMenuTrigger>
         @* The menu takes its trigger's width (8rem at least), which wraps these labels: w-auto lets the
            positioner size it to its items instead. *@

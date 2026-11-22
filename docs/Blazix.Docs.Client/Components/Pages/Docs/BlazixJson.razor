@@ -22,6 +22,10 @@
     <p>Copy components right-to-left ready: <code>add</code> turns physical classes into logical ones (<code>ml-2</code> into <code>ms-2</code>, <code>left-0</code> into <code>start-0</code>) and flips directional icons under <code>rtl:</code>. Set it with <code>init --rtl</code> or <code>migrate rtl</code>. Defaults to <code>false</code>. See <a href="/docs/rtl">RTL</a>.</p>
     <CodeFigure Code="@RtlCode" Language="json" Title="blazix.json" />
 
+    <DocsHeading Title="iconLibrary" />
+    <p>The icon set <code>add</code> copies components with, as inline SVG: <code>lucide</code>, <code>tabler</code>, <code>hugeicons</code>, <code>phosphor</code>, <code>remixicon</code> or <code>fontawesome</code>. Set it with <code>init --icon-library</code> or <code>migrate icons</code>. Defaults to <code>lucide</code>. See <a href="/docs/icons">Icons</a>.</p>
+    <CodeFigure Code="@IconLibraryCode" Language="json" Title="blazix.json" />
+
     <DocsHeading Title="installed" />
     <p>What you&apos;ve added, with the version each came from. <code>list</code> marks these. To pick up a newer version of a component, run <code>add &lt;name&gt; --overwrite</code> and review the diff.</p>
     <CodeFigure Code="@InstalledCode" Language="json" Title="blazix.json" />
@@ -34,6 +38,7 @@
           "componentsDir": "Components/UI",
           "version": "0.1.0",
           "rtl": false,
+          "iconLibrary": "lucide",
           "installed": {
             "utils": "0.1.0",
             "button": "0.1.0"
@@ -56,6 +61,12 @@
     private const string RtlCode = """
         {
           "rtl": true
+        }
+        """;
+
+    private const string IconLibraryCode = """
+        {
+          "iconLibrary": "tabler"
         }
         """;
 

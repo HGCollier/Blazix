@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Generates the icon data, from each set's published npm tarball (pinned and checked against its sha512 in
+    IconSets.cs, read with System.Formats.Tar: no Node). Never packed.
+      set <key> <cache dir> <out .cs>             a Blazix.Icons.* package's icons (run by src/Blazix.Icons.Set.targets)
+      registry <registry dir> <cache dir> <out>   the icons the registry's IconPlaceholders name, in every set
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+
+</Project>
