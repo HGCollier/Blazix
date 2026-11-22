@@ -1,6 +1,6 @@
 <header class="sticky top-0 z-50 w-full bg-background">
     <div class="mx-auto w-full px-6">
-        <div class="flex h-(--header-height) items-center **:data-[slot=separator]:h-4!">
+        <div class="flex h-(--header-height) items-center **:data-[slot=separator]:h-4! **:data-[slot=separator]:self-center!">
             <MobileNav Class="flex lg:hidden" />
             <MainNav Class="hidden lg:flex" />
             <div class="ml-auto flex items-center gap-2 md:flex-1 md:justify-end">
@@ -8,6 +8,8 @@
                     <SearchMenu />
                 </div>
                 <Separator Orientation="Orientation.Vertical" Class="ml-2 hidden lg:block" />
+                <GitHubLink />
+                <Separator Orientation="Orientation.Vertical" />
                 <ModeSwitcher />
             </div>
         </div>

@@ -1,12 +1,15 @@
 name: docs
 
-# Builds the docs site as static files and deploys it to GitHub Pages (blazix-ui.com) on every push to main.
+# Builds the docs site as static files and deploys it to GitHub Pages (blazix-ui.com) on every push to main, and daily.
 # The docs app is a Blazor Web App whose server only prerenders, so docs/Prerender.cs saves every page as HTML;
 # WebAssembly takes over in the browser as on the real host.
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Daily, so the header's GitHub star count (fetched while prerendering) doesn't wait for the next push to update.
+  schedule:
+    - cron: "0 6 * * *"
 
 permissions:
   contents: read
@@ -31,7 +34,10 @@ jobs:
 
       - run: dotnet publish docs/Blazix.Docs -c Release -o artifacts/docs/publish
 
+      # The token lifts GitHub's API rate limit for the header's star count (GitHubLink.razor).
       - name: Prerender every page
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: dotnet run docs/Prerender.cs -- artifacts/docs/publish artifacts/docs/site docs
 
       - uses: actions/upload-pages-artifact@v4
