@@ -89,7 +89,12 @@ internal static class Ids
 {
     private static long _next;
 
-    public static string Next(string prefix) => $"blazix-{prefix}-{Interlocked.Increment(ref _next)}";
+    // Server and WebAssembly components can share a page (Interactive Auto, or islands with their own render
+    // modes), and each runtime counts on its own. The browser side finds triggers and popups by id, so the same
+    // id from both would anchor one runtime's popup to the other's trigger. WebAssembly ids get their own segment.
+    private static readonly string Runtime = OperatingSystem.IsBrowser() ? "w" : "";
+
+    public static string Next(string prefix) => $"blazix-{prefix}-{Runtime}{Interlocked.Increment(ref _next)}";
 }
 
 internal static class Js

@@ -41,9 +41,15 @@ function insideTree(/** @type {Layer} */ layer, /** @type {Node} */ target) {
   return active().some((other) => other.parent === layer && insideTree(other, target));
 }
 
+// Blazor's own UI over the page: a Server circuit's reconnect dialog and the error bar. A dropped circuit or an
+// unhandled error can come while a modal layer is open (Interactive Server, or Auto before WebAssembly takes
+// over), so they stay live like a toast region: readable, and their Retry and Reload usable.
+const FRAMEWORK_UI = '#components-reconnect-modal, #blazor-error-ui';
+
 function inPersistentLayer(/** @type {Node} */ target) {
   for (const el of realm.persistent) if (contains(el, target)) return true;
-  return false;
+  const el = target instanceof Element ? target : target.parentElement;
+  return !!el?.closest(FRAMEWORK_UI);
 }
 
 // The page's own scrollbar sits outside the root element's client area. Pressing it never dismisses.
@@ -261,7 +267,7 @@ export function bindPersistentLayer(el) {
   };
 }
 
-/** The persistent layers (toast regions), which modal layers keep live. */
+/** The persistent layers (toast regions, Blazor's reconnect dialog and error bar), which modal layers keep live. */
 export function persistentLayers() {
-  return [...realm.persistent].filter((el) => el.isConnected);
+  return [...realm.persistent, ...document.querySelectorAll(FRAMEWORK_UI)].filter((el) => el.isConnected);
 }
