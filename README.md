@@ -9,7 +9,7 @@
 <div align="center">
 
 Unstyled Blazor primitives and beautifully designed components you copy into your app.
-Built with nothing but .NET. Open Source. Open Code.
+Built with .NET, Tailwind CSS and JavaScript modules for browser behaviour, with no Node.js or npm. Open Source. Open Code.
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Blazix.Primitives](https://img.shields.io/nuget/v/Blazix.Primitives.svg?label=Blazix.Primitives)](https://www.nuget.org/packages/Blazix.Primitives)
