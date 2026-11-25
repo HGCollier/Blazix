@@ -21,7 +21,7 @@ else
                 }
             </Render>
         </Blazix.Primitives.TooltipTrigger>
-        <TooltipContent Side="Side.Right" Align="Align.Center" hidden="@(Context.State != "collapsed" || Context.IsMobile)">@Tooltip</TooltipContent>
+        <TooltipContent Side="Side.Right" Align="Align.Center" hidden="@(Context.State != SidebarState.Collapsed || Context.IsMobile)">@Tooltip</TooltipContent>
     </Tooltip>
 }
 

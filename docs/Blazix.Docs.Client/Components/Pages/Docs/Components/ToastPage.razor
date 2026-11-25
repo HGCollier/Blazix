@@ -30,9 +30,25 @@
     <ComponentPreview Name="toast-promise" />
     <DocsHeading Title="API Reference" />
     <ApiReference Name="toast" />
+    <DocsHeading Title="Changelog" />
+    <DocsHeading Level="3" Title="2026-11-24 ToastIcon type" />
+    <p>
+        <code>ToastIcon</code>&apos;s <code>Type</code> is now a <code>ToastIconType</code>: <code>ToastIconType.Success</code>,
+        <code>Info</code>, <code>Warning</code>, <code>Error</code>, or <code>Loading</code>. <code>ToastOptions.Type</code> still takes a
+        string, so <code>Type = "success"</code> keeps working.
+    </p>
+    <CodeFigure Code="@IconTypeCode" />
+    <p>
+        If you render <code>ToastIcon</code> yourself, run <code>dnx Blazix.Cli diff toast</code> to see your changes, then
+        <code>dnx Blazix.Cli add toast --overwrite</code>.
+    </p>
 </DocsPage>
 
 @code {
+    private const string IconTypeCode = """
+        <ToastIcon Type="ToastIconType.Success" />
+        """;
+
     private const string ProgramCode = """
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
