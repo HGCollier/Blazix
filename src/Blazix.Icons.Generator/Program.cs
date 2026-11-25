@@ -187,11 +187,7 @@ namespace Blazix.Icons.Generator
                 var seen = new Dictionary<string, Glyph>(StringComparer.Ordinal);
                 foreach (var glyph in group)
                 {
-                    var member = IconSets.Pascal(glyph.Name);
-                    if (Reserved.Contains(member) || member == set.ClassName || member == group.Key)
-                    {
-                        member += "Icon";
-                    }
+                    var member = Member(set, glyph);
                     if (!seen.TryAdd(member, glyph))
                     {
                         // Lucide keeps old names as aliases (arrow-down-01 for arrow-down-0-1): the same icon, so one property.
@@ -213,8 +209,22 @@ namespace Blazix.Icons.Generator
         }
 
         /// <summary>
+        /// An icon's member in its set's class: <c>chevron-down</c> → <c>ChevronDown</c>, with <c>Icon</c> after it where that
+        /// name is taken. The packages and the registry's references (RegistryIcons.g.cs) name icons this way.
+        /// </summary>
+        public static string Member(IconSet set, Glyph glyph)
+        {
+            var member = IconSets.Pascal(glyph.Name);
+            return Reserved.Contains(member) || member == set.ClassName || member == glyph.Group ? member + "Icon" : member;
+        }
+
+        /// <summary>An icon as a copied component names it: <c>LucideIcons.ChevronDown</c>, <c>FontAwesomeIcons.Solid.House</c>.</summary>
+        public static string Reference(IconSet set, Glyph glyph) =>
+            $"{set.ClassName}.{(glyph.Group.Length > 0 ? glyph.Group + "." : "")}{Member(set, glyph)}";
+
+        /// <summary>
         /// The registry's icons in every set: the docs render the Lucide ones, and Blazix.Cli (which compiles this file
-        /// in) writes the configured set's into the components it copies.
+        /// in) names the configured set's in the components it copies.
         /// </summary>
         public static string Registry(IReadOnlyList<(IconSet Set, IReadOnlyList<Glyph> Glyphs)> sets, Dictionary<string, SortedSet<string>> used,
             List<SortedDictionary<string, string>> rows)
@@ -234,14 +244,14 @@ namespace Blazix.Icons.Generator
             foreach (var (set, glyphs) in sets)
             {
                 var byName = glyphs.ToLookup(g => g.Group.Length == 0 ? g.Name : $"{g.Group.ToLowerInvariant()}/{g.Name}");
-                code.AppendLine($"        [\"{set.Key}\"] = new(\"{set.Parameter}\", \"{set.Title}\", \"{set.Package} {set.Version}\", \"{set.License}\", {(set.Notice is null ? "null" : Literal(set.Notice))}, new Dictionary<string, RegistryIcon>")
+                code.AppendLine($"        [\"{set.Key}\"] = new(\"{set.Parameter}\", \"{set.Title}\", \"{set.ClassName}\", \"{set.Package} {set.Version}\", \"{set.License}\", \"{set.Namespace}\", new Dictionary<string, RegistryIcon>")
                     .AppendLine("        {");
                 foreach (var name in used[set.Key])
                 {
                     // Font Awesome's names are solid icons unless they say otherwise (regular/copy).
                     var key = set.Key == "fontawesome" && !name.Contains('/') ? "solid/" + name : name;
                     var glyph = byName[key].FirstOrDefault() ?? throw new InvalidDataException($"{set.Title} {set.Version} has no icon '{name}'");
-                    code.AppendLine($"            [\"{name}\"] = new(\"{glyph.ViewBox}\", {Literal(glyph.Body)}, {(glyph.Fill ? "true" : "false")}),");
+                    code.AppendLine($"            [\"{name}\"] = new(\"{glyph.ViewBox}\", {Literal(glyph.Body)}, {(glyph.Fill ? "true" : "false")}, \"{Reference(set, glyph)}\"),");
                 }
                 code.AppendLine("        }),");
             }
@@ -257,10 +267,11 @@ namespace Blazix.Icons.Generator
             code.AppendLine("    ];")
                 .AppendLine("}")
                 .AppendLine()
-                .AppendLine("// Parameter: the IconPlaceholder parameter that names the set's icon. Notice: a license notice the CLI keeps in each copied SVG.")
-                .AppendLine("internal sealed record RegistryIconSet(string Parameter, string Title, string Source, string License, string? Notice, IReadOnlyDictionary<string, RegistryIcon> Icons);")
+                .AppendLine("// Parameter: the IconPlaceholder parameter that names the set's icon. ClassName and Namespace: the set's class and namespace in its package.")
+                .AppendLine("internal sealed record RegistryIconSet(string Parameter, string Title, string ClassName, string Source, string License, string Namespace, IReadOnlyDictionary<string, RegistryIcon> Icons);")
                 .AppendLine()
-                .AppendLine("internal sealed record RegistryIcon(string ViewBox, string Body, bool Fill);");
+                .AppendLine("// Reference: the icon as a copied component names it, in the set's package (LucideIcons.ChevronDown).")
+                .AppendLine("internal sealed record RegistryIcon(string ViewBox, string Body, bool Fill, string Reference);");
             return code.ToString();
         }
 

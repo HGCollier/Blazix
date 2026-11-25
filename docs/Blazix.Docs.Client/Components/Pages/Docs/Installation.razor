@@ -110,10 +110,10 @@
 
     <DocsHeading Title="Icons" />
     <p>
-        The components draw their own icons as inline SVG, so they need no icon package. They come with
-        <a href="https://lucide.dev" target="_blank" rel="noreferrer">Lucide</a> icons unless you pick another set with
-        <code>init --icon-library</code>. For icons of your own, add the set&apos;s package, such as <code>Blazix.Icons.Lucide</code>.
-        See <a href="/docs/icons">Icons</a>.
+        The components draw their icons with the <code>Icon</code> component from <code>Blazix.Icons</code>. <code>add</code>
+        installs the package of the set they use: <a href="https://lucide.dev" target="_blank" rel="noreferrer">Lucide</a>
+        (<code>Blazix.Icons.Lucide</code>) unless you pick another set with <code>init --icon-library</code>. For icons of your
+        own, add the set&apos;s package too. See <a href="/docs/icons">Icons</a>.
     </p>
     <p>
         The examples in these docs use <code>Blazix.Icons.Lucide</code> (<code>&lt;Icon Data="LucideIcons.ChevronRight" /&gt;</code>). To

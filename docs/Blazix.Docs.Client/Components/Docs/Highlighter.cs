@@ -1253,12 +1253,16 @@ internal static partial class Highlighter
             return _qualifier is { } qualifier && qualifier.Token == k ? qualifier : null;
         }
 
-        /// <summary>What a name that starts a member access is: a snippet's enum or type, a known type, or a namespace.</summary>
+        /// <summary>What a name that starts a member access is: a snippet's enum or type, an icon set's class, a known type, or a namespace.</summary>
         private Qualifier? Qualify(string word)
         {
             if (info.Enums.TryGetValue(word, out var members))
             {
                 return new Qualifier(Members: members);
+            }
+            if (Symbols.IsIconClass(word))
+            {
+                return new Qualifier(IconClass: true);
             }
             if (Symbols.FindType(word, info) is { } type)
             {
@@ -1276,6 +1280,17 @@ internal static partial class Highlighter
             if (qualifier.Members is { } members)
             {
                 return members.Contains(word) ? Kind.ConstantVariable : kind;
+            }
+            if (qualifier.IconClass)
+            {
+                // An icon set's icons are static properties, coloured as enum members. Font Awesome groups them in Solid,
+                // Regular and Brands classes, which are types of their own.
+                if (dotted && word is "Solid" or "Regular" or "Brands")
+                {
+                    _nextQualifier = new Qualifier(IconClass: true);
+                    return Kind.Type;
+                }
+                return Kind.ConstantVariable;
             }
             if (qualifier.Namespace is { } ns)
             {
@@ -2958,8 +2973,11 @@ internal static partial class Highlighter
         TypeName,
     }
 
-    /// <summary>A name that qualifies a member access: a type, a namespace, or a snippet's enum (by its members).</summary>
-    private sealed record Qualifier(Type? Type = null, string? Namespace = null, IReadOnlySet<string>? Members = null)
+    /// <summary>
+    /// A name that qualifies a member access: a type, a namespace, a snippet's enum (by its members), or an icon set's class
+    /// (by name: any member of it is an icon).
+    /// </summary>
+    private sealed record Qualifier(Type? Type = null, string? Namespace = null, IReadOnlySet<string>? Members = null, bool IconClass = false)
     {
         /// <summary>The index of the qualifying name's token.</summary>
         public int Token { get; init; } = -1;
@@ -3064,6 +3082,16 @@ internal static partial class Highlighter
         private static readonly Lazy<Catalog> Loaded = new(Load);
 
         private static readonly ConcurrentDictionary<string, Type[]> ComponentCache = new();
+
+        // The icon sets' classes (Blazix.Icons.Lucide's LucideIcons, and the rest). The highlighter knows their names rather than
+        // reflecting over the loaded assemblies: a browser loads only the packages the docs use, and trimming keeps only the
+        // icons they name, so a lookup would depend on what happens to be loaded. The prerender and the browser colour alike.
+        private static readonly HashSet<string> IconClasses =
+        [
+            "LucideIcons", "TablerIcons", "HugeiconsIcons", "PhosphorIcons", "RemixIcons", "FontAwesomeIcons",
+        ];
+
+        public static bool IsIconClass(string name) => IconClasses.Contains(name);
 
         private sealed class Catalog
         {

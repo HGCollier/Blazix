@@ -43,8 +43,9 @@ dnx Blazix.Cli add dropdown-menu
 dotnet add package Blazix.Primitives
 ```
 
-**Icons.** The components come with [Lucide](https://lucide.dev) icons as inline SVG, or Tabler, Hugeicons, Phosphor,
-Remix Icon or Font Awesome with `init --icon-library`. For icons of your own, each set is a package, trimmed to the icons you use:
+**Icons.** The components draw their icons with the `Icon` component. `dnx Blazix.Cli add` installs the package of the icon set
+in `blazix.json`'s `iconLibrary`: [Lucide](https://lucide.dev) by default, or Tabler, Hugeicons, Phosphor, Remix Icon or Font Awesome
+with `init --icon-library`. For icons of your own, add the set's package too:
 
 ```bash
 dotnet add package Blazix.Icons.Lucide

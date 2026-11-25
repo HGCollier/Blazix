@@ -19,7 +19,7 @@ dotnet add package Blazix.Icons.FontAwesome
 - It takes the text color (`currentColor`), and any attribute you pass (`class`, `style`, `width`) goes on the `<svg>`.
 - Each icon is a property with no backing field, so trimming (Blazor WebAssembly) keeps only the icons your app uses.
 
-These are for your own markup. The components that `dnx Blazix.Cli add` copies don't need this package: they get the icons of the set in `blazix.json`'s `iconLibrary` as inline SVG.
+These are for your own markup. `dnx Blazix.Cli add` copies components that draw these icons too, and installs this package for the set in `blazix.json`'s `iconLibrary`.
 
 ## Attribution
 

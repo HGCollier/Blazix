@@ -24,10 +24,17 @@
         </TabsContent>
         <TabsContent Value="manual" Class="@ContentClasses">
             <Steps Class="mb-0 pt-2">
-                @if (item.UsesPrimitives)
+                @if (item.UsesPrimitives || UsesIcons(item))
                 {
-                    <Step>Install the following dependencies:</Step>
-                    <CliCommandRaw Command="dotnet add package Blazix.Primitives" />
+                    <Step>Install the following packages:</Step>
+                    @if (item.UsesPrimitives)
+                    {
+                        <CliCommandRaw Command="dotnet add package Blazix.Primitives" />
+                    }
+                    @if (UsesIcons(item))
+                    {
+                        <CliCommandRaw Command="dotnet add package Blazix.Icons.Lucide" />
+                    }
                 }
                 @if (RegistryDependencies(item) is { Count: > 0 } dependencies)
                 {
@@ -66,6 +73,10 @@
 
     /// <summary>The other components it needs; utils (Cn) is always there after init.</summary>
     private static List<string> RegistryDependencies(RegistryItem item) => item.Dependencies.Where(d => d != "utils").ToList();
+
+    /// <summary>Whether the item's copies draw icons, which the Lucide package (the default set's) provides.</summary>
+    private static bool UsesIcons(RegistryItem item) =>
+        item.Files.Any(file => Sources.RegistryFile(file)?.Contains("<Icon ", StringComparison.Ordinal) == true);
 
     public void Dispose() => Config.Changed -= OnChanged;
 }

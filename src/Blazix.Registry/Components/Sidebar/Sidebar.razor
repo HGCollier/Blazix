@@ -11,7 +11,7 @@
 else if (Context.IsMobile)
 {
     <Sheet Open="@Context.OpenMobile" OpenChanged="@Context.SetOpenMobileAsync">
-        <SheetContent dir="@Dir" data-sidebar="sidebar" data-slot="sidebar" data-mobile="true" @attributes="AdditionalAttributes"
+        <SheetContent dir="@DirName" data-sidebar="sidebar" data-slot="sidebar" data-mobile="true" @attributes="AdditionalAttributes"
                       Class="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
                       style="@($"--sidebar-width:{SidebarProvider.WidthMobile}")"
                       Side="@(Side == SidebarSide.Right ? SheetSide.Right : SheetSide.Left)">
@@ -25,7 +25,7 @@ else if (Context.IsMobile)
 }
 else
 {
-    <div class="group peer hidden text-sidebar-foreground md:block" data-state="@Context.State"
+    <div class="group peer hidden text-sidebar-foreground md:block" data-state="@StateName"
          data-collapsible="@(Context.Open ? "" : CollapsibleName)" data-variant="@VariantName" data-side="@SideName" data-slot="sidebar">
         @* The gap the sidebar leaves beside the page on desktop. *@
         <div data-slot="sidebar-gap"
@@ -61,8 +61,8 @@ else
     [Parameter] public SidebarVariant Variant { get; set; } = SidebarVariant.Sidebar;
     [Parameter] public SidebarCollapsible Collapsible { get; set; } = SidebarCollapsible.Offcanvas;
 
-    /// <summary>The mobile sheet's reading direction ("ltr" or "rtl").</summary>
-    [Parameter] public string? Dir { get; set; }
+    /// <summary>The mobile sheet's reading direction. Leave it unset to inherit the page's.</summary>
+    [Parameter] public Blazix.Primitives.TextDirection? Dir { get; set; }
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
@@ -70,6 +70,16 @@ else
     public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private bool Inset => Variant is SidebarVariant.Floating or SidebarVariant.Inset;
+
+    // The attribute values the sidebar's CSS selects on: data-state="expanded" and dir="rtl".
+    private string StateName => Context.State.ToString().ToLowerInvariant();
+
+    private string? DirName => Dir switch
+    {
+        Blazix.Primitives.TextDirection.Rtl => "rtl",
+        Blazix.Primitives.TextDirection.Ltr => "ltr",
+        _ => null,
+    };
 
     private string SideName => Side == SidebarSide.Right ? "right" : "left";
 
