@@ -200,7 +200,7 @@ SOFTWARE.
 
 ### Remix Icon
 
-The Remix Icon icons in `RegistryIcons.g.cs` (copied with `iconLibrary` `remixicon`) and `Blazix.Icons.Remixicon`. They come from 4.8.0, the last release under Apache-2.0: from 4.9.0 Remix Icon has its own license (Remix Icon License v1.0), which doesn't allow distributing the icons as an icon library. The icons are unmodified, except that each SVG's markup is stored without its root element. From `remixicon 4.8.0`.
+The Remix Icon icons in `RegistryIcons.g.cs` (for `iconLibrary` `remixicon`) and `Blazix.Icons.Remixicon`. They come from 4.8.0, the last release under Apache-2.0: from 4.9.0 Remix Icon has its own license (Remix Icon License v1.0), which doesn't allow distributing the icons as an icon library. The icons are unmodified, except that each SVG's markup is stored without its root element. From `remixicon 4.8.0`.
 
 ```
                                  Apache License
@@ -408,7 +408,7 @@ The Remix Icon icons in `RegistryIcons.g.cs` (copied with `iconLibrary` `remixic
 
 ### Font Awesome Free
 
-The Font Awesome Free icons in `RegistryIcons.g.cs` (copied with `iconLibrary` `fontawesome`, each with Font Awesome's attribution comment) and `Blazix.Icons.FontAwesome`. The icons are licensed under CC BY 4.0: Font Awesome Free by Fonticons, Inc., https://fontawesome.com, license https://fontawesome.com/license/free. Font Awesome is a trademark of Fonticons, Inc. From `@fortawesome/fontawesome-free 7.3.1`.
+The Font Awesome Free icons in `RegistryIcons.g.cs` (for `iconLibrary` `fontawesome`) and `Blazix.Icons.FontAwesome`. The icons are licensed under CC BY 4.0: Font Awesome Free by Fonticons, Inc., https://fontawesome.com, license https://fontawesome.com/license/free. Font Awesome is a trademark of Fonticons, Inc. From `@fortawesome/fontawesome-free 7.3.1`.
 
 ```
 Fonticons, Inc. (https://fontawesome.com)

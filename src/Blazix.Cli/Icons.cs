@@ -5,12 +5,11 @@ using Blazix.Registry;
 namespace Blazix.Cli;
 
 /// <summary>
-/// The components' icons in the set blazix.json's <c>iconLibrary</c> names, like shadcn's transform-icons, but as
-/// inline SVG rather than an icon package's markup, so copied components still need no icon package. The registry
-/// writes each icon as an <c>&lt;IconPlaceholder&gt;</c> naming it in every set; <see cref="Transform"/> replaces
-/// it with that set's <c>&lt;svg&gt;</c> and keeps its other attributes (<c>class</c>, <c>aria-hidden</c>,
-/// <c>data-slot</c>, <c>@attributes</c>), so an icon marked <c>cn-rtl-flip</c> is still found by <see cref="Rtl"/>,
-/// which runs after. The data is RegistryIcons.g.cs, which this project compiles in from Blazix.Registry/Icons.
+/// The components' icons, as shadcn's transform-icons writes them. The registry names each icon in every set with an
+/// <c>&lt;IconPlaceholder&gt;</c>; <see cref="Transform"/> replaces it with an <c>&lt;Icon&gt;</c> that draws the icon of the
+/// set blazix.json's <c>iconLibrary</c> names from that set's package (the commands add the package), with the using
+/// directives it needs. The data is RegistryIcons.g.cs, which this project compiles in from Blazix.Registry/Icons.
+/// <see cref="Migrate"/> moves the <c>&lt;Icon&gt;</c>s of copied components to another set's, as shadcn's migrate icons does.
 /// </summary>
 internal static partial class Icons
 {
@@ -18,18 +17,7 @@ internal static partial class Icons
     public const string Default = "lucide";
 
     private const string Placeholder = "<IconPlaceholder";
-
-    // The <svg> attributes each kind of icon gets, which a placeholder's own attributes override.
-    private static readonly (string Name, string Value)[] StrokeDefaults =
-    [
-        ("xmlns", "http://www.w3.org/2000/svg"), ("width", "24"), ("height", "24"), ("viewBox", ""), ("fill", "none"),
-        ("stroke", "currentColor"), ("stroke-width", "2"), ("stroke-linecap", "round"), ("stroke-linejoin", "round"),
-    ];
-
-    private static readonly (string Name, string Value)[] FillDefaults =
-    [
-        ("xmlns", "http://www.w3.org/2000/svg"), ("width", "24"), ("height", "24"), ("viewBox", ""), ("fill", "currentColor"),
-    ];
+    private const string Component = "<Icon";
 
     public static IEnumerable<string> Libraries => RegistryIcons.Sets.Keys;
 
@@ -42,15 +30,27 @@ internal static partial class Icons
             : throw new CliException($"unknown icon library '{name}'. Available: {string.Join(", ", Libraries)}");
     }
 
-    /// <summary>Replaces each IconPlaceholder in a .razor file with the library's inline SVG.</summary>
-    public static string Transform(string fileName, string source, string library)
+    /// <summary>Whether the markup draws an icon of the set from its package: an <c>&lt;Icon Data="LucideIcons.…"&gt;</c>, say.</summary>
+    public static bool UsesLibrary(string source, string library) =>
+        source.Contains("Data=\"" + RegistryIcons.Sets[library].ClassName + ".", StringComparison.Ordinal);
+
+    /// <summary>The package a set's icons come from, which the commands add: <c>Blazix.Icons.Lucide</c> for lucide.</summary>
+    public static string Package(string library) => "Blazix.Icons." + RegistryIcons.Sets[library].Parameter;
+
+    /// <summary>
+    /// Replaces each IconPlaceholder in a .razor file with an <c>&lt;Icon&gt;</c> of the library's icon, keeping its other
+    /// attributes, and adds the using directives it needs. <paramref name="usesIcons"/> says whether there was one.
+    /// </summary>
+    public static string Transform(string fileName, string source, string library, out bool usesIcons)
     {
+        usesIcons = false;
         if (!fileName.EndsWith(".razor", StringComparison.OrdinalIgnoreCase) || !source.Contains(Placeholder, StringComparison.Ordinal))
         {
             return source;
         }
         var set = RegistryIcons.Sets[library];
-        var result = new StringBuilder(source.Length + 1024);
+        var newLine = NewLine(source);
+        var result = new StringBuilder(source.Length + 256);
         var at = 0;
         foreach (var tag in Tags(source, Placeholder))
         {
@@ -59,10 +59,15 @@ internal static partial class Icons
             var icon = set.Icons.TryGetValue(name, out var found) ? found
                 : throw new CliException($"{fileName}: no {set.Title} icon '{name}' in this CLI's icon data");
             var kept = tag.Attributes.Where(a => !IsLibraryParameter(a.Name)).ToList();
-            result.Append(source, at, tag.Start - at).Append(Svg(set, icon, kept, Indent(source, tag.Start)));
+            result.Append(source, at, tag.Start - at).Append(IconElement(icon.Reference, kept, Indent(source, tag.Start), newLine));
             at = tag.End;
+            usesIcons = true;
         }
-        return result.Append(source, at, source.Length - at).ToString();
+        if (!usesIcons)
+        {
+            return source;
+        }
+        return AddUsings(result.Append(source, at, source.Length - at).ToString(), "Blazix.Icons", set.Namespace);
     }
 
     /// <summary>
@@ -95,120 +100,126 @@ internal static partial class Icons
         }
     }
 
+    /// <summary>An icon that <see cref="Migrate"/> left as it is, and why.</summary>
+    public sealed record Skipped(string Icon, string Reason);
+
     /// <summary>
-    /// Swaps the registry's icons in an already copied file from one set to another: an <c>&lt;svg&gt;</c> whose
-    /// viewBox and markup are a registry icon of <paramref name="from"/> becomes that icon in <paramref name="to"/>,
-    /// with its other attributes kept. Any other SVG (yours, or one you've edited) is left alone and counted.
+    /// Moves the <c>&lt;Icon Data="…"&gt;</c>s of the set <paramref name="from"/> in a copied file to <paramref name="to"/>'s: each
+    /// becomes the icon of the same name in <paramref name="to"/>. An icon with no counterpart in <paramref name="to"/> is added
+    /// to <paramref name="skipped"/> and left as it is. Icons of other sets, and your own, are not touched. Inline SVG is not
+    /// migrated: a copy that draws inline is replaced by adding its component again with <c>--overwrite</c>.
     /// </summary>
-    public static string Migrate(string source, string from, string to, out int swapped, out int skipped)
+    public static string Migrate(string source, string from, string to, ICollection<Skipped> skipped, out int swapped)
     {
         swapped = 0;
-        skipped = 0;
+        if (from == to)
+        {
+            return source;
+        }
         var fromSet = RegistryIcons.Sets[from];
         var toSet = RegistryIcons.Sets[to];
-        var known = fromSet.Icons.GroupBy(kv => (kv.Value.ViewBox, Normalize(kv.Value.Body))).ToDictionary(g => g.Key, g => g.First().Key);
-        var defaults = (fromSet.Icons.Values.FirstOrDefault()?.Fill == true ? FillDefaults : StrokeDefaults).ToList();
-
-        var result = new StringBuilder(source.Length);
-        var at = 0;
-        foreach (var tag in Tags(source, "<svg"))
+        var nameByReference = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var (name, icon) in fromSet.Icons)
         {
-            var close = source.IndexOf("</svg>", tag.End, StringComparison.Ordinal);
-            if (tag.SelfClosing || close < 0)
+            nameByReference.TryAdd(icon.Reference, name);
+        }
+        // The library's references begin with its class, so a reference to an icon the CLI has no data for is still named.
+        var prefix = fromSet.ClassName + ".";
+
+        var migrated = new StringBuilder(source.Length + 256);
+        var at = 0;
+        foreach (var tag in Tags(source, Component))
+        {
+            var data = tag.Value("Data");
+            if (data is null || !data.StartsWith(prefix, StringComparison.Ordinal))
             {
                 continue;
             }
-            var body = Normalize(source[tag.End..close]);
-            if (!known.TryGetValue((tag.Value("viewBox") ?? "", body), out var name))
+            if (!nameByReference.TryGetValue(data, out var name) || Counterpart(from, name, to) is not { } icon)
             {
-                skipped++;
+                skipped.Add(new Skipped(data, $"no {toSet.Title} equivalent found"));
                 continue;
             }
-            var row = RegistryIcons.Rows.FirstOrDefault(r => r[from] == name);
-            if (row is null || !toSet.Icons.TryGetValue(row[to], out var icon))
-            {
-                skipped++;
-                continue;
-            }
-            // Keep what the copy adds to the set's own defaults: a class, aria-hidden, a size of its own, @attributes.
-            var kept = tag.Attributes.Where(a => !defaults.Any(d => d.Name == a.Name && (d.Value.Length == 0 || d.Value == a.Value))).ToList();
-            result.Append(source, at, tag.Start - at).Append(Svg(toSet, icon, kept, Indent(source, tag.Start)));
-            at = close + "</svg>".Length;
+            var attributes = tag.Attributes
+                .Select(a => a.Name == "Data" ? a with { Value = icon.Reference, Text = "Data=\"" + icon.Reference + "\"" } : a);
+            var element = Component + string.Concat(attributes.Select(a => a.Leading + a.Text)) + (tag.SelfClosing ? " />" : ">");
+            migrated.Append(source, at, tag.Start - at).Append(element);
+            at = tag.End;
             swapped++;
         }
-        return result.Append(source, at, source.Length - at).ToString();
+        if (swapped == 0)
+        {
+            return source;
+        }
+        migrated.Append(source, at, source.Length - at);
+        return WithUsings(migrated.ToString(), from, to);
+    }
+
+    // Adds the usings the migrated icons need, then drops the set's using when the file no longer names any of its icons.
+    private static string WithUsings(string source, string from, string to)
+    {
+        var result = AddUsings(source, "Blazix.Icons", RegistryIcons.Sets[to].Namespace);
+        var set = RegistryIcons.Sets[from];
+        return !result.Contains(set.ClassName + ".", StringComparison.Ordinal)
+            ? RemoveUsing(result, set.Namespace)
+            : result;
+    }
+
+    // The icon of the other set that the registry's row pairs with the given one, or null if none does.
+    private static RegistryIcon? Counterpart(string from, string name, string to)
+    {
+        var row = RegistryIcons.Rows.FirstOrDefault(r => r.TryGetValue(from, out var n) && n == name);
+        return row is not null && row.TryGetValue(to, out var other) && RegistryIcons.Sets[to].Icons.TryGetValue(other, out var icon)
+            ? icon
+            : null;
     }
 
     private static bool IsLibraryParameter(string name) =>
         RegistryIcons.Sets.Values.Any(s => s.Parameter == name);
 
     /// <summary>
-    /// The icon as Razor markup: the set's defaults the attributes don't override, then the attributes as written
-    /// (their line breaks re-indented under the <c>&lt;svg</c>), then the markup, one element a line.
+    /// The <c>&lt;Icon&gt;</c> that draws an icon of a set's package, with the attributes the placeholder or copy had. Its
+    /// attributes start after the tag name, and continuation lines line up under them.
     /// </summary>
-    private static string Svg(RegistryIconSet set, RegistryIcon icon, List<TagAttribute> kept, string indent)
+    private static string IconElement(string reference, List<TagAttribute> attributes, string indent, string newLine)
     {
-        var svg = new StringBuilder("<svg");
-        foreach (var (name, value) in icon.Fill ? FillDefaults : StrokeDefaults)
+        var element = new StringBuilder(Component).Append(" Data=\"").Append(reference).Append('"');
+        foreach (var attribute in attributes)
         {
-            if (kept.All(a => !string.Equals(a.Name, name, StringComparison.OrdinalIgnoreCase)))
-            {
-                svg.Append(' ').Append(name).Append("=\"").Append(name == "viewBox" ? icon.ViewBox : value).Append('"');
-            }
+            var leading = attribute.Leading.Contains('\n') ? newLine + indent + new string(' ', Component.Length + 1) : " ";
+            element.Append(leading).Append(attribute.Text);
         }
-        foreach (var attribute in kept)
-        {
-            var leading = attribute.Leading.Contains('\n') ? "\n" + indent + "     " : " ";
-            svg.Append(leading).Append(attribute.Text);
-        }
-        svg.Append('>');
-        var inner = indent + "    ";
-        if (set.Notice is not null)
-        {
-            // The set's license asks for it (Font Awesome's CC BY 4.0). Razor drops comments, so it costs nothing at run time.
-            svg.Append('\n').Append(inner).Append("<!--! ").Append(Razor(set.Notice)).Append(" -->");
-        }
-        foreach (var element in Elements(icon.Body))
-        {
-            svg.Append('\n').Append(inner).Append(Razor(element));
-        }
-        return svg.Append('\n').Append(indent).Append("</svg>").ToString();
+        return element.Append(" />").ToString();
     }
 
-    // '@' starts C# in Razor: Font Awesome's notice has "@fontawesome".
-    private static string Razor(string markup) => markup.Replace("@", "@@", StringComparison.Ordinal);
+    private static string NewLine(string source) => source.Contains("\r\n", StringComparison.Ordinal) ? "\r\n" : "\n";
 
-    // The top-level elements of an icon's markup, which the generator writes with no whitespace between them.
-    private static IEnumerable<string> Elements(string body)
+    /// <summary>Adds the using directives the file doesn't have yet, right after its <c>@namespace</c> line.</summary>
+    private static string AddUsings(string source, params string[] namespaces)
     {
-        var depth = 0;
-        var start = 0;
-        var i = 0;
-        while ((i = body.IndexOf('<', i)) >= 0)
+        var missing = namespaces.Where(ns => !HasUsing(source, ns)).Select(ns => "@using " + ns).ToList();
+        if (missing.Count == 0)
         {
-            var end = body.IndexOf('>', i);
-            var closing = body[i + 1] == '/';
-            var selfClosing = body[end - 1] == '/';
-            if (closing)
-            {
-                depth--;
-            }
-            else if (!selfClosing)
-            {
-                depth++;
-            }
-            if (depth == 0)
-            {
-                yield return body[start..(end + 1)];
-                start = end + 1;
-            }
-            i = end + 1;
+            return source;
         }
+        var newLine = NewLine(source);
+        var block = string.Join(newLine, missing);
+        var directive = NamespaceDirective().Match(source);
+        if (!directive.Success)
+        {
+            return block + newLine + source;
+        }
+        var end = directive.Index + directive.Length;
+        return directive.Value.EndsWith('\n')
+            ? source.Insert(end, block + newLine)
+            : source.Insert(end, newLine + block);
     }
 
-    /// <summary>Markup compared without comments and with whitespace between elements and before <c>/&gt;</c> ignored.</summary>
-    private static string Normalize(string markup) =>
-        SelfClosingSpace().Replace(BetweenElements().Replace(HtmlComment().Replace(markup, ""), "><"), "/>").Trim();
+    private static bool HasUsing(string source, string ns) =>
+        Regex.IsMatch(source, "^@using " + Regex.Escape(ns) + @"[ \t]*\r?$", RegexOptions.Multiline, TimeSpan.FromSeconds(1));
+
+    private static string RemoveUsing(string source, string ns) =>
+        Regex.Replace(source, "^@using " + Regex.Escape(ns) + @"[ \t]*\r?\n", "", RegexOptions.Multiline, TimeSpan.FromSeconds(1));
 
     private static string Indent(string source, int at)
     {
@@ -328,12 +339,6 @@ internal static partial class Icons
         public string? Value(string name) => Attributes.FirstOrDefault(attribute => attribute.Name == name) is { } found ? found.Value ?? "" : null;
     }
 
-    [GeneratedRegex(@"<!--.*?-->", RegexOptions.Singleline, matchTimeoutMilliseconds: 1000)]
-    private static partial Regex HtmlComment();
-
-    [GeneratedRegex(@">\s+<", RegexOptions.None, matchTimeoutMilliseconds: 1000)]
-    private static partial Regex BetweenElements();
-
-    [GeneratedRegex(@"\s*/>", RegexOptions.None, matchTimeoutMilliseconds: 1000)]
-    private static partial Regex SelfClosingSpace();
+    [GeneratedRegex(@"^@namespace[^\r\n]*(\r?\n)?", RegexOptions.Multiline, matchTimeoutMilliseconds: 1000)]
+    private static partial Regex NamespaceDirective();
 }

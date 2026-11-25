@@ -8,18 +8,18 @@
 
     <DocsHeading Title="init" />
     <p>Use the <code>init</code> command to set up a new or existing Blazor project.</p>
-    <p>The <code>init</code> command sets up Tailwind (without Node.js), adds the theme tokens and the usings, adds the <code>Blazix.Primitives</code> package and writes <a href="/docs/blazix-json"><code>blazix.json</code></a>. See <a href="/docs/installation#existing-project">Installation</a> for each change it makes.</p>
+    <p>The <code>init</code> command sets up Tailwind (without Node.js), adds the theme tokens and the usings, adds the <code>Blazix.Primitives</code> package and the icon package for the set in <code>iconLibrary</code>, and writes <a href="/docs/blazix-json"><code>blazix.json</code></a>. See <a href="/docs/installation#existing-project">Installation</a> for each change it makes.</p>
     <CliCommand Args="init" />
     <p><strong>Options</strong></p>
     <CodeFigure Code="@InitOptionsCode" Language="text" />
     <p>Running <code>init</code> again updates the build files and the vendored CSS. It never overwrites <code>Styles/theme.css</code> or <code>Styles/app.css</code>, which are yours.</p>
 
     <DocsHeading Title="add" />
-    <p>Use the <code>add</code> command to add components to your project. It also adds the components they depend on.</p>
+    <p>Use the <code>add</code> command to add components to your project. It also adds the components they depend on, and the packages they use: <code>Blazix.Primitives</code>, and the icon package for your <code>iconLibrary</code>.</p>
     <CliCommand Args="add [component...]" />
     <p><strong>Options</strong></p>
     <CodeFigure Code="@AddOptionsCode" Language="text" />
-    <p>A file you already have is kept, unless you pass <code>--overwrite</code>. Run <code>diff</code> first to see what it would change. To add every component, pass <code>--all</code>, as shadcn&apos;s <code>add --all</code> does.</p>
+    <p>A file you already have is kept, unless you pass <code>--overwrite</code>. Run <code>diff</code> first to see what it would change. A copy from an earlier version draws its icons inline, as SVG: <code>add --overwrite</code> replaces it with one that uses <code>&lt;Icon&gt;</code>s from your <code>iconLibrary</code>. To add every component, pass <code>--all</code>, as shadcn&apos;s <code>add --all</code> does.</p>
 
     <DocsHeading Title="diff" />
     <p>Use the <code>diff</code> command to see what <code>add --overwrite</code> would change before you run it. With no components, it says whether each one you&apos;ve added still matches this version&apos;s. With components, it shows the changes to their files as a diff, where <code>-</code> lines are yours and <code>+</code> lines are the version&apos;s.</p>
@@ -36,11 +36,17 @@
     <p>Run it once: a second run adds the <code>rtl:</code> classes again. Without a path, it migrates the files in <code>componentsDir</code>.</p>
 
     <DocsHeading Title="migrate icons" />
-    <p>Use <code>migrate icons</code> to swap the icons of components you&apos;ve already added for another library&apos;s, and set <code>iconLibrary</code> so later adds match. See <a href="/docs/icons">Icons</a>.</p>
+    <p>Use <code>migrate icons</code> to move the icons of components you&apos;ve already added to another library, install its package, and set <code>iconLibrary</code> so later adds match. See <a href="/docs/icons">Icons</a>.</p>
     <CliCommand Args="migrate icons --to tabler" />
     <p><strong>Options</strong></p>
     <CodeFigure Code="@MigrateIconsOptionsCode" Language="text" />
-    <p>It leaves any <code>&lt;svg&gt;</code> that isn&apos;t one of the components&apos; own icons as it is. Without a path, it migrates the files in <code>componentsDir</code>.</p>
+    <p>
+        It asks for each library you don&apos;t pass, then asks you to confirm before it writes. <code>--yes</code> skips the
+        confirmation. The two libraries have to differ. It moves the <code>&lt;Icon&gt;</code>s of the components you&apos;ve added,
+        and lists each icon with no equivalent in the new library by name, leaving it as it is. A copy from an earlier version
+        draws its icons inline, as SVG, and is not changed: add the component again with <code>--overwrite</code>. Without a path,
+        it migrates the files in <code>componentsDir</code>; with one, it leaves <code>blazix.json</code> alone.
+    </p>
 
     <DocsHeading Title="list" />
     <p>Use the <code>list</code> command to see the components you can add. The ones you&apos;ve added are marked.</p>
@@ -61,9 +67,9 @@
           -p, --project <path>   the project to set up, when the folder has more than one
           --dir <folder>         where components go (default: "Components/UI")
           --rtl                  copy components right-to-left ready ("rtl": true)
-          --icon-library <name>  the icon set components are copied with (default: lucide)
+          --icon-library <name>  the icon set the components draw their icons from (default: lucide)
                                  lucide, tabler, hugeicons, phosphor, remixicon, fontawesome
-          --skip-package         don't add the Blazix.Primitives package
+          --skip-package         don't add the Blazix.Primitives or icon package
         """;
 
     private const string MigrateOptionsCode = """
@@ -78,14 +84,15 @@
         """;
 
     private const string MigrateIconsOptionsCode = """
-        Usage: blazix migrate icons [path] --to <library> [options]
+        Usage: blazix migrate icons [path] [options]
 
         Arguments:
           path                   a file or folder to migrate (default: componentsDir)
 
         Options:
-          --to <library>         the library to change to
-          --from <library>       the library the components came with (default: iconLibrary)
+          --from <library>       the library the icons come from (default: iconLibrary)
+          --to <library>         the library to migrate to (asked for when omitted; must differ from --from)
+          -y, --yes              migrate without the confirmation
           -p, --project <path>   the project, when the folder has more than one
         """;
 
@@ -96,7 +103,7 @@
           -p, --project <path>   the project to add to, when the folder has more than one
           -a, --all              add every component, with the dependencies they need
           --overwrite            replace files you already have
-          --skip-package         don't add the Blazix.Primitives package
+          --skip-package         don't add the Blazix.Primitives or icon package
         """;
 
     private const string DiffOptionsCode = """

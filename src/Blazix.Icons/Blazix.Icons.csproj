@@ -2,7 +2,7 @@
 
   <!--
     The <Icon> component and IconData, which every icon set package (Blazix.Icons.Lucide, .Tabler, ...) is written
-    against. The components `blazix add` copies don't use it: they get their icons as inline SVG.
+    against. The components `blazix add` copies use it too: `add` installs the icon set's package, which brings it along.
   -->
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>

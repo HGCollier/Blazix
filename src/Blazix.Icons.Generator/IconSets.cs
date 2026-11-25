@@ -12,10 +12,9 @@ internal sealed record Glyph(string Group, string Name, string ViewBox, string B
 /// <summary>An icon set, read from its npm tarball.</summary>
 /// <param name="Key">The name blazix.json's <c>iconLibrary</c> takes (shadcn's, where shadcn has the set).</param>
 /// <param name="Parameter">The IconPlaceholder parameter that names the set's icon.</param>
-/// <param name="Notice">A license notice the set's SVG files carry, which the CLI keeps in copied SVG.</param>
 internal sealed record IconSet(
     string Key, string Parameter, string Title, string ClassName, string Package, string Version, string Integrity,
-    string License, string? Notice, Func<string, bool> Include, Func<string, string, Glyph?> Read)
+    string License, Func<string, bool> Include, Func<string, string, Glyph?> Read)
 {
     public string Namespace => "Blazix.Icons." + Parameter;
 
@@ -26,23 +25,18 @@ internal sealed record IconSet(
 
 internal static partial class IconSets
 {
-    // Font Awesome's attribution (CC BY 4.0), as each of its SVG files has it.
-    private const string FontAwesomeNotice =
-        "Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free " +
-        "(Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.";
-
     public static readonly IconSet[] All =
     [
         new("lucide", "Lucide", "Lucide", "LucideIcons", "lucide-static", "1.77.0",
             "sha512-v+BzpQrjlwDRWPDzzAu5IFhOkI6jVKb91fsjw1ZSS7Tsb2YvRX5olRN0DXGW99LF2wV4fycuTf5aPOMC62ZW0g==",
-            "ISC", null,
+            "ISC",
             path => InFolder(path, "package/icons/") && path.EndsWith(".svg", StringComparison.Ordinal),
             (path, svg) => FromSvg("", Stem(path), svg, fill: false)),
 
         // Outline, as shadcn's tabler icons are, and filled ones as <name>-filled (Tabler's React names: IconCircleCheckFilled).
         new("tabler", "Tabler", "Tabler Icons", "TablerIcons", "@tabler/icons", "3.52.0",
             "sha512-dldKlJNfO/gZnGLcIY0X2EFFKIMGwL/rEvTqglvBgAPFiwj9pZOCN5V3Sf0Gyjq6foX4VQmLdOmsS4w5FdWKAw==",
-            "MIT", null,
+            "MIT",
             path => (InFolder(path, "package/icons/outline/") || InFolder(path, "package/icons/filled/")) && path.EndsWith(".svg", StringComparison.Ordinal),
             (path, svg) => path.Contains("/filled/", StringComparison.Ordinal)
                 ? FromSvg("", Stem(path) + "-filled", svg, fill: true)
@@ -51,14 +45,14 @@ internal static partial class IconSets
         // Strokes made 2 wide on every element, as shadcn's <HugeiconsIcon strokeWidth={2} /> draws them.
         new("hugeicons", "Hugeicons", "Hugeicons", "HugeiconsIcons", "@hugeicons/core-free-icons", "4.4.0",
             "sha512-7Mz8bmGoY6tZ6l3C2TXwNMLVSr0I8HPwjjFIERAuJFj3rWwLxdF2ZLkDqdrVuEE1dx5b/VXyIsP4WoSU6Q40KQ==",
-            "MIT", null,
+            "MIT",
             path => HugeiconsFile().IsMatch(path),
             (path, js) => new Glyph("", Kebab(HugeiconsFile().Match(path).Groups["name"].Value), "0 0 24 24", HugeiconsBody(js), Fill: false)),
 
         // Every weight; regular has no suffix, the others are <name>-bold, -fill, -duotone, -light, -thin, as Phosphor names its files.
         new("phosphor", "Phosphor", "Phosphor Icons", "PhosphorIcons", "@phosphor-icons/core", "2.1.1",
             "sha512-v4ARvrip4qBCImOE5rmPUylOEK4iiED9ZyKjcvzuezqMaiRASCHKcRIuvvxL/twvLpkfnEODCOJp5dM4eZilxQ==",
-            "MIT", null,
+            "MIT",
             path => InFolder(path, "package/assets/") && path.EndsWith(".svg", StringComparison.Ordinal),
             (path, svg) => FromSvg("", Stem(path), svg, fill: true)),
 
@@ -66,14 +60,14 @@ internal static partial class IconSets
         // which forbids distributing the icons as an icon library (sections 3.1 and 3.2), as a package of them would be.
         new("remixicon", "Remixicon", "Remix Icon", "RemixIcons", "remixicon", "4.8.0",
             "sha512-8qTM/bWkmsAWitvcL9XrVPVdqHRrdmnNp4zCFBdmIHBygxfHWwoK6NzitbiMyRzjcXKBMlS/ab5M65/ZlxJTVA==",
-            "Apache-2.0", null,
+            "Apache-2.0",
             path => InFolder(path, "package/icons/") && path.EndsWith(".svg", StringComparison.Ordinal),
             (path, svg) => FromSvg("", Stem(path), svg, fill: true)),
 
         // svgs-full: every icon on the same square 640 grid, so it sizes like the other sets (svgs/ varies the width).
         new("fontawesome", "FontAwesome", "Font Awesome Free", "FontAwesomeIcons", "@fortawesome/fontawesome-free", "7.3.1",
             "sha512-wmglKKPDIkgV3aWlZzWECCPoGIkYCulzBwxG9+w7rc5BGapZ6cPMpoPOT8k36J0Ni7PPX6c/rsoMWfS4d1MUMg==",
-            "CC-BY-4.0 (icons) AND MIT (code)", FontAwesomeNotice,
+            "CC-BY-4.0 (icons) AND MIT (code)",
             path => InFolder(path, "package/svgs-full/") && path.EndsWith(".svg", StringComparison.Ordinal),
             (path, svg) => FromSvg(Pascal(path.Split('/')[^2]), Stem(path), svg, fill: true)),
     ];
