@@ -139,12 +139,14 @@ internal sealed partial class Project
 
     public bool Exists(string relative) => File.Exists(Full(relative));
 
+    public string ReadText(string relative) => File.ReadAllText(Full(relative));
+
     public void WriteFile(string relative, string content, bool overwrite = true)
     {
         var full = Full(relative);
         if (File.Exists(full) && !overwrite)
         {
-            Console.WriteLine($"  kept {relative} (already exists{(relative.EndsWith(".css") ? "" : "; --overwrite to replace")})");
+            Console.WriteLine($"  kept {relative} (already exists{(relative.EndsWith(".css") ? "" : "; --overwrite to replace, or dnx Blazix.Cli diff to compare")})");
             return;
         }
         System.IO.Directory.CreateDirectory(Path.GetDirectoryName(full)!);

@@ -4,6 +4,7 @@ using Blazix.Cli;
 // blazix: copies styled components into a Blazor project.
 //   init                 set up Tailwind (no Node), theme tokens, Blazix.Primitives and usings
 //   add <item...>        copy components (and their dependencies) into your project
+//   diff [item...]       preview what add --overwrite would change in your components
 //   list                 show what's available
 //   migrate rtl [path]   make components you already copied right-to-left ready
 //   migrate icons [path] swap the icons of components you already copied to another icon library
@@ -17,6 +18,7 @@ try
     {
         ["init", .. var rest] => Commands.Init(Options.Parse(rest), version),
         ["add", .. var rest] => Commands.Add(Options.Parse(rest), version),
+        ["diff", .. var rest] => Commands.Diff(Options.Parse(rest), version),
         ["list", .. var rest] => Commands.List(Options.Parse(rest)),
         ["migrate", "rtl", .. var rest] => Commands.MigrateRtl(Options.Parse(rest)),
         ["migrate", "icons", .. var rest] => Commands.MigrateIcons(Options.Parse(rest)),

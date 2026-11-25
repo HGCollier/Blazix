@@ -11,6 +11,7 @@ internal static class Commands
         Usage:
           blazix init [--project <path>] [--dir Components/UI] [--rtl] [--icon-library <name>] [--skip-package]
           blazix add <item...> [--project <path>] [--overwrite] [--skip-package]
+          blazix diff [item...] [--project <path>]
           blazix list [--project <path>]
           blazix migrate rtl [path] [--project <path>] [--yes]
           blazix migrate icons [path] --to <name> [--from <name>] [--project <path>]
@@ -20,6 +21,9 @@ internal static class Commands
 
         --icon-library sets "iconLibrary" in blazix.json: the icon set the components are copied
         with, as inline SVG: lucide (the default), tabler, hugeicons, phosphor, remixicon, fontawesome.
+
+        diff shows what add --overwrite would change before you run it. With no items, it says whether each component
+        you've added still matches this version's copy. With items, it shows the changes to their files: - lines are yours, + lines are blazix's.
 
         Run without installing:  dnx Blazix.Cli <command>
         """;
@@ -286,6 +290,78 @@ internal static class Commands
     }
 
     /// <summary>
+    /// shadcn's diff: what <c>add --overwrite</c> would change, before you run it. With no items, whether each component
+    /// you've added still matches this version's copy. With items, the changes to their files, and to their dependencies'
+    /// (which add writes too), as unified diffs: <c>-</c> lines are yours, <c>+</c> lines are the version's.
+    /// </summary>
+    public static int Diff(Options options, string version)
+    {
+        var project = ComponentsProject(options);
+        var configPath = Path.Combine(project.Directory, ConfigFile);
+        if (!File.Exists(configPath))
+        {
+            throw new CliException($"no {ConfigFile} found. Run 'blazix init' first.");
+        }
+        var config = JsonNode.Parse(File.ReadAllText(configPath))!.AsObject();
+        var upstream = new Upstream(project, (string)config["componentsDir"]!, (string)config["namespace"]!,
+            Icons.Library((string?)config["iconLibrary"]), (bool?)config["rtl"] ?? false, version);
+
+        if (options.Items.Count > 0)
+        {
+            DiffItems(upstream, options.Items);
+        }
+        else
+        {
+            DiffAdded(upstream, config["installed"] as JsonObject ?? []);
+        }
+        return 0;
+    }
+
+    /// <summary>The changes to the named items' files, and their dependencies', as add --overwrite would write them.</summary>
+    private static void DiffItems(Upstream upstream, List<string> names)
+    {
+        var checks = Registry.Resolve(names).Select(item => CheckItem(upstream, item)).ToList();
+        PrintDiffs(checks);
+        if (checks.Any(check => check.Differs))
+        {
+            Console.WriteLine($"\n- lines are yours and + lines are blazix {upstream.Version}'s. To replace yours with blazix's, run:\n"
+                + $"  dnx Blazix.Cli add {string.Join(' ', names)} --overwrite");
+        }
+        else if (checks.All(check => check.Matches))
+        {
+            Console.WriteLine($"Your copies of {string.Join(", ", names)} match blazix {upstream.Version}: nothing to overwrite.");
+        }
+    }
+
+    /// <summary>Each component added, and whether it still matches this version's copy. Names this version doesn't have are listed too.</summary>
+    private static void DiffAdded(Upstream upstream, JsonObject installed)
+    {
+        var registry = Registry.All();
+        var added = registry.Where(item => installed.ContainsKey(item.Name)).Select(item => CheckItem(upstream, item)).ToList();
+        var unknown = installed.Select(entry => entry.Key).Where(name => registry.All(item => item.Name != name)).ToList();
+        if (added.Count == 0 && unknown.Count == 0)
+        {
+            Console.WriteLine("Nothing added yet. Add components with: dnx Blazix.Cli add <item>");
+            return;
+        }
+
+        Console.WriteLine($"Your components, compared with blazix {upstream.Version}:\n");
+        PrintSummary(added);
+        foreach (var name in unknown)
+        {
+            Console.WriteLine($"  {name,-16} not in blazix {upstream.Version}, so it can't be compared");
+        }
+        if (added.Any(check => !check.Matches))
+        {
+            Console.WriteLine("\nSee a component's changes with: dnx Blazix.Cli diff <item>");
+        }
+        else if (added.Count > 0)
+        {
+            Console.WriteLine($"\nEverything you've added matches blazix {upstream.Version}: nothing to overwrite.");
+        }
+    }
+
+    /// <summary>
     /// shadcn's migrate rtl: maps the classes of components copied before <c>"rtl": true</c>, then sets it so later
     /// adds come mapped. Run it once: a second run adds the <c>rtl:</c> classes again.
     /// </summary>
@@ -422,6 +498,80 @@ internal static class Commands
             }
         }
         return 0;
+    }
+
+    /// <summary>What add writes into a project: where each registry file goes, and how it's rendered there.</summary>
+    private sealed record Upstream(Project Project, string Dir, string Namespace, string IconLibrary, bool Rtl, string Version);
+
+    /// <summary>A registry item, and how each of its files compares with the project's copy.</summary>
+    private sealed record ItemCheck(RegistryItem Item, List<FileCheck> Files)
+    {
+        public bool Matches => Files.All(file => file.Matches);
+        public bool Differs => Files.Any(file => file.Differs);
+    }
+
+    /// <param name="Relative">The file's path in the project.</param>
+    /// <param name="Changes">How the project's copy differs from upstream's; null when there is no copy.</param>
+    private sealed record FileCheck(string Relative, LineDiff.Changes? Changes)
+    {
+        public bool Matches => Changes is { IsEmpty: true };
+        public bool Differs => Changes is { IsEmpty: false };
+    }
+
+    private static ItemCheck CheckItem(Upstream upstream, RegistryItem item) =>
+        new(item, item.Files.Select(file => CheckFile(upstream, file)).ToList());
+
+    private static FileCheck CheckFile(Upstream upstream, string file)
+    {
+        var relative = TargetPath(upstream.Project, upstream.Dir, file);
+        if (!upstream.Project.Exists(relative))
+        {
+            return new FileCheck(relative, null);
+        }
+        var content = Render(file, upstream.Namespace, upstream.IconLibrary, upstream.Rtl);
+        return new FileCheck(relative, LineDiff.Compare(upstream.Project.ReadText(relative), content,
+            $"{relative} (yours)", $"{relative} (blazix {upstream.Version})"));
+    }
+
+    private static void PrintSummary(List<ItemCheck> checks)
+    {
+        foreach (var check in checks)
+        {
+            Console.WriteLine($"  {check.Item.Name,-16} {(check.Matches ? "up to date" : "changed")}");
+            foreach (var file in check.Files.Where(f => !f.Matches))
+            {
+                var change = file.Changes is { } changes ? $"+{changes.Added} -{changes.Removed}" : "missing";
+                Console.WriteLine($"    {file.Relative,-40} {change}");
+            }
+        }
+    }
+
+    private static void PrintDiffs(List<ItemCheck> checks)
+    {
+        foreach (var file in checks.SelectMany(check => check.Files))
+        {
+            if (file.Changes is null)
+            {
+                Console.WriteLine($"{file.Relative} isn't in your project: add would create it.");
+            }
+            else if (!file.Changes.IsEmpty)
+            {
+                foreach (var line in file.Changes.Unified)
+                {
+                    Console.WriteLine(line);
+                }
+            }
+        }
+    }
+    /// <summary>
+    /// The registry's file as add writes it: in the app's namespace, with its icons drawn from the set in
+    /// <c>iconLibrary</c> and, when <paramref name="rtl"/>, its classes mapped.
+    /// </summary>
+    private static string Render(string file, string ns, string iconLibrary, bool rtl)
+    {
+        var content = Icons.Transform(file, Registry.RewriteComponentNamespace(Registry.Read("Components/" + file), ns),
+            iconLibrary);
+        return rtl ? Rtl.Transform(file, content) : content;
     }
 
     /// <summary>The Blazix.Icons.* package for an icon library: Blazix.Icons.Lucide for lucide.</summary>
