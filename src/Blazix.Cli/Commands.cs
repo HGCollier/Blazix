@@ -10,7 +10,7 @@ internal static class Commands
 
         Usage:
           blazix init [--project <path>] [--dir Components/UI] [--rtl] [--icon-library <name>] [--skip-package]
-          blazix add <item...> [--project <path>] [--overwrite] [--skip-package]
+          blazix add <item...> | --all [--project <path>] [--overwrite] [--skip-package]
           blazix diff [item...] [--project <path>]
           blazix list [--project <path>]
           blazix migrate rtl [path] [--project <path>] [--yes]
@@ -21,6 +21,8 @@ internal static class Commands
 
         --icon-library sets "iconLibrary" in blazix.json: the icon set the components are copied
         with, as inline SVG: lucide (the default), tabler, hugeicons, phosphor, remixicon, fontawesome.
+
+        --all adds every component, with the dependencies they need, as shadcn's add --all does.
 
         diff shows what add --overwrite would change before you run it. With no items, it says whether each component
         you've added still matches this version's copy. With items, it shows the changes to their files: - lines are yours, + lines are blazix's.
@@ -198,9 +200,13 @@ internal static class Commands
 
     public static int Add(Options options, string version)
     {
-        if (options.Items.Count == 0)
+        if (options.All && options.Items.Count > 0)
         {
-            throw new CliException("say what to add, e.g. 'blazix add dropdown-menu' (see 'blazix list')");
+            throw new CliException("--all adds every component, so name none: run 'blazix add --all' alone");
+        }
+        if (options.Items.Count == 0 && !options.All)
+        {
+            throw new CliException("say what to add, e.g. 'blazix add dropdown-menu' (see 'blazix list'), or every component: 'blazix add --all'");
         }
 
         var project = ComponentsProject(options);
@@ -217,7 +223,9 @@ internal static class Commands
         var rtl = (bool?)config["rtl"] ?? false;
         var iconLibrary = Icons.Library((string?)config["iconLibrary"]);
 
-        var plan = Registry.Resolve(options.Items);
+        // As shadcn's add --all: every component, by name, with the dependencies they need resolved in.
+        var names = options.All ? Registry.All().Select(item => item.Name).Order().ToList() : options.Items;
+        var plan = Registry.Resolve(names);
         foreach (var item in plan)
         {
             foreach (var file in item.Files)

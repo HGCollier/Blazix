@@ -19,7 +19,7 @@
     <CliCommand Args="add [component...]" />
     <p><strong>Options</strong></p>
     <CodeFigure Code="@AddOptionsCode" Language="text" />
-    <p>A file you already have is kept, unless you pass <code>--overwrite</code>. Run <code>diff</code> first to see what it would change.</p>
+    <p>A file you already have is kept, unless you pass <code>--overwrite</code>. Run <code>diff</code> first to see what it would change. To add every component, pass <code>--all</code>, as shadcn&apos;s <code>add --all</code> does.</p>
 
     <DocsHeading Title="diff" />
     <p>Use the <code>diff</code> command to see what <code>add --overwrite</code> would change before you run it. With no components, it says whether each one you&apos;ve added still matches this version&apos;s. With components, it shows the changes to their files as a diff, where <code>-</code> lines are yours and <code>+</code> lines are the version&apos;s.</p>
@@ -90,10 +90,11 @@
         """;
 
     private const string AddOptionsCode = """
-        Usage: blazix add <component...> [options]
+        Usage: blazix add <component...> | --all [options]
 
         Options:
           -p, --project <path>   the project to add to, when the folder has more than one
+          -a, --all              add every component, with the dependencies they need
           --overwrite            replace files you already have
           --skip-package         don't add the Blazix.Primitives package
         """;
