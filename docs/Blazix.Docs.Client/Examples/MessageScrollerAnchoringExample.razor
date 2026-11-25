@@ -4,7 +4,7 @@
             <CardTitle>Anchoring Turns</CardTitle>
             <CardDescription>Choose which role settles near the top edge.</CardDescription>
             <CardAction>
-                <Button Type="button" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="Reset anchored turns"
+                <Button Type="ButtonType.button" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="Reset anchored turns"
                         Disabled="@(_count == 0)" @onclick="() => _count = 0">
                     <Icon Data="LucideIcons.RotateCw" />
                 </Button>
@@ -43,7 +43,7 @@
                 <ToggleGroupItem Value="user" aria-label="Anchor user messages">User</ToggleGroupItem>
                 <ToggleGroupItem Value="assistant" aria-label="Anchor assistant messages">Assistant</ToggleGroupItem>
             </ToggleGroup>
-            <Button Type="button" Size="ButtonSize.Icon" Class="ml-auto" Disabled="@(_count == Script.Get().Count)" @onclick="() => _count++">
+            <Button Type="ButtonType.button" Size="ButtonSize.Icon" Class="ml-auto" Disabled="@(_count == Script.Get().Count)" @onclick="() => _count++">
                 <Icon Data="LucideIcons.ArrowUp" />
                 <span class="sr-only">Send Message</span>
             </Button>

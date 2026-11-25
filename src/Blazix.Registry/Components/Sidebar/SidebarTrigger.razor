@@ -1,7 +1,8 @@
 @namespace Blazix.Registry
+@using Blazix.Primitives
 @using static Blazix.Registry.ClassNames
 
-<Button data-sidebar="trigger" data-slot="sidebar-trigger" Variant="ButtonVariant.Ghost" Size="ButtonSize.IconSm" @attributes="AdditionalAttributes"
+<Button data-sidebar="trigger" data-slot="sidebar-trigger" Type="@Type" Variant="ButtonVariant.Ghost" Size="ButtonSize.IconSm" @attributes="AdditionalAttributes"
         Class="@Cn(Class)" @onclick="ToggleAsync">
     <IconPlaceholder Lucide="panel-left" Tabler="layout-sidebar" Hugeicons="sidebar-left" Phosphor="sidebar" Remixicon="side-bar-line" FontAwesome="bars"
                      aria-hidden="true" class="cn-rtl-flip" />
@@ -12,6 +13,7 @@
     [CascadingParameter] private SidebarContext Context { get; set; } = null!;
 
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+    [Parameter] public ButtonType Type { get; set; } = ButtonType.button;
     [Parameter] public string? Class { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]

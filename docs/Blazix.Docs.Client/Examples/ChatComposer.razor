@@ -31,7 +31,7 @@
                 </DropdownMenuContent>
             </DropdownMenu>
             @ChildContent
-            <InputGroupButton Type="submit" Variant="ButtonVariant.Default" Size="InputGroupButtonSize.IconSm"
+            <InputGroupButton Type="ButtonType.submit" Variant="ButtonVariant.Default" Size="InputGroupButtonSize.IconSm"
                               Disabled="@(Session.NextMessage is null || Session.IsBusy)" Class="ml-auto">
                 <Icon Data="LucideIcons.ArrowUp" />
                 <span class="sr-only">Send</span>

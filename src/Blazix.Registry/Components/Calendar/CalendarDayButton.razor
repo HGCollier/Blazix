@@ -1,8 +1,9 @@
 @namespace Blazix.Registry
+@using Blazix.Primitives
 @using System.Globalization
 @using static Blazix.Registry.ClassNames
 
-<Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Disabled="@Disabled"
+<Button Type="@Type" Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" Disabled="@Disabled"
         data-day="@Day.Date.ToString("d", Locale ?? Calendar.DefaultLocale)"
         data-selected-single="@Flag(Modifiers.Selected && Modifiers.RangeStart != true && Modifiers.RangeEnd != true && Modifiers.RangeMiddle != true)"
         data-range-start="@Flag(Modifiers.RangeStart)" data-range-end="@Flag(Modifiers.RangeEnd)" data-range-middle="@Flag(Modifiers.RangeMiddle)"
@@ -31,6 +32,7 @@
     [Parameter] public CultureInfo? Locale { get; set; }
 
     [Parameter] public bool Disabled { get; set; }
+    [Parameter] public ButtonType Type { get; set; } = ButtonType.button;
     [Parameter] public string? Class { get; set; }
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
