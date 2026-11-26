@@ -22,7 +22,7 @@ internal static class Commands
         --icon-library sets "iconLibrary" in blazix.json: the icon set the components are copied
         with, as inline SVG: lucide (the default), tabler, hugeicons, phosphor, remixicon, fontawesome.
 
-        --all adds every component, with the dependencies they need, as shadcn's add --all does.
+        --all adds every component, with the dependencies they need.
 
         diff shows what add --overwrite would change before you run it. With no items, it says whether each component
         you've added still matches this version's copy. With items, it shows the changes to their files: - lines are yours, + lines are blazix's.
