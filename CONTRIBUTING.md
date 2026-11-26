@@ -23,7 +23,7 @@ src/
     Accordion/ … Tooltip/    one folder per primitive
     Core/, UseRender/        what the parts are built on
     wwwroot/                 the JS modules (core/ is shared)
-  Blazix.Cli/                → NuGet tool (`dnx Blazix.Cli ...`): init / add / list, embeds Blazix.Registry/
+  Blazix.Cli/                → NuGet tool (`dnx Blazix.Cli ...`): init / add / list / diff, embeds Blazix.Registry/
   Blazix.Registry/           source of truth for what the CLI copies (never packed)
     registry.json            items, files, dependencies
     Components/              ← what `add` copies: styled components (Tailwind classes), a folder per item
@@ -122,6 +122,5 @@ Push a tag like `v0.2.0` and [`.github/workflows/release.yml`](.github/workflows
 
 - **The components built on third-party libraries**: Chart, Sonner (Toast covers it) and Code Block's Markdown example (it needs Streamdown), and primitives for those libraries.
 - **Automated tests.** Browser checks of every primitive (keyboard, focus, ARIA, state sync, animations) and of the docs site ran while building this, but they aren't in the repo yet. bUnit for ARIA output and state, and Playwright for .NET for keyboard, focus and positioning, would need no Node.
-- **`blazix diff <item>`**, to show upstream changes before overwriting.
 - **Interactive Auto: what's untested.** Auto was checked by hand in Chromium and Firefox in apps from `dotnet new blazor --interactivity Auto`, with per-page and global (`--all-interactive`) interactivity and a trimmed Release publish. The checks covered the first load on Server, reloads on WebAssembly, navigating with a popup open, and a Server island over a WebAssembly page. Not covered: AOT in an Auto app (the docs cover AOT on WebAssembly), Safari, reconnecting a circuit after a long disconnect, and a server with several instances behind a load balancer.
 - **Platforms.** Tested on Windows x64. Tailwind asset names for macOS and Linux follow the release naming. Alpine/musl needs `<TailwindExecutable>`.
