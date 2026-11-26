@@ -19,7 +19,7 @@ dotnet blazix add dropdown-menu
 
 Options: `--project <path>` (when a folder has several projects), `--dir <folder>` (`init`, default `Components/UI`),
 `--rtl` (`init`, copy components right-to-left ready), `--icon-library <name>` (`init`, the components' icon set),
-`--overwrite` (`add`, replace files you already have),
+`--all` (`add`, every component), `--overwrite` (`add`, replace files you already have),
 `--skip-package` (don't touch package references).
 
 `dnx Blazix.Cli diff` previews what `add --overwrite` would change, before you run it. With no items, it says whether each

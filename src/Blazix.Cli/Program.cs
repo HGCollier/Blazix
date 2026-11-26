@@ -3,7 +3,7 @@ using Blazix.Cli;
 
 // blazix: copies styled components into a Blazor project.
 //   init                 set up Tailwind (no Node), theme tokens, Blazix.Primitives and usings
-//   add <item...>        copy components (and their dependencies) into your project
+//   add <item...>|--all  copy components (and their dependencies) into your project
 //   diff [item...]       preview what add --overwrite would change in your components
 //   list                 show what's available
 //   migrate rtl [path]   make components you already copied right-to-left ready
