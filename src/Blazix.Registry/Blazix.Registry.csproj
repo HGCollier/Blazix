@@ -26,6 +26,8 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web"/>
         <ProjectReference Include="..\Blazix.Primitives\Blazix.Primitives.csproj"/>
+        <!-- The icons draw through the Icon component, as the copies' do: an IconPlaceholder becomes one in `blazix add`. -->
+        <ProjectReference Include="..\Blazix.Icons\Blazix.Icons.csproj"/>
         <!-- As `blazix init` sets up apps: the primitives' types work everywhere, while Razor matches tags only against @using. -->
         <Using Include="Blazix.Primitives"/>
     </ItemGroup>

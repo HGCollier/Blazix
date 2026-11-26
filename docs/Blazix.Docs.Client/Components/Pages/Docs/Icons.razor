@@ -1,10 +1,11 @@
 @page "/docs/icons"
 
-<DocsPage Title="Icons" Description="Pick the icon set the components are copied with, and add icons of your own.">
+<DocsPage Title="Icons" Description="Pick the icon set your components draw their icons from. add installs its package.">
     <p>
-        The components draw their icons as inline SVG, so they need no icon package. You pick which set those icons come from,
-        the way shadcn/ui&apos;s <code>iconLibrary</code> does: <code>add</code> copies each component with that set&apos;s icons.
-        For icons of your own, each set is also a NuGet package.
+        The components draw their icons with the <code>Icon</code> component, from the package of an icon set. You pick the set
+        the way shadcn/ui&apos;s <code>iconLibrary</code> does: <code>add</code> installs that set&apos;s package and copies each
+        component with the set&apos;s icons, as <code>&lt;Icon Data="…" /&gt;</code> elements. For icons of your own, each set is
+        also a NuGet package.
     </p>
 
     <DocsHeading Title="Icon libraries" />
@@ -30,31 +31,44 @@
     </p>
 
     <DocsHeading Title="Choosing a library" />
-    <p>Pass <code>--icon-library</code> to <code>init</code>. It sets <a href="/docs/blazix-json#iconlibrary"><code>iconLibrary</code></a> in <code>blazix.json</code>, which you can also edit by hand.</p>
+    <p>
+        Pass <code>--icon-library</code> to <code>init</code>. It sets <a href="/docs/blazix-json#iconlibrary"><code>iconLibrary</code></a>
+        in <code>blazix.json</code>, which you can also edit by hand, and installs that set&apos;s package.
+    </p>
     <CliCommand Args="init --icon-library tabler" />
     <p>
-        From then on, <code>add</code> copies each component with that set&apos;s icons. Each icon keeps the classes and
-        attributes the component gives it, so it sizes and colors the same way in every set:
+        From then on, <code>add</code> copies each component with that set&apos;s icons, and installs the package if the project
+        doesn&apos;t have it yet. Each icon keeps the classes and attributes the component gives it, so it sizes and colors the
+        same way in every set. In the Accordion&apos;s trigger, the copy has:
     </p>
     <CodeFigure Code="@CopiedCode" Title="Components/UI/Accordion/AccordionTrigger.razor" />
+    <p>
+        <code>add</code> takes no <code>--icon-library</code> of its own. It uses the library in <code>blazix.json</code> and refuses
+        a different one, so a project never mixes sets by accident.
+    </p>
 
     <DocsHeading Title="Changing library" />
     <p>
-        For components you&apos;ve already added, run <code>migrate icons</code>. It swaps their icons for the new library&apos;s and
-        sets <code>iconLibrary</code>, so later adds match.
+        For components you&apos;ve already added, run <code>migrate icons</code>. It asks which libraries to migrate from and to,
+        unless you pass <code>--from</code> and <code>--to</code>, then asks you to confirm. Once you do, it moves their icons,
+        installs the new library&apos;s package, and sets <code>iconLibrary</code>, so later adds match.
     </p>
     <CliCommand Args="migrate icons --to phosphor" />
     <p><strong>Options</strong></p>
     <CodeFigure Code="@MigrateOptionsCode" Language="text" />
     <p>
-        It swaps the icons it recognizes as the components&apos; own, in the library <code>blazix.json</code> names. It leaves any
-        other <code>&lt;svg&gt;</code> as it is, such as your own icons or one you&apos;ve redrawn, and says how many it left. Pass
-        <code>--from</code> if your components came with a different library from the one <code>blazix.json</code> names. With a path,
-        it migrates just those files and leaves <code>blazix.json</code> alone.
+        With a path, it migrates just those files and leaves <code>blazix.json</code> alone. Each icon with no equivalent in the new
+        library is listed by name and left as it is. The CLI pairs the icons its components use, so an icon of your own that no
+        component uses has no equivalent here, even where the new library has one. Migrate those by hand, or keep them.
+    </p>
+    <p>
+        Components copied by an earlier version draw their icons inline, as SVG. <code>migrate icons</code> moves only
+        <code>&lt;Icon&gt;</code>s, so those copies stay as they are. To get the icon component instead, add the component again with
+        <code>--overwrite</code>: the copy is replaced with the current one, which uses <code>&lt;Icon&gt;</code>s from your library.
     </p>
 
     <DocsHeading Title="Icons of your own" />
-    <p>Each set is a package of its own. Add the one that matches your components:</p>
+    <p>Each set is a package of its own. Add the one that matches your components, or any other:</p>
     <CodeFigure Code="@PackageCode" Language="bash" />
     <p>
         Then render an icon with <code>&lt;Icon&gt;</code>, from <code>Blazix.Icons</code>, which the set&apos;s package brings with it.
@@ -93,9 +107,9 @@
     </p>
     <ul>
         <li>
-            <strong>Font Awesome Free</strong>: its icons are CC BY 4.0, which requires attribution. Each Font Awesome icon that
-            <code>add</code> copies keeps Font Awesome&apos;s attribution comment, as its own SVG files do. Razor drops comments when it
-            compiles, so the comment costs nothing at run time.
+            <strong>Font Awesome Free</strong>: its icons are CC BY 4.0, which requires attribution. Each package carries the
+            attribution in <code>ICONS-LICENSE.txt</code>, and so do the CLI&apos;s notices. The components name the package&apos;s
+            icons and carry no SVG of their own.
         </li>
         <li>
             <strong>Remix Icon</strong>: the package and the components use Remix Icon 4.8.0, its last release under Apache-2.0.
@@ -117,21 +131,20 @@
     ];
 
     private const string CopiedCode = """
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-             aria-hidden="true" data-slot="accordion-trigger-icon" class="pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden">
-            <path d="M6 9l6 6l6 -6" />
-        </svg>
+        <Icon Data="TablerIcons.ChevronDown"
+              aria-hidden="true" data-slot="accordion-trigger-icon" class="pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden" />
         """;
 
     private const string MigrateOptionsCode = """
-        Usage: blazix migrate icons [path] --to <library> [options]
+        Usage: blazix migrate icons [path] [options]
 
         Arguments:
           path                   a file or folder to migrate (default: componentsDir)
 
         Options:
-          --to <library>         the library to change to: lucide, tabler, hugeicons, phosphor, remixicon, fontawesome
-          --from <library>       the library the components came with (default: blazix.json's iconLibrary)
+          --from <library>       the library the icons come from (default: blazix.json's iconLibrary)
+          --to <library>         the library to migrate to, which must differ from --from: lucide, tabler, hugeicons, phosphor, remixicon, fontawesome
+          -y, --yes              migrate without the confirmation
           -p, --project <path>   the project, when the folder has more than one
         """;
 

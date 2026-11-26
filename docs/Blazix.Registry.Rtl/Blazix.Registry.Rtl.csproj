@@ -23,6 +23,8 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.Web"/>
         <ProjectReference Include="..\..\src\Blazix.Primitives\Blazix.Primitives.csproj"/>
+        <!-- The copies draw their icons with the Icon component and the Lucide icons, as `add` writes them by default. -->
+        <ProjectReference Include="..\..\src\Blazix.Icons.Lucide\Blazix.Icons.Lucide.csproj"/>
         <!-- Built first, for its rtl-copy command; nothing references its assembly. -->
         <ProjectReference Include="..\..\src\Blazix.Cli\Blazix.Cli.csproj" ReferenceOutputAssembly="false" Private="false"/>
         <Using Include="Blazix.Primitives"/>

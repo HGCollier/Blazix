@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- The components' icons in every set (generated, plain C#): what `add` writes for blazix.json's "iconLibrary". -->
+    <!-- The components' icons in every set (generated, plain C#): the references `add` writes for blazix.json's "iconLibrary", and the SVG `migrate icons` converts. -->
     <Compile Include="..\Blazix.Registry\Icons\RegistryIcons.g.cs" Link="RegistryIcons.g.cs" />
   </ItemGroup>
 

@@ -30,7 +30,12 @@ so your own edits and upstream changes both show as differences.
 For right-to-left apps, `init --rtl` sets `"rtl": true` in `blazix.json`, and `add` then copies components with logical
 classes (`ms-2`, `start-0`, `text-start`). `dnx Blazix.Cli migrate rtl [path]` converts components you already copied.
 
-The components' icons are inline SVG from the set in `blazix.json`'s `"iconLibrary"`: `lucide` (the default), `tabler`,
-`hugeicons`, `phosphor`, `remixicon` or `fontawesome`. Pick one with `init --icon-library tabler`, and switch components you
-already copied with `dnx Blazix.Cli migrate icons --to phosphor`. For icons of your own, add the set's package:
-`dotnet add package Blazix.Icons.Lucide`.
+The components draw their icons with the `Icon` component, from the set in `blazix.json`'s `"iconLibrary"`: `lucide` (the default),
+`tabler`, `hugeicons`, `phosphor`, `remixicon` or `fontawesome`. `init` and `add` install that set's package (`Blazix.Icons.Lucide`,
+...), and `add` writes `<Icon Data="LucideIcons.ChevronDown" />`. Pick one with `init --icon-library tabler`, and switch components
+you already copied with `dnx Blazix.Cli migrate icons --to phosphor`. `add` takes no `--icon-library`: it refuses a set other than
+the one in `blazix.json`. `migrate icons` asks which libraries to migrate from and to (or takes `--from` and `--to`, which must
+differ), and confirms before it writes; `--yes` skips the confirmation. It moves the `<Icon>`s, and lists the icons with no
+equivalent in the new library, which it leaves as they are. Copies from earlier versions draw their icons inline, as SVG:
+`migrate icons` leaves those alone, and `add --overwrite` replaces a copy with one that uses `<Icon>`s.
+For icons of your own, add the set's package: `dotnet add package Blazix.Icons.Lucide`.
