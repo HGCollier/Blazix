@@ -1,26 +1,26 @@
 @namespace Blazix.Registry
-@if (Type is "success" or "info" or "warning" or "error" or "loading")
+@if (Type is { } type)
 {
     <span data-slot="toast-icon" class="@("shrink-0 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4")">
-        @switch (Type)
+        @switch (type)
         {
-            case "success":
+            case ToastIconType.Success:
                 <IconPlaceholder Lucide="circle-check" Tabler="circle-check" Hugeicons="checkmark-circle-02" Phosphor="check-circle" Remixicon="checkbox-circle-line" FontAwesome="circle-check"
                                  aria-hidden="true" />
                 break;
-            case "info":
+            case ToastIconType.Info:
                 <IconPlaceholder Lucide="info" Tabler="info-circle" Hugeicons="information-circle" Phosphor="info" Remixicon="information-line" FontAwesome="circle-info"
                                  aria-hidden="true" />
                 break;
-            case "warning":
+            case ToastIconType.Warning:
                 <IconPlaceholder Lucide="triangle-alert" Tabler="alert-triangle" Hugeicons="alert-02" Phosphor="warning" Remixicon="error-warning-line" FontAwesome="triangle-exclamation"
                                  aria-hidden="true" />
                 break;
-            case "error":
+            case ToastIconType.Error:
                 <IconPlaceholder Lucide="octagon-x" Tabler="alert-octagon" Hugeicons="multiplication-sign-circle" Phosphor="x-circle" Remixicon="close-circle-line" FontAwesome="circle-xmark"
                                  aria-hidden="true" class="text-destructive" />
                 break;
-            default:
+            case ToastIconType.Loading:
                 <IconPlaceholder Lucide="loader-circle" Tabler="loader" Hugeicons="loading-03" Phosphor="spinner" Remixicon="loader-line" FontAwesome="circle-notch"
                                  aria-hidden="true" class="animate-spin" />
                 break;
@@ -29,5 +29,6 @@
 }
 
 @code {
-    [Parameter] public string? Type { get; set; }
+    /// <summary>The kind of toast this icon is for. Without one, nothing is drawn.</summary>
+    [Parameter] public ToastIconType? Type { get; set; }
 }

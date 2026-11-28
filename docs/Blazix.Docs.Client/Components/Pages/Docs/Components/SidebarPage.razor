@@ -89,7 +89,7 @@
         <table>
             <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
             <tbody>
-                <tr><td><code>State</code></td><td><code>"expanded"</code> or <code>"collapsed"</code></td><td>The current state of the sidebar.</td></tr>
+                <tr><td><code>State</code></td><td><code>SidebarState.Expanded</code> or <code>SidebarState.Collapsed</code></td><td>The current state of the sidebar.</td></tr>
                 <tr><td><code>Open</code></td><td><code>bool</code></td><td>Whether the sidebar is open.</td></tr>
                 <tr><td><code>SetOpenAsync</code></td><td><code>Func&lt;bool, Task&gt;</code></td><td>Sets the open state of the sidebar.</td></tr>
                 <tr><td><code>OpenMobile</code></td><td><code>bool</code></td><td>Whether the sidebar is open on mobile.</td></tr>
@@ -173,9 +173,32 @@
 
     <DocsHeading Title="API Reference" />
     <ApiReference Name="sidebar" />
+    <DocsHeading Title="Changelog" />
+    <DocsHeading Level="3" Title="2026-11-24 Sidebar state and direction" />
+    <p>
+        <code>SidebarContext.State</code> is now a <code>SidebarState</code>: <code>SidebarState.Expanded</code> or
+        <code>SidebarState.Collapsed</code>, not the strings <code>"expanded"</code> or <code>"collapsed"</code>. The
+        <code>data-state</code> attribute still says <code>expanded</code> or <code>collapsed</code>, so the styles don&apos;t change.
+    </p>
+    <p>
+        <code>Sidebar</code>&apos;s <code>Dir</code> is now a <code>TextDirection</code>: <code>Dir="TextDirection.Rtl"</code> instead of
+        <code>Dir="rtl"</code>.
+    </p>
+    <CodeFigure Code="@StateCode" />
+    <p>
+        To get the new version, run <code>dnx Blazix.Cli diff sidebar</code> to see your changes, then
+        <code>dnx Blazix.Cli add sidebar --overwrite</code>.
+    </p>
 </DocsPage>
 
 @code {
+    private const string StateCode = """
+        @if (Sidebar.State == SidebarState.Collapsed)
+        {
+            <p>The sidebar is collapsed.</p>
+        }
+        """;
+
     private const string LayoutCode = """
         @inherits LayoutComponentBase
 
@@ -267,7 +290,7 @@
         """;
 
     private const string ContextCode = """
-        <p>The sidebar is @Sidebar.State.</p>
+        <p>The sidebar is @Sidebar.State.ToString().ToLowerInvariant().</p>
 
         @code {
             [CascadingParameter] private SidebarContext Sidebar { get; set; } = null!;

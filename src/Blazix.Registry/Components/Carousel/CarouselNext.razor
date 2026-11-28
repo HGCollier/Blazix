@@ -2,7 +2,7 @@
 @using Blazix.Primitives
 @using static Blazix.Registry.ClassNames
 
-<Button data-slot="carousel-next" Variant="@Variant" Size="@Size" Disabled="@(!Carousel.CanScrollNext)"
+<Button data-slot="carousel-next" Type="@Type" Variant="@Variant" Size="@Size" Disabled="@(!Carousel.CanScrollNext)"
         @onclick="Carousel.ScrollNextAsync" @attributes="AdditionalAttributes"
         Class="@Cn("absolute touch-manipulation rounded-full",
                    Carousel.Orientation == Orientation.Horizontal ? "inset-y-0 -inset-e-12 my-auto" : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
@@ -17,6 +17,7 @@
 
     [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Outline;
     [Parameter] public ButtonSize Size { get; set; } = ButtonSize.IconSm;
+    [Parameter] public ButtonType Type { get; set; } = ButtonType.button;
     [Parameter] public string? Class { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]

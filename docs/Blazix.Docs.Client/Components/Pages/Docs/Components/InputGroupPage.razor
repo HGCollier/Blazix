@@ -47,6 +47,13 @@
     <ComponentPreview Name="input-group-rtl" Direction="rtl" PreviewClass="min-h-0" />
     <DocsHeading Title="API Reference" />
     <ApiReference Name="input-group" />
+    <DocsHeading Title="Changelog" />
+    <DocsHeading Level="3" Title="2026-11-25 InputGroupButton type" />
+    <p>
+        <code>InputGroupButton</code>&apos;s <code>Type</code> is now a <code>ButtonType</code> enum, like <code>Button</code>&apos;s:
+        <code>ButtonType.button</code> (the default), <code>ButtonType.submit</code>, or <code>ButtonType.reset</code>.
+        Re-add it with <code>dnx Blazix.Cli add input-group --overwrite</code>.
+    </p>
 </DocsPage>
 
 @code {

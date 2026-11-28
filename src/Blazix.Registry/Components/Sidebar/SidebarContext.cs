@@ -24,8 +24,8 @@ public sealed class SidebarContext
     /// <summary>Whether the screen is narrower than 768px, where the sidebar is a sheet.</summary>
     public bool IsMobile { get; internal set; }
 
-    /// <summary>"expanded" or "collapsed".</summary>
-    public string State => Open ? "expanded" : "collapsed";
+    /// <summary>Whether the desktop sidebar is expanded or collapsed.</summary>
+    public SidebarState State => Open ? SidebarState.Expanded : SidebarState.Collapsed;
 
     // ReSharper disable once MemberCanBePrivate.Global
     public Task SetOpenAsync(bool open) => _setOpen(open);

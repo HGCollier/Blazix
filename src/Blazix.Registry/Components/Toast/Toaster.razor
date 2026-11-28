@@ -8,7 +8,7 @@
         <Template Context="toast">
             <Toast Item="@toast">
                 <Blazix.Registry.ToastContent>
-                    <ToastIcon Type="@toast.Type" />
+                    <ToastIcon Type="@IconType(toast.Type)" />
                     <div class="flex min-w-0 flex-1 flex-col gap-1">
                         <Blazix.Registry.ToastTitle />
                         <Blazix.Registry.ToastDescription />
@@ -36,4 +36,15 @@
     [Parameter] public RenderFragment? ChildContent { get; set; }
 
     private ToastManager? Manager => ToastManager ?? Services.GetService(typeof(ToastManager)) as ToastManager;
+
+    // The toast types the icons are drawn for. ToastOptions.Type is open, so any other type shows no icon.
+    private static ToastIconType? IconType(string? type) => type switch
+    {
+        "success" => ToastIconType.Success,
+        "info" => ToastIconType.Info,
+        "warning" => ToastIconType.Warning,
+        "error" => ToastIconType.Error,
+        "loading" => ToastIconType.Loading,
+        _ => null,
+    };
 }

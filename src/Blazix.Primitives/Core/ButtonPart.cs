@@ -51,7 +51,7 @@ public abstract class ButtonPart<TRenderProps> : PrimitivePart<TRenderProps> whe
         attributes.Set("id", ButtonId);
         if (IsNativeButton)
         {
-            attributes.Default("type", "button");
+            attributes.Default("type", ButtonType.button);
             if (focusableWhenDisabled)
             {
                 attributes.Set("aria-disabled", disabled ? "true" : null);
