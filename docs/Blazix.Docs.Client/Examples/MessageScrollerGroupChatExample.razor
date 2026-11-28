@@ -7,7 +7,7 @@
                 <Tooltip>
                     <TooltipTrigger>
                         <Render>
-                            <Button @attributes="context.Attributes" Type="button" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon"
+                            <Button @attributes="context.Attributes" Type="ButtonType.button" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon"
                                     aria-label="Reset conversation" Disabled="@(_rockyTurn == 0)" @onclick="Reset">
                                 <Icon Data="LucideIcons.RotateCw" />
                             </Button>
@@ -57,7 +57,7 @@
             </MessageScrollerProvider>
         </CardContent>
         <CardFooter Class="flex flex-col items-center gap-2 border-t">
-            <Button Type="button" Disabled="@(_rockyTurn == 2)" @onclick="() => _rockyTurn++" Class="w-full" Variant="ButtonVariant.Secondary">
+            <Button Type="ButtonType.button" Disabled="@(_rockyTurn == 2)" @onclick="() => _rockyTurn++" Class="w-full" Variant="ButtonVariant.Secondary">
                 @(_rockyTurn == 0 ? "Add Rocky" : "Send Message as Rocky")
             </Button>
             <p class="text-xs text-muted-foreground">

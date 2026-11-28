@@ -1,4 +1,5 @@
 @namespace Blazix.Registry
+@using Blazix.Primitives
 @using static Blazix.Registry.ClassNames
 
 <Button Type="@Type" data-size="@SizeName" Variant="@Variant" Disabled="@Disabled" @attributes="AdditionalAttributes"
@@ -7,7 +8,7 @@
 </Button>
 
 @code {
-    [Parameter] public string Type { get; set; } = "button";
+    [Parameter] public ButtonType Type { get; set; } = ButtonType.button;
     [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Ghost;
     [Parameter] public InputGroupButtonSize Size { get; set; } = InputGroupButtonSize.Xs;
     [Parameter] public bool Disabled { get; set; }

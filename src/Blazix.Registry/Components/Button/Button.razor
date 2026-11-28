@@ -18,8 +18,8 @@
     [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Default;
     [Parameter] public ButtonSize Size { get; set; } = ButtonSize.Default;
 
-    /// <summary>The &lt;button&gt;'s type. Defaults to "button".</summary>
-    [Parameter] public string? Type { get; set; }
+    /// <summary>The &lt;button&gt;'s type. Defaults to <c>ButtonType.button</c>.</summary>
+    [Parameter] public ButtonType Type { get; set; } = ButtonType.button;
 
     [Parameter] public bool Disabled { get; set; }
 

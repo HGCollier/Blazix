@@ -48,6 +48,20 @@
     <ComponentPreview Name="button-rtl" Direction="rtl" />
     <DocsHeading Title="API Reference" />
     <ApiReference Name="button" />
+    <DocsHeading Title="Changelog" />
+    <DocsHeading Level="3" Title="2026-11-25 Button type" />
+    <p>
+        <code>Type</code> is now a <code>ButtonType</code> enum instead of a string: <code>ButtonType.button</code> (the default),
+        <code>ButtonType.submit</code>, or <code>ButtonType.reset</code>. A <code>Button</code> with no <code>Type</code> now renders
+        <code>type="button"</code>, so inside a form it no longer submits. Give the submit button <code>Type="ButtonType.submit"</code>.
+    </p>
+    <p>
+        Trigger attributes (<code>context.Attributes</code>) carry the same enum, so spreading them onto a <code>Button</code> still works.
+        <code>AlertDialogAction</code>, <code>AttachmentAction</code>, <code>CalendarDayButton</code>, <code>CarouselNext</code>,
+        <code>CarouselPrevious</code>, <code>CodeBlockCopyButton</code>, <code>InputGroupButton</code> and <code>SidebarTrigger</code> take
+        <code>Type</code> too. Update the <code>Blazix.Primitives</code> package, then re-add the components you use with
+        <code>dnx Blazix.Cli add &lt;name&gt; --overwrite</code>.
+    </p>
 </DocsPage>
 
 @code {

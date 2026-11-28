@@ -4,7 +4,7 @@
             <CardTitle>Animation</CardTitle>
             <CardDescription>Choose how user messages are animated when they are added to the conversation.</CardDescription>
             <CardAction Class="flex items-center gap-2">
-                <Button Type="button" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="Reset animated messages"
+                <Button Type="ButtonType.button" Variant="ButtonVariant.Outline" Size="ButtonSize.Icon" aria-label="Reset animated messages"
                         Disabled="@(_chat.Messages.Count == 0 || _chat.IsBusy)" @onclick="_chat.Reset">
                     <Icon Data="LucideIcons.RotateCw" />
                 </Button>
@@ -52,7 +52,7 @@
                     </SelectGroup>
                 </SelectContent>
             </Select>
-            <Button Type="button" Size="ButtonSize.Icon" Class="ml-auto" Disabled="@(_chat.NextMessage is null || _chat.IsBusy)"
+            <Button Type="ButtonType.button" Size="ButtonSize.Icon" Class="ml-auto" Disabled="@(_chat.NextMessage is null || _chat.IsBusy)"
                     @onclick="() => _chat.SendAsync(() => InvokeAsync(StateHasChanged))">
                 <Icon Data="LucideIcons.ArrowUp" />
                 <span class="sr-only">Send Message</span>

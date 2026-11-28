@@ -37,6 +37,17 @@ public enum Align
     End,
 }
 
+/// <summary>
+/// A button's <c>type</c>. The member names are the attribute values (<c>ButtonType.submit</c> renders <c>type="submit"</c>),
+/// so the enum needs no mapping, on a registry Button or on a native element that spreads the part's attributes.
+/// </summary>
+public enum ButtonType
+{
+    button,
+    submit,
+    reset,
+}
+
 /// <summary>Why a popup opened or closed.</summary>
 public enum OpenChangeReason
 {

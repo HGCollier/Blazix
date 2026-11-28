@@ -29,7 +29,7 @@
                                     @if (_model.Emails.Count > 1)
                                     {
                                         <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
-                                            <InputGroupButton Type="button" Variant="ButtonVariant.Ghost" Size="InputGroupButtonSize.IconXs"
+                                            <InputGroupButton Type="ButtonType.button" Variant="ButtonVariant.Ghost" Size="InputGroupButtonSize.IconXs"
                                                               @onclick="@(() => Change(() => _model.Emails.Remove(email)))" aria-label="@($"Remove email {number}")">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -44,7 +44,7 @@
                             </FieldContent>
                         </Field>
                     }
-                    <Button Type="button" Variant="ButtonVariant.Outline" Size="ButtonSize.Sm"
+                    <Button Type="ButtonType.button" Variant="ButtonVariant.Outline" Size="ButtonSize.Sm"
                             @onclick="@(() => Change(() => _model.Emails.Add(new EmailAddress())))" Disabled="@(_model.Emails.Count >= 5)">
                         Add Email Address
                     </Button>
@@ -55,8 +55,8 @@
     </CardContent>
     <CardFooter Class="border-t">
         <Field Orientation="FieldOrientation.Horizontal">
-            <Button Type="button" Variant="ButtonVariant.Outline" @onclick="Reset">Reset</Button>
-            <Button Type="submit" form="form-fluent-array">Save</Button>
+            <Button Type="ButtonType.button" Variant="ButtonVariant.Outline" @onclick="Reset">Reset</Button>
+            <Button Type="ButtonType.submit" form="form-fluent-array">Save</Button>
         </Field>
     </CardFooter>
 </Card>

@@ -4,7 +4,7 @@
 @using static Blazix.Registry.ClassNames
 @implements IDisposable
 
-<Button data-slot="code-block-copy-button" data-copied="@_copied" Variant="@Variant" Size="@Size" aria-label="@(_copied ? "Copied" : "Copy")"
+<Button data-slot="code-block-copy-button" Type="@Type" data-copied="@_copied" Variant="@Variant" Size="@Size" aria-label="@(_copied ? "Copied" : "Copy")"
         @attributes="AdditionalAttributes" Class="@Cn(Class)" @onclick="CopyAsync">
     @if (_copied)
     {
@@ -30,6 +30,7 @@
 
     [Parameter] public ButtonVariant Variant { get; set; } = ButtonVariant.Ghost;
     [Parameter] public ButtonSize Size { get; set; } = ButtonSize.IconXs;
+    [Parameter] public ButtonType Type { get; set; } = ButtonType.button;
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
     [Parameter] public string? Class { get; set; }
 

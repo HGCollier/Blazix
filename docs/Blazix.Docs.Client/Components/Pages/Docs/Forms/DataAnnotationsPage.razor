@@ -360,7 +360,7 @@
         <EditForm @key="_editContext" EditContext="_editContext" OnSubmit="Submit">
             ...
         </EditForm>
-        <Button Type="button" Variant="ButtonVariant.Outline" @onclick="Reset">Reset</Button>
+        <Button Type="ButtonType.button" Variant="ButtonVariant.Outline" @onclick="Reset">Reset</Button>
 
         @code {
             private void Reset()
@@ -397,7 +397,7 @@
         """;
 
     private const string ArrayAddCode = """
-        <Button Type="button" Variant="ButtonVariant.Outline" Size="ButtonSize.Sm"
+        <Button Type="ButtonType.button" Variant="ButtonVariant.Outline" Size="ButtonSize.Sm"
                 @onclick="@(() => Change(() => _model.Emails.Add(new EmailAddress())))" Disabled="@(_model.Emails.Count >= 5)">
             Add Email Address
         </Button>
@@ -407,7 +407,7 @@
         @if (_model.Emails.Count > 1)
         {
             <InputGroupAddon Align="InputGroupAddonAlign.InlineEnd">
-                <InputGroupButton Type="button" Variant="ButtonVariant.Ghost" Size="InputGroupButtonSize.IconXs"
+                <InputGroupButton Type="ButtonType.button" Variant="ButtonVariant.Ghost" Size="InputGroupButtonSize.IconXs"
                                   @onclick="@(() => Change(() => _model.Emails.Remove(email)))" aria-label="@($"Remove email {index + 1}")">
                     <svg>...</svg>
                 </InputGroupButton>
